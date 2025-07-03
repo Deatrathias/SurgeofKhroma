@@ -1,0 +1,27 @@
+{
+   "variants": {
+      "facing=north": {
+         "model": "surgeofkhroma:block/khroma_aperture"
+      },
+      "facing=east": {
+         "model": "surgeofkhroma:block/khroma_aperture",
+         "y": 90
+      },
+      "facing=south": {
+         "model": "surgeofkhroma:block/khroma_aperture",
+         "y": 180
+      },
+      "facing=west": {
+         "model": "surgeofkhroma:block/khroma_aperture",
+         "y": 270
+      },
+      "facing=up": {
+         "model": "surgeofkhroma:block/khroma_aperture",
+         "x": 270
+      },
+      "facing=down": {
+         "model": "surgeofkhroma:block/khroma_aperture",
+         "x": 90
+      }
+   }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "chromium_ingot",
+  "key": {
+    "#": {
+      "item": "surgeofkhroma:chromium_nugget"
+    }
+  },
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "surgeofkhroma:chromium_ingot"
+  }
+}

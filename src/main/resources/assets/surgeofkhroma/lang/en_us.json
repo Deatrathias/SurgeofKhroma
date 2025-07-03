@@ -1,0 +1,36 @@
+{
+  "block.surgeofkhroma.example_block": "Example Block",
+  "block.surgeofkhroma.chromium_ore": "Chromium Ore",
+  "block.surgeofkhroma.deepslate_chromium_ore": "Deepslate Chromium Ore",
+  "block.surgeofkhroma.chromium_block": "Block of Chromium",
+  "block.surgeofkhroma.raw_chromium_block": "Block of Raw Chromium",
+  "block.surgeofkhroma.khroma_line": "Khroma Line",
+  "block.surgeofkhroma.khroma_aperture": "Khroma Aperture",
+  "block.surgeofkhroma.khroma_combiner": "Khroma Combiner",
+  "block.surgeofkhroma.khroma_separator": "Khroma Separator",
+  
+  "item.surgeofkhroma.chromium_ingot": "Chromium Ingot",
+  "item.surgeofkhroma.raw_chromium": "Raw Chromium",
+  "item.surgeofkhroma.chromium_nugget": "Chromium Nugget",
+  "item.surgeofkhroma.khrometal_ingot_red": "Red Khrometal Ingot",
+  "item.surgeofkhroma.khrometal_ingot_green": "Green Khrometal Ingot",
+  "item.surgeofkhroma.khrometal_ingot_blue": "Blue Khrometal Ingot",
+  "item.surgeofkhroma.khrometal_ingot_white": "White Khrometal Ingot",
+  "item.surgeofkhroma.khrometal_ingot_black": "Black Khrometal Ingot",
+  "item.surgeofkhroma.chromatic_nucleus": "Chromatic Nucleus",
+  
+  "tag.block.c.ores.chromium": "Chromium Ores",
+  "tag.block.c.storage_blocks.chromium": "Chromium Storage Blocks",
+  "tag.block.c.storage_blocks.raw_chromium": "Raw Chromium Storage Blocks",
+  "tag.item.surgeofkhroma.ingots.khrometal": "Khrometal Ingots",
+  "tag.item.c.ingots.chromium": "Chromium Ingots",
+  "tag.item.c.nuggets.chromium": "Chromium Nuggets",
+  "tag.item.c.raw_materials.chromium": "Chromium Raw Materials",
+  "tag.item.c.ores.chromium": "Chromium Ores",
+  "tag.item.c.storage_blocks.chromium": "Chromium Storage Blocks",
+  "tag.item.c.storage_blocks.raw_chromium": "Raw Chromium Storage Blocks",
+
+  "surgeofkhroma.configuration.title": "Surge of Khroma Configs",
+  "surgeofkhroma.configuration.section.surgeofkhroma.common.toml": "Surge of Khroma Configs",
+  "surgeofkhroma.configuration.section.surgeofkhroma.common.toml.title": "Surge of Khroma Configs"
+}

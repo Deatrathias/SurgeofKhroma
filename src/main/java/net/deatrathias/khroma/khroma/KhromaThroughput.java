@@ -1,0 +1,104 @@
+package net.deatrathias.khroma.khroma;
+
+import java.util.Objects;
+
+public final class KhromaThroughput {
+	public static class KhromaThrouputWrapper {
+		public KhromaThroughput throughput;
+
+		public KhromaThrouputWrapper(KhromaThroughput throughput) {
+			this.throughput = throughput;
+		}
+	}
+
+	private Khroma khroma;
+	private float rate;
+
+	public KhromaThroughput(Khroma khroma, float rate) {
+		this.khroma = khroma;
+		this.rate = rate;
+	}
+
+	public Khroma getKhroma() {
+		return khroma;
+	}
+
+	public float getRate() {
+		return rate;
+	}
+
+	public static KhromaThroughput empty = new KhromaThroughput(Khroma.empty(), 0);
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(khroma, rate);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		KhromaThroughput other = (KhromaThroughput) obj;
+		return Objects.equals(khroma, other.khroma) && Float.floatToIntBits(rate) == Float.floatToIntBits(other.rate);
+	}
+
+	public static KhromaThroughput merge(KhromaThroughput t1, KhromaThroughput t2) {
+		Khroma empty = Khroma.empty();
+		Khroma khroma = t1.khroma;
+		if (t1.khroma == empty)
+			khroma = t2.khroma;
+
+		if (t1.khroma != t2.khroma && t1.khroma != empty && t2.khroma != empty)
+			return t1.rate >= t2.rate ? t1 : t2;
+		return new KhromaThroughput(khroma, t1.rate + t2.rate);
+	}
+
+	public static KhromaThroughput combine(KhromaThroughput t1, KhromaThroughput t2) {
+
+		if (t1.khroma == t2.khroma) {
+			return merge(t1, t2);
+		} else if (t1.khroma.contains(t2.khroma)) {
+			return t1;
+		} else if (t2.khroma.contains(t1.khroma)) {
+			return t2;
+		}
+
+		int count1 = t1.khroma.countColors();
+		int count2 = t2.khroma.countColors();
+
+		float ratio1 = t1.getRate() / (float) count1;
+		float ratio2 = t2.getRate() / (float) count2;
+		Khroma combined = Khroma.combine(t1.khroma, t2.khroma);
+
+		if (ratio1 >= ratio2) {
+			return new KhromaThroughput(combined, ratio2 * combined.countColors());
+		} else {
+			return new KhromaThroughput(combined, ratio1 * combined.countColors());
+		}
+	}
+
+	public KhromaThroughput multiply(float m) {
+		return new KhromaThroughput(khroma, rate * m);
+	}
+
+	@Override
+	public String toString() {
+		return "KhromaThroughput [khroma=" + khroma.toString() + ", rate=" + Float.toString(rate) + "]";
+	}
+
+	public static KhromaThroughput[] separate(KhromaThroughput t) {
+		if (t.khroma == Khroma.empty())
+			return new KhromaThroughput[] { KhromaThroughput.empty, KhromaThroughput.empty };
+
+		int colors = t.khroma.countColors();
+
+		Khroma[] khromas = t.khroma.separate();
+
+		return new KhromaThroughput[] { new KhromaThroughput(khromas[0], t.rate / colors), new KhromaThroughput(khromas[1], t.rate * (colors - 1) / colors) };
+	}
+
+}

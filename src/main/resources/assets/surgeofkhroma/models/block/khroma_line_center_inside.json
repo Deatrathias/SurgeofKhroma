@@ -1,0 +1,23 @@
+{
+   "parent": "minecraft:block/block",
+   "render_type": "minecraft:cutout",
+   "ambientocclusion": false,
+   "textures": {
+      "inside": "surgeofkhroma:block/khroma",
+      "particle": "surgeofkhroma:block/khroma_line_center"
+   },
+    "elements": [
+      {
+         "from": [ 5.5, 5.5, 5.5 ],
+         "to": [ 10.5, 10.5, 10.5 ],
+         "faces": {
+            "down":  { "texture": "#inside", "tintindex": 0 },
+            "up":    { "texture": "#inside", "tintindex": 0 },
+            "west":  { "texture": "#inside", "tintindex": 0 },
+            "east":  { "texture": "#inside", "tintindex": 0 },
+            "north": { "texture": "#inside", "tintindex": 0 },
+            "south": { "texture": "#inside", "tintindex": 0 }
+         }
+      }
+   ]
+}

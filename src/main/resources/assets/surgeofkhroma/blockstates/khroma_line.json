@@ -1,0 +1,500 @@
+{
+   "multipart": [
+
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_center"
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_center_inside"
+         },
+         "when": {
+            "AND": [
+               { "khroma": "!empty" },
+               { "khroma": "!redgreenblue" },
+               { "khroma": "!redgreenbluewhite" },
+               { "khroma": "!redgreenblueblack" },
+               { "khroma": "!redgreenbluewhiteblack" }
+            ]
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_center_inside_spectrum"
+         },
+         "when": {
+               "khroma": "redgreenblue"
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_center_inside_spectrum_white"
+         },
+         "when": {
+               "khroma": "redgreenbluewhite"
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_center_inside_spectrum_black"
+         },
+         "when": {
+               "khroma": "redgreenblueblack"
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_center_inside_khromega"
+         },
+         "when": {
+               "khroma": "redgreenbluewhiteblack"
+         }
+      },
+      
+      
+      {
+         "apply": {
+            "model": "surgeofkhroma:block/khroma_line_side"
+         },
+         "when": {
+            "north": "true"
+         }
+      },
+      {
+         "apply": {
+            "model": "surgeofkhroma:block/khroma_line_side_inside"
+         },
+         "when": {
+            "AND": [
+               { "north": "true" },
+               { "khroma": "!empty" },
+               { "khroma": "!redgreenblue" },
+               { "khroma": "!redgreenbluewhite" },
+               { "khroma": "!redgreenblueblack" },
+               { "khroma": "!redgreenbluewhiteblack" }
+            ]
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum"
+         },
+         "when": {
+            "AND": [
+               { "north": "true" },
+               { "khroma": "redgreenblue" }
+            ]
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum_white"
+         },
+         "when": {
+            "AND": [
+               { "north": "true" },
+               { "khroma": "redgreenbluewhite" }
+            ]
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum_black"
+         },
+         "when": {
+            "AND": [
+               { "north": "true" },
+               { "khroma": "redgreenblueblack" }
+            ]
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_side_inside_khromega"
+         },
+         "when": {
+            "AND": [
+               { "north": "true" },
+               { "khroma": "redgreenbluewhiteblack" }
+            ]
+         }
+      },
+      
+      
+      {
+         "apply": {
+            "model": "surgeofkhroma:block/khroma_line_side",
+            "y": 90
+         },
+         "when": {
+            "east": "true"
+         }
+      },
+      {
+         "apply": {
+            "model": "surgeofkhroma:block/khroma_line_side_inside",
+            "y": 90
+         },
+         "when": {
+            "AND": [
+               { "east": "true" },
+               { "khroma": "!empty" },
+               { "khroma": "!redgreenblue" },
+               { "khroma": "!redgreenbluewhite" },
+               { "khroma": "!redgreenblueblack" },
+               { "khroma": "!redgreenbluewhiteblack" }
+            ]
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum",
+            "y": 90
+         },
+         "when": {
+            "AND": [
+               { "east": "true" },
+               { "khroma": "redgreenblue" }
+            ]
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum_white",
+            "y": 90
+         },
+         "when": {
+            "AND": [
+               { "east": "true" },
+               { "khroma": "redgreenbluewhite" }
+            ]
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum_black",
+            "y": 90
+         },
+         "when": {
+            "AND": [
+               { "east": "true" },
+               { "khroma": "redgreenblueblack" }
+            ]
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_side_inside_khromega",
+            "y": 90
+         },
+         "when": {
+            "AND": [
+               { "east": "true" },
+               { "khroma": "redgreenbluewhiteblack" }
+            ]
+         }
+      },
+      
+      
+      {
+         "apply": {
+            "model": "surgeofkhroma:block/khroma_line_side",
+            "y": 180
+         },
+         "when": {
+            "south": "true"
+         }
+      },
+      {
+         "apply": {
+            "model": "surgeofkhroma:block/khroma_line_side_inside",
+            "y": 180
+         },
+         "when": {
+            "AND": [
+               { "south": "true" },
+               { "khroma": "!empty" },
+               { "khroma": "!redgreenblue" },
+               { "khroma": "!redgreenbluewhite" },
+               { "khroma": "!redgreenblueblack" },
+               { "khroma": "!redgreenbluewhiteblack" }
+            ]
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum",
+            "y": 180
+         },
+         "when": {
+            "AND": [
+               { "south": "true" },
+               { "khroma": "redgreenblue" }
+            ]
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum_white",
+            "y": 180
+         },
+         "when": {
+            "AND": [
+               { "south": "true" },
+               { "khroma": "redgreenbluewhite" }
+            ]
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum_black",
+            "y": 180
+         },
+         "when": {
+            "AND": [
+               { "south": "true" },
+               { "khroma": "redgreenblueblack" }
+            ]
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_side_inside_khromega",
+            "y": 180
+         },
+         "when": {
+            "AND": [
+               { "south": "true" },
+               { "khroma": "redgreenbluewhiteblack" }
+            ]
+         }
+      },
+      
+      
+      {
+         "apply": {
+            "model": "surgeofkhroma:block/khroma_line_side",
+            "y": 270
+         },
+         "when": {
+            "west": "true"
+         }
+      },
+      {
+         "apply": {
+            "model": "surgeofkhroma:block/khroma_line_side_inside",
+            "y": 270
+         },
+         "when": {
+            "AND": [
+               { "west": "true" },
+               { "khroma": "!empty" },
+               { "khroma": "!redgreenblue" },
+               { "khroma": "!redgreenbluewhite" },
+               { "khroma": "!redgreenblueblack" },
+               { "khroma": "!redgreenbluewhiteblack" }
+            ]
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum",
+            "y": 270
+         },
+         "when": {
+            "AND": [
+               { "west": "true" },
+               { "khroma": "redgreenblue" }
+            ]
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum_white",
+            "y": 270
+         },
+         "when": {
+            "AND": [
+               { "west": "true" },
+               { "khroma": "redgreenbluewhite" }
+            ]
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum_black",
+            "y": 270
+         },
+         "when": {
+            "AND": [
+               { "west": "true" },
+               { "khroma": "redgreenblueblack" }
+            ]
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_side_inside_khromega",
+            "y": 270
+         },
+         "when": {
+            "AND": [
+               { "west": "true" },
+               { "khroma": "redgreenbluewhiteblack" }
+            ]
+         }
+      },
+      
+      
+      {
+         "apply": {
+            "model": "surgeofkhroma:block/khroma_line_side",
+            "x": 270
+         },
+         "when": {
+            "up": "true"
+         }
+      },
+      {
+         "apply": {
+            "model": "surgeofkhroma:block/khroma_line_side_inside",
+            "x": 270
+         },
+         "when": {
+            "AND": [
+               { "up": "true" },
+               { "khroma": "!empty" },
+               { "khroma": "!redgreenblue" },
+               { "khroma": "!redgreenbluewhite" },
+               { "khroma": "!redgreenblueblack" },
+               { "khroma": "!redgreenbluewhiteblack" }
+            ]
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum",
+            "x": 270
+         },
+         "when": {
+            "AND": [
+               { "up": "true" },
+               { "khroma": "redgreenblue" }
+            ]
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum_white",
+            "x": 270
+         },
+         "when": {
+            "AND": [
+               { "up": "true" },
+               { "khroma": "redgreenbluewhite" }
+            ]
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum_black",
+            "x": 270
+         },
+         "when": {
+            "AND": [
+               { "up": "true" },
+               { "khroma": "redgreenblueblack" }
+            ]
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_side_inside_khromega",
+            "x": 270
+         },
+         "when": {
+            "AND": [
+               { "up": "true" },
+               { "khroma": "redgreenbluewhiteblack" }
+            ]
+         }
+      },
+      
+      
+      {
+         "apply": {
+            "model": "surgeofkhroma:block/khroma_line_side",
+            "x": 90
+         },
+         "when": {
+            "down": "true"
+         }
+      },
+      {
+         "apply": {
+            "model": "surgeofkhroma:block/khroma_line_side_inside",
+            "x": 90
+         },
+         "when": {
+            "AND": [
+               { "down": "true" },
+               { "khroma": "!empty" },
+               { "khroma": "!redgreenblue" },
+               { "khroma": "!redgreenbluewhite" },
+               { "khroma": "!redgreenblueblack" },
+               { "khroma": "!redgreenbluewhiteblack" }
+            ]
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum",
+            "x": 90
+         },
+         "when": {
+            "AND": [
+               { "down": "true" },
+               { "khroma": "redgreenblue" }
+            ]
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum_white",
+            "x": 90
+         },
+         "when": {
+            "AND": [
+               { "down": "true" },
+               { "khroma": "redgreenbluewhite" }
+            ]
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum_black",
+            "x": 90
+         },
+         "when": {
+            "AND": [
+               { "down": "true" },
+               { "khroma": "redgreenblueblack" }
+            ]
+         }
+      },
+      {
+         "apply" : {
+            "model": "surgeofkhroma:block/khroma_line_side_inside_khromega",
+            "x": 90
+         },
+         "when": {
+            "AND": [
+               { "down": "true" },
+               { "khroma": "redgreenbluewhiteblack" }
+            ]
+         }
+      }
+   ] 
+}

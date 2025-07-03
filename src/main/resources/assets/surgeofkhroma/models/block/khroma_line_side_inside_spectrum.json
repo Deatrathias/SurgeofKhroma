@@ -1,0 +1,6 @@
+{
+   "parent": "surgeofkhroma:block/khroma_line_side_inside",
+   "textures": {
+      "inside": "surgeofkhroma:block/khroma_spectrum"
+   }
+}
