@@ -7,27 +7,56 @@ import net.deatrathias.khroma.blockentities.KhromaCombinerBlockEntity;
 import net.deatrathias.khroma.blockentities.KhromaMachineBlockEntity;
 import net.deatrathias.khroma.blockentities.KhromaProviderBlockEntity;
 import net.deatrathias.khroma.blockentities.KhromaSeparatorBlockEntity;
+import net.deatrathias.khroma.blockentities.NodeCollectorBlockEntity;
 import net.deatrathias.khroma.blocks.KhromaApertureBlock;
 import net.deatrathias.khroma.blocks.KhromaCombinerBlock;
 import net.deatrathias.khroma.blocks.KhromaLineBlock;
 import net.deatrathias.khroma.blocks.KhromaMachineBlock;
 import net.deatrathias.khroma.blocks.KhromaProviderBlock;
 import net.deatrathias.khroma.blocks.KhromaSeparatorBlock;
+import net.deatrathias.khroma.blocks.NodeCollectorBlock;
 import net.deatrathias.khroma.blocks.items.KromaLineBlockItem;
+import net.deatrathias.khroma.blocks.items.NodeCollectorBlockItem;
+import net.deatrathias.khroma.entities.KhromaNodeEntity;
 import net.deatrathias.khroma.gui.KhromaApertureMenu;
+import net.deatrathias.khroma.items.KhrometalBlackPickaxeItem;
+import net.deatrathias.khroma.items.KhrometalBlackSwordItem;
+import net.deatrathias.khroma.items.KhrometalGreenPickaxeItem;
+import net.deatrathias.khroma.items.KhrometalWhitePickaxeItem;
 import net.deatrathias.khroma.khroma.IKhromaConsumer;
 import net.deatrathias.khroma.khroma.IKhromaProvider;
+import net.deatrathias.khroma.khroma.KhromaBiomeData;
+import net.deatrathias.khroma.recipes.KhromaImbuementRecipe;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTab.ItemDisplayParameters;
+import net.minecraft.world.item.CreativeModeTab.Output;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -36,18 +65,48 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
+import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.neoforged.neoforge.common.BooleanAttribute;
+import net.neoforged.neoforge.common.SimpleTier;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public class RegistryReference {
 
 	public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(SurgeofKhroma.MODID);
 	public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(SurgeofKhroma.MODID);
 	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, SurgeofKhroma.MODID);
+	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, SurgeofKhroma.MODID);
 	public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, SurgeofKhroma.MODID);
+	public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, SurgeofKhroma.MODID);
+	public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, SurgeofKhroma.MODID);
+	public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, SurgeofKhroma.MODID);
+	public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(BuiltInRegistries.ATTRIBUTE, SurgeofKhroma.MODID);
+	public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, SurgeofKhroma.MODID);
+
+	public static final TagKey<Item> TAG_KHROMETAL_INGOT_RED = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(SurgeofKhroma.MODID, "ingots/khrometal/red"));
+	public static final TagKey<Item> TAG_KHROMETAL_INGOT_GREEN = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(SurgeofKhroma.MODID, "ingots/khrometal/green"));
+	public static final TagKey<Item> TAG_KHROMETAL_INGOT_BLUE = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(SurgeofKhroma.MODID, "ingots/khrometal/blue"));
+	public static final TagKey<Item> TAG_KHROMETAL_INGOT_WHITE = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(SurgeofKhroma.MODID, "ingots/khrometal/white"));
+	public static final TagKey<Item> TAG_KHROMETAL_INGOT_BLACK = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(SurgeofKhroma.MODID, "ingots/khrometal/black"));
+
+	public static final Holder<Attribute> ATTRIBUTE_TELEPORT_DROPS = ATTRIBUTES.register("teleport_drops",
+			() -> new BooleanAttribute("attribute.surgeofkhroma.teleport_drops", false).setSyncable(true));
+
+	/**
+	 * 
+	 * TIERS
+	 * 
+	 */
+	public static final Tier RED_KHROMETAL_TIER = new SimpleTier(BlockTags.INCORRECT_FOR_DIAMOND_TOOL, 250, 6, 4, 14, () -> Ingredient.of(TAG_KHROMETAL_INGOT_RED));
+	public static final Tier GREEN_KHROMETAL_TIER = new SimpleTier(BlockTags.INCORRECT_FOR_IRON_TOOL, 2000, 6, 2, 14, () -> Ingredient.of(TAG_KHROMETAL_INGOT_GREEN));
+	public static final Tier BLUE_KHROMETAL_TIER = new SimpleTier(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 12, 2, 24, () -> Ingredient.of(TAG_KHROMETAL_INGOT_BLUE));
+	public static final Tier WHITE_KHROMETAL_TIER = new SimpleTier(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 6, 2, 14, () -> Ingredient.of(TAG_KHROMETAL_INGOT_WHITE));
+	public static final Tier BLACK_KHROMETAL_TIER = new SimpleTier(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 6, 2, 14, () -> Ingredient.of(TAG_KHROMETAL_INGOT_BLACK));
 
 	/**
 	 * 
@@ -74,6 +133,11 @@ public class RegistryReference {
 			registryName -> new KhromaLineBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(0.1F, 1.0F).sound(SoundType.METAL).pushReaction(PushReaction.DESTROY)));
 	public static final DeferredItem<Item> ITEM_BLOCK_KHROMA_LINE = ITEMS.register("khroma_line", registryName -> new KromaLineBlockItem(BLOCK_KHROMA_LINE.get(), new Item.Properties()));
 
+	public static final DeferredBlock<Block> BLOCK_NODE_COLLECTOR = BLOCKS.register("node_collector",
+			registryName -> new NodeCollectorBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(10f, 6f).sound(SoundType.METAL).pushReaction(PushReaction.BLOCK).noOcclusion()));
+	public static final DeferredItem<BlockItem> ITEM_BLOCK_NODE_COLLECTOR = ITEMS.register("node_collector",
+			registryName -> new NodeCollectorBlockItem(BLOCK_NODE_COLLECTOR.get(), new Item.Properties()));
+
 	public static final DeferredBlock<Block> BLOCK_KHROMA_PROVIDER = BLOCKS.register("khroma_provider", registryName -> new KhromaProviderBlock(BlockBehaviour.Properties.of()));
 	public static final DeferredItem<BlockItem> ITEM_BLOCK_KHROMA_PROVIDER = ITEMS.registerSimpleBlockItem(BLOCK_KHROMA_PROVIDER);
 
@@ -94,9 +158,12 @@ public class RegistryReference {
 
 	/**
 	 * 
-	 * BLOCK ENTITY
+	 * BLOCK ENTITIES
 	 * 
 	 */
+	public static final Supplier<BlockEntityType<NodeCollectorBlockEntity>> BLOCK_ENTITY_NODE_COLLECTOR = BLOCK_ENTITY_TYPES.register("node_collector_entity",
+			() -> (BlockEntityType.Builder.of(NodeCollectorBlockEntity::new, BLOCK_NODE_COLLECTOR.get()).build(null)));
+
 	public static final Supplier<BlockEntityType<KhromaProviderBlockEntity>> BLOCK_ENTITY_KHROMA_PROVIDER = BLOCK_ENTITY_TYPES.register("khroma_provider_entity",
 			() -> (BlockEntityType.Builder.of(KhromaProviderBlockEntity::new, BLOCK_KHROMA_PROVIDER.get()).build(null)));
 
@@ -126,6 +193,37 @@ public class RegistryReference {
 	public static final DeferredItem<Item> ITEM_KHROMETAL_INGOT_WHITE = ITEMS.registerSimpleItem("khrometal_ingot_white");
 	public static final DeferredItem<Item> ITEM_KHROMETAL_INGOT_BLACK = ITEMS.registerSimpleItem("khrometal_ingot_black");
 	public static final DeferredItem<Item> ITEM_CHROMATIC_NUCLEUS = ITEMS.registerSimpleItem("chromatic_nucleus");
+	public static final DeferredItem<Item> ITEM_CHROMATIC_GLASSES = ITEMS.registerSimpleItem("chromatic_glasses", new Item.Properties().stacksTo(1));
+
+	public static final DeferredItem<Item> ITEM_KHROMETAL_RED_SWORD = ITEMS.register("khrometal_red_sword",
+			() -> new SwordItem(RED_KHROMETAL_TIER, new Item.Properties().attributes(PickaxeItem.createAttributes(RED_KHROMETAL_TIER, 3, -2.4f))));
+	public static final DeferredItem<Item> ITEM_KHROMETAL_RED_PICKAXE = ITEMS.register("khrometal_red_pickaxe",
+			() -> new PickaxeItem(RED_KHROMETAL_TIER, new Item.Properties().attributes(PickaxeItem.createAttributes(RED_KHROMETAL_TIER, 1, -2f))));
+	public static final DeferredItem<Item> ITEM_KHROMETAL_GREEN_PICKAXE = ITEMS.register("khrometal_green_pickaxe",
+			() -> new KhrometalGreenPickaxeItem(GREEN_KHROMETAL_TIER, new Item.Properties().attributes(PickaxeItem.createAttributes(GREEN_KHROMETAL_TIER, 1, -2f))));
+	public static final DeferredItem<Item> ITEM_KHROMETAL_BLUE_PICKAXE = ITEMS.register("khrometal_blue_pickaxe",
+			() -> new PickaxeItem(BLUE_KHROMETAL_TIER, new Item.Properties().attributes(PickaxeItem.createAttributes(BLUE_KHROMETAL_TIER, 1, -2f))));
+	public static final DeferredItem<Item> ITEM_KHROMETAL_WHITE_PICKAXE = ITEMS.register("khrometal_white_pickaxe",
+			() -> new KhrometalWhitePickaxeItem(WHITE_KHROMETAL_TIER,
+					new Item.Properties().attributes(PickaxeItem.createAttributes(WHITE_KHROMETAL_TIER, 1, -2f).withModifierAdded(Attributes.ATTACK_KNOCKBACK,
+							new AttributeModifier(ResourceLocation.fromNamespaceAndPath(SurgeofKhroma.MODID, "white_khrometal_bonus"), 4, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND))));
+
+	public static final DeferredItem<Item> ITEM_KHROMETAL_BLACK_SWORD = ITEMS.register("khrometal_black_sword",
+			() -> new KhrometalBlackSwordItem(BLACK_KHROMETAL_TIER,
+					new Item.Properties().attributes(SwordItem.createAttributes(BLACK_KHROMETAL_TIER, 3, -2.4f).withModifierAdded(ATTRIBUTE_TELEPORT_DROPS,
+							new AttributeModifier(ResourceLocation.fromNamespaceAndPath(SurgeofKhroma.MODID, "black_khrometal_bonus"), 1, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND))));
+	public static final DeferredItem<Item> ITEM_KHROMETAL_BLACK_PICKAXE = ITEMS.register("khrometal_black_pickaxe",
+			() -> new KhrometalBlackPickaxeItem(BLACK_KHROMETAL_TIER,
+					new Item.Properties().attributes(PickaxeItem.createAttributes(BLACK_KHROMETAL_TIER, 1, -2f).withModifierAdded(ATTRIBUTE_TELEPORT_DROPS,
+							new AttributeModifier(ResourceLocation.fromNamespaceAndPath(SurgeofKhroma.MODID, "black_khrometal_bonus"), 1, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND))));
+
+	/**
+	 * 
+	 * ENTITIES
+	 * 
+	 */
+	public static final Supplier<EntityType<KhromaNodeEntity>> ENTITY_KHROMA_NODE = ENTITY_TYPES.register("khroma_node",
+			() -> EntityType.Builder.of(KhromaNodeEntity::new, MobCategory.MISC).fireImmune().updateInterval(Integer.MAX_VALUE).eyeHeight(0).clientTrackingRange(10).sized(1, 1).build("khroma_node"));
 
 	/**
 	 * 
@@ -140,28 +238,54 @@ public class RegistryReference {
 	public static final BlockCapability<IKhromaConsumer, Direction> KHROMA_CONSUMER_BLOCK = BlockCapability.createSided(ResourceLocation.fromNamespaceAndPath(SurgeofKhroma.MODID, "khroma_consumer"),
 			IKhromaConsumer.class);
 
-	// Creates a creative tab with the id "surgeofkhroma:example_tab" for the
-	// example item, that is placed after the combat tab
-	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = SurgeofKhroma.CREATIVE_MODE_TABS.register("example_tab",
-			() -> CreativeModeTab.builder().title(Component.translatable("itemGroup.surgeofkhroma"))
-					// The language key for the title of your CreativeModeTab
-					.withTabsBefore(CreativeModeTabs.COMBAT).icon(() -> ITEM_CHROMATIC_NUCLEUS.get().getDefaultInstance()).displayItems((parameters, output) -> {
-						output.accept(ITEM_CHROMIUM_INGOT.get());
-						output.accept(ITEM_BLOCK_CHROMIUM_ORE.get());
-						output.accept(ITEM_BLOCK_DEEPSLATE_CHROMIUM_ORE.get());
-						output.accept(ITEM_BLOCK_CHROMIUM_BLOCK.get());
-						output.accept(ITEM_BLOCK_RAW_CHROMIUM_BLOCK.get());
-						output.accept(ITEM_RAW_CHROMIUM.get());
-						output.accept(ITEM_CHROMIUM_NUGGET.get());
-						output.accept(ITEM_KHROMETAL_INGOT_RED.get());
-						output.accept(ITEM_KHROMETAL_INGOT_GREEN.get());
-						output.accept(ITEM_KHROMETAL_INGOT_BLUE.get());
-						output.accept(ITEM_KHROMETAL_INGOT_WHITE.get());
-						output.accept(ITEM_KHROMETAL_INGOT_BLACK.get());
-						output.accept(ITEM_CHROMATIC_NUCLEUS.get());
-						output.accept(ITEM_BLOCK_KHROMA_LINE.get());
-						output.accept(ITEM_BLOCK_KHROMA_APERTURE.get());
-						output.accept(ITEM_BLOCK_KHROMA_COMBINER.get());
-						output.accept(ITEM_BLOCK_KHROMA_SEPARATOR.get());
-					}).build());
+	/**
+	 * 
+	 * ATTACHMENTS
+	 * 
+	 */
+	public static final Supplier<AttachmentType<KhromaBiomeData>> KHROMA_BIOME_DATA = ATTACHMENT_TYPES.register("khroma_biome_data",
+			() -> AttachmentType.serializable(() -> new KhromaBiomeData()).build());
+
+	/**
+	 * 
+	 * RECIPES
+	 * 
+	 */
+	public static final Supplier<RecipeType<KhromaImbuementRecipe>> RECIPE_KHROMA_IMBUEMENT = RECIPE_TYPES.register("khroma_imbuement",
+			() -> RecipeType.<KhromaImbuementRecipe>simple(ResourceLocation.fromNamespaceAndPath(SurgeofKhroma.MODID, "khroma_imbuement")));
+	public static final Supplier<RecipeSerializer<KhromaImbuementRecipe>> RECIPE_SERIALIZER_KHROMA_IMBUEMENT = RECIPE_SERIALIZERS.register("khroma_imbuement",
+			KhromaImbuementRecipe.KhromaImbuementSerializer::new);
+
+	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> SURGEOFKHROMA_TAB = CREATIVE_MODE_TABS.register("surgeofkhroma_tab",
+			() -> CreativeModeTab.builder().title(Component.translatable("itemGroup.surgeofkhroma")).withTabsBefore(CreativeModeTabs.COMBAT)
+					.icon(() -> ITEM_CHROMATIC_NUCLEUS.get().getDefaultInstance()).displayItems(RegistryReference::tabItemsToDisplay).build());
+
+	public static void tabItemsToDisplay(ItemDisplayParameters parameters, Output output) {
+		output.accept(ITEM_CHROMIUM_INGOT.get());
+		output.accept(ITEM_BLOCK_CHROMIUM_ORE.get());
+		output.accept(ITEM_BLOCK_DEEPSLATE_CHROMIUM_ORE.get());
+		output.accept(ITEM_BLOCK_CHROMIUM_BLOCK.get());
+		output.accept(ITEM_BLOCK_RAW_CHROMIUM_BLOCK.get());
+		output.accept(ITEM_RAW_CHROMIUM.get());
+		output.accept(ITEM_CHROMIUM_NUGGET.get());
+		output.accept(ITEM_KHROMETAL_INGOT_RED.get());
+		output.accept(ITEM_KHROMETAL_INGOT_GREEN.get());
+		output.accept(ITEM_KHROMETAL_INGOT_BLUE.get());
+		output.accept(ITEM_KHROMETAL_INGOT_WHITE.get());
+		output.accept(ITEM_KHROMETAL_INGOT_BLACK.get());
+		output.accept(ITEM_CHROMATIC_NUCLEUS.get());
+		output.accept(ITEM_CHROMATIC_GLASSES.get());
+		output.accept(ITEM_KHROMETAL_RED_SWORD.get());
+		output.accept(ITEM_KHROMETAL_RED_PICKAXE.get());
+		output.accept(ITEM_KHROMETAL_GREEN_PICKAXE.get());
+		output.accept(ITEM_KHROMETAL_BLUE_PICKAXE.get());
+		output.accept(ITEM_KHROMETAL_WHITE_PICKAXE.get());
+		output.accept(ITEM_KHROMETAL_BLACK_SWORD.get());
+		output.accept(ITEM_KHROMETAL_BLACK_PICKAXE.get());
+		output.accept(ITEM_BLOCK_KHROMA_LINE.get());
+		output.accept(ITEM_BLOCK_KHROMA_APERTURE.get());
+		output.accept(ITEM_BLOCK_KHROMA_COMBINER.get());
+		output.accept(ITEM_BLOCK_KHROMA_SEPARATOR.get());
+		output.accept(ITEM_BLOCK_NODE_COLLECTOR.get());
+	}
 }

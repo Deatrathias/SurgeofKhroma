@@ -1,6 +1,6 @@
 {
    "values": [
-      "surgeofkhroma:chromium_block",
-      "surgeofkhroma:raw_chromium_block"
+      "#c:storage_blocks/chromium",
+      "#c:storage_blocks/raw_chromium"
    ]
 }

@@ -18,11 +18,13 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -36,6 +38,19 @@ public class KhromaApertureBlockEntity extends BaseKhromaUserBlockEntity impleme
 	private KhromaProviderImpl provider = new KhromaProviderImpl(true, () -> provides(), true);;
 
 	private KhromaConsumerImpl consumer = new KhromaConsumerImpl(true, (throughput, simulate) -> consumes(throughput, simulate), true);
+
+	protected final DataSlot limitData = new DataSlot() {
+
+		@Override
+		public void set(int value) {
+			KhromaApertureBlockEntity.this.limit = (float) value / Integer.MAX_VALUE;
+		}
+
+		@Override
+		public int get() {
+			return Mth.floor(KhromaApertureBlockEntity.this.limit * Integer.MAX_VALUE);
+		}
+	};
 
 	public KhromaApertureBlockEntity(BlockPos pos, BlockState blockState) {
 		super(RegistryReference.BLOCK_ENTITY_KHROMA_APERTURE.get(), pos, blockState);
@@ -112,7 +127,7 @@ public class KhromaApertureBlockEntity extends BaseKhromaUserBlockEntity impleme
 
 	@Override
 	public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
-		return new KhromaApertureMenu(containerId, playerInventory, ContainerLevelAccess.create(level, worldPosition));
+		return new KhromaApertureMenu(containerId, playerInventory, ContainerLevelAccess.create(level, worldPosition), limitData);
 	}
 
 	@Override

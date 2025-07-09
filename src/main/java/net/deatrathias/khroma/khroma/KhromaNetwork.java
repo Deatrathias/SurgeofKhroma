@@ -225,19 +225,6 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 		return true;
 	}
 
-	private void calculateDependencies() {
-		if (relaysTo.isEmpty())
-			return;
-
-		for (BlockDirection relayProvider : relaysTo) {
-			KhromaNetwork slaveNetwork = findNetwork(level, relayProvider);
-			if (slaveNetwork != null) {
-				slaveNetwork.relaysNumber++;
-				slaveNetwork.master = false;
-			}
-		}
-	}
-
 	public void update() {
 		Khroma previousKhroma = khromaContent.getKhroma();
 
@@ -384,7 +371,7 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 		for (var network : networks) {
 			if (network.lines.contains(pos)) {
 				if (found)
-					SurgeofKhroma.LOGGER.error("found twice");
+					SurgeofKhroma.LOGGER.error("found twice " + pos.toString());
 				found = true;
 				result = network.khroma;
 			}
@@ -468,7 +455,7 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 		while (networkIter.hasNext()) {
 			KhromaNetwork network = networkIter.next();
 			if (network.dirty) {
-				SurgeofKhroma.LOGGER.info("updating network");
+				SurgeofKhroma.LOGGER.debug("rebuilding network");
 				dirty = true;
 				if (!network.rebuildNetwork(leftoverProviders, allProviders))
 					networkIter.remove();
@@ -477,7 +464,7 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 		}
 
 		while (!leftoverProviders.isEmpty()) {
-			SurgeofKhroma.LOGGER.info("creating new network");
+			SurgeofKhroma.LOGGER.debug("creating new network");
 			dirty = true;
 			BlockDirection first = leftoverProviders.iterator().next();
 			leftoverProviders.remove(first);

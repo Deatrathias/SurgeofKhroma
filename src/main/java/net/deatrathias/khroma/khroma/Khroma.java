@@ -2,9 +2,13 @@ package net.deatrathias.khroma.khroma;
 
 import java.io.Serializable;
 
-import net.deatrathias.khroma.SurgeofKhroma;
+import com.mojang.serialization.Codec;
 
-public final class Khroma implements Comparable<Khroma>, Serializable {
+import net.deatrathias.khroma.SurgeofKhroma;
+import net.minecraft.util.ExtraCodecs;
+import net.minecraft.util.StringRepresentable;
+
+public final class Khroma implements Comparable<Khroma>, Serializable, StringRepresentable {
 	private static final long serialVersionUID = 1L;
 
 	public static final int FLAG_KHROMA_RED = 1;
@@ -12,10 +16,6 @@ public final class Khroma implements Comparable<Khroma>, Serializable {
 	public static final int FLAG_KHROMA_BLUE = 4;
 	public static final int FLAG_KHROMA_WHITE = 8;
 	public static final int FLAG_KHROMA_BLACK = 16;
-
-	public static enum KhromaColor {
-		RED, GREEN, BLUE, WHITE, BLACK
-	}
 
 	public static final String[] KhromaNames = new String[] { "red", "green", "blue", "white", "black" };
 
@@ -64,6 +64,9 @@ public final class Khroma implements Comparable<Khroma>, Serializable {
 			khromaInstances[i] = new Khroma(i);
 	}
 
+	public static final Codec<Khroma> CODEC = ExtraCodecs.orCompressed(Codec.stringResolver(StringRepresentable::getSerializedName, Khroma::fromName),
+			ExtraCodecs.idResolverCodec(Khroma::asInt, intValue -> intValue >= 0 && intValue < 32 ? khromaInstances[intValue] : null, -1));
+
 	public static Khroma get(boolean red, boolean green, boolean blue, boolean white, boolean black) {
 		int khromaValue = 0;
 		if (red)
@@ -101,6 +104,10 @@ public final class Khroma implements Comparable<Khroma>, Serializable {
 
 	public String getName() {
 		return name;
+	}
+
+	public static Khroma fromName(String name) {
+		return khromaInstances[getValueFromName(name)];
 	}
 
 	public static String getNameFromValue(int value) {
@@ -182,6 +189,10 @@ public final class Khroma implements Comparable<Khroma>, Serializable {
 		return (khromaValue | o.khromaValue) == khromaValue;
 	}
 
+	public int getTint() {
+		return KhromaColors[khromaValue];
+	}
+
 	@Override
 	public int compareTo(Khroma o) {
 		if (o == null)
@@ -204,10 +215,15 @@ public final class Khroma implements Comparable<Khroma>, Serializable {
 
 	@Override
 	public String toString() {
-		return getNameFromValue(khromaValue);
+		return getName();
 	}
 
 	public String getLocalizedName() {
 		return "surgeofkhroma.khroma." + getName();
+	}
+
+	@Override
+	public String getSerializedName() {
+		return getNameFromValue(khromaValue);
 	}
 }

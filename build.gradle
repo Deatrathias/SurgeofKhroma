@@ -22,6 +22,9 @@ repositories {
 		name = "Illusive Soulworks maven"
 		url = "https://maven.theillusivec4.top/"
 	}
+	maven {
+		url = "https://api.modrinth.com/maven"
+	}
     mavenLocal()
 }
 
@@ -138,6 +141,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 	
+	implementation "maven.modrinth:jade:${project.jade_version}"
 	compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
 	runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 }

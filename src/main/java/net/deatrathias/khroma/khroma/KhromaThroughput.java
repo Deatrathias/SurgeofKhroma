@@ -11,6 +11,8 @@ public final class KhromaThroughput {
 		}
 	}
 
+	private static final float COMBINED_KHROMA_PENALTY = 0.9f;
+
 	private Khroma khroma;
 	private float rate;
 
@@ -83,6 +85,19 @@ public final class KhromaThroughput {
 
 	public KhromaThroughput multiply(float m) {
 		return new KhromaThroughput(khroma, rate * m);
+	}
+
+	public float effectiveConsumed(Khroma consumedKhroma) {
+		if (khroma == consumedKhroma)
+			return rate;
+
+		if (!khroma.contains(consumedKhroma))
+			return 0;
+
+		int colors = khroma.countColors();
+		int consumedColors = consumedKhroma.countColors();
+
+		return (rate * ((float) Math.pow(COMBINED_KHROMA_PENALTY, (colors - consumedColors))) * consumedColors / colors);
 	}
 
 	@Override

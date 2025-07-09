@@ -6,6 +6,7 @@ import net.deatrathias.khroma.blocks.KhromaMachineBlock;
 import net.deatrathias.khroma.khroma.KhromaThroughput;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class KhromaMachineBlockEntity extends BaseKhromaConsumerBlockEntity {
@@ -27,7 +28,8 @@ public class KhromaMachineBlockEntity extends BaseKhromaConsumerBlockEntity {
 	}
 
 	public void onUse() {
-		SurgeofKhroma.LOGGER.debug("consumed: " + consumed.toString());
+		Component component = Component.translatable(consumed.getKhroma().getLocalizedName());
+		SurgeofKhroma.LOGGER.debug("consumed: " + consumed.toString() + " " + component.getString());
 	}
 
 	@Override

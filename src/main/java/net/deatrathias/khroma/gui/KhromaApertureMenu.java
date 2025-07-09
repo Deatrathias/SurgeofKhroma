@@ -1,26 +1,30 @@
 package net.deatrathias.khroma.gui;
 
 import net.deatrathias.khroma.RegistryReference;
-import net.deatrathias.khroma.blockentities.KhromaApertureBlockEntity;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.Level;
 
 public class KhromaApertureMenu extends AbstractContainerMenu {
 
 	private ContainerLevelAccess access;
 
+	private DataSlot limitData;
+
 	public KhromaApertureMenu(int containerId, Inventory playerInv) {
-		this(containerId, playerInv, ContainerLevelAccess.NULL);
+		this(containerId, playerInv, ContainerLevelAccess.NULL, DataSlot.standalone());
 	}
 
-	public KhromaApertureMenu(int containerId, Inventory playerInv, ContainerLevelAccess access) {
+	public KhromaApertureMenu(int containerId, Inventory playerInv, ContainerLevelAccess access, DataSlot data) {
 		super(RegistryReference.MENU_KHROMA_APERTURE.get(), containerId);
 		this.access = access;
-
+		limitData = data;
+		addDataSlot(data);
 	}
 
 	@Override
@@ -34,12 +38,12 @@ public class KhromaApertureMenu extends AbstractContainerMenu {
 	}
 
 	public float getLimit() {
-		return access.evaluate((level, blockPos) -> {
-			BlockEntity be = level.getBlockEntity(blockPos);
-			if (be instanceof KhromaApertureBlockEntity kabe)
-				return kabe.getLimit();
+		return ((float) limitData.get() / Integer.MAX_VALUE);
+	}
 
-			return 0f;
-		}).orElse(-10f);
+	public void setLimit(float limit) {
+		limitData.set(Mth.floor(limit * Integer.MAX_VALUE));
+		access.execute(Level::blockEntityChanged);
+		broadcastChanges();
 	}
 }

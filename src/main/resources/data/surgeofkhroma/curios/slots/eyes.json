@@ -1,0 +1,5 @@
+{
+   "order": 50,
+   "icon": "surgeofkhroma:slot/empty_eyes_slot",
+   "validators": ["curios:tag"]
+}
