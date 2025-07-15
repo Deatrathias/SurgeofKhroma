@@ -13,7 +13,9 @@ jobs:
     steps:
       - name: Extract release version
         id: get_version
-        run: MOD_VERSION=${GITHUB_REF#refs/tags/v}
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
