@@ -24,6 +24,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name Starting
+        run: echo "Starting build for version ${{ inputs.version }}"
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -47,7 +49,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
         env:
-          MOD_VERSION: $({ inputs.version })
+          MOD_VERSION: ${{ inputs.version }}
       - uses: actions/upload-artifact@v4
         with:
           name: jars
