@@ -46,7 +46,9 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build
+        env:
+          MOD_VERSION: $({ inputs.version })
       - uses: actions/upload-artifact@v4
         with:
-          name: mod-jar
+          name: jars
           path: build/libs/*.jar
