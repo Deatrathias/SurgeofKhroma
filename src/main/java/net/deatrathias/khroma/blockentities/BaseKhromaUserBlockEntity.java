@@ -3,7 +3,6 @@ package net.deatrathias.khroma.blockentities;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.khroma.KhromaNetwork;
 import net.deatrathias.khroma.util.BlockDirection;
 import net.minecraft.core.BlockPos;
@@ -35,7 +34,6 @@ public abstract class BaseKhromaUserBlockEntity extends BlockEntity {
 
 	public void dirtyNetwork() {
 
-		SurgeofKhroma.LOGGER.info("dirty network");
 		for (Direction direction : Direction.values()) {
 			dirtyNetwork(direction);
 		}
@@ -53,7 +51,6 @@ public abstract class BaseKhromaUserBlockEntity extends BlockEntity {
 				networkPerSide.put(direction, network);
 		}
 		if (connection == ConnectionType.PROVIDER && linkedNetwork == null) {
-			SurgeofKhroma.LOGGER.info("create");
 			networkPerSide.put(direction, KhromaNetwork.create(level, new BlockDirection(getBlockPos(), direction)));
 		}
 	}

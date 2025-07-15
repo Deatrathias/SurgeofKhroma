@@ -27,11 +27,10 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
 
 public class KhromaApertureBlockEntity extends BaseKhromaUserBlockEntity implements MenuProvider, IKhromaProviderBlock, IKhromaConsumerBlock {
 
-	private static final Component CONTAINER_TITLE = Component.translatable("container.khroma_aperture");
+	private static final Component CONTAINER_TITLE = Component.translatable("container." + SurgeofKhroma.MODID + ".khroma_aperture");
 
 	private float limit;
 
@@ -110,19 +109,6 @@ public class KhromaApertureBlockEntity extends BaseKhromaUserBlockEntity impleme
 
 		float request = networkFromProvider.getRequest(); // lastRequest;
 		return new KhromaThroughput(networkFromConsumer.getKhroma(), networkFromConsumer.getKhromaRatio() * request * limit);
-	}
-
-	public void onUse(Player player, BlockHitResult hitResult) {
-		if (!level.isClientSide) {
-			SurgeofKhroma.LOGGER.info("back " + KhromaNetwork.findNetwork(level, new BlockDirection(getBlockPos(), getBlockState().getValue(KhromaApertureBlock.FACING).getOpposite())));
-			if (!player.isCrouching()) {
-				limit = Math.round(limit * 10f - 1f) / 10f;
-				if (limit < 0)
-					limit = 1;
-				setChanged();
-			}
-			SurgeofKhroma.LOGGER.info(Float.toString(limit));
-		}
 	}
 
 	@Override

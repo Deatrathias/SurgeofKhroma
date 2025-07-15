@@ -37,11 +37,17 @@
   "block.surgeofkhroma.deepslate_chromium_ore": "Deepslate Chromium Ore",
   "block.surgeofkhroma.chromium_block": "Block of Chromium",
   "block.surgeofkhroma.raw_chromium_block": "Block of Raw Chromium",
+  "block.surgeofkhroma.khrometal_block_red": "Block of Red Khrometal",
+  "block.surgeofkhroma.khrometal_block_green": "Block of Green Khrometal",
+  "block.surgeofkhroma.khrometal_block_blue": "Block of Blue Khrometal",
+  "block.surgeofkhroma.khrometal_block_white": "Block of White Khrometal",
+  "block.surgeofkhroma.khrometal_block_black": "Block of Black Khrometal",
   "block.surgeofkhroma.khroma_line": "Khroma Line",
   "block.surgeofkhroma.khroma_aperture": "Khroma Aperture",
   "block.surgeofkhroma.khroma_combiner": "Khroma Combiner",
   "block.surgeofkhroma.khroma_separator": "Khroma Separator",
   "block.surgeofkhroma.node_collector": "Node Collector",
+  "block.surgeofkhroma.khroma_imbuer": "Khroma Imbuer",
   
   "item.surgeofkhroma.chromium_ingot": "Chromium Ingot",
   "item.surgeofkhroma.raw_chromium": "Raw Chromium",
@@ -80,12 +86,22 @@
   "tag.block.c.storage_blocks.chromium": "Chromium Storage Blocks",
   "tag.block.c.storage_blocks.raw_chromium": "Raw Chromium Storage Blocks",
   "tag.item.surgeofkhroma.ingots.khrometal": "Khrometal Ingots",
+  "tag.item.surgeofkhroma.ingots.khrometal/red": "Red Khrometal Ingots",
+  "tag.item.surgeofkhroma.ingots.khrometal/green": "Green Khrometal Ingots",
+  "tag.item.surgeofkhroma.ingots.khrometal/blue": "Blue Khrometal Ingots",
+  "tag.item.surgeofkhroma.ingots.khrometal/white": "White Khrometal Ingots",
+  "tag.item.surgeofkhroma.ingots.khrometal/black": "Black Khrometal Ingots",
+  "tag.item.surgeofkhroma.khrometal_blocks": "Khrometal Blocks",
   "tag.item.c.ingots.chromium": "Chromium Ingots",
   "tag.item.c.nuggets.chromium": "Chromium Nuggets",
   "tag.item.c.raw_materials.chromium": "Chromium Raw Materials",
   "tag.item.c.ores.chromium": "Chromium Ores",
   "tag.item.c.storage_blocks.chromium": "Chromium Storage Blocks",
   "tag.item.c.storage_blocks.raw_chromium": "Raw Chromium Storage Blocks",
+  
+  "recipe.surgeofkhroma.khroma_imbuement": "Khroma Imbuement",
+  "recipe.surgeofkhroma.khroma_combining": "Khroma Combining",
+  "recipe.surgeofkhroma.khroma_separating": "Khroma Separating",
 
   "surgeofkhroma.configuration.title": "Surge of Khroma Configuration",
   "surgeofkhroma.configuration.section.surgeofkhroma.common.toml": "Surge of Khroma Configuration",
@@ -94,6 +110,22 @@
   "surgeofkhroma.configuration.chunks_per_node.tooltip": "The average number of chunks between each Khroma Node",
   
   "itemGroup.surgeofkhroma": "Surge of Khroma",
+  "container.surgeofkhroma.khroma_aperture": "Khroma Aperture",
+  "container.surgeofkhroma.khroma_imbuer": "Khroma Imbuer",
   
-  "attribute.surgeofkhroma.teleport_drops": "Teleport drops"
+  "tooltip.surgeofkhroma.khroma_gauge.color": "Color: %s",
+  "tooltip.surgeofkhroma.khroma_gauge.consumed": "Consumed: %s Kh/t",
+  "tooltip.surgeofkhroma.khroma_gauge.softLimit": "Soft Limit: %s Kh/t",
+  "tooltip.surgeofkhroma.khroma_gauge.effective": "Effective: %s Kh/t",
+  
+  "surgeofkhroma.khroma_cost": "%s Kh",
+  
+  "attribute.surgeofkhroma.teleport_drops": "Teleport drops",
+  
+  "death.attack.surgeofkhroma.red_khrometal_block": "%1$s was destroyed by a red Khrometal block",
+  "death.attack.surgeofkhroma.red_khrometal_block.player": "%1$s was destroyed by a red Khrometal block while fighting %2$s",
+  
+  "effect.surgeofkhroma.teleport_sickness": "Teleport Sickness",
+  
+  "jei.surgeofkhroma.error.incompatible_khroma": "Incompatible Khroma"
 }

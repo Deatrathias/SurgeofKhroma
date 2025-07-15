@@ -2,6 +2,7 @@ package net.deatrathias.khroma.blockentities;
 
 import net.deatrathias.khroma.khroma.IKhromaConsumer;
 import net.deatrathias.khroma.khroma.IKhromaConsumerBlock;
+import net.deatrathias.khroma.khroma.Khroma;
 import net.deatrathias.khroma.khroma.KhromaConsumerImpl;
 import net.deatrathias.khroma.khroma.KhromaNetwork;
 import net.deatrathias.khroma.khroma.KhromaThroughput;
@@ -40,6 +41,16 @@ public abstract class BaseKhromaConsumerBlockEntity extends BaseKhromaUserBlockE
 
 		return KhromaThroughput.empty;
 	}
+
+	public Khroma getKhromaOnSide(Direction side) {
+		KhromaNetwork network = KhromaNetwork.findNetwork(level, new BlockDirection(worldPosition, side));
+		if (network != null)
+			return network.getKhroma();
+
+		return Khroma.empty();
+	}
+
+	public abstract float getSoftLimit();
 
 	protected abstract void tick();
 

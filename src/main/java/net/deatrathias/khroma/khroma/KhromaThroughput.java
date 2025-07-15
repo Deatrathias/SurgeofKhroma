@@ -2,6 +2,8 @@ package net.deatrathias.khroma.khroma;
 
 import java.util.Objects;
 
+import net.deatrathias.khroma.recipes.KhromaImbuementRecipe;
+
 public final class KhromaThroughput {
 	public static class KhromaThrouputWrapper {
 		public KhromaThroughput throughput;
@@ -100,6 +102,15 @@ public final class KhromaThroughput {
 		return (rate * ((float) Math.pow(COMBINED_KHROMA_PENALTY, (colors - consumedColors))) * consumedColors / colors);
 	}
 
+	public float recipeProgress(KhromaImbuementRecipe recipe, float softLimit) {
+		float adjustedRate = effectiveConsumed(recipe.getKhroma());
+		if (softLimit == -1 || adjustedRate <= softLimit)
+			return adjustedRate;
+
+		float half = softLimit / 2f;
+		return softLimit + (float) Math.sqrt((adjustedRate - softLimit) * softLimit + half * half) - half;
+	}
+
 	@Override
 	public String toString() {
 		return "KhromaThroughput [khroma=" + khroma.toString() + ", rate=" + Float.toString(rate) + "]";
@@ -113,7 +124,7 @@ public final class KhromaThroughput {
 
 		Khroma[] khromas = t.khroma.separate();
 
-		return new KhromaThroughput[] { new KhromaThroughput(khromas[0], t.rate / colors), new KhromaThroughput(khromas[1], t.rate * (colors - 1) / colors) };
+		return new KhromaThroughput[] { new KhromaThroughput(khromas[0], t.rate * khromas[0].countColors() / colors), new KhromaThroughput(khromas[1], t.rate * khromas[1].countColors() / colors) };
 	}
 
 }

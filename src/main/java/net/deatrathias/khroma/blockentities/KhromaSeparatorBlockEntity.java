@@ -80,12 +80,14 @@ public class KhromaSeparatorBlockEntity extends BaseKhromaUserBlockEntity implem
 
 		int colors = khroma.countColors();
 
-		if (colors == 1) {
+		if (colors <= 1) {
 			request = networkFromProvider0.getRequest();
 			return request;
 		}
 
-		request = Math.max(networkFromProvider0.getRequest() * colors, networkFromProvider1.getRequest() * colors / (float) (colors - 1));
+		int half = Math.ceilDiv(colors, 2);
+
+		request = Math.max(networkFromProvider0.getRequest() * colors / (float) half, networkFromProvider1.getRequest() * colors / (float) (colors - half));
 		return request;
 	}
 

@@ -49,7 +49,7 @@ public class KhromaImbuementRecipe implements Recipe<ItemKhromaRecipeInput> {
 
 	@Override
 	public boolean matches(ItemKhromaRecipeInput input, Level level) {
-		return ingredient.test(result) && input.khroma().contains(khroma);
+		return ingredient.test(input.item()) && input.khroma().contains(khroma);
 	}
 
 	@Override

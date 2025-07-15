@@ -4,9 +4,11 @@ import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.entities.KhromaNodeEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import snownee.jade.api.EntityAccessor;
 import snownee.jade.api.IEntityComponentProvider;
 import snownee.jade.api.ITooltip;
@@ -32,18 +34,19 @@ public class WailaKhromaPlugin implements IWailaPlugin {
 
 		@Override
 		public ResourceLocation getUid() {
-			return ResourceLocation.fromNamespaceAndPath(SurgeofKhroma.MODID, "khroma_node");
+			return SurgeofKhroma.resource("khroma_node");
 		}
 
 	}
 
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerClient(IWailaClientRegistration registration) {
 		registration.registerEntityComponent(new KhromaNodeComponentProvider(), KhromaNodeEntity.class);
 		registration.addRayTraceCallback((hitResult, accessor, originalAccessor) -> {
 			if (accessor instanceof EntityAccessor entityAcc) {
 				if (entityAcc.getEntity().getType() == RegistryReference.ENTITY_KHROMA_NODE.get()) {
-					LocalPlayer player = Minecraft.getInstance().player;
+					Player player = Minecraft.getInstance().player;
 					if (player == null)
 						return null;
 					var inventory = CuriosApi.getCuriosInventory(player);

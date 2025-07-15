@@ -1,6 +1,5 @@
 {
    "multipart": [
-
       {
          "apply" : {
             "model": "surgeofkhroma:block/khroma_line_center"

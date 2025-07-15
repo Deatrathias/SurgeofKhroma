@@ -7,7 +7,6 @@ import java.util.List;
 import com.mojang.serialization.MapCodec;
 
 import net.deatrathias.khroma.RegistryReference;
-import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.khroma.IKhromaConsumer;
 import net.deatrathias.khroma.khroma.IKhromaProvider;
 import net.deatrathias.khroma.khroma.Khroma;
@@ -19,9 +18,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -120,7 +117,6 @@ public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock
 	protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
 		if (!level.isClientSide && hasDirectionsChanged(state, oldState)) {
 			dirtyNetwork(state, level, pos, oldState);
-			SurgeofKhroma.LOGGER.info("onplace " + pos.toString());
 		}
 	}
 
@@ -139,12 +135,6 @@ public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock
 		KhromaNetwork network = KhromaNetwork.findNetwork(level, new BlockDirection(pos, null));
 		if (network != null)
 			network.markDirty();
-	}
-
-	@Override
-	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		if (!level.isClientSide)
-			SurgeofKhroma.LOGGER.info("placedby " + pos.toString());
 	}
 
 	public Collection<BlockDirection> getAllConnections(Level level, BlockPos pos) {

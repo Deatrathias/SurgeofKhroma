@@ -2,6 +2,7 @@ package net.deatrathias.khroma;
 
 import net.deatrathias.khroma.entities.KhromaNodeEntity;
 import net.deatrathias.khroma.khroma.KhromaNetwork;
+import net.deatrathias.khroma.khroma.KhromaNode;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -9,10 +10,16 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import net.neoforged.neoforge.event.level.BlockDropsEvent;
 import net.neoforged.neoforge.event.level.ChunkEvent;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
 @EventBusSubscriber(modid = SurgeofKhroma.MODID, bus = EventBusSubscriber.Bus.GAME)
 public class GameServerEventSubscriber {
+
+	@SubscribeEvent
+	private static void serverStarted(ServerStartedEvent event) {
+
+	}
 
 	@SubscribeEvent
 	private static void levelTickPost(LevelTickEvent.Post event) {
@@ -30,8 +37,10 @@ public class GameServerEventSubscriber {
 		if (!data.isGenerated()) {
 			data.generateNode(event.getLevel(), event.getChunk());
 			event.getChunk().setData(RegistryReference.KHROMA_BIOME_DATA, data);
-			if (data.getNode() != null)
-				event.getLevel().addFreshEntity(KhromaNodeEntity.create((Level) event.getLevel(), data.getNode().getPosition(), data.getNode().getKhroma(), data.getNode().getLevel()));
+			if (data.getNode() != null) {
+				KhromaNode node = data.getNode();
+				event.getLevel().addFreshEntity(KhromaNodeEntity.create((Level) event.getLevel(), node.getPosition(), node.getKhroma(), node.getLevel()));
+			}
 		}
 	}
 

@@ -37,4 +37,9 @@ public class KhromaMachineBlockEntity extends BaseKhromaConsumerBlockEntity {
 		return getBlockState().getValue(KhromaMachineBlock.FACING) == direction ? ConnectionType.CONSUMER : ConnectionType.NONE;
 	}
 
+	@Override
+	public float getSoftLimit() {
+		return -1;
+	}
+
 }

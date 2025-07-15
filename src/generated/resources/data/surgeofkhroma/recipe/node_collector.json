@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "surgeofkhroma:base_ingot"
+    },
+    "c": {
+      "item": "surgeofkhroma:chromatic_nucleus"
+    }
+  },
+  "pattern": [
+    "###",
+    "#c#",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "surgeofkhroma:node_collector"
+  }
+}

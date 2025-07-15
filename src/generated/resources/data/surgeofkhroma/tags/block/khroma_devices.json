@@ -1,0 +1,11 @@
+{
+  "values": [
+    "surgeofkhroma:node_collector",
+    "surgeofkhroma:khroma_provider",
+    "surgeofkhroma:khroma_machine",
+    "surgeofkhroma:khroma_aperture",
+    "surgeofkhroma:khroma_combiner",
+    "surgeofkhroma:khroma_separator",
+    "surgeofkhroma:khroma_imbuer"
+  ]
+}

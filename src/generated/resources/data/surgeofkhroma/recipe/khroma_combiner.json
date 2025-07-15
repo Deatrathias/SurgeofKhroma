@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:piston"
+    },
+    "X": {
+      "item": "surgeofkhroma:khroma_line"
+    },
+    "o": {
+      "item": "minecraft:dropper"
+    }
+  },
+  "pattern": [
+    "#X#",
+    " o "
+  ],
+  "result": {
+    "count": 1,
+    "id": "surgeofkhroma:khroma_combiner"
+  }
+}

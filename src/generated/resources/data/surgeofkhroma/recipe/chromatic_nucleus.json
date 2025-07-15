@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "surgeofkhroma:base_nugget"
+    },
+    "b": {
+      "tag": "c:dyes/black"
+    },
+    "g": {
+      "tag": "c:dyes/green"
+    },
+    "r": {
+      "tag": "c:dyes/red"
+    },
+    "u": {
+      "tag": "c:dyes/blue"
+    },
+    "w": {
+      "tag": "c:dyes/white"
+    }
+  },
+  "pattern": [
+    "w#b",
+    "rgu"
+  ],
+  "result": {
+    "count": 1,
+    "id": "surgeofkhroma:chromatic_nucleus"
+  }
+}

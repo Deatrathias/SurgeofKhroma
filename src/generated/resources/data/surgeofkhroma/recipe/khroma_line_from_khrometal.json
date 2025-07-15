@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "khroma_line",
+  "key": {
+    "#": {
+      "tag": "surgeofkhroma:ingots/khrometal"
+    },
+    "g": {
+      "tag": "c:glass_panes"
+    }
+  },
+  "pattern": [
+    " g ",
+    "# #",
+    " g "
+  ],
+  "result": {
+    "count": 8,
+    "id": "surgeofkhroma:khroma_line"
+  }
+}

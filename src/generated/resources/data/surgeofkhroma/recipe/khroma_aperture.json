@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:lever"
+    },
+    "X": {
+      "item": "surgeofkhroma:khroma_line"
+    },
+    "o": {
+      "item": "minecraft:dropper"
+    }
+  },
+  "pattern": [
+    "#Xo"
+  ],
+  "result": {
+    "count": 1,
+    "id": "surgeofkhroma:khroma_aperture"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "surgeofkhroma:block/khroma_imbuer",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "surgeofkhroma:block/khroma_imbuer"
+    },
+    "facing=south": {
+      "model": "surgeofkhroma:block/khroma_imbuer",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "surgeofkhroma:block/khroma_imbuer",
+      "y": 270
+    }
+  }
+}

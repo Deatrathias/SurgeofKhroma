@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "surgeofkhroma:base_ingot"
+    },
+    "X": {
+      "item": "surgeofkhroma:khroma_line"
+    },
+    "c": {
+      "item": "surgeofkhroma:chromatic_nucleus"
+    }
+  },
+  "pattern": [
+    "###",
+    "XcX",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "surgeofkhroma:khroma_imbuer"
+  }
+}

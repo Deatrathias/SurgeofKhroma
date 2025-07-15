@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": {
+      "item": "surgeofkhroma:chromatic_nucleus"
+    },
+    "g": {
+      "tag": "c:glass_panes"
+    }
+  },
+  "pattern": [
+    "gcg"
+  ],
+  "result": {
+    "count": 1,
+    "id": "surgeofkhroma:chromatic_glasses"
+  }
+}

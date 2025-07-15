@@ -1,0 +1,78 @@
+package net.deatrathias.khroma.compat.jei;
+
+import java.util.Arrays;
+
+import org.jetbrains.annotations.Nullable;
+
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.placement.HorizontalAlignment;
+import mezz.jei.api.gui.placement.VerticalAlignment;
+import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
+import mezz.jei.api.helpers.IJeiHelpers;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.deatrathias.khroma.RegistryReference;
+import net.deatrathias.khroma.SurgeofKhroma;
+import net.deatrathias.khroma.recipes.KhromaImbuementRecipe;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
+import net.minecraft.world.item.crafting.RecipeHolder;
+
+public class KhromaImbuementCategory implements IRecipeCategory<RecipeHolder<KhromaImbuementRecipe>> {
+
+	private static final String TITLE = "recipe." + SurgeofKhroma.MODID + ".khroma_imbuement";
+
+	private IJeiHelpers helpers;
+
+	private RecipeType<RecipeHolder<KhromaImbuementRecipe>> recipeType;
+
+	private IDrawable khromaBackground;
+
+	public KhromaImbuementCategory(IJeiHelpers helpers) {
+		this.helpers = helpers;
+		recipeType = RecipeType.createFromVanilla(RegistryReference.RECIPE_KHROMA_IMBUEMENT.get());
+		khromaBackground = helpers.getGuiHelper().drawableBuilder(SurgeofKhroma.resource("textures/gui/jei/khroma_bg.png"), 0, 0, 30, 29).setTextureSize(30, 29).build();
+	}
+
+	@Override
+	public void createRecipeExtras(IRecipeExtrasBuilder builder, RecipeHolder<KhromaImbuementRecipe> recipe, IFocusGroup focuses) {
+		builder.addAnimatedRecipeArrow(20).setPosition(37, 22);
+		builder.addText(Component.translatable("surgeofkhroma.khroma_cost", Mth.floor(recipe.value().getKhromaCost())), getWidth() - 20, 10)
+				.setPosition(0, 0, getWidth(), getHeight(), HorizontalAlignment.RIGHT, VerticalAlignment.BOTTOM).setTextAlignment(HorizontalAlignment.RIGHT).setColor(0xFF808080);
+	}
+
+	@Override
+	public int getWidth() {
+		return 95;
+	}
+
+	@Override
+	public int getHeight() {
+		return 59;
+	}
+
+	@Override
+	public RecipeType<RecipeHolder<KhromaImbuementRecipe>> getRecipeType() {
+		return recipeType;
+	}
+
+	@Override
+	public Component getTitle() {
+		return Component.translatable(TITLE);
+	}
+
+	@Override
+	public @Nullable IDrawable getIcon() {
+		return helpers.getGuiHelper().createDrawableItemLike(RegistryReference.ITEM_BLOCK_KHROMA_IMBUER);
+	}
+
+	@Override
+	public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<KhromaImbuementRecipe> recipe, IFocusGroup focuses) {
+		builder.addInputSlot(13, 5).addItemStacks(Arrays.asList(recipe.value().getIngredient().getItems())).setStandardSlotBackground();
+		builder.addOutputSlot(72, 21).addItemStack(recipe.value().getResult()).setOutputSlotBackground();
+		builder.addSlot(RecipeIngredientRole.CATALYST, 12, 33).addIngredient(JeiKhromaPlugin.INGREDIENT_KHROMA, recipe.value().getKhroma()).setBackground(khromaBackground, -7, -6);
+	}
+}

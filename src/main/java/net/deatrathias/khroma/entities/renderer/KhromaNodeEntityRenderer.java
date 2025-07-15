@@ -23,7 +23,7 @@ public class KhromaNodeEntityRenderer extends EntityRenderer<KhromaNodeEntity> {
 
 	@Override
 	public ResourceLocation getTextureLocation(KhromaNodeEntity entity) {
-		return ResourceLocation.fromNamespaceAndPath(SurgeofKhroma.MODID, "textures/entity/node.png");
+		return SurgeofKhroma.resource("textures/entity/node.png");
 	}
 
 	@Override

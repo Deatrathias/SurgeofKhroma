@@ -1,6 +1,7 @@
 package net.deatrathias.khroma.khroma;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.mojang.serialization.Codec;
 
@@ -19,7 +20,7 @@ public final class Khroma implements Comparable<Khroma>, Serializable, StringRep
 
 	public static final String[] KhromaNames = new String[] { "red", "green", "blue", "white", "black" };
 
-	public static final int[] KhromaColors = new int[] { 0xFFFFFFFF, // empty
+	public static final int[] KhromaColors = new int[] { 0x00FFFFFF, // empty
 			0xFFFF0000, // red
 			0xFF00FF00, // green
 			0xFFFFFF00, // red green
@@ -64,6 +65,17 @@ public final class Khroma implements Comparable<Khroma>, Serializable, StringRep
 			khromaInstances[i] = new Khroma(i);
 	}
 
+	public static final Khroma KHROMA_RED = khromaInstances[FLAG_KHROMA_RED];
+	public static final Khroma KHROMA_GREEN = khromaInstances[FLAG_KHROMA_GREEN];
+	public static final Khroma KHROMA_BLUE = khromaInstances[FLAG_KHROMA_BLUE];
+	public static final Khroma KHROMA_WHITE = khromaInstances[FLAG_KHROMA_WHITE];
+	public static final Khroma KHROMA_BLACK = khromaInstances[FLAG_KHROMA_BLACK];
+
+	public static final Khroma KHROMA_SPECTRUM = khromaInstances[FLAG_KHROMA_RED | FLAG_KHROMA_GREEN | FLAG_KHROMA_BLUE];
+	public static final Khroma KHROMA_LIGHT_SPECTRUM = khromaInstances[FLAG_KHROMA_RED | FLAG_KHROMA_GREEN | FLAG_KHROMA_BLUE | FLAG_KHROMA_WHITE];
+	public static final Khroma KHROMA_DARK_SPECTRUM = khromaInstances[FLAG_KHROMA_RED | FLAG_KHROMA_GREEN | FLAG_KHROMA_BLUE | FLAG_KHROMA_BLACK];
+	public static final Khroma KHROMA_KHROMEGA = khromaInstances[FLAG_KHROMA_RED | FLAG_KHROMA_GREEN | FLAG_KHROMA_BLUE | FLAG_KHROMA_WHITE | FLAG_KHROMA_BLACK];
+
 	public static final Codec<Khroma> CODEC = ExtraCodecs.orCompressed(Codec.stringResolver(StringRepresentable::getSerializedName, Khroma::fromName),
 			ExtraCodecs.idResolverCodec(Khroma::asInt, intValue -> intValue >= 0 && intValue < 32 ? khromaInstances[intValue] : null, -1));
 
@@ -85,6 +97,10 @@ public final class Khroma implements Comparable<Khroma>, Serializable, StringRep
 
 	public static Khroma empty() {
 		return khromaInstances[0];
+	}
+
+	public static List<Khroma> allKhroma() {
+		return List.of(khromaInstances);
 	}
 
 	private Khroma(int khromaValue) {
@@ -170,7 +186,7 @@ public final class Khroma implements Comparable<Khroma>, Serializable, StringRep
 		return count;
 	}
 
-	public Khroma[] separate() {
+	public Khroma[] separateold() {
 		int value = khromaValue;
 		int i = 0;
 
@@ -183,6 +199,31 @@ public final class Khroma implements Comparable<Khroma>, Serializable, StringRep
 		}
 
 		return new Khroma[] { empty(), empty() };
+	}
+
+	public Khroma[] separate() {
+		int count = countColors();
+		if (count <= 1)
+			return new Khroma[] { this, empty() };
+
+		count = Math.ceilDiv(count, 2);
+
+		int value = khromaValue;
+		int result = 0;
+		int i = 0;
+
+		while (value != 0) {
+			if ((value & 1) == 1) {
+				result |= 1 << i;
+				count--;
+				if (count <= 0)
+					break;
+			}
+			value = value >> 1;
+			i++;
+		}
+
+		return new Khroma[] { khromaInstances[result], khromaInstances[khromaValue & ~result] };
 	}
 
 	public boolean contains(Khroma o) {

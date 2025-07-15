@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.client.gui.widget.ExtendedSlider;
 
 public class KhromaApertureScreen extends AbstractContainerScreen<KhromaApertureMenu> {
-	private static final ResourceLocation KHROMA_APERTURE_LOCATION = ResourceLocation.fromNamespaceAndPath(SurgeofKhroma.MODID, "textures/gui/container/khroma_aperture.png");
+	private static final ResourceLocation KHROMA_APERTURE_LOCATION = SurgeofKhroma.resource("textures/gui/container/khroma_aperture.png");
 	private ExtendedSlider slider;
 
 	private class Slider extends ExtendedSlider {
@@ -35,7 +35,7 @@ public class KhromaApertureScreen extends AbstractContainerScreen<KhromaAperture
 	@Override
 	protected void init() {
 		super.init();
-		slider = new Slider(leftPos + 10, topPos + 20, 90, 10, Component.empty(), Component.empty(), 0, 100, menu.getLimit(), true);
+		slider = new Slider(leftPos + 16, topPos + 18, 89, 11, Component.empty(), Component.literal("%"), 0, 100, menu.getLimit(), true);
 		addRenderableWidget(slider);
 	}
 

@@ -3,6 +3,7 @@ package net.deatrathias.khroma;
 import net.deatrathias.khroma.blocks.KhromaLineBlock;
 import net.deatrathias.khroma.entities.renderer.KhromaNodeEntityRenderer;
 import net.deatrathias.khroma.gui.KhromaApertureScreen;
+import net.deatrathias.khroma.gui.KhromaImbuerScreen;
 import net.deatrathias.khroma.items.renderer.ChromaticGlassesRenderer;
 import net.deatrathias.khroma.khroma.Khroma;
 import net.minecraft.client.RecipeBookCategories;
@@ -37,6 +38,7 @@ public class ClientEventSubscriber {
 	@SubscribeEvent
 	public static void registerScreens(RegisterMenuScreensEvent event) {
 		event.register(RegistryReference.MENU_KHROMA_APERTURE.get(), KhromaApertureScreen::new);
+		event.register(RegistryReference.MENU_KHROMA_IMBUER.get(), KhromaImbuerScreen::new);
 	}
 
 	@SubscribeEvent
