@@ -1,0 +1,12 @@
+{
+  "type": "surgeofkhroma:khroma_imbuement",
+  "ingredient": {
+    "tag": "surgeofkhroma:converts_to_dye/blue/half"
+  },
+  "khroma": "blue",
+  "khromacost": 1250.0,
+  "result": {
+    "count": 1,
+    "id": "minecraft:blue_dye"
+  }
+}

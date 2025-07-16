@@ -99,7 +99,7 @@ public class KhromaImbuerBlockEntity extends BaseKhromaConsumerBlockEntity imple
 
 	@Override
 	protected void tick() {
-		Direction side = getBlockState().getValue(KhromaImbuerBlock.FACING);
+		Direction side = getBlockState().getValue(KhromaImbuerBlock.FACING).getOpposite();
 		Khroma khroma = getKhromaOnSide(side);
 		lastThroughput = new KhromaThroughput(khroma, 0);
 		effectiveRate = 0;
@@ -165,7 +165,7 @@ public class KhromaImbuerBlockEntity extends BaseKhromaConsumerBlockEntity imple
 
 	@Override
 	public ConnectionType khromaConnection(Direction direction) {
-		if (getBlockState().getValue(KhromaImbuerBlock.FACING) == direction)
+		if (getBlockState().getValue(KhromaImbuerBlock.FACING).getOpposite() == direction)
 			return ConnectionType.CONSUMER;
 		return ConnectionType.NONE;
 	}

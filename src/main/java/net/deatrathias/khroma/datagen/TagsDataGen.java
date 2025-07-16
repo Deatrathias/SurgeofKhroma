@@ -20,6 +20,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
@@ -80,6 +81,22 @@ public final class TagsDataGen {
 			commonTags();
 			minecraftTags();
 			curiosTags();
+
+			tag(TagReference.ITEM_CONVERTS_TO_DYE_RED_SINGULAR).add(Items.RED_TULIP, Items.BEETROOT, Items.POPPY);
+			tag(TagReference.ITEM_CONVERTS_TO_DYE_RED_DOUBLE).add(Items.ROSE_BUSH);
+			tag(TagReference.ITEM_CONVERTS_TO_DYE_RED_HALF);
+			tag(TagReference.ITEM_CONVERTS_TO_DYE_GREEN_SINGULAR).add(Items.CACTUS);
+			tag(TagReference.ITEM_CONVERTS_TO_DYE_GREEN_DOUBLE);
+			tag(TagReference.ITEM_CONVERTS_TO_DYE_GREEN_HALF).add(Items.KELP);
+			tag(TagReference.ITEM_CONVERTS_TO_DYE_BLUE_SINGULAR).add(Items.CORNFLOWER, Items.LAPIS_LAZULI);
+			tag(TagReference.ITEM_CONVERTS_TO_DYE_BLUE_DOUBLE);
+			tag(TagReference.ITEM_CONVERTS_TO_DYE_BLUE_HALF);
+			tag(TagReference.ITEM_CONVERTS_TO_DYE_WHITE_SINGULAR).add(Items.BONE_MEAL, Items.LILY_OF_THE_VALLEY);
+			tag(TagReference.ITEM_CONVERTS_TO_DYE_WHITE_DOUBLE);
+			tag(TagReference.ITEM_CONVERTS_TO_DYE_WHITE_HALF);
+			tag(TagReference.ITEM_CONVERTS_TO_DYE_BLACK_SINGULAR).add(Items.INK_SAC, Items.WITHER_ROSE);
+			tag(TagReference.ITEM_CONVERTS_TO_DYE_BLACK_DOUBLE);
+			tag(TagReference.ITEM_CONVERTS_TO_DYE_BLACK_HALF);
 
 			var swords = tag(TagReference.ITEM_KHROMETAL_SWORDS);
 			var pickaxes = tag(TagReference.ITEM_KHROMETAL_PICKAXES);

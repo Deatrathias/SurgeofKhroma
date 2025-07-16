@@ -61,7 +61,8 @@ public class JeiKhromaPlugin implements IModPlugin {
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
 		RecipeManager recipeManager = Minecraft.getInstance().level.getRecipeManager();
-		registration.addRecipes(khromaImbuementCategory.getRecipeType(), recipeManager.getAllRecipesFor(RegistryReference.RECIPE_KHROMA_IMBUEMENT.get()));
+		var imbuementRecipes = recipeManager.getAllRecipesFor(RegistryReference.RECIPE_KHROMA_IMBUEMENT.get()).stream().filter(recipe -> !recipe.value().getIngredient().hasNoItems()).toList();
+		registration.addRecipes(khromaImbuementCategory.getRecipeType(), imbuementRecipes);
 
 		registration.addRecipes(khromaCombiningCategory.getRecipeType(), KhromaCombiningCategory.generateAllRecipes());
 		registration.addRecipes(khromaSeparatingCategory.getRecipeType(), KhromaSeparatingCategory.generateAllRecipes());

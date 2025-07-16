@@ -17,6 +17,8 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -79,14 +81,14 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 		nineBlockStorageRecipesRecipesWithCustomUnpacking(recipeOutput, RecipeCategory.MISC, khrometalIngot, RecipeCategory.BUILDING_BLOCKS, khrometalBlock,
 				getConversionRecipeName(khrometalIngot, khrometalBlock), getItemName(khrometalIngot));
 
-		// var dye = itemRegistry.getOrThrow(ResourceKey.create(Registries.ITEM,
-		// ResourceLocation.withDefaultNamespace(khromaName + "_dye")));
-		// ar tag = ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "dyes/" +
-		// khromaName));
+		var dye = itemRegistry.getOrThrow(ResourceKey.create(Registries.ITEM, ResourceLocation.withDefaultNamespace(khromaName + "_dye")));
 
-		// recipeOutput.accept(SurgeofKhroma.resource(khromaName + "_dye_imbuement"),
-		// new KhromaImbuementRecipe(Ingredient.of(tag), khroma, new ItemStack(dye, 2),
-		// 1200), null);
+		recipeOutput.accept(SurgeofKhroma.resource(khromaName + "_dye_imbuement"),
+				new KhromaImbuementRecipe(Ingredient.of(ItemTags.create(SurgeofKhroma.resource("converts_to_dye/" + khromaName + "/singular"))), khroma, new ItemStack(dye, 2), 2500), null);
+		recipeOutput.accept(SurgeofKhroma.resource(khromaName + "_dye_imbuement_double"),
+				new KhromaImbuementRecipe(Ingredient.of(ItemTags.create(SurgeofKhroma.resource("converts_to_dye/" + khromaName + "/double"))), khroma, new ItemStack(dye, 4), 5000), null);
+		recipeOutput.accept(SurgeofKhroma.resource(khromaName + "_dye_imbuement_half"),
+				new KhromaImbuementRecipe(Ingredient.of(ItemTags.create(SurgeofKhroma.resource("converts_to_dye/" + khromaName + "/half"))), khroma, new ItemStack(dye, 1), 1250), null);
 
 		var sword = itemRegistry.get(ResourceKey.create(Registries.ITEM, SurgeofKhroma.resource("khrometal_" + khromaName + "_sword"))).map(ref -> ref.value()).orElse(null);
 		var pickaxe = itemRegistry.get(ResourceKey.create(Registries.ITEM, SurgeofKhroma.resource("khrometal_" + khromaName + "_pickaxe"))).map(ref -> ref.value()).orElse(null);

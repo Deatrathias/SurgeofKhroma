@@ -1,0 +1,12 @@
+{
+  "type": "surgeofkhroma:khroma_imbuement",
+  "ingredient": {
+    "tag": "surgeofkhroma:converts_to_dye/black/singular"
+  },
+  "khroma": "black",
+  "khromacost": 2500.0,
+  "result": {
+    "count": 2,
+    "id": "minecraft:black_dye"
+  }
+}

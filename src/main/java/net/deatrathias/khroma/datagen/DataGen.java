@@ -154,7 +154,6 @@ public class DataGen {
 				createEntities("player").addPlayer().addSlots("eyes");
 			}
 		});
-
 	}
 
 	private static RegistrySetBuilder registrySet() {

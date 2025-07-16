@@ -1,0 +1,12 @@
+{
+  "type": "surgeofkhroma:khroma_imbuement",
+  "ingredient": {
+    "tag": "surgeofkhroma:converts_to_dye/red/half"
+  },
+  "khroma": "red",
+  "khromacost": 1250.0,
+  "result": {
+    "count": 1,
+    "id": "minecraft:red_dye"
+  }
+}
