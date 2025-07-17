@@ -14,6 +14,7 @@ import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.gui.KhromaImbuerScreen;
 import net.deatrathias.khroma.khroma.Khroma;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeMap;
 
 @JeiPlugin
 public class JeiKhromaPlugin implements IModPlugin {
@@ -23,6 +24,12 @@ public class JeiKhromaPlugin implements IModPlugin {
 	private KhromaCombiningCategory khromaCombiningCategory;
 
 	private KhromaSeparatingCategory khromaSeparatingCategory;
+
+	private static RecipeMap recipes = RecipeMap.EMPTY;
+
+	public static void setRecipes(RecipeMap recipes) {
+		JeiKhromaPlugin.recipes = recipes;
+	}
 
 	public static final IIngredientType<Khroma> INGREDIENT_KHROMA = new IIngredientType<Khroma>() {
 		@Override
@@ -58,14 +65,8 @@ public class JeiKhromaPlugin implements IModPlugin {
 
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
-
-		// TODO: jei imbuement recipes
-		// var recipeManager = Minecraft.getInstance().level.recipeAccess();
-		// var imbuementRecipes =
-		// recipeManager.getAllRecipesFor(RegistryReference.RECIPE_KHROMA_IMBUEMENT.get()).stream().filter(recipe
-		// -> !recipe.value().getIngredient().hasNoItems()).toList();
-		// registration.addRecipes(khromaImbuementCategory.getRecipeType(),
-		// imbuementRecipes);
+		var imbuementRecipes = recipes.byType(RegistryReference.RECIPE_KHROMA_IMBUEMENT.get()).stream().filter(holder -> !holder.value().getIngredient().isEmpty()).toList();
+		registration.addRecipes(khromaImbuementCategory.getRecipeType(), imbuementRecipes);
 
 		registration.addRecipes(khromaCombiningCategory.getRecipeType(), KhromaCombiningCategory.generateAllRecipes());
 		registration.addRecipes(khromaSeparatingCategory.getRecipeType(), KhromaSeparatingCategory.generateAllRecipes());

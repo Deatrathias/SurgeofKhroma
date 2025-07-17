@@ -14,6 +14,7 @@ public class KhrometalBlackSwordItem extends Item {
 		super(p_properties);
 	}
 
+	// FIXME
 	@Override
 	public int getEnchantmentLevel(ItemStack stack, Holder<Enchantment> enchantment) {
 		int result = super.getEnchantmentLevel(stack, enchantment);

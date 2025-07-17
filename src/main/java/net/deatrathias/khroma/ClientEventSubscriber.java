@@ -1,17 +1,23 @@
 package net.deatrathias.khroma;
 
+import mezz.jei.api.constants.ModIds;
 import net.deatrathias.khroma.blocks.KhromaLineBlock;
+import net.deatrathias.khroma.compat.jei.JeiKhromaPlugin;
 import net.deatrathias.khroma.entities.renderer.KhromaNodeEntityRenderer;
 import net.deatrathias.khroma.gui.KhromaApertureScreen;
 import net.deatrathias.khroma.gui.KhromaImbuerScreen;
 import net.deatrathias.khroma.items.renderer.ChromaticGlassesRenderer;
 import net.deatrathias.khroma.khroma.Khroma;
+import net.minecraft.world.item.crafting.RecipeMap;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RecipesReceivedEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
@@ -42,5 +48,18 @@ public class ClientEventSubscriber {
 	@SubscribeEvent
 	public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
 		event.registerEntityRenderer(RegistryReference.ENTITY_KHROMA_NODE.get(), KhromaNodeEntityRenderer::new);
+	}
+
+	@SubscribeEvent
+	public static void recipesReceived(RecipesReceivedEvent event) {
+		if (ModList.get().isLoaded(ModIds.JEI_ID)) {
+			JeiKhromaPlugin.setRecipes(event.getRecipeMap());
+		}
+	}
+
+	public static void logout(ClientPlayerNetworkEvent.LoggingOut event) {
+		if (ModList.get().isLoaded(ModIds.JEI_ID)) {
+			JeiKhromaPlugin.setRecipes(RecipeMap.EMPTY);
+		}
 	}
 }

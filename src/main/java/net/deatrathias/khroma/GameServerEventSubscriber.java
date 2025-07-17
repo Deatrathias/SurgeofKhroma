@@ -53,6 +53,7 @@ public class GameServerEventSubscriber {
 					var drop = iter.next();
 					drop.setNoPickUpDelay();
 					drop.playerTouch(player);
+
 					if (drop.isRemoved())
 						iter.remove();
 					else

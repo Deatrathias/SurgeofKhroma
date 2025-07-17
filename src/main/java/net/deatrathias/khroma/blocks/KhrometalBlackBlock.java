@@ -75,7 +75,7 @@ public class KhrometalBlackBlock extends KhrometalBlock {
 	}
 
 	private static Direction getDirectionFromMovement(Vec3 deltaMovement) {
-		if (deltaMovement.lengthSqr() == 0)
+		if (deltaMovement.x == 0 && deltaMovement.z == 0)
 			return null;
 
 		return Direction.getApproximateNearest(deltaMovement.x, 0, deltaMovement.z);
