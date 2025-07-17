@@ -1,7 +1,6 @@
 package net.deatrathias.khroma.datagen;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import net.deatrathias.khroma.RegistryReference;
 import net.minecraft.world.item.BlockItem;
@@ -15,9 +14,10 @@ public class DataGenDefinitions {
 			RegistryReference.BLOCK_RAW_CHROMIUM_BLOCK, RegistryReference.BLOCK_KHROMETAL_BLOCK_RED, RegistryReference.BLOCK_KHROMETAL_BLOCK_GREEN, RegistryReference.BLOCK_KHROMETAL_BLOCK_BLUE,
 			RegistryReference.BLOCK_KHROMETAL_BLOCK_WHITE, RegistryReference.BLOCK_KHROMETAL_BLOCK_BLACK);
 
-	public static final List<DeferredBlock<Block>> simpleBlocks = Stream.concat(cubeBlocks.stream(), List.of(RegistryReference.BLOCK_NODE_COLLECTOR).stream()).toList();
+	public static final List<DeferredBlock<Block>> simpleBlocks = List.of(RegistryReference.BLOCK_NODE_COLLECTOR);
 
-	public static final List<DeferredBlock<Block>> horDirectionBlocks = List.of(RegistryReference.BLOCK_KHROMA_COMBINER, RegistryReference.BLOCK_KHROMA_SEPARATOR,
+	public static final List<DeferredBlock<Block>> horDirectionBlocks = List.of(RegistryReference.BLOCK_KHROMA_PROVIDER, RegistryReference.BLOCK_KHROMA_MACHINE,
+			RegistryReference.BLOCK_KHROMA_COMBINER, RegistryReference.BLOCK_KHROMA_SEPARATOR,
 			RegistryReference.BLOCK_KHROMA_IMBUER);
 
 	public static final List<DeferredBlock<Block>> fullDirectionBlocks = List.of(RegistryReference.BLOCK_KHROMA_APERTURE);

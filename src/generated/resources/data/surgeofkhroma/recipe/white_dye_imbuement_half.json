@@ -1,8 +1,6 @@
 {
   "type": "surgeofkhroma:khroma_imbuement",
-  "ingredient": {
-    "tag": "surgeofkhroma:converts_to_dye/white/half"
-  },
+  "ingredient": "#surgeofkhroma:converts_to_dye/white/half",
   "khroma": "white",
   "khromacost": 1250.0,
   "result": {

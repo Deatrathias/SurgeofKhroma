@@ -30,7 +30,7 @@ import net.deatrathias.khroma.gui.KhromaApertureMenu;
 import net.deatrathias.khroma.gui.KhromaImbuerMenu;
 import net.deatrathias.khroma.items.KhrometalBlackPickaxeItem;
 import net.deatrathias.khroma.items.KhrometalBlackSwordItem;
-import net.deatrathias.khroma.items.KhrometalGreenPickaxeItem;
+import net.deatrathias.khroma.items.KhrometalGreenToolItem;
 import net.deatrathias.khroma.items.KhrometalWhitePickaxeItem;
 import net.deatrathias.khroma.khroma.IKhromaConsumer;
 import net.deatrathias.khroma.khroma.IKhromaProvider;
@@ -42,6 +42,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.damagesource.DamageType;
@@ -62,10 +63,9 @@ import net.minecraft.world.item.CreativeModeTab.ItemDisplayParameters;
 import net.minecraft.world.item.CreativeModeTab.Output;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.PickaxeItem;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.item.ToolMaterial;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
@@ -79,7 +79,6 @@ import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.common.BooleanAttribute;
-import net.neoforged.neoforge.common.SimpleTier;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -108,11 +107,11 @@ public class RegistryReference {
 	 * TIERS
 	 * 
 	 */
-	public static final Tier RED_KHROMETAL_TIER = new SimpleTier(BlockTags.INCORRECT_FOR_DIAMOND_TOOL, 250, 6, 4, 14, () -> Ingredient.of(TagReference.ITEM_KHROMETAL_INGOT_RED));
-	public static final Tier GREEN_KHROMETAL_TIER = new SimpleTier(BlockTags.INCORRECT_FOR_IRON_TOOL, 2000, 6, 2, 14, () -> Ingredient.of(TagReference.ITEM_KHROMETAL_INGOT_GREEN));
-	public static final Tier BLUE_KHROMETAL_TIER = new SimpleTier(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 12, 2, 24, () -> Ingredient.of(TagReference.ITEM_KHROMETAL_INGOT_BLUE));
-	public static final Tier WHITE_KHROMETAL_TIER = new SimpleTier(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 6, 2, 14, () -> Ingredient.of(TagReference.ITEM_KHROMETAL_INGOT_WHITE));
-	public static final Tier BLACK_KHROMETAL_TIER = new SimpleTier(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 6, 2, 14, () -> Ingredient.of(TagReference.ITEM_KHROMETAL_INGOT_BLACK));
+	public static final ToolMaterial RED_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_DIAMOND_TOOL, 250, 6, 4, 14, TagReference.ITEM_KHROMETAL_INGOT_RED);
+	public static final ToolMaterial GREEN_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 2000, 6, 2, 14, TagReference.ITEM_KHROMETAL_INGOT_GREEN);
+	public static final ToolMaterial BLUE_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 12, 2, 24, TagReference.ITEM_KHROMETAL_INGOT_BLUE);
+	public static final ToolMaterial WHITE_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 6, 2, 14, TagReference.ITEM_KHROMETAL_INGOT_WHITE);
+	public static final ToolMaterial BLACK_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 6, 2, 14, TagReference.ITEM_KHROMETAL_INGOT_BLACK);
 
 	/**
 	 * 
@@ -120,66 +119,67 @@ public class RegistryReference {
 	 * 
 	 */
 	public static final DeferredBlock<Block> BLOCK_CHROMIUM_ORE = BLOCKS.register("chromium_ore", registryName -> new DropExperienceBlock(ConstantInt.of(0),
-			BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
+			blockProps(registryName).mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
 	public static final DeferredItem<BlockItem> ITEM_BLOCK_CHROMIUM_ORE = ITEMS.registerSimpleBlockItem(BLOCK_CHROMIUM_ORE);
 
 	public static final DeferredBlock<Block> BLOCK_DEEPSLATE_CHROMIUM_ORE = BLOCKS.register("deepslate_chromium_ore", registryName -> new DropExperienceBlock(ConstantInt.of(0),
-			BlockBehaviour.Properties.of().mapColor(MapColor.DEEPSLATE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(4.5F, 3.0F).sound(SoundType.DEEPSLATE)));
+			blockProps(registryName).mapColor(MapColor.DEEPSLATE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(4.5F, 3.0F).sound(SoundType.DEEPSLATE)));
 	public static final DeferredItem<BlockItem> ITEM_BLOCK_DEEPSLATE_CHROMIUM_ORE = ITEMS.registerSimpleBlockItem(BLOCK_DEEPSLATE_CHROMIUM_ORE);
 
 	public static final DeferredBlock<Block> BLOCK_CHROMIUM_BLOCK = BLOCKS.register("chromium_block", registryName -> new Block(
-			BlockBehaviour.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL)));
+			blockProps(registryName).mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL)));
 	public static final DeferredItem<BlockItem> ITEM_BLOCK_CHROMIUM_BLOCK = ITEMS.registerSimpleBlockItem(BLOCK_CHROMIUM_BLOCK);
 
 	public static final DeferredBlock<Block> BLOCK_RAW_CHROMIUM_BLOCK = BLOCKS.register("raw_chromium_block",
-			registryName -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.RAW_IRON).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(5.0F, 6.0F)));
+			registryName -> new Block(blockProps(registryName).mapColor(MapColor.RAW_IRON).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(5.0F, 6.0F)));
 	public static final DeferredItem<BlockItem> ITEM_BLOCK_RAW_CHROMIUM_BLOCK = ITEMS.registerSimpleBlockItem(BLOCK_RAW_CHROMIUM_BLOCK);
 
 	public static final DeferredBlock<Block> BLOCK_KHROMETAL_BLOCK_RED = BLOCKS.register("khrometal_block_red", registryName -> new KhrometalRedBlock(
-			BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL)));
+			blockProps(registryName).mapColor(MapColor.COLOR_RED).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL)));
 	public static final DeferredItem<BlockItem> ITEM_BLOCK_KHROMETAL_BLOCK_RED = ITEMS.registerSimpleBlockItem(BLOCK_KHROMETAL_BLOCK_RED);
 	public static final DeferredBlock<Block> BLOCK_KHROMETAL_BLOCK_GREEN = BLOCKS.register("khrometal_block_green", registryName -> new KhrometalGreenBlock(
-			BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL)));
+			blockProps(registryName).mapColor(MapColor.COLOR_GREEN).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL)));
 	public static final DeferredItem<BlockItem> ITEM_BLOCK_KHROMETAL_BLOCK_GREEN = ITEMS.registerSimpleBlockItem(BLOCK_KHROMETAL_BLOCK_GREEN);
 	public static final DeferredBlock<Block> BLOCK_KHROMETAL_BLOCK_BLUE = BLOCKS.register("khrometal_block_blue", registryName -> new KhrometalBlueBlock(
-			BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL)));
+			blockProps(registryName).mapColor(MapColor.COLOR_BLUE).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL)));
 	public static final DeferredItem<BlockItem> ITEM_BLOCK_KHROMETAL_BLOCK_BLUE = ITEMS.registerSimpleBlockItem(BLOCK_KHROMETAL_BLOCK_BLUE);
 	public static final DeferredBlock<Block> BLOCK_KHROMETAL_BLOCK_WHITE = BLOCKS.register("khrometal_block_white", registryName -> new KhrometalWhiteBlock(
-			BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL)));
+			blockProps(registryName).mapColor(MapColor.COLOR_GRAY).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL)));
 	public static final DeferredItem<BlockItem> ITEM_BLOCK_KHROMETAL_BLOCK_WHITE = ITEMS.registerSimpleBlockItem(BLOCK_KHROMETAL_BLOCK_WHITE);
 	public static final DeferredBlock<Block> BLOCK_KHROMETAL_BLOCK_BLACK = BLOCKS.register("khrometal_block_black", registryName -> new KhrometalBlackBlock(
-			BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL)));
+			blockProps(registryName).mapColor(MapColor.COLOR_BLACK).instrument(NoteBlockInstrument.IRON_XYLOPHONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL)));
 	public static final DeferredItem<BlockItem> ITEM_BLOCK_KHROMETAL_BLOCK_BLACK = ITEMS.registerSimpleBlockItem(BLOCK_KHROMETAL_BLOCK_BLACK);
 
 	public static final DeferredBlock<Block> BLOCK_KHROMA_LINE = BLOCKS.register("khroma_line",
-			registryName -> new KhromaLineBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(0.1F, 1.0F).sound(SoundType.METAL).pushReaction(PushReaction.DESTROY)));
-	public static final DeferredItem<Item> ITEM_BLOCK_KHROMA_LINE = ITEMS.register("khroma_line", registryName -> new KromaLineBlockItem(BLOCK_KHROMA_LINE.get(), new Item.Properties()));
+			registryName -> new KhromaLineBlock(blockProps(registryName).mapColor(MapColor.METAL).strength(0.1F, 1.0F).sound(SoundType.METAL).pushReaction(PushReaction.DESTROY)));
+	public static final DeferredItem<Item> ITEM_BLOCK_KHROMA_LINE = ITEMS.register("khroma_line",
+			registryName -> new KromaLineBlockItem(BLOCK_KHROMA_LINE.get(), itemProps(registryName).useBlockDescriptionPrefix()));
 
 	public static final DeferredBlock<Block> BLOCK_NODE_COLLECTOR = BLOCKS.register("node_collector",
-			registryName -> new NodeCollectorBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(10f, 6f).sound(SoundType.METAL).pushReaction(PushReaction.BLOCK).noOcclusion()));
+			registryName -> new NodeCollectorBlock(blockProps(registryName).mapColor(MapColor.METAL).strength(10f, 6f).sound(SoundType.METAL).pushReaction(PushReaction.BLOCK).noOcclusion()));
 	public static final DeferredItem<BlockItem> ITEM_BLOCK_NODE_COLLECTOR = ITEMS.register("node_collector",
-			registryName -> new NodeCollectorBlockItem(BLOCK_NODE_COLLECTOR.get(), new Item.Properties()));
+			registryName -> new NodeCollectorBlockItem(BLOCK_NODE_COLLECTOR.get(), itemProps(registryName).useBlockDescriptionPrefix()));
 
-	public static final DeferredBlock<Block> BLOCK_KHROMA_PROVIDER = BLOCKS.register("khroma_provider", registryName -> new KhromaProviderBlock(BlockBehaviour.Properties.of()));
+	public static final DeferredBlock<Block> BLOCK_KHROMA_PROVIDER = BLOCKS.register("khroma_provider", registryName -> new KhromaProviderBlock(blockProps(registryName)));
 	public static final DeferredItem<BlockItem> ITEM_BLOCK_KHROMA_PROVIDER = ITEMS.registerSimpleBlockItem(BLOCK_KHROMA_PROVIDER);
 
-	public static final DeferredBlock<Block> BLOCK_KHROMA_MACHINE = BLOCKS.register("khroma_machine", registryName -> new KhromaMachineBlock(BlockBehaviour.Properties.of()));
+	public static final DeferredBlock<Block> BLOCK_KHROMA_MACHINE = BLOCKS.register("khroma_machine", registryName -> new KhromaMachineBlock(blockProps(registryName)));
 	public static final DeferredItem<BlockItem> ITEM_BLOCK_KHROMA_MACHINE = ITEMS.registerSimpleBlockItem(BLOCK_KHROMA_MACHINE);
 
 	public static final DeferredBlock<Block> BLOCK_KHROMA_APERTURE = BLOCKS.register("khroma_aperture",
-			registryName -> new KhromaApertureBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(1.0f, 2.0f).sound(SoundType.METAL).pushReaction(PushReaction.BLOCK)));
+			registryName -> new KhromaApertureBlock(blockProps(registryName).mapColor(MapColor.METAL).strength(1.0f, 2.0f).sound(SoundType.METAL).pushReaction(PushReaction.BLOCK)));
 	public static final DeferredItem<BlockItem> ITEM_BLOCK_KHROMA_APERTURE = ITEMS.registerSimpleBlockItem(BLOCK_KHROMA_APERTURE);
 
 	public static final DeferredBlock<Block> BLOCK_KHROMA_COMBINER = BLOCKS.register("khroma_combiner",
-			registryName -> new KhromaCombinerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(1.0f, 2.0f).sound(SoundType.METAL).pushReaction(PushReaction.BLOCK)));
+			registryName -> new KhromaCombinerBlock(blockProps(registryName).mapColor(MapColor.METAL).strength(1.0f, 2.0f).sound(SoundType.METAL).pushReaction(PushReaction.BLOCK)));
 	public static final DeferredItem<BlockItem> ITEM_BLOCK_KHROMA_COMBINER = ITEMS.registerSimpleBlockItem(BLOCK_KHROMA_COMBINER);
 
 	public static final DeferredBlock<Block> BLOCK_KHROMA_SEPARATOR = BLOCKS.register("khroma_separator",
-			registryName -> new KhromaSeparatorBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(1.0f, 2.0f).sound(SoundType.METAL).pushReaction(PushReaction.BLOCK)));
+			registryName -> new KhromaSeparatorBlock(blockProps(registryName).mapColor(MapColor.METAL).strength(1.0f, 2.0f).sound(SoundType.METAL).pushReaction(PushReaction.BLOCK)));
 	public static final DeferredItem<BlockItem> ITEM_BLOCK_KHROMA_SEPARATOR = ITEMS.registerSimpleBlockItem(BLOCK_KHROMA_SEPARATOR);
 
 	public static final DeferredBlock<Block> BLOCK_KHROMA_IMBUER = BLOCKS.register("khroma_imbuer",
-			registryName -> new KhromaImbuerBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0f, 3.5f).sound(SoundType.METAL).pushReaction(PushReaction.BLOCK)));
+			registryName -> new KhromaImbuerBlock(blockProps(registryName).mapColor(MapColor.METAL).strength(3.0f, 3.5f).sound(SoundType.METAL).pushReaction(PushReaction.BLOCK)));
 	public static final DeferredItem<BlockItem> ITEM_BLOCK_KHROMA_IMBUER = ITEMS.registerSimpleBlockItem(BLOCK_KHROMA_IMBUER);
 
 	/**
@@ -188,25 +188,25 @@ public class RegistryReference {
 	 * 
 	 */
 	public static final Supplier<BlockEntityType<NodeCollectorBlockEntity>> BLOCK_ENTITY_NODE_COLLECTOR = BLOCK_ENTITY_TYPES.register("node_collector_entity",
-			() -> (BlockEntityType.Builder.of(NodeCollectorBlockEntity::new, BLOCK_NODE_COLLECTOR.get()).build(null)));
+			() -> (new BlockEntityType<>(NodeCollectorBlockEntity::new, BLOCK_NODE_COLLECTOR.get())));
 
 	public static final Supplier<BlockEntityType<KhromaProviderBlockEntity>> BLOCK_ENTITY_KHROMA_PROVIDER = BLOCK_ENTITY_TYPES.register("khroma_provider_entity",
-			() -> (BlockEntityType.Builder.of(KhromaProviderBlockEntity::new, BLOCK_KHROMA_PROVIDER.get()).build(null)));
+			() -> (new BlockEntityType<>(KhromaProviderBlockEntity::new, BLOCK_KHROMA_PROVIDER.get())));
 
 	public static final Supplier<BlockEntityType<KhromaMachineBlockEntity>> BLOCK_ENTITY_KHROMA_MACHINE = BLOCK_ENTITY_TYPES.register("khroma_machine_entity",
-			() -> (BlockEntityType.Builder.of(KhromaMachineBlockEntity::new, BLOCK_KHROMA_MACHINE.get()).build(null)));
+			() -> (new BlockEntityType<>(KhromaMachineBlockEntity::new, BLOCK_KHROMA_MACHINE.get())));
 
 	public static final Supplier<BlockEntityType<KhromaApertureBlockEntity>> BLOCK_ENTITY_KHROMA_APERTURE = BLOCK_ENTITY_TYPES.register("khroma_aperture_entity",
-			() -> (BlockEntityType.Builder.of(KhromaApertureBlockEntity::new, BLOCK_KHROMA_APERTURE.get()).build(null)));
+			() -> (new BlockEntityType<>(KhromaApertureBlockEntity::new, BLOCK_KHROMA_APERTURE.get())));
 
 	public static final Supplier<BlockEntityType<KhromaCombinerBlockEntity>> BLOCK_ENTITY_KHROMA_COMBINER = BLOCK_ENTITY_TYPES.register("khroma_combiner_entity",
-			() -> (BlockEntityType.Builder.of(KhromaCombinerBlockEntity::new, BLOCK_KHROMA_COMBINER.get()).build(null)));
+			() -> (new BlockEntityType<>(KhromaCombinerBlockEntity::new, BLOCK_KHROMA_COMBINER.get())));
 
 	public static final Supplier<BlockEntityType<KhromaSeparatorBlockEntity>> BLOCK_ENTITY_KHROMA_SEPARATOR = BLOCK_ENTITY_TYPES.register("khroma_separator_entity",
-			() -> (BlockEntityType.Builder.of(KhromaSeparatorBlockEntity::new, BLOCK_KHROMA_SEPARATOR.get()).build(null)));
+			() -> (new BlockEntityType<>(KhromaSeparatorBlockEntity::new, BLOCK_KHROMA_SEPARATOR.get())));
 
 	public static final Supplier<BlockEntityType<KhromaImbuerBlockEntity>> BLOCK_ENTITY_KHROMA_IMBUER = BLOCK_ENTITY_TYPES.register("khroma_imbuer_entity",
-			() -> (BlockEntityType.Builder.of(KhromaImbuerBlockEntity::new, BLOCK_KHROMA_IMBUER.get()).build(null)));
+			() -> (new BlockEntityType<>(KhromaImbuerBlockEntity::new, BLOCK_KHROMA_IMBUER.get())));
 
 	/**
 	 * 
@@ -224,24 +224,23 @@ public class RegistryReference {
 	public static final DeferredItem<Item> ITEM_CHROMATIC_NUCLEUS = ITEMS.registerSimpleItem("chromatic_nucleus");
 	public static final DeferredItem<Item> ITEM_CHROMATIC_GLASSES = ITEMS.registerSimpleItem("chromatic_glasses", new Item.Properties().stacksTo(1));
 
-	public static final DeferredItem<Item> ITEM_KHROMETAL_RED_SWORD = ITEMS.register("khrometal_red_sword",
-			() -> new SwordItem(RED_KHROMETAL_TIER, new Item.Properties().attributes(PickaxeItem.createAttributes(RED_KHROMETAL_TIER, 3, -2.4f))));
-	public static final DeferredItem<Item> ITEM_KHROMETAL_RED_PICKAXE = ITEMS.register("khrometal_red_pickaxe",
-			() -> new PickaxeItem(RED_KHROMETAL_TIER, new Item.Properties().attributes(PickaxeItem.createAttributes(RED_KHROMETAL_TIER, 1, -2f))));
-	public static final DeferredItem<Item> ITEM_KHROMETAL_GREEN_PICKAXE = ITEMS.register("khrometal_green_pickaxe",
-			() -> new KhrometalGreenPickaxeItem(GREEN_KHROMETAL_TIER, new Item.Properties().attributes(PickaxeItem.createAttributes(GREEN_KHROMETAL_TIER, 1, -2f))));
-	public static final DeferredItem<Item> ITEM_KHROMETAL_BLUE_PICKAXE = ITEMS.register("khrometal_blue_pickaxe",
-			() -> new PickaxeItem(BLUE_KHROMETAL_TIER, new Item.Properties().attributes(PickaxeItem.createAttributes(BLUE_KHROMETAL_TIER, 1, 0))));
-	public static final DeferredItem<Item> ITEM_KHROMETAL_WHITE_PICKAXE = ITEMS.register("khrometal_white_pickaxe",
-			() -> new KhrometalWhitePickaxeItem(WHITE_KHROMETAL_TIER, new Item.Properties().attributes(PickaxeItem.createAttributes(WHITE_KHROMETAL_TIER, 1, -2f)
-					.withModifierAdded(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(SurgeofKhroma.resource("white_khrometal_bonus"), 4, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND))));
+	public static final DeferredItem<Item> ITEM_KHROMETAL_RED_SWORD = ITEMS.registerItem("khrometal_red_sword", props -> new Item(props.sword(RED_KHROMETAL_TIER, 3, -2.4f)));
+	public static final DeferredItem<Item> ITEM_KHROMETAL_RED_PICKAXE = ITEMS.registerItem("khrometal_red_pickaxe", props -> new Item(props.pickaxe(RED_KHROMETAL_TIER, 1, -2)));
 
-	public static final DeferredItem<Item> ITEM_KHROMETAL_BLACK_SWORD = ITEMS.register("khrometal_black_sword",
-			() -> new KhrometalBlackSwordItem(BLACK_KHROMETAL_TIER, new Item.Properties().attributes(SwordItem.createAttributes(BLACK_KHROMETAL_TIER, 3, -2.4f)
-					.withModifierAdded(ATTRIBUTE_TELEPORT_DROPS, new AttributeModifier(SurgeofKhroma.resource("black_khrometal_bonus"), 1, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND))));
-	public static final DeferredItem<Item> ITEM_KHROMETAL_BLACK_PICKAXE = ITEMS.register("khrometal_black_pickaxe",
-			() -> new KhrometalBlackPickaxeItem(BLACK_KHROMETAL_TIER, new Item.Properties().attributes(PickaxeItem.createAttributes(BLACK_KHROMETAL_TIER, 1, -2f)
-					.withModifierAdded(ATTRIBUTE_TELEPORT_DROPS, new AttributeModifier(SurgeofKhroma.resource("black_khrometal_bonus"), 1, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND))));
+	public static final DeferredItem<Item> ITEM_KHROMETAL_GREEN_PICKAXE = ITEMS.registerItem("khrometal_green_pickaxe",
+			props -> new KhrometalGreenToolItem(props.pickaxe(GREEN_KHROMETAL_TIER, 1, -2f)));
+	public static final DeferredItem<Item> ITEM_KHROMETAL_BLUE_PICKAXE = ITEMS.registerItem("khrometal_blue_pickaxe", props -> new Item(props.pickaxe(BLUE_KHROMETAL_TIER, 1, 0)));
+	public static final DeferredItem<Item> ITEM_KHROMETAL_WHITE_PICKAXE = ITEMS.registerItem("khrometal_white_pickaxe",
+			props -> new KhrometalWhitePickaxeItem(props.pickaxe(WHITE_KHROMETAL_TIER, 1, -2f).attributes(ItemAttributeModifiers.builder()
+					.add(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(SurgeofKhroma.resource("white_khrometal_bonus"), 4, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND).build())));
+
+	public static final DeferredItem<Item> ITEM_KHROMETAL_BLACK_SWORD = ITEMS.registerItem("khrometal_black_sword",
+			props -> new KhrometalBlackSwordItem(props.sword(BLACK_KHROMETAL_TIER, 3, -2.4f).attributes(
+					ItemAttributeModifiers.builder()
+							.add(ATTRIBUTE_TELEPORT_DROPS, new AttributeModifier(SurgeofKhroma.resource("black_khrometal_bonus"), 1, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND).build())));
+	public static final DeferredItem<Item> ITEM_KHROMETAL_BLACK_PICKAXE = ITEMS.registerItem("khrometal_black_pickaxe",
+			props -> new KhrometalBlackPickaxeItem(props.pickaxe(BLACK_KHROMETAL_TIER, 1, -2f).attributes(ItemAttributeModifiers.builder()
+					.add(ATTRIBUTE_TELEPORT_DROPS, new AttributeModifier(SurgeofKhroma.resource("black_khrometal_bonus"), 1, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND).build())));
 
 	/**
 	 * 
@@ -249,7 +248,8 @@ public class RegistryReference {
 	 * 
 	 */
 	public static final Supplier<EntityType<KhromaNodeEntity>> ENTITY_KHROMA_NODE = ENTITY_TYPES.register("khroma_node",
-			() -> EntityType.Builder.of(KhromaNodeEntity::new, MobCategory.MISC).fireImmune().updateInterval(Integer.MAX_VALUE).eyeHeight(0).clientTrackingRange(10).sized(1, 1).build("khroma_node"));
+			() -> EntityType.Builder.of(KhromaNodeEntity::new, MobCategory.MISC).fireImmune().updateInterval(Integer.MAX_VALUE).eyeHeight(0).clientTrackingRange(10).sized(1, 1)
+					.build(ResourceKey.create(Registries.ENTITY_TYPE, SurgeofKhroma.resource("khroma_node"))));
 
 	/**
 	 * 
@@ -340,5 +340,13 @@ public class RegistryReference {
 		output.accept(ITEM_BLOCK_KHROMA_SEPARATOR);
 		output.accept(ITEM_BLOCK_NODE_COLLECTOR);
 		output.accept(ITEM_BLOCK_KHROMA_IMBUER);
+	}
+
+	private static BlockBehaviour.Properties blockProps(ResourceLocation registryName) {
+		return BlockBehaviour.Properties.of().setId(ResourceKey.create(Registries.BLOCK, registryName));
+	}
+
+	private static Item.Properties itemProps(ResourceLocation registryName) {
+		return new Properties().setId(ResourceKey.create(Registries.ITEM, registryName));
 	}
 }

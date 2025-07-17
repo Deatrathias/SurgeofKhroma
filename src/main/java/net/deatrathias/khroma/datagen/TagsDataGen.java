@@ -2,8 +2,6 @@ package net.deatrathias.khroma.datagen;
 
 import java.util.concurrent.CompletableFuture;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.TagReference;
@@ -15,7 +13,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.DamageTypeTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.ItemTags;
@@ -24,15 +21,14 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.CuriosResources;
 
 public final class TagsDataGen {
 
 	public static class BlockTag extends BlockTagsProvider {
 
-		public BlockTag(PackOutput output, CompletableFuture<Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
-			super(output, lookupProvider, SurgeofKhroma.MODID, existingFileHelper);
+		public BlockTag(PackOutput output, CompletableFuture<Provider> lookupProviderr) {
+			super(output, lookupProviderr, SurgeofKhroma.MODID);
 		}
 
 		@SuppressWarnings("unchecked")
@@ -67,8 +63,8 @@ public final class TagsDataGen {
 
 	public static class ItemTag extends ItemTagsProvider {
 
-		public ItemTag(PackOutput output, CompletableFuture<Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTags, ExistingFileHelper existingFileHelper) {
-			super(output, lookupProvider, blockTags, SurgeofKhroma.MODID, existingFileHelper);
+		public ItemTag(PackOutput output, CompletableFuture<Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTags) {
+			super(output, lookupProvider, blockTags, SurgeofKhroma.MODID);
 		}
 
 		@SuppressWarnings("unchecked")
@@ -134,7 +130,7 @@ public final class TagsDataGen {
 		}
 
 		private void curiosTags() {
-			tag(ItemTags.create(ResourceLocation.fromNamespaceAndPath(CuriosApi.MODID, "eyes"))).add(RegistryReference.ITEM_CHROMATIC_GLASSES.getKey());
+			tag(ItemTags.create(CuriosResources.resource("eyes"))).add(RegistryReference.ITEM_CHROMATIC_GLASSES.getKey());
 		}
 
 		private void tagsPerKhroma(IntrinsicTagAppender<Item> swords, IntrinsicTagAppender<Item> pickaxes, IntrinsicTagAppender<Item> axes, IntrinsicTagAppender<Item> shovel,
@@ -167,8 +163,8 @@ public final class TagsDataGen {
 
 	public static class DamageTypeTag extends DamageTypeTagsProvider {
 
-		public DamageTypeTag(PackOutput output, CompletableFuture<Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
-			super(output, lookupProvider, SurgeofKhroma.MODID, existingFileHelper);
+		public DamageTypeTag(PackOutput output, CompletableFuture<Provider> lookupProvider) {
+			super(output, lookupProvider, SurgeofKhroma.MODID);
 		}
 
 		@Override

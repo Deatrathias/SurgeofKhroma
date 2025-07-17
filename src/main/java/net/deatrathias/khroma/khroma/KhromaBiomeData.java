@@ -2,6 +2,8 @@ package net.deatrathias.khroma.khroma;
 
 import java.util.Arrays;
 
+import javax.annotation.Nullable;
+
 import org.jetbrains.annotations.UnknownNullability;
 
 import net.deatrathias.khroma.Config;
@@ -22,7 +24,7 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
 
 public class KhromaBiomeData implements INBTSerializable<CompoundTag> {
 	private boolean generated;
-
+	@Nullable
 	private KhromaNode node;
 
 	private static final int red = 0;
@@ -55,11 +57,8 @@ public class KhromaBiomeData implements INBTSerializable<CompoundTag> {
 
 	@Override
 	public void deserializeNBT(Provider provider, CompoundTag nbt) {
-		generated = nbt.getBoolean("generated");
-		if (nbt.contains("node"))
-			node = new KhromaNode(provider, nbt.getCompound("node"));
-		else
-			node = null;
+		generated = nbt.getBoolean("generated").orElse(false);
+		node = nbt.getCompound("node").map(tag -> new KhromaNode(provider, tag)).orElse(null);
 	}
 
 	private long getSeed(long a, long b, long c) {

@@ -8,6 +8,7 @@ import net.deatrathias.khroma.entities.KhromaNodeEntity;
 import net.deatrathias.khroma.khroma.KhromaBiomeData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -57,8 +58,8 @@ public class NodeCollectorBlock extends BaseKhromaUserBlock<NodeCollectorBlockEn
 	}
 
 	@Override
-	protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-		super.onRemove(state, level, pos, newState, movedByPiston);
+	protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
+		super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
 		if (!level.isClientSide)
 			level.getEntities(EntityTypeTest.forClass(KhromaNodeEntity.class), new AABB(pos), EntitySelector.NO_SPECTATORS).forEach((entity) -> ((KhromaNodeEntity) entity).setForceVisible(false));
 	}
@@ -96,7 +97,7 @@ public class NodeCollectorBlock extends BaseKhromaUserBlock<NodeCollectorBlockEn
 	}
 
 	@Override
-	protected boolean propagatesSkylightDown(BlockState p_309084_, BlockGetter p_309133_, BlockPos p_309097_) {
+	protected boolean propagatesSkylightDown(BlockState state) {
 		return true;
 	}
 }

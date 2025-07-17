@@ -1,8 +1,6 @@
 {
   "type": "surgeofkhroma:khroma_imbuement",
-  "ingredient": {
-    "tag": "surgeofkhroma:converts_to_dye/red/singular"
-  },
+  "ingredient": "#surgeofkhroma:converts_to_dye/red/singular",
   "khroma": "red",
   "khromacost": 2500.0,
   "result": {

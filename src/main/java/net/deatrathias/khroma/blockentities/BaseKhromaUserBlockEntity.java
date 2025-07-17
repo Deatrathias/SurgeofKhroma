@@ -54,4 +54,10 @@ public abstract class BaseKhromaUserBlockEntity extends BlockEntity {
 			networkPerSide.put(direction, KhromaNetwork.create(level, new BlockDirection(getBlockPos(), direction)));
 		}
 	}
+
+	@Override
+	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+		super.preRemoveSideEffects(pos, state);
+		dirtyNetwork();
+	}
 }

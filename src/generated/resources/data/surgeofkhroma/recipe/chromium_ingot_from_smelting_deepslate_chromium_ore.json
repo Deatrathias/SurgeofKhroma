@@ -4,9 +4,7 @@
   "cookingtime": 200,
   "experience": 0.7,
   "group": "chromium_ingot",
-  "ingredient": {
-    "item": "surgeofkhroma:deepslate_chromium_ore"
-  },
+  "ingredient": "surgeofkhroma:deepslate_chromium_ore",
   "result": {
     "count": 1,
     "id": "surgeofkhroma:chromium_ingot"

@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "surgeofkhroma:chromium_ingot"
-    }
+    "surgeofkhroma:chromium_ingot"
   ],
   "result": {
     "count": 9,

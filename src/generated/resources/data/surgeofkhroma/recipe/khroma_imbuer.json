@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "tag": "surgeofkhroma:base_ingot"
-    },
-    "X": {
-      "item": "surgeofkhroma:khroma_line"
-    },
-    "c": {
-      "item": "surgeofkhroma:chromatic_nucleus"
-    }
+    "#": "#surgeofkhroma:base_ingot",
+    "X": "surgeofkhroma:khroma_line",
+    "c": "surgeofkhroma:chromatic_nucleus"
   },
   "pattern": [
     "###",

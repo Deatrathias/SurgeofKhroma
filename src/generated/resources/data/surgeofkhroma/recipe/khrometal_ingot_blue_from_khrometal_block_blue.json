@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "khrometal_ingot_blue",
   "ingredients": [
-    {
-      "item": "surgeofkhroma:khrometal_block_blue"
-    }
+    "surgeofkhroma:khrometal_block_blue"
   ],
   "result": {
     "count": 9,

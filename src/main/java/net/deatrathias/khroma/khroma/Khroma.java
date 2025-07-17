@@ -5,7 +5,10 @@ import java.util.List;
 
 import com.mojang.serialization.Codec;
 
+import io.netty.buffer.ByteBuf;
 import net.deatrathias.khroma.SurgeofKhroma;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.StringRepresentable;
 
@@ -79,6 +82,8 @@ public final class Khroma implements Comparable<Khroma>, Serializable, StringRep
 	public static final Codec<Khroma> CODEC = ExtraCodecs.orCompressed(Codec.stringResolver(StringRepresentable::getSerializedName, Khroma::fromName),
 			ExtraCodecs.idResolverCodec(Khroma::asInt, intValue -> intValue >= 0 && intValue < 32 ? khromaInstances[intValue] : null, -1));
 
+	public static final StreamCodec<ByteBuf, Khroma> STREAM_CODEC = ByteBufCodecs.BYTE.map(Khroma::fromByte, Khroma::toByte);
+
 	public static Khroma get(boolean red, boolean green, boolean blue, boolean white, boolean black) {
 		int khromaValue = 0;
 		if (red)
@@ -114,8 +119,16 @@ public final class Khroma implements Comparable<Khroma>, Serializable, StringRep
 		return khromaInstances[value];
 	}
 
+	public static Khroma fromByte(byte value) {
+		return fromInt(value);
+	}
+
 	public int asInt() {
 		return khromaValue;
+	}
+
+	public static byte toByte(Khroma khroma) {
+		return (byte) khroma.khromaValue;
 	}
 
 	public String getName() {

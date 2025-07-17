@@ -17,11 +17,11 @@ public class KhrometalWhiteBlock extends KhrometalBlock {
 	@Override
 	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
 		if (entity instanceof LivingEntity living) {
-			living.addEffect(new MobEffectInstance(MobEffects.JUMP, 10, getAmplification(level, pos)));
+			living.addEffect(new MobEffectInstance(MobEffects.JUMP_BOOST, 10, getAmplification(level, pos)));
 		}
 	}
 
 	@Override
-	public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
+	public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, double fallDistance) {
 	}
 }

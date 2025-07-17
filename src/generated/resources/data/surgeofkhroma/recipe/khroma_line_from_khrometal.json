@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "khroma_line",
   "key": {
-    "#": {
-      "tag": "surgeofkhroma:ingots/khrometal"
-    },
-    "g": {
-      "tag": "c:glass_panes"
-    }
+    "#": "#surgeofkhroma:ingots/khrometal",
+    "g": "#c:glass_panes"
   },
   "pattern": [
     " g ",

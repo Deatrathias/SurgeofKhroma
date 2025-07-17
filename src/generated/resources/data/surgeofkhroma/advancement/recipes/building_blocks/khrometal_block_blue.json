@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:khrometal_block_blue"
+        "recipe": "surgeofkhroma:khrometal_block_blue"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -15,31 +15,42 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class KhromaNodeEntityRenderer extends EntityRenderer<KhromaNodeEntity> {
+public class KhromaNodeEntityRenderer extends EntityRenderer<KhromaNodeEntity, KhromaNodeEntityRenderState> {
 
 	public KhromaNodeEntityRenderer(Context context) {
 		super(context);
 	}
 
-	@Override
 	public ResourceLocation getTextureLocation(KhromaNodeEntity entity) {
 		return SurgeofKhroma.resource("textures/entity/node.png");
 	}
 
 	@Override
-	public void render(KhromaNodeEntity p_entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+	public KhromaNodeEntityRenderState createRenderState() {
+		return new KhromaNodeEntityRenderState();
+	}
+
+	@Override
+	public void extractRenderState(KhromaNodeEntity p_entity, KhromaNodeEntityRenderState reusedState, float partialTick) {
+		super.extractRenderState(p_entity, reusedState, partialTick);
+		reusedState.khroma = p_entity.getKhroma();
+		reusedState.level = p_entity.getNodeLevel();
+	}
+
+	@Override
+	public void render(KhromaNodeEntityRenderState renderState, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
 		poseStack.pushPose();
-		VertexConsumer consumer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(getTextureLocation(p_entity)));
+		VertexConsumer consumer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(SurgeofKhroma.resource("textures/entity/node.png")));
 		poseStack.translate(0, 0.5f, 0);
 		poseStack.mulPose(entityRenderDispatcher.cameraOrientation());
 		PoseStack.Pose pose = poseStack.last();
-		int color = p_entity.getKhroma().getTint();
+		int color = renderState.khroma.getTint();
 		int light = 15728880;
 		consumer.addVertex(pose, -0.5f, -0.5f, 0).setUv(0, 0).setLight(light).setColor(color).setNormal(pose, 0, 0, 1).setOverlay(OverlayTexture.NO_OVERLAY);
 		consumer.addVertex(pose, 0.5f, -0.5f, 0).setUv(1, 0).setLight(light).setColor(color).setNormal(pose, 0, 0, 1).setOverlay(OverlayTexture.NO_OVERLAY);
 		consumer.addVertex(pose, 0.5f, 0.5f, 0).setUv(1, 1).setLight(light).setColor(color).setNormal(pose, 0, 0, 1).setOverlay(OverlayTexture.NO_OVERLAY);
 		consumer.addVertex(pose, -0.5f, 0.5f, 0).setUv(0, 1).setLight(light).setColor(color).setNormal(pose, 0, 0, 1).setOverlay(OverlayTexture.NO_OVERLAY);
 		poseStack.popPose();
-		super.render(p_entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
+		super.render(renderState, poseStack, bufferSource, packedLight);
 	}
 }

@@ -4,6 +4,7 @@ import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.khroma.KhromaThroughput;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -31,8 +32,8 @@ public class KhromaImbuerScreen extends AbstractContainerScreen<KhromaImbuerMenu
 	protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
 		int x = leftPos;
 		int y = topPos;
-		guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
-		guiGraphics.blitSprite(PROGRESS_SPRITE, 22, 10, 0, 0, x + 72, y + 36, Mth.ceil(22 * menu.getProgress()), 10);
+		guiGraphics.blit(RenderType::guiTextured, TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
+		guiGraphics.blitSprite(RenderType::guiTextured, PROGRESS_SPRITE, 22, 10, 0, 0, x + 72, y + 36, Mth.ceil(22 * menu.getProgress()), 10);
 	}
 
 	@Override

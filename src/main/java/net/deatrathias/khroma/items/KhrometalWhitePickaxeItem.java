@@ -3,17 +3,16 @@ package net.deatrathias.khroma.items;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup.RegistryLookup;
 import net.minecraft.tags.EnchantmentTags;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.PickaxeItem;
-import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 
-public class KhrometalWhitePickaxeItem extends PickaxeItem {
+public class KhrometalWhitePickaxeItem extends Item {
 
-	public KhrometalWhitePickaxeItem(Tier tier, Properties properties) {
-		super(tier, properties);
+	public KhrometalWhitePickaxeItem(Properties properties) {
+		super(properties);
 	}
 
 	@Override

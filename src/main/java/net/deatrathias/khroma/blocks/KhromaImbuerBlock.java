@@ -20,11 +20,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class KhromaImbuerBlock extends BaseKhromaUserBlock<KhromaImbuerBlockEntity> {
-	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
 	public static final MapCodec<KhromaImbuerBlock> CODEC = simpleCodec(KhromaImbuerBlock::new);
 
@@ -84,19 +84,8 @@ public class KhromaImbuerBlock extends BaseKhromaUserBlock<KhromaImbuerBlockEnti
 	}
 
 	@Override
-	protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock())) {
-			var blockentity = getBlockEntity(level, pos);
-			if (blockentity != null) {
-				if (level instanceof ServerLevel) {
-					Containers.dropContents(level, pos, blockentity);
-				}
-
-				super.onRemove(state, level, pos, newState, isMoving);
-				level.updateNeighbourForOutputSignal(pos, this);
-			} else {
-				super.onRemove(state, level, pos, newState, isMoving);
-			}
-		}
+	protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
+		Containers.updateNeighboursAfterDestroy(state, level, pos);
+		super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
 	}
 }

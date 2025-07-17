@@ -2,24 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "tag": "surgeofkhroma:base_nugget"
-    },
-    "b": {
-      "tag": "c:dyes/black"
-    },
-    "g": {
-      "tag": "c:dyes/green"
-    },
-    "r": {
-      "tag": "c:dyes/red"
-    },
-    "u": {
-      "tag": "c:dyes/blue"
-    },
-    "w": {
-      "tag": "c:dyes/white"
-    }
+    "#": "#surgeofkhroma:base_nugget",
+    "b": "#c:dyes/black",
+    "g": "#c:dyes/green",
+    "r": "#c:dyes/red",
+    "u": "#c:dyes/blue",
+    "w": "#c:dyes/white"
   },
   "pattern": [
     "w#b",

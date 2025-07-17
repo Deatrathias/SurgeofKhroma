@@ -21,8 +21,8 @@ public class KhromaIngredientHelper implements IIngredientHelper<Khroma> {
 	}
 
 	@Override
-	public String getUniqueId(Khroma ingredient, UidContext context) {
-		return ingredient.getName();
+	public Object getUid(Khroma ingredient, UidContext context) {
+		return ingredient.asInt();
 	}
 
 	@Override

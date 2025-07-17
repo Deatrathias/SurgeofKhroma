@@ -23,7 +23,7 @@ import top.theillusivec4.curios.api.CuriosCapability;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 
-@EventBusSubscriber(modid = SurgeofKhroma.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = SurgeofKhroma.MODID)
 public final class CommonEventSubscriber {
 
 	@SubscribeEvent

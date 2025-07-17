@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "chromium_ingot",
   "ingredients": [
-    {
-      "item": "surgeofkhroma:chromium_block"
-    }
+    "surgeofkhroma:chromium_block"
   ],
   "result": {
     "count": 9,

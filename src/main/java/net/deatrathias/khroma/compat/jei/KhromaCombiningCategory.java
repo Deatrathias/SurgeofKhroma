@@ -10,8 +10,8 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.IFocusGroup;
-import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import mezz.jei.api.recipe.types.IRecipeType;
 import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.khroma.Khroma;
@@ -22,7 +22,7 @@ public class KhromaCombiningCategory implements IRecipeCategory<KhromaCombiningR
 
 	private static final String TITLE = "recipe." + SurgeofKhroma.MODID + ".khroma_combining";
 
-	private RecipeType<KhromaCombiningRecipe> recipeType;
+	private IRecipeType<KhromaCombiningRecipe> recipeType;
 
 	private IJeiHelpers helpers;
 
@@ -30,12 +30,12 @@ public class KhromaCombiningCategory implements IRecipeCategory<KhromaCombiningR
 
 	public KhromaCombiningCategory(IJeiHelpers helpers) {
 		this.helpers = helpers;
-		recipeType = RecipeType.create(SurgeofKhroma.MODID, "khroma_combining", KhromaCombiningRecipe.class);
+		recipeType = IRecipeType.create(SurgeofKhroma.MODID, "khroma_combining", KhromaCombiningRecipe.class);
 		arrow = helpers.getGuiHelper().createDrawable(SurgeofKhroma.resource("textures/gui/jei/khroma_arrows.png"), 0, 0, 36, 33);
 	}
 
 	@Override
-	public RecipeType<KhromaCombiningRecipe> getRecipeType() {
+	public IRecipeType<KhromaCombiningRecipe> getRecipeType() {
 		return recipeType;
 	}
 
@@ -51,9 +51,9 @@ public class KhromaCombiningCategory implements IRecipeCategory<KhromaCombiningR
 
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, KhromaCombiningRecipe recipe, IFocusGroup focuses) {
-		builder.addInputSlot(6, 5).addIngredient(JeiKhromaPlugin.INGREDIENT_KHROMA, recipe.input1()).setStandardSlotBackground();
-		builder.addInputSlot(68, 5).addIngredient(JeiKhromaPlugin.INGREDIENT_KHROMA, recipe.input2()).setStandardSlotBackground();
-		builder.addOutputSlot(37, 50).addIngredient(JeiKhromaPlugin.INGREDIENT_KHROMA, recipe.output()).setStandardSlotBackground();
+		builder.addInputSlot(6, 5).add(JeiKhromaPlugin.INGREDIENT_KHROMA, recipe.input1()).setStandardSlotBackground();
+		builder.addInputSlot(68, 5).add(JeiKhromaPlugin.INGREDIENT_KHROMA, recipe.input2()).setStandardSlotBackground();
+		builder.addOutputSlot(37, 50).add(JeiKhromaPlugin.INGREDIENT_KHROMA, recipe.output()).setStandardSlotBackground();
 	}
 
 	@Override

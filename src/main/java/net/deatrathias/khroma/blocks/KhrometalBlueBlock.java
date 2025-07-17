@@ -17,7 +17,7 @@ public class KhrometalBlueBlock extends KhrometalBlock {
 	@Override
 	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
 		if (entity instanceof LivingEntity living) {
-			living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 10, getAmplification(level, pos)));
+			living.addEffect(new MobEffectInstance(MobEffects.SPEED, 10, getAmplification(level, pos)));
 		}
 	}
 }

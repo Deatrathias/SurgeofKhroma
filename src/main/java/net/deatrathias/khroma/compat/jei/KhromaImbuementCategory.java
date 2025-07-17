@@ -1,7 +1,5 @@
 package net.deatrathias.khroma.compat.jei;
 
-import java.util.Arrays;
-
 import org.jetbrains.annotations.Nullable;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -12,8 +10,9 @@ import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import mezz.jei.api.recipe.types.IRecipeHolderType;
+import mezz.jei.api.recipe.types.IRecipeType;
 import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.recipes.KhromaImbuementRecipe;
@@ -27,13 +26,13 @@ public class KhromaImbuementCategory implements IRecipeCategory<RecipeHolder<Khr
 
 	private IJeiHelpers helpers;
 
-	private RecipeType<RecipeHolder<KhromaImbuementRecipe>> recipeType;
+	private IRecipeHolderType<KhromaImbuementRecipe> recipeType;
 
 	private IDrawable khromaBackground;
 
 	public KhromaImbuementCategory(IJeiHelpers helpers) {
 		this.helpers = helpers;
-		recipeType = RecipeType.createFromVanilla(RegistryReference.RECIPE_KHROMA_IMBUEMENT.get());
+		recipeType = IRecipeType.create(RegistryReference.RECIPE_KHROMA_IMBUEMENT.get());
 		khromaBackground = helpers.getGuiHelper().drawableBuilder(SurgeofKhroma.resource("textures/gui/jei/khroma_bg.png"), 0, 0, 30, 29).setTextureSize(30, 29).build();
 	}
 
@@ -55,7 +54,7 @@ public class KhromaImbuementCategory implements IRecipeCategory<RecipeHolder<Khr
 	}
 
 	@Override
-	public RecipeType<RecipeHolder<KhromaImbuementRecipe>> getRecipeType() {
+	public IRecipeHolderType<KhromaImbuementRecipe> getRecipeType() {
 		return recipeType;
 	}
 
@@ -71,8 +70,8 @@ public class KhromaImbuementCategory implements IRecipeCategory<RecipeHolder<Khr
 
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<KhromaImbuementRecipe> recipe, IFocusGroup focuses) {
-		builder.addInputSlot(13, 5).addItemStacks(Arrays.asList(recipe.value().getIngredient().getItems())).setStandardSlotBackground();
-		builder.addOutputSlot(72, 21).addItemStack(recipe.value().getResult()).setOutputSlotBackground();
-		builder.addSlot(RecipeIngredientRole.CATALYST, 12, 33).addIngredient(JeiKhromaPlugin.INGREDIENT_KHROMA, recipe.value().getKhroma()).setBackground(khromaBackground, -7, -6);
+		builder.addInputSlot(13, 5).add(recipe.value().getIngredient()).setStandardSlotBackground();
+		builder.addOutputSlot(72, 21).add(recipe.value().getResult()).setOutputSlotBackground();
+		builder.addSlot(RecipeIngredientRole.CRAFTING_STATION, 12, 33).add(JeiKhromaPlugin.INGREDIENT_KHROMA, recipe.value().getKhroma()).setBackground(khromaBackground, -7, -6);
 	}
 }

@@ -67,17 +67,17 @@ public class KhrometalBlackBlock extends KhrometalBlock {
 	}
 
 	@Override
-	public void updateEntityAfterFallOn(BlockGetter level, Entity entity) {
+	public void updateEntityMovementAfterFallOn(BlockGetter level, Entity entity) {
 		if (Math.abs(entity.getDeltaMovement().y) > 0.1)
 			entity.setDeltaMovement(0, 0, 0);
 		else
-			super.updateEntityAfterFallOn(level, entity);
+			super.updateEntityMovementAfterFallOn(level, entity);
 	}
 
 	private static Direction getDirectionFromMovement(Vec3 deltaMovement) {
 		if (deltaMovement.lengthSqr() == 0)
 			return null;
 
-		return Direction.getNearest(deltaMovement.x, 0, deltaMovement.z);
+		return Direction.getApproximateNearest(deltaMovement.x, 0, deltaMovement.z);
 	}
 }

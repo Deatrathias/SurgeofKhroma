@@ -13,7 +13,7 @@ import net.neoforged.neoforge.event.level.ChunkEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
-@EventBusSubscriber(modid = SurgeofKhroma.MODID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = SurgeofKhroma.MODID)
 public class GameServerEventSubscriber {
 
 	@SubscribeEvent

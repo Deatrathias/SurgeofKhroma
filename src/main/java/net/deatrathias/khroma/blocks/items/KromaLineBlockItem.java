@@ -41,7 +41,7 @@ public class KromaLineBlockItem extends BlockItem {
 		}
 
 		if (lineState != null && connectLine(level, lineState, linePos, lineSide, context.getPlayer()))
-			return InteractionResult.sidedSuccess(level.isClientSide());
+			return InteractionResult.SUCCESS_SERVER;
 		;
 
 		return super.place(context);

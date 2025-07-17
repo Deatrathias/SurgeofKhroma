@@ -35,7 +35,7 @@ public class KhromaProviderBlockEntity extends BaseKhromaUserBlockEntity impleme
 	@Override
 	protected void loadAdditional(CompoundTag tag, Provider registries) {
 		super.loadAdditional(tag, registries);
-		khroma = Khroma.fromInt(tag.getInt("khroma"));
+		khroma = Khroma.fromInt(tag.getInt("khroma").orElse(cycle[0].asInt()));
 	}
 
 	@Override

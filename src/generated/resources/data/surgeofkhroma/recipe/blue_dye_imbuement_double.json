@@ -1,8 +1,6 @@
 {
   "type": "surgeofkhroma:khroma_imbuement",
-  "ingredient": {
-    "tag": "surgeofkhroma:converts_to_dye/blue/double"
-  },
+  "ingredient": "#surgeofkhroma:converts_to_dye/blue/double",
   "khroma": "blue",
   "khromacost": 5000.0,
   "result": {

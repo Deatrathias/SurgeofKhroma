@@ -11,6 +11,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.network.syncher.SynchedEntityData.Builder;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -57,9 +58,9 @@ public class KhromaNodeEntity extends Entity {
 	@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
 		SynchedEntityData data = getEntityData();
-		data.set(KHROMA, compound.getInt("khroma"));
-		data.set(LEVEL, compound.getInt("level"));
-		data.set(FORCE_VISIBLE, compound.getBoolean("force_visible"));
+		data.set(KHROMA, compound.getInt("khroma").orElse(0));
+		data.set(LEVEL, compound.getInt("level").orElse(1));
+		data.set(FORCE_VISIBLE, compound.getBoolean("force_visible").orElse(false));
 	}
 
 	@Override
@@ -71,7 +72,7 @@ public class KhromaNodeEntity extends Entity {
 	}
 
 	@Override
-	public boolean hurt(DamageSource source, float amount) {
+	public boolean hurtServer(ServerLevel level, DamageSource damageSource, float amount) {
 		return false;
 	}
 
@@ -81,7 +82,7 @@ public class KhromaNodeEntity extends Entity {
 	}
 
 	@Override
-	public boolean canChangeDimensions(Level oldLevel, Level newLevel) {
+	public boolean canTeleport(Level oldLevel, Level newLevel) {
 		return false;
 	}
 
@@ -127,6 +128,10 @@ public class KhromaNodeEntity extends Entity {
 
 	public Khroma getKhroma() {
 		return Khroma.fromInt(getEntityData().get(KHROMA));
+	}
+
+	public int getNodeLevel() {
+		return getEntityData().get(LEVEL);
 	}
 
 	public void setForceVisible(boolean forceVisible) {

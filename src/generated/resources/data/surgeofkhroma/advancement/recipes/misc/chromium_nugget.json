@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:chromium_nugget"
+        "recipe": "surgeofkhroma:chromium_nugget"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

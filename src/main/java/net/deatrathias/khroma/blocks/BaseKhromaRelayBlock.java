@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
@@ -38,7 +38,7 @@ public abstract class BaseKhromaRelayBlock<T extends BaseKhromaUserBlockEntity> 
 
 	protected final VoxelShape[] shapesPerIndex = new VoxelShape[6];
 
-	protected abstract DirectionProperty getFacingProperty();
+	protected abstract EnumProperty<Direction> getFacingProperty();
 
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
@@ -53,7 +53,7 @@ public abstract class BaseKhromaRelayBlock<T extends BaseKhromaUserBlockEntity> 
 	protected abstract void makeShapes();
 
 	@Override
-	protected boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
+	protected boolean propagatesSkylightDown(BlockState state) {
 		return !state.getValue(WATERLOGGED);
 	}
 

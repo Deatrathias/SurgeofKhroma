@@ -6,7 +6,6 @@ import net.deatrathias.khroma.gui.KhromaApertureScreen;
 import net.deatrathias.khroma.gui.KhromaImbuerScreen;
 import net.deatrathias.khroma.items.renderer.ChromaticGlassesRenderer;
 import net.deatrathias.khroma.khroma.Khroma;
-import net.minecraft.client.RecipeBookCategories;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -15,23 +14,22 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
-import net.neoforged.neoforge.client.event.RegisterRecipeBookCategoriesEvent;
-import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
+import top.theillusivec4.curios.api.client.ICurioRenderer;
 
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(modid = SurgeofKhroma.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = SurgeofKhroma.MODID, value = Dist.CLIENT)
 public class ClientEventSubscriber {
 	@SubscribeEvent
 	public static void onClientSetup(FMLClientSetupEvent event) {
 		SurgeofKhroma.LOGGER.info("client started");
-		CuriosRendererRegistry.register(RegistryReference.ITEM_CHROMATIC_GLASSES.get(), () -> new ChromaticGlassesRenderer());
+		ICurioRenderer.register(RegistryReference.ITEM_CHROMATIC_GLASSES.get(), () -> new ChromaticGlassesRenderer());
 	}
 
 	@SubscribeEvent
 	public static void registerBlockColorHandles(RegisterColorHandlersEvent.Block event) {
 		event.register(((state, level, pos, tintIndex) -> {
-			Integer khroma = state.getValue(KhromaLineBlock.KHROMA);
-			return Khroma.KhromaColors[khroma];
+			Khroma khroma = state.getValue(KhromaLineBlock.KHROMA);
+			return Khroma.KhromaColors[khroma.asInt()];
 		}), RegistryReference.BLOCK_KHROMA_LINE.value());
 	}
 
@@ -44,10 +42,5 @@ public class ClientEventSubscriber {
 	@SubscribeEvent
 	public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
 		event.registerEntityRenderer(RegistryReference.ENTITY_KHROMA_NODE.get(), KhromaNodeEntityRenderer::new);
-	}
-
-	@SubscribeEvent
-	public static void registerRecipeBookCategories(RegisterRecipeBookCategoriesEvent event) {
-		event.registerRecipeCategoryFinder(RegistryReference.RECIPE_KHROMA_IMBUEMENT.get(), (recipe) -> RecipeBookCategories.CRAFTING_MISC);
 	}
 }

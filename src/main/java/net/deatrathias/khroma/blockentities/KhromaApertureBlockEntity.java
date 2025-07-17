@@ -69,7 +69,7 @@ public class KhromaApertureBlockEntity extends BaseKhromaUserBlockEntity impleme
 	@Override
 	protected void loadAdditional(CompoundTag tag, Provider registries) {
 		super.loadAdditional(tag, registries);
-		limit = tag.getFloat("limit");
+		limit = tag.getFloat("limit").orElse(1f);
 	}
 
 	@Override
