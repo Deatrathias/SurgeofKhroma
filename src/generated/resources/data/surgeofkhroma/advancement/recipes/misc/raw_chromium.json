@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:raw_chromium"
+        "recipe": "surgeofkhroma:raw_chromium"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -16,16 +16,9 @@ import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.blocks.KhromaLineBlock;
 import net.deatrathias.khroma.util.BlockDirection;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup.Provider;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.saveddata.SavedData;
-import net.minecraft.world.level.saveddata.SavedData.Factory;
-import net.minecraft.world.level.storage.DimensionDataStorage;
 
 public class KhromaNetwork implements Comparable<KhromaNetwork> {
 	private static final Map<Level, List<KhromaNetwork>> networksPerLevel = new HashMap<Level, List<KhromaNetwork>>();
@@ -68,51 +61,6 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 
 	public static void setToUpdateNext(KhromaNetwork toUpdateNext) {
 		KhromaNetwork.toUpdateNext = toUpdateNext;
-	}
-
-	public static class NetworkSaveData extends SavedData {
-
-		private static class NetworkSerialized {
-			public BlockDirection provider;
-		}
-
-		private NetworkSerialized[] networks;
-
-		public static NetworkSaveData create() {
-			return new NetworkSaveData();
-		}
-
-		public static NetworkSaveData load(CompoundTag tag, Provider lookupProvider) {
-			NetworkSaveData data = create();
-			data.networks = new NetworkSerialized[tag.size()];
-			int i = 0;
-			for (var netTagKey : tag.getAllKeys()) {
-				CompoundTag netTag = tag.getCompound(netTagKey);
-				int[] posArray = netTag.getIntArray("providerPos");
-				NetworkSerialized network = new NetworkSerialized();
-				network.provider = new BlockDirection(new BlockPos(posArray[0], posArray[1], posArray[2]), Direction.byName(netTag.getString("providerDirection")));
-				data.networks[i] = network;
-				i++;
-			}
-			return data;
-		}
-
-		@Override
-		public CompoundTag save(CompoundTag tag, Provider registries) {
-
-			int i = 0;
-			for (NetworkSerialized network : networks) {
-				CompoundTag netTag = new CompoundTag();
-				BlockPos pos = network.provider.getPos();
-				netTag.putIntArray("providerPos", new int[] { pos.getX(), pos.getY(), pos.getZ() });
-				netTag.putString("providerDirection", network.provider.getDirection().getName());
-
-				tag.put(Integer.toString(i), netTag);
-				i++;
-			}
-			return tag;
-		}
-
 	}
 
 	private KhromaNetwork(Level level) {
@@ -440,8 +388,6 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 	}
 
 	public static void updateNetworksForLevel(Level level) {
-		DimensionDataStorage storage = ((ServerLevel) level).getDataStorage();
-		NetworkSaveData saveData = storage.computeIfAbsent(new Factory<>(NetworkSaveData::create, NetworkSaveData::load), "khroma_network");
 
 		boolean dirty = false;
 
@@ -509,8 +455,6 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 				if (!network.updateProviders())
 					networkQueue.add(network);
 		}
-
-		saveData.setDirty(dirty);
 
 	}
 

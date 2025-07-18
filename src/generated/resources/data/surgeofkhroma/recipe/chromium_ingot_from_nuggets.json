@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "chromium_ingot",
   "key": {
-    "#": {
-      "item": "surgeofkhroma:chromium_nugget"
-    }
+    "#": "surgeofkhroma:chromium_nugget"
   },
   "pattern": [
     "###",

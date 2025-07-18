@@ -14,6 +14,7 @@ import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
@@ -106,7 +107,7 @@ public class KhromaImbuerBlockEntity extends BaseKhromaConsumerBlockEntity imple
 
 		RecipeHolder<KhromaImbuementRecipe> recipe = null;
 		if (khroma != Khroma.empty() && !items.get(SLOT_INPUT).isEmpty()) {
-			var recipeFound = quickCheck.getRecipeFor(new ItemKhromaRecipeInput(items.get(SLOT_INPUT), khroma), level);
+			var recipeFound = quickCheck.getRecipeFor(new ItemKhromaRecipeInput(items.get(SLOT_INPUT), khroma), (ServerLevel) level);
 			if (recipeFound.isPresent())
 				recipe = recipeFound.get();
 		}
@@ -175,7 +176,7 @@ public class KhromaImbuerBlockEntity extends BaseKhromaConsumerBlockEntity imple
 		super.loadAdditional(tag, registries);
 		items = NonNullList.withSize(getContainerSize(), ItemStack.EMPTY);
 		ContainerHelper.loadAllItems(tag, this.items, registries);
-		progress = tag.getFloat("progress");
+		progress = tag.getFloat("progress").orElse(0f);
 	}
 
 	@Override

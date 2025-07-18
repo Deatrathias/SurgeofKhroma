@@ -13,9 +13,8 @@ import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.gui.KhromaImbuerScreen;
 import net.deatrathias.khroma.khroma.Khroma;
-import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.crafting.RecipeMap;
 
 @JeiPlugin
 public class JeiKhromaPlugin implements IModPlugin {
@@ -25,6 +24,12 @@ public class JeiKhromaPlugin implements IModPlugin {
 	private KhromaCombiningCategory khromaCombiningCategory;
 
 	private KhromaSeparatingCategory khromaSeparatingCategory;
+
+	private static RecipeMap recipes = RecipeMap.EMPTY;
+
+	public static void setRecipes(RecipeMap recipes) {
+		JeiKhromaPlugin.recipes = recipes;
+	}
 
 	public static final IIngredientType<Khroma> INGREDIENT_KHROMA = new IIngredientType<Khroma>() {
 		@Override
@@ -60,8 +65,7 @@ public class JeiKhromaPlugin implements IModPlugin {
 
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
-		RecipeManager recipeManager = Minecraft.getInstance().level.getRecipeManager();
-		var imbuementRecipes = recipeManager.getAllRecipesFor(RegistryReference.RECIPE_KHROMA_IMBUEMENT.get()).stream().filter(recipe -> !recipe.value().getIngredient().hasNoItems()).toList();
+		var imbuementRecipes = recipes.byType(RegistryReference.RECIPE_KHROMA_IMBUEMENT.get()).stream().filter(holder -> !holder.value().getIngredient().isEmpty()).toList();
 		registration.addRecipes(khromaImbuementCategory.getRecipeType(), imbuementRecipes);
 
 		registration.addRecipes(khromaCombiningCategory.getRecipeType(), KhromaCombiningCategory.generateAllRecipes());
@@ -70,14 +74,15 @@ public class JeiKhromaPlugin implements IModPlugin {
 
 	@Override
 	public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
+
 		registration.addRecipeTransferHandler(new KhromaImbuementRecipeTransfer(khromaImbuementCategory.getRecipeType(), registration.getTransferHelper()), khromaImbuementCategory.getRecipeType());
 	}
 
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-		registration.addRecipeCatalyst(RegistryReference.ITEM_BLOCK_KHROMA_IMBUER, khromaImbuementCategory.getRecipeType());
-		registration.addRecipeCatalyst(RegistryReference.ITEM_BLOCK_KHROMA_COMBINER, khromaCombiningCategory.getRecipeType());
-		registration.addRecipeCatalyst(RegistryReference.ITEM_BLOCK_KHROMA_SEPARATOR, khromaSeparatingCategory.getRecipeType());
+		registration.addCraftingStation(khromaImbuementCategory.getRecipeType(), RegistryReference.ITEM_BLOCK_KHROMA_IMBUER);
+		registration.addCraftingStation(khromaCombiningCategory.getRecipeType(), RegistryReference.ITEM_BLOCK_KHROMA_COMBINER);
+		registration.addCraftingStation(khromaSeparatingCategory.getRecipeType(), RegistryReference.ITEM_BLOCK_KHROMA_SEPARATOR);
 	}
 
 	@Override

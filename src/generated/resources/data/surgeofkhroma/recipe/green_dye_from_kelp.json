@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "green_dye",
   "key": {
-    "#": {
-      "item": "minecraft:kelp"
-    }
+    "#": "minecraft:kelp"
   },
   "pattern": [
     "##",

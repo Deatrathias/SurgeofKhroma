@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:khroma_line_from_khrometal"
+        "recipe": "surgeofkhroma:khroma_line_from_khrometal"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

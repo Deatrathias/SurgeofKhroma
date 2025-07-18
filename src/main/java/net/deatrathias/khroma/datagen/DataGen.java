@@ -2,33 +2,26 @@ package net.deatrathias.khroma.datagen;
 
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
 import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
-import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.data.loot.LootTableProvider.SubProviderEntry;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.damagesource.DamageScaling;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.DirectionalBlock;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -43,21 +36,14 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
-import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
-import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
-import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
-import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.common.world.BiomeModifiers.AddFeaturesBiomeModifier;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
-import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.CuriosDataProvider;
+import top.theillusivec4.curios.api.CuriosResources;
 
-@EventBusSubscriber(modid = SurgeofKhroma.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = SurgeofKhroma.MODID)
 public class DataGen {
 
 	private static class BLootProvider extends BlockLootSubProvider {
@@ -82,75 +68,29 @@ public class DataGen {
 	}
 
 	@SubscribeEvent
-	public static void gatherData(GatherDataEvent event) {
-		DataGenerator generator = event.getGenerator();
-		PackOutput output = generator.getPackOutput();
-		ExistingFileHelper fileHelper = event.getExistingFileHelper();
-		CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
+	public static void gatherDataClient(GatherDataEvent.Client event) {
+		event.createProvider(ModelDataGen::new);
+		generateServerData(event);
+	}
 
-		generator.addProvider(event.includeClient(), new BlockStateProvider(output, SurgeofKhroma.MODID, fileHelper) {
+	@SubscribeEvent
+	public static void gatherDataServer(GatherDataEvent.Server event) {
+		generateServerData(event);
+	}
+
+	private static void generateServerData(GatherDataEvent event) {
+		event.createDatapackRegistryObjects(registrySet(), Set.of(SurgeofKhroma.MODID));
+
+		event.createBlockAndItemTags(TagsDataGen.BlockTag::new, TagsDataGen.ItemTag::new);
+		event.createProvider(TagsDataGen.DamageTypeTag::new);
+		event.createProvider((output, lookupProvider) -> new LootTableProvider(output, Set.of(), List.of(new SubProviderEntry(BLootProvider::new, LootContextParamSets.BLOCK)), lookupProvider));
+
+		event.createProvider(RecipeDaraGen.Runner::new);
+
+		event.createProvider((output, lookupProvider) -> new CuriosDataProvider(SurgeofKhroma.MODID, output, lookupProvider) {
 			@Override
-			protected void registerStatesAndModels() {
-				for (var element : DataGenDefinitions.simpleBlocks) {
-					VariantBlockStateBuilder variant = getVariantBuilder(element.get());
-					variant.forAllStates(
-							(state) -> new ConfiguredModel[] { new ConfiguredModel(new ModelFile.ExistingModelFile(SurgeofKhroma.resource("block/" + element.getId().getPath()), fileHelper)) });
-				}
-
-				for (var element : DataGenDefinitions.horDirectionBlocks) {
-					VariantBlockStateBuilder variant = getVariantBuilder(element.get());
-					ModelFile modelFile = new ModelFile.ExistingModelFile(SurgeofKhroma.resource("block/" + element.getId().getPath()), fileHelper);
-					variant.addModels(variant.partialState().with(HorizontalDirectionalBlock.FACING, Direction.NORTH), new ConfiguredModel(modelFile, 0, 0, false));
-					variant.addModels(variant.partialState().with(HorizontalDirectionalBlock.FACING, Direction.EAST), new ConfiguredModel(modelFile, 0, 90, false));
-					variant.addModels(variant.partialState().with(HorizontalDirectionalBlock.FACING, Direction.SOUTH), new ConfiguredModel(modelFile, 0, 180, false));
-					variant.addModels(variant.partialState().with(HorizontalDirectionalBlock.FACING, Direction.WEST), new ConfiguredModel(modelFile, 0, 270, false));
-				}
-
-				for (var element : DataGenDefinitions.fullDirectionBlocks) {
-					VariantBlockStateBuilder variant = getVariantBuilder(element.get());
-					ModelFile modelFile = new ModelFile.ExistingModelFile(SurgeofKhroma.resource("block/" + element.getId().getPath()), fileHelper);
-					variant.addModels(variant.partialState().with(DirectionalBlock.FACING, Direction.NORTH), new ConfiguredModel(modelFile, 0, 0, false));
-					variant.addModels(variant.partialState().with(DirectionalBlock.FACING, Direction.EAST), new ConfiguredModel(modelFile, 0, 90, false));
-					variant.addModels(variant.partialState().with(DirectionalBlock.FACING, Direction.SOUTH), new ConfiguredModel(modelFile, 0, 180, false));
-					variant.addModels(variant.partialState().with(DirectionalBlock.FACING, Direction.WEST), new ConfiguredModel(modelFile, 0, 270, false));
-					variant.addModels(variant.partialState().with(DirectionalBlock.FACING, Direction.UP), new ConfiguredModel(modelFile, 270, 0, false));
-					variant.addModels(variant.partialState().with(DirectionalBlock.FACING, Direction.DOWN), new ConfiguredModel(modelFile, 90, 0, false));
-				}
-
-				for (var element : DataGenDefinitions.cubeBlocks) {
-					cubeAll(element.get());
-				}
-			}
-		});
-		generator.addProvider(event.includeClient(), new ItemModelProvider(output, SurgeofKhroma.MODID, fileHelper) {
-			@Override
-			protected void registerModels() {
-				for (var element : DataGenDefinitions.simpleItemBlocks)
-					simpleBlockItem(element.get().getBlock());
-
-				for (var element : DataGenDefinitions.simpleItems)
-					basicItem(element.get());
-
-				for (var element : DataGenDefinitions.handheldItems)
-					handheldItem(element.get());
-			}
-		});
-
-		generator.addProvider(event.includeServer(), new DatapackBuiltinEntriesProvider(output, lookupProvider, registrySet(), Set.of(SurgeofKhroma.MODID)));
-
-		var blockTags = new TagsDataGen.BlockTag(output, lookupProvider, fileHelper);
-		generator.addProvider(event.includeServer(), blockTags);
-		generator.addProvider(event.includeServer(), new TagsDataGen.ItemTag(output, lookupProvider, blockTags.contentsGetter(), fileHelper));
-		generator.addProvider(event.includeServer(), new TagsDataGen.DamageTypeTag(output, lookupProvider, fileHelper));
-
-		generator.addProvider(event.includeServer(), new LootTableProvider(output, Set.of(), List.of(new SubProviderEntry(BLootProvider::new, LootContextParamSets.BLOCK)), lookupProvider));
-
-		generator.addProvider(event.includeServer(), new RecipeDaraGen(output, lookupProvider));
-
-		generator.addProvider(event.includeServer(), new CuriosDataProvider(SurgeofKhroma.MODID, output, fileHelper, lookupProvider) {
-			@Override
-			public void generate(Provider registries, ExistingFileHelper fileHelper) {
-				createSlot("eyes").order(50).icon(SurgeofKhroma.resource("slot/empty_eyes_slot")).addValidator(ResourceLocation.fromNamespaceAndPath(CuriosApi.MODID, "tag"));
+			public void generate(Provider registries) {
+				createSlot("eyes").order(50).icon(SurgeofKhroma.resource("slot/empty_eyes_slot")).addValidator(CuriosResources.resource("tag"));
 				createEntities("player").addPlayer().addSlots("eyes");
 			}
 		});

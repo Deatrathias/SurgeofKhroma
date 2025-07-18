@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "minecraft:lever"
-    },
-    "X": {
-      "item": "surgeofkhroma:khroma_line"
-    },
-    "o": {
-      "item": "minecraft:dropper"
-    }
+    "#": "minecraft:lever",
+    "X": "surgeofkhroma:khroma_line",
+    "o": "minecraft:dropper"
   },
   "pattern": [
     "#Xo"

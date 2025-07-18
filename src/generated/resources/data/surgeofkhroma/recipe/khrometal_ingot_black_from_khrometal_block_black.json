@@ -3,9 +3,7 @@
   "category": "misc",
   "group": "khrometal_ingot_black",
   "ingredients": [
-    {
-      "item": "surgeofkhroma:khrometal_block_black"
-    }
+    "surgeofkhroma:khrometal_block_black"
   ],
   "result": {
     "count": 9,

@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "surgeofkhroma:raw_chromium"
-    }
+    "#": "surgeofkhroma:raw_chromium"
   },
   "pattern": [
     "###",

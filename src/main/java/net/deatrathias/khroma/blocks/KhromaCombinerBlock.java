@@ -5,6 +5,7 @@ import com.mojang.serialization.MapCodec;
 import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.blockentities.KhromaCombinerBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -14,7 +15,7 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -25,7 +26,7 @@ public class KhromaCombinerBlock extends BaseKhromaRelayBlock<KhromaCombinerBloc
 		super(properties);
 	}
 
-	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
 	public static final MapCodec<KhromaCombinerBlock> CODEC = simpleCodec(KhromaCombinerBlock::new);
 
@@ -35,7 +36,7 @@ public class KhromaCombinerBlock extends BaseKhromaRelayBlock<KhromaCombinerBloc
 	}
 
 	@Override
-	protected DirectionProperty getFacingProperty() {
+	protected EnumProperty<Direction> getFacingProperty() {
 		return FACING;
 	}
 

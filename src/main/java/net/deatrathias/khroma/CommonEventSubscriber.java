@@ -14,6 +14,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -23,7 +24,7 @@ import top.theillusivec4.curios.api.CuriosCapability;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 
-@EventBusSubscriber(modid = SurgeofKhroma.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = SurgeofKhroma.MODID)
 public final class CommonEventSubscriber {
 
 	@SubscribeEvent
@@ -77,5 +78,10 @@ public final class CommonEventSubscriber {
 				((KhrometalBlackBlock) RegistryReference.BLOCK_KHROMETAL_BLOCK_BLACK.get()).doTeleport(player.level(), player.getOnPos(), player, data.direction());
 			}
 		}));
+	}
+
+	@SubscribeEvent
+	private static void onDatapackSync(OnDatapackSyncEvent event) {
+		event.sendRecipes(RegistryReference.RECIPE_KHROMA_IMBUEMENT.get());
 	}
 }

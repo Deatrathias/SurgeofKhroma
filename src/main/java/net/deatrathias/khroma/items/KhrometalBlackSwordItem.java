@@ -2,17 +2,17 @@ package net.deatrathias.khroma.items;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup.RegistryLookup;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 
-public class KhrometalBlackSwordItem extends SwordItem {
+public class KhrometalBlackSwordItem extends Item {
 
-	public KhrometalBlackSwordItem(Tier p_tier, Properties p_properties) {
-		super(p_tier, p_properties);
+	public KhrometalBlackSwordItem(Properties properties) {
+		super(properties);
+
 	}
 
 	@Override

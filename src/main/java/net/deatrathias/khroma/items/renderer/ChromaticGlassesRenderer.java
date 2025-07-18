@@ -10,9 +10,10 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -25,20 +26,20 @@ public class ChromaticGlassesRenderer implements ICurioRenderer {
 	public static final ModelLayerLocation LAYER = new ModelLayerLocation(SurgeofKhroma.resource("chromatic_glasses"), "chromatic_glasses");
 
 	@Override
-	public <T extends LivingEntity, M extends EntityModel<T>> void render(ItemStack stack, SlotContext slotContext, PoseStack matrixStack, RenderLayerParent<T, M> renderLayerParent,
-			MultiBufferSource renderTypeBuffer, int light, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-		matrixStack.pushPose();
-		matrixStack.mulPose(Axis.YP.rotationDegrees(netHeadYaw));
-		matrixStack.mulPose(Axis.XP.rotationDegrees(headPitch));
-		matrixStack.scale(0.5f, 0.5f, 0.5f);
+	public <S extends LivingEntityRenderState, M extends EntityModel<? super S>> void render(ItemStack stack, SlotContext slotContext, PoseStack poseStack, MultiBufferSource renderTypeBuffer,
+			int packedLight, S renderState, RenderLayerParent<S, M> renderLayerParent, Context context, float yRotation, float xRotation) {
+
+		poseStack.pushPose();
+		poseStack.mulPose(Axis.YP.rotationDegrees(yRotation));
+		poseStack.mulPose(Axis.XP.rotationDegrees(xRotation));
+		poseStack.scale(0.5f, 0.5f, 0.5f);
 		VertexConsumer consumer = renderTypeBuffer.getBuffer(RenderType.entityTranslucent(SurgeofKhroma.resource("textures/item/chromatic_glasses.png")));
-		Pose pose = matrixStack.last();
-		consumer.addVertex(pose, -0.5f, -0.6875f, -0.6f).setUv(0, 0.3125f).setColor(0xFFFFFFFF).setLight(light).setNormal(pose, 0, 0, 1).setOverlay(OverlayTexture.NO_OVERLAY);
-		consumer.addVertex(pose, -0.5f, 0f, -0.6f).setUv(0, 1).setColor(0xFFFFFFFF).setLight(light).setNormal(pose, 0, 0, 1).setOverlay(OverlayTexture.NO_OVERLAY);
-		consumer.addVertex(pose, 0.5f, 0f, -0.6f).setUv(1, 1).setColor(0xFFFFFFFF).setLight(light).setNormal(pose, 0, 0, 1).setOverlay(OverlayTexture.NO_OVERLAY);
-		consumer.addVertex(pose, 0.5f, -0.6875f, -0.6f).setUv(1, 0.3125f).setColor(0xFFFFFFFF).setLight(light).setNormal(pose, 0, 0, 1).setOverlay(OverlayTexture.NO_OVERLAY);
+		Pose pose = poseStack.last();
+		consumer.addVertex(pose, -0.5f, -0.6875f, -0.6f).setUv(0, 0.3125f).setColor(0xFFFFFFFF).setLight(packedLight).setNormal(pose, 0, 0, 1).setOverlay(OverlayTexture.NO_OVERLAY);
+		consumer.addVertex(pose, -0.5f, 0f, -0.6f).setUv(0, 1).setColor(0xFFFFFFFF).setLight(packedLight).setNormal(pose, 0, 0, 1).setOverlay(OverlayTexture.NO_OVERLAY);
+		consumer.addVertex(pose, 0.5f, 0f, -0.6f).setUv(1, 1).setColor(0xFFFFFFFF).setLight(packedLight).setNormal(pose, 0, 0, 1).setOverlay(OverlayTexture.NO_OVERLAY);
+		consumer.addVertex(pose, 0.5f, -0.6875f, -0.6f).setUv(1, 0.3125f).setColor(0xFFFFFFFF).setLight(packedLight).setNormal(pose, 0, 0, 1).setOverlay(OverlayTexture.NO_OVERLAY);
 
-		matrixStack.popPose();
+		poseStack.popPose();
 	}
-
 }

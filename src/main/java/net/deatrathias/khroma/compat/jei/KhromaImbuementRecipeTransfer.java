@@ -6,11 +6,11 @@ import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
-import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.transfer.IRecipeTransferError;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandlerHelper;
 import mezz.jei.api.recipe.transfer.IRecipeTransferInfo;
+import mezz.jei.api.recipe.types.IRecipeHolderType;
 import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.gui.KhromaImbuerMenu;
 import net.deatrathias.khroma.khroma.Khroma;
@@ -23,19 +23,19 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 
 public class KhromaImbuementRecipeTransfer implements IRecipeTransferHandler<KhromaImbuerMenu, RecipeHolder<KhromaImbuementRecipe>> {
 
-	private RecipeType<RecipeHolder<KhromaImbuementRecipe>> recipeType;
+	private IRecipeHolderType<KhromaImbuementRecipe> recipeType;
 
 	private IRecipeTransferHandlerHelper helper;
 
 	private IRecipeTransferHandler<KhromaImbuerMenu, RecipeHolder<KhromaImbuementRecipe>> defaultHander;
 
-	public KhromaImbuementRecipeTransfer(RecipeType<RecipeHolder<KhromaImbuementRecipe>> recipeType, IRecipeTransferHandlerHelper helper) {
+	public KhromaImbuementRecipeTransfer(IRecipeHolderType<KhromaImbuementRecipe> recipeType, IRecipeTransferHandlerHelper helper) {
 		this.recipeType = recipeType;
 		this.helper = helper;
 		IRecipeTransferInfo<KhromaImbuerMenu, RecipeHolder<KhromaImbuementRecipe>> info = new IRecipeTransferInfo<KhromaImbuerMenu, RecipeHolder<KhromaImbuementRecipe>>() {
 
 			@Override
-			public RecipeType<RecipeHolder<KhromaImbuementRecipe>> getRecipeType() {
+			public IRecipeHolderType<KhromaImbuementRecipe> getRecipeType() {
 				return recipeType;
 			}
 
@@ -78,7 +78,7 @@ public class KhromaImbuementRecipeTransfer implements IRecipeTransferHandler<Khr
 	}
 
 	@Override
-	public RecipeType<RecipeHolder<KhromaImbuementRecipe>> getRecipeType() {
+	public IRecipeHolderType<KhromaImbuementRecipe> getRecipeType() {
 		return recipeType;
 	}
 

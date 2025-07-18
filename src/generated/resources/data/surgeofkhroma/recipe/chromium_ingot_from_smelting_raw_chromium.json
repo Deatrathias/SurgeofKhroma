@@ -4,9 +4,7 @@
   "cookingtime": 200,
   "experience": 0.7,
   "group": "chromium_ingot",
-  "ingredient": {
-    "item": "surgeofkhroma:raw_chromium"
-  },
+  "ingredient": "surgeofkhroma:raw_chromium",
   "result": {
     "count": 1,
     "id": "surgeofkhroma:chromium_ingot"

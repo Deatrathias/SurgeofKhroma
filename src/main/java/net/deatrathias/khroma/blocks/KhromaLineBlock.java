@@ -22,8 +22,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,7 +36,9 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock {
 
@@ -50,12 +54,23 @@ public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock
 	public static final KhromaProperty KHROMA = KhromaProperty.create("khroma");
 
 	public KhromaLineBlock(Properties properties) {
-		super(0.125f, properties);
-		for (int i = 0; i < shapeByIndex.length; i++)
-			shapeByIndex[i] = Shapes.or(shapeByIndex[i], Block.box(5, 5, 5, 11, 11, 11));
+		super(4f, properties);
 
-		registerDefaultState(stateDefinition.any().setValue(KHROMA, 0).setValue(NORTH, false).setValue(SOUTH, false).setValue(EAST, false).setValue(WEST, false).setValue(UP, false)
-				.setValue(DOWN, false).setValue(WATERLOGGED, false));
+		registerDefaultState(stateDefinition
+				.any()
+				.setValue(KHROMA, Khroma.empty())
+				.setValue(NORTH, false)
+				.setValue(SOUTH, false)
+				.setValue(EAST, false)
+				.setValue(WEST, false)
+				.setValue(UP, false)
+				.setValue(DOWN, false)
+				.setValue(WATERLOGGED, false));
+	}
+
+	@Override
+	protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+		return Shapes.or(super.getShape(state, level, pos, context), cube(6));
 	}
 
 	@Override
@@ -102,7 +117,8 @@ public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock
 	}
 
 	@Override
-	protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess scheduledTickAccess, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState,
+			RandomSource random) {
 		BooleanProperty sideProperty = PROPERTY_BY_DIRECTION.get(direction);
 
 		boolean connected = state.getValue(sideProperty);
@@ -121,9 +137,9 @@ public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock
 	}
 
 	@Override
-	protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+	protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
 		if (!level.isClientSide) {
-			dirtyNetwork(newState, level, pos, state);
+			dirtyNetwork(Blocks.AIR.defaultBlockState(), level, pos, state);
 		}
 	}
 
@@ -156,8 +172,8 @@ public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock
 	@Override
 	protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		Khroma khroma = KhromaNetwork.getKhromaAtPos(level, pos);
-		if (state.getValue(KHROMA) != khroma.asInt())
-			level.setBlockAndUpdate(pos, state.setValue(KHROMA, khroma.asInt()));
+		if (state.getValue(KHROMA) != khroma)
+			level.setBlockAndUpdate(pos, state.setValue(KHROMA, khroma));
 	}
 
 	@Override
@@ -167,11 +183,11 @@ public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock
 		var network = KhromaNetwork.findNetwork(level, new BlockDirection(pos, null));
 		if (network != null)
 			network.debugNetwork();
-		return InteractionResult.sidedSuccess(level.isClientSide);
+		return InteractionResult.PASS;
 	}
 
 	@Override
-	protected boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
+	protected boolean propagatesSkylightDown(BlockState state) {
 		return !state.getValue(WATERLOGGED);
 	}
 

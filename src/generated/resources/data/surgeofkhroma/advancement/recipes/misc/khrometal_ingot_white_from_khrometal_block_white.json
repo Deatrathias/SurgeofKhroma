@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:khrometal_ingot_white_from_khrometal_block_white"
+        "recipe": "surgeofkhroma:khrometal_ingot_white_from_khrometal_block_white"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

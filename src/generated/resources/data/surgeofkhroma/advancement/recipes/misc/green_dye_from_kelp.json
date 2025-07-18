@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:green_dye_from_kelp"
+        "recipe": "surgeofkhroma:green_dye_from_kelp"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

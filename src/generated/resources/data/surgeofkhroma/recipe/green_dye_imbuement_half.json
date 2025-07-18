@@ -1,8 +1,6 @@
 {
   "type": "surgeofkhroma:khroma_imbuement",
-  "ingredient": {
-    "tag": "surgeofkhroma:converts_to_dye/green/half"
-  },
+  "ingredient": "#surgeofkhroma:converts_to_dye/green/half",
   "khroma": "green",
   "khromacost": 1250.0,
   "result": {

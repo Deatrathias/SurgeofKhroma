@@ -47,8 +47,8 @@ public class KhromaNode implements INBTSerializable<CompoundTag> {
 
 	@Override
 	public void deserializeNBT(Provider provider, CompoundTag nbt) {
-		khroma = Khroma.fromInt(nbt.getInt("khroma"));
-		level = nbt.getInt("level");
-		position = BlockPos.of(nbt.getLong("position"));
+		khroma = Khroma.fromInt(nbt.getInt("khroma").orElse(0));
+		level = nbt.getInt("level").orElse(1);
+		position = BlockPos.of(nbt.getLong("position").orElse(0L));
 	}
 }
