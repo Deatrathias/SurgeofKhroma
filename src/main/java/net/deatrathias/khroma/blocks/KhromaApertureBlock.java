@@ -1,5 +1,7 @@
 package net.deatrathias.khroma.blocks;
 
+import java.util.function.Function;
+
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.serialization.MapCodec;
@@ -20,6 +22,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class KhromaApertureBlock extends BaseKhromaRelayBlock<KhromaApertureBlockEntity> implements EntityBlock {
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
@@ -41,13 +44,9 @@ public class KhromaApertureBlock extends BaseKhromaRelayBlock<KhromaApertureBloc
 	}
 
 	@Override
-	protected void makeShapes() {
-		shapesPerIndex[0] = Shapes.or(Block.box(5, 7, 5, 11, 16, 11), Block.box(6, 0, 6, 10, 7, 10));
-		shapesPerIndex[1] = Shapes.or(Block.box(5, 0, 5, 11, 9, 11), Block.box(6, 9, 6, 10, 16, 10));
-		shapesPerIndex[2] = Shapes.or(Block.box(5, 5, 7, 11, 11, 16), Block.box(6, 6, 0, 10, 10, 7));
-		shapesPerIndex[3] = Shapes.or(Block.box(5, 5, 0, 11, 11, 9), Block.box(6, 6, 9, 10, 10, 16));
-		shapesPerIndex[4] = Shapes.or(Block.box(7, 5, 5, 16, 11, 11), Block.box(0, 6, 6, 7, 10, 10));
-		shapesPerIndex[5] = Shapes.or(Block.box(0, 5, 5, 9, 11, 11), Block.box(9, 6, 6, 16, 10, 10));
+	protected Function<BlockState, VoxelShape> makeShapes() {
+		var map = Shapes.rotateAll(Shapes.or(Block.box(5, 5, 7, 11, 11, 16), Block.box(6, 6, 0, 10, 10, 7)));
+		return getShapeForEachState(state -> map.get(state.getValue(FACING)));
 	}
 
 	@Override

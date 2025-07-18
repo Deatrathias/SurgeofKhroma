@@ -1,5 +1,7 @@
 package net.deatrathias.khroma.blocks;
 
+import java.util.function.Function;
+
 import com.mojang.serialization.MapCodec;
 
 import net.deatrathias.khroma.RegistryReference;
@@ -19,6 +21,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class KhromaCombinerBlock extends BaseKhromaRelayBlock<KhromaCombinerBlockEntity> implements EntityBlock {
 
@@ -41,13 +44,9 @@ public class KhromaCombinerBlock extends BaseKhromaRelayBlock<KhromaCombinerBloc
 	}
 
 	@Override
-	protected void makeShapes() {
-		shapesPerIndex[0] = null;
-		shapesPerIndex[1] = null;
-		shapesPerIndex[2] = Shapes.or(Block.box(0, 4, 4, 16, 12, 12), Block.box(6, 6, 0, 10, 10, 4));
-		shapesPerIndex[3] = Shapes.or(Block.box(0, 4, 4, 16, 12, 12), Block.box(6, 6, 12, 10, 10, 16));
-		shapesPerIndex[4] = Shapes.or(Block.box(4, 4, 0, 12, 12, 16), Block.box(0, 6, 6, 4, 10, 10));
-		shapesPerIndex[5] = Shapes.or(Block.box(4, 4, 0, 12, 12, 16), Block.box(12, 6, 6, 16, 10, 10));
+	protected Function<BlockState, VoxelShape> makeShapes() {
+		var map = Shapes.rotateHorizontal(Shapes.or(Block.box(0, 4, 4, 16, 12, 12), Block.box(6, 6, 0, 10, 10, 4)));
+		return getShapeForEachState(state -> map.get(state.getValue(FACING)));
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package net.deatrathias.khroma.blocks;
 
+import java.util.function.Function;
+
 import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.blockentities.BaseKhromaUserBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -30,13 +32,13 @@ public abstract class BaseKhromaRelayBlock<T extends BaseKhromaUserBlockEntity> 
 
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
+	private final Function<BlockState, VoxelShape> shapes;
+
 	protected BaseKhromaRelayBlock(Properties properties) {
 		super(properties);
-		makeShapes();
+		shapes = makeShapes();
 		registerDefaultState(stateDefinition.any().setValue(getFacingProperty(), Direction.SOUTH).setValue(WATERLOGGED, false));
 	}
-
-	protected final VoxelShape[] shapesPerIndex = new VoxelShape[6];
 
 	protected abstract EnumProperty<Direction> getFacingProperty();
 
@@ -47,10 +49,10 @@ public abstract class BaseKhromaRelayBlock<T extends BaseKhromaUserBlockEntity> 
 
 	@Override
 	protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		return shapesPerIndex[state.getValue(getFacingProperty()).get3DDataValue()];
+		return shapes.apply(state);
 	}
 
-	protected abstract void makeShapes();
+	protected abstract Function<BlockState, VoxelShape> makeShapes();
 
 	@Override
 	protected boolean propagatesSkylightDown(BlockState state) {

@@ -48,7 +48,7 @@ public class KromaLineBlockItem extends BlockItem {
 	}
 
 	private boolean connectLine(Level level, BlockState state, BlockPos pos, Direction side, Player player) {
-		if (KhromaLineBlock.canSideConnect(level, state, pos, side)) {
+		if (!state.getValue(KhromaLineBlock.PROPERTY_BY_DIRECTION.get(side)) && KhromaLineBlock.canSideConnect(level, state, pos, side)) {
 			level.setBlockAndUpdate(pos, state.setValue(KhromaLineBlock.PROPERTY_BY_DIRECTION.get(side), true));
 
 			SoundType soundtype = state.getSoundType(level, pos, player);
