@@ -68,6 +68,7 @@ public final class Khroma implements Comparable<Khroma>, Serializable, StringRep
 			khromaInstances[i] = new Khroma(i);
 	}
 
+	public static final Khroma KHROMA_EMPTY = khromaInstances[0];
 	public static final Khroma KHROMA_RED = khromaInstances[FLAG_KHROMA_RED];
 	public static final Khroma KHROMA_GREEN = khromaInstances[FLAG_KHROMA_GREEN];
 	public static final Khroma KHROMA_BLUE = khromaInstances[FLAG_KHROMA_BLUE];
@@ -98,10 +99,6 @@ public final class Khroma implements Comparable<Khroma>, Serializable, StringRep
 			khromaValue |= FLAG_KHROMA_BLACK;
 
 		return khromaInstances[khromaValue];
-	}
-
-	public static Khroma empty() {
-		return khromaInstances[0];
 	}
 
 	public static List<Khroma> allKhroma() {
@@ -211,13 +208,13 @@ public final class Khroma implements Comparable<Khroma>, Serializable, StringRep
 			i++;
 		}
 
-		return new Khroma[] { empty(), empty() };
+		return new Khroma[] { KHROMA_EMPTY, KHROMA_EMPTY };
 	}
 
 	public Khroma[] separate() {
 		int count = countColors();
 		if (count <= 1)
-			return new Khroma[] { this, empty() };
+			return new Khroma[] { this, KHROMA_EMPTY };
 
 		count = Math.ceilDiv(count, 2);
 

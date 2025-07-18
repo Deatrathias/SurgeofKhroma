@@ -58,7 +58,7 @@ public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock
 
 		registerDefaultState(stateDefinition
 				.any()
-				.setValue(KHROMA, Khroma.empty())
+				.setValue(KHROMA, Khroma.KHROMA_EMPTY)
 				.setValue(NORTH, false)
 				.setValue(SOUTH, false)
 				.setValue(EAST, false)

@@ -106,7 +106,7 @@ public class KhromaImbuerBlockEntity extends BaseKhromaConsumerBlockEntity imple
 		effectiveRate = 0;
 
 		RecipeHolder<KhromaImbuementRecipe> recipe = null;
-		if (khroma != Khroma.empty() && !items.get(SLOT_INPUT).isEmpty()) {
+		if (khroma != Khroma.KHROMA_EMPTY && !items.get(SLOT_INPUT).isEmpty()) {
 			var recipeFound = quickCheck.getRecipeFor(new ItemKhromaRecipeInput(items.get(SLOT_INPUT), khroma), (ServerLevel) level);
 			if (recipeFound.isPresent())
 				recipe = recipeFound.get();

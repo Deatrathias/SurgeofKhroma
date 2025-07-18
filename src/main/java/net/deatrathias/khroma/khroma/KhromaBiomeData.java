@@ -84,7 +84,7 @@ public class KhromaBiomeData implements INBTSerializable<CompoundTag> {
 
 		BlockPos nodePos = new BlockPos(chunkPos.getMiddleBlockX(), height + 4, chunkPos.getMiddleBlockZ());
 		Khroma color = determineColor(chunk.getNoiseBiome(nodePos.getX() / 4, nodePos.getY() / 4, nodePos.getZ() / 4), nodePos, random);
-		if (color != Khroma.empty())
+		if (color != Khroma.KHROMA_EMPTY)
 			node = new KhromaNode(nodePos, color, 1);
 		SurgeofKhroma.LOGGER.debug("seed " + seed + " chunk x " + chunkPos.x + " z " + chunkPos.z);
 		generated = true;
@@ -132,7 +132,7 @@ public class KhromaBiomeData implements INBTSerializable<CompoundTag> {
 		SurgeofKhroma.LOGGER.debug(colorValues[0] + " " + colorValues[1] + " " + colorValues[2] + " " + colorValues[3] + " " + colorValues[4]);
 		int color1 = findRandomValue(colorValues, random);
 		if (color1 == -1)
-			return Khroma.empty();
+			return Khroma.KHROMA_EMPTY;
 
 		int color2 = findRandomValue(colorValues, random);
 

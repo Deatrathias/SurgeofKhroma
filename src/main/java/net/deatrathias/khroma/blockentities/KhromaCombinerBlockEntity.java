@@ -71,10 +71,10 @@ public class KhromaCombinerBlockEntity extends BaseKhromaUserBlockEntity impleme
 		KhromaNetwork networkFromConsumer0 = KhromaNetwork.findNetwork(level, new BlockDirection(worldPosition, facing.getClockWise()));
 		KhromaNetwork networkFromConsumer1 = KhromaNetwork.findNetwork(level, new BlockDirection(worldPosition, facing.getCounterClockWise()));
 
-		Khroma khroma0 = networkFromConsumer0 == null ? Khroma.empty() : networkFromConsumer0.getKhroma();
-		Khroma khroma1 = networkFromConsumer1 == null ? Khroma.empty() : networkFromConsumer1.getKhroma();
+		Khroma khroma0 = networkFromConsumer0 == null ? Khroma.KHROMA_EMPTY : networkFromConsumer0.getKhroma();
+		Khroma khroma1 = networkFromConsumer1 == null ? Khroma.KHROMA_EMPTY : networkFromConsumer1.getKhroma();
 
-		if (khroma0 == Khroma.empty()) {
+		if (khroma0 == Khroma.KHROMA_EMPTY) {
 			if (inputIndex == 0) {
 				request0 = 0;
 				return 0;
@@ -82,7 +82,7 @@ public class KhromaCombinerBlockEntity extends BaseKhromaUserBlockEntity impleme
 				request1 = 1;
 				return networkFromProvider.getRequest();
 			}
-		} else if (khroma1 == Khroma.empty()) {
+		} else if (khroma1 == Khroma.KHROMA_EMPTY) {
 			if (inputIndex == 1) {
 				request1 = 0;
 				return 0;

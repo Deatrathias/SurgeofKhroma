@@ -75,7 +75,7 @@ public class KhromaSeparatorBlockEntity extends BaseKhromaUserBlockEntity implem
 		if (networkFromConsumer == null)
 			return 0;
 		Khroma khroma = networkFromConsumer.getKhroma();
-		if (khroma == Khroma.empty())
+		if (khroma == Khroma.KHROMA_EMPTY)
 			return 0;
 
 		int colors = khroma.countColors();

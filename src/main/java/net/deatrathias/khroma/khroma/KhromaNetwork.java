@@ -69,8 +69,8 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 		consumers = new HashSet<BlockDirection>();
 		relays = new HashSet<BlockDirection>();
 		relaysTo = new HashSet<BlockDirection>();
-		khromaContent = new KhromaThroughput(Khroma.empty(), 0);
-		khroma = Khroma.empty();
+		khromaContent = new KhromaThroughput(Khroma.KHROMA_EMPTY, 0);
+		khroma = Khroma.KHROMA_EMPTY;
 		this.level = level;
 		if (networksPerLevel.containsKey(level)) {
 			networksPerLevel.get(level).add(this);
@@ -176,7 +176,7 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 	public void update() {
 		Khroma previousKhroma = khromaContent.getKhroma();
 
-		khromaContent = new KhromaThroughput(Khroma.empty(), 0);
+		khromaContent = new KhromaThroughput(Khroma.KHROMA_EMPTY, 0);
 		for (BlockDirection providerPos : providers) {
 			IKhromaProvider provider = level.getCapability(RegistryReference.KHROMA_PROVIDER_BLOCK, providerPos.getPos(), providerPos.getDirection());
 
@@ -312,9 +312,9 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 	public static Khroma getKhromaAtPos(Level level, BlockPos pos) {
 		var networks = networksPerLevel.get(level);
 		if (networks == null)
-			return Khroma.empty();
+			return Khroma.KHROMA_EMPTY;
 
-		Khroma result = Khroma.empty();
+		Khroma result = Khroma.KHROMA_EMPTY;
 		boolean found = false;
 		for (var network : networks) {
 			if (network.lines.contains(pos)) {

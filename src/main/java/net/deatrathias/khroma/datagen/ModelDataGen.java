@@ -1,34 +1,59 @@
 package net.deatrathias.khroma.datagen;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
+import com.google.common.collect.ImmutableMap;
+
+import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
+import net.deatrathias.khroma.blocks.KhromaLineBlock;
+import net.deatrathias.khroma.khroma.Khroma;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
+import net.minecraft.client.data.models.MultiVariant;
+import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.renderer.block.model.VariantMutator;
+import net.minecraft.client.renderer.block.model.multipart.CombinedCondition;
+import net.minecraft.client.renderer.block.model.multipart.CombinedCondition.Operation;
+import net.minecraft.client.renderer.item.BlockModelWrapper;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
 public class ModelDataGen extends ModelProvider {
+	public static final Map<Direction, VariantMutator> MULTIFACE_GENERATOR_NO_LOCK = ImmutableMap.of(
+			Direction.NORTH,
+			BlockModelGenerators.NOP,
+			Direction.EAST,
+			BlockModelGenerators.Y_ROT_90,
+			Direction.SOUTH,
+			BlockModelGenerators.Y_ROT_180,
+			Direction.WEST,
+			BlockModelGenerators.Y_ROT_270,
+			Direction.UP,
+			BlockModelGenerators.X_ROT_270,
+			Direction.DOWN,
+			BlockModelGenerators.X_ROT_90);
 
 	public ModelDataGen(PackOutput output) {
 		super(output, SurgeofKhroma.MODID);
 	}
 
-	@Override
-	protected Stream<? extends Holder<Block>> getKnownBlocks() {
+	protected Stream<? extends Holder<Block>> getKnownBlocksa() {
 		List<String> ignored = List.of("khroma_line");
 		return super.getKnownBlocks().filter(holder -> !ignored.contains(holder.getKey().location().getPath()));
 	}
 
-	@Override
-	protected Stream<? extends Holder<Item>> getKnownItems() {
+	protected Stream<? extends Holder<Item>> getKnownItemsa() {
 		List<String> ignored = List.of("khroma_line");
 		return super.getKnownItems().filter(holder -> !ignored.contains(holder.getKey().location().getPath()));
 	}
@@ -54,17 +79,82 @@ public class ModelDataGen extends ModelProvider {
 					MultiVariantGenerator.dispatch(element.get(), BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(element.get()))).with(BlockModelGenerators.ROTATION_FACING));
 		}
 
-		// for (var element : DataGenDefinitions.simpleItemBlocks)
-		// itemModels. (element.get().getBlock());
-
 		for (var element : DataGenDefinitions.simpleItems)
 			itemModels.generateFlatItem(element.get(), ModelTemplates.FLAT_ITEM);
 
 		for (var element : DataGenDefinitions.handheldItems)
 			itemModels.generateFlatItem(element.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+
+		registerKhromaLine(blockModels, itemModels);
 	}
 
 	private void registerKhromaLine(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
+		var notEmptyCondition = BlockModelGenerators.condition().negatedTerm(KhromaLineBlock.KHROMA, Khroma.KHROMA_EMPTY).build();
+		var notSpectrumCondition = BlockModelGenerators.condition().negatedTerm(KhromaLineBlock.KHROMA, Khroma.KHROMA_SPECTRUM).build();
+		var notLightSpectrumCondition = BlockModelGenerators.condition().negatedTerm(KhromaLineBlock.KHROMA, Khroma.KHROMA_LIGHT_SPECTRUM).build();
+		var notDarkSpectrumCondition = BlockModelGenerators.condition().negatedTerm(KhromaLineBlock.KHROMA, Khroma.KHROMA_DARK_SPECTRUM).build();
+		var notKhromegaCondition = BlockModelGenerators.condition().negatedTerm(KhromaLineBlock.KHROMA, Khroma.KHROMA_KHROMEGA).build();
+		var spectrumCondition = BlockModelGenerators.condition().term(KhromaLineBlock.KHROMA, Khroma.KHROMA_SPECTRUM).build();
+		var lightSpectrumCondition = BlockModelGenerators.condition().term(KhromaLineBlock.KHROMA, Khroma.KHROMA_LIGHT_SPECTRUM).build();
+		var darkSpectrumCondition = BlockModelGenerators.condition().term(KhromaLineBlock.KHROMA, Khroma.KHROMA_DARK_SPECTRUM).build();
+		var khromegaCondition = BlockModelGenerators.condition().term(KhromaLineBlock.KHROMA, Khroma.KHROMA_KHROMEGA).build();
 
+		var multipart = MultiPartGenerator.multiPart(RegistryReference.BLOCK_KHROMA_LINE.get())
+				.with(BlockModelGenerators.plainVariant(SurgeofKhroma.resource("block/khroma_line_center")))
+				.with(new CombinedCondition(Operation.AND, List.of(
+						notEmptyCondition,
+						notSpectrumCondition,
+						notLightSpectrumCondition,
+						notDarkSpectrumCondition,
+						notKhromegaCondition)),
+						plain("block/khroma_line_center_inside"))
+				.with(spectrumCondition,
+						plain("block/khroma_line_center_inside_spectrum"))
+				.with(lightSpectrumCondition,
+						plain("block/khroma_line_center_inside_spectrum_white"))
+				.with(darkSpectrumCondition,
+						plain("block/khroma_line_center_inside_spectrum_black"))
+				.with(khromegaCondition,
+						plain("block/khroma_line_center_inside_khromega"));
+
+		for (Direction direction : Direction.values()) {
+			var directionVariant = MULTIFACE_GENERATOR_NO_LOCK.get(direction);
+			var directionCondition = BlockModelGenerators.condition().term(KhromaLineBlock.PROPERTY_BY_DIRECTION.get(direction), true).build();
+			multipart
+					.with(directionCondition,
+							plain("block/khroma_line_side").with(directionVariant))
+					.with(new CombinedCondition(Operation.AND, List.of(
+							directionCondition,
+							notEmptyCondition,
+							notSpectrumCondition,
+							notLightSpectrumCondition,
+							notDarkSpectrumCondition,
+							notKhromegaCondition)),
+							plain("block/khroma_line_side_inside").with(directionVariant))
+					.with(new CombinedCondition(Operation.AND, List.of(
+							directionCondition,
+							spectrumCondition)),
+							plain("block/khroma_line_side_inside_spectrum").with(directionVariant))
+					.with(new CombinedCondition(Operation.AND, List.of(
+							directionCondition,
+							lightSpectrumCondition)),
+							plain("block/khroma_line_side_inside_spectrum_white").with(directionVariant))
+					.with(new CombinedCondition(Operation.AND, List.of(
+							directionCondition,
+							darkSpectrumCondition)),
+							plain("block/khroma_line_side_inside_spectrum_black").with(directionVariant))
+					.with(new CombinedCondition(Operation.AND, List.of(
+							directionCondition,
+							khromegaCondition)),
+							plain("block/khroma_line_side_inside_khromega").with(directionVariant));
+		}
+
+		blockModels.blockStateOutput.accept(multipart);
+
+		itemModels.itemModelOutput.accept(RegistryReference.ITEM_BLOCK_KHROMA_LINE.get(), new BlockModelWrapper.Unbaked(SurgeofKhroma.resource("item/khroma_line"), Collections.emptyList()));
+	}
+
+	private MultiVariant plain(String path) {
+		return BlockModelGenerators.plainVariant(SurgeofKhroma.resource(path));
 	}
 }

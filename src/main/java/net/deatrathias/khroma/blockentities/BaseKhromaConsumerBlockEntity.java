@@ -47,7 +47,7 @@ public abstract class BaseKhromaConsumerBlockEntity extends BaseKhromaUserBlockE
 		if (network != null)
 			return network.getKhroma();
 
-		return Khroma.empty();
+		return Khroma.KHROMA_EMPTY;
 	}
 
 	public abstract float getSoftLimit();
