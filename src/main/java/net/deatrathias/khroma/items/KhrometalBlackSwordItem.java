@@ -10,11 +10,11 @@ import net.minecraft.world.item.enchantment.ItemEnchantments;
 
 public class KhrometalBlackSwordItem extends Item {
 
-	public KhrometalBlackSwordItem(Properties p_properties) {
-		super(p_properties);
+	public KhrometalBlackSwordItem(Properties properties) {
+		super(properties);
+
 	}
 
-	// FIXME
 	@Override
 	public int getEnchantmentLevel(ItemStack stack, Holder<Enchantment> enchantment) {
 		int result = super.getEnchantmentLevel(stack, enchantment);

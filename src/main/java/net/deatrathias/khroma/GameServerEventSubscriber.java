@@ -3,6 +3,11 @@ package net.deatrathias.khroma;
 import net.deatrathias.khroma.entities.KhromaNodeEntity;
 import net.deatrathias.khroma.khroma.KhromaNetwork;
 import net.deatrathias.khroma.khroma.KhromaNode;
+import net.minecraft.core.Holder;
+import net.minecraft.network.protocol.game.ClientboundSoundEntityPacket;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -52,8 +57,11 @@ public class GameServerEventSubscriber {
 				while (iter.hasNext()) {
 					var drop = iter.next();
 					drop.setNoPickUpDelay();
+					int count = drop.getItem().getCount();
 					drop.playerTouch(player);
-
+					if (drop.isRemoved() || drop.getItem().getCount() != count)
+						((ServerPlayer) player).connection.send(new ClientboundSoundEntityPacket(Holder.direct(SoundEvents.ITEM_PICKUP), SoundSource.PLAYERS, player, 0.2f,
+								(player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 1.4F + 2.0F, 0));
 					if (drop.isRemoved())
 						iter.remove();
 					else
@@ -71,7 +79,11 @@ public class GameServerEventSubscriber {
 				while (iter.hasNext()) {
 					var drop = iter.next();
 					drop.setNoPickUpDelay();
+					int count = drop.getItem().getCount();
 					drop.playerTouch(player);
+					if (drop.isRemoved() || drop.getItem().getCount() != count)
+						((ServerPlayer) player).connection.send(new ClientboundSoundEntityPacket(Holder.direct(SoundEvents.ITEM_PICKUP), SoundSource.PLAYERS, player, 0.2f,
+								(player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 1.4F + 2.0F, 0));
 					if (drop.isRemoved())
 						iter.remove();
 					else

@@ -38,6 +38,7 @@ import net.deatrathias.khroma.khroma.KhromaBiomeData;
 import net.deatrathias.khroma.recipes.KhromaImbuementRecipe;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -231,16 +232,15 @@ public class RegistryReference {
 			props -> new KhrometalGreenToolItem(props.pickaxe(GREEN_KHROMETAL_TIER, 1, -2f)));
 	public static final DeferredItem<Item> ITEM_KHROMETAL_BLUE_PICKAXE = ITEMS.registerItem("khrometal_blue_pickaxe", props -> new Item(props.pickaxe(BLUE_KHROMETAL_TIER, 1, 0)));
 	public static final DeferredItem<Item> ITEM_KHROMETAL_WHITE_PICKAXE = ITEMS.registerItem("khrometal_white_pickaxe",
-			props -> new KhrometalWhitePickaxeItem(props.pickaxe(WHITE_KHROMETAL_TIER, 1, -2f).attributes(ItemAttributeModifiers.builder()
-					.add(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(SurgeofKhroma.resource("white_khrometal_bonus"), 4, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND).build())));
+			props -> new KhrometalWhitePickaxeItem(addAttributeModifer(props.pickaxe(WHITE_KHROMETAL_TIER, 1, -2f), Attributes.ATTACK_KNOCKBACK,
+					new AttributeModifier(SurgeofKhroma.resource("white_khrometal_bonus"), 4, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)));
 
 	public static final DeferredItem<Item> ITEM_KHROMETAL_BLACK_SWORD = ITEMS.registerItem("khrometal_black_sword",
-			props -> new KhrometalBlackSwordItem(props.sword(BLACK_KHROMETAL_TIER, 3, -2.4f).attributes(
-					ItemAttributeModifiers.builder()
-							.add(ATTRIBUTE_TELEPORT_DROPS, new AttributeModifier(SurgeofKhroma.resource("black_khrometal_bonus"), 1, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND).build())));
+			props -> new KhrometalBlackSwordItem(addAttributeModifer(props.sword(BLACK_KHROMETAL_TIER, 3, -2.4f), ATTRIBUTE_TELEPORT_DROPS,
+					new AttributeModifier(SurgeofKhroma.resource("black_khrometal_bonus"), 1, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)));
 	public static final DeferredItem<Item> ITEM_KHROMETAL_BLACK_PICKAXE = ITEMS.registerItem("khrometal_black_pickaxe",
-			props -> new KhrometalBlackPickaxeItem(props.pickaxe(BLACK_KHROMETAL_TIER, 1, -2f).attributes(ItemAttributeModifiers.builder()
-					.add(ATTRIBUTE_TELEPORT_DROPS, new AttributeModifier(SurgeofKhroma.resource("black_khrometal_bonus"), 1, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND).build())));
+			props -> new KhrometalBlackPickaxeItem(addAttributeModifer(props.pickaxe(BLACK_KHROMETAL_TIER, 1, -2f), ATTRIBUTE_TELEPORT_DROPS,
+					new AttributeModifier(SurgeofKhroma.resource("black_khrometal_bonus"), 1, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)));
 
 	/**
 	 * 
@@ -348,5 +348,10 @@ public class RegistryReference {
 
 	private static Item.Properties itemProps(ResourceLocation registryName) {
 		return new Properties().setId(ResourceKey.create(Registries.ITEM, registryName));
+	}
+
+	public static Item.Properties addAttributeModifer(Item.Properties props, Holder<Attribute> attribute, AttributeModifier modifier, EquipmentSlotGroup slot) {
+		ItemAttributeModifiers attributes = (ItemAttributeModifiers) props.components.map.get(DataComponents.ATTRIBUTE_MODIFIERS);
+		return props.attributes(attributes.withModifierAdded(attribute, modifier, slot));
 	}
 }

@@ -20,6 +20,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
@@ -35,6 +36,9 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock {
 
@@ -51,9 +55,6 @@ public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock
 
 	public KhromaLineBlock(Properties properties) {
 		super(4f, properties);
-		// TODO: fix shape
-		// for (int i = 0; i < shapeByIndex.length; i++)
-		// shapeByIndex[i] = Shapes.or(shapeByIndex[i], Block.box(5, 5, 5, 11, 11, 11));
 
 		registerDefaultState(stateDefinition
 				.any()
@@ -65,6 +66,11 @@ public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock
 				.setValue(UP, false)
 				.setValue(DOWN, false)
 				.setValue(WATERLOGGED, false));
+	}
+
+	@Override
+	protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+		return Shapes.or(super.getShape(state, level, pos, context), cube(6));
 	}
 
 	@Override
