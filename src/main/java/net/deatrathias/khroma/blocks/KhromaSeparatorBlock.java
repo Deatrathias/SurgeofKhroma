@@ -43,7 +43,7 @@ public class KhromaSeparatorBlock extends BaseKhromaRelayBlock<KhromaSeparatorBl
 
 	@Override
 	protected Function<BlockState, VoxelShape> makeShapes() {
-		var map = Shapes.rotateHorizontal(Shapes.or(Block.box(0, 6, 6, 16, 10, 10), Block.box(4, 4, 10, 12, 12, 16)));
+		var map = Shapes.rotateHorizontal(Shapes.or(Block.box(0, 6, 6, 16, 10, 10), Block.box(4, 4, 11, 12, 12, 16)));
 		return getShapeForEachState(state -> map.get(state.getValue(FACING)));
 	}
 

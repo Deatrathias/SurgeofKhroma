@@ -389,8 +389,6 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 
 	public static void updateNetworksForLevel(Level level) {
 
-		boolean dirty = false;
-
 		var networks = networksPerLevel.get(level);
 		if (networks == null)
 			return;
@@ -402,7 +400,6 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 			KhromaNetwork network = networkIter.next();
 			if (network.dirty) {
 				SurgeofKhroma.LOGGER.debug("rebuilding network");
-				dirty = true;
 				if (!network.rebuildNetwork(leftoverProviders, allProviders))
 					networkIter.remove();
 			}
@@ -411,25 +408,12 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 
 		while (!leftoverProviders.isEmpty()) {
 			SurgeofKhroma.LOGGER.debug("creating new network");
-			dirty = true;
 			BlockDirection first = leftoverProviders.iterator().next();
 			leftoverProviders.remove(first);
 			KhromaNetwork addedNetwork = KhromaNetwork.create(level, first);
 			if (addedNetwork != null)
 				addedNetwork.rebuildNetwork(leftoverProviders, allProviders);
 		}
-
-//		if (dirty) {
-//			for (KhromaNetwork network : networks) {
-//				network.master = true;
-//				network.relaysNumber = 0;
-//			}
-//			for (KhromaNetwork network : networks) {
-//				network.calculateDependencies();
-//			}
-//
-//			networks.sort(null);
-//		}
 
 		for (KhromaNetwork network : networks) {
 			network.updatedThisTick = false;

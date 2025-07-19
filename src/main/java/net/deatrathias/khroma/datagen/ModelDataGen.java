@@ -10,6 +10,8 @@ import com.google.common.collect.ImmutableMap;
 import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.blocks.KhromaLineBlock;
+import net.deatrathias.khroma.items.SpannerItem;
+import net.deatrathias.khroma.items.renderer.SpannerColorTint;
 import net.deatrathias.khroma.khroma.Khroma;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
@@ -19,10 +21,13 @@ import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.renderer.block.model.VariantMutator;
 import net.minecraft.client.renderer.block.model.multipart.CombinedCondition;
 import net.minecraft.client.renderer.block.model.multipart.CombinedCondition.Operation;
 import net.minecraft.client.renderer.item.BlockModelWrapper;
+import net.minecraft.client.renderer.item.CompositeModel;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.data.PackOutput;
@@ -86,6 +91,21 @@ public class ModelDataGen extends ModelProvider {
 			itemModels.generateFlatItem(element.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 
 		registerKhromaLine(blockModels, itemModels);
+
+		var spannerBase = ModelTemplates.FLAT_HANDHELD_ITEM.create(SurgeofKhroma.resource("item/khroma_spanner_base"),
+				new TextureMapping().put(TextureSlot.LAYER0, SurgeofKhroma.resource("item/spanner_base")), itemModels.modelOutput);
+		var spannerMiddle = ModelTemplates.FLAT_HANDHELD_ITEM.create(SurgeofKhroma.resource("item/khroma_spanner_middle"),
+				new TextureMapping().put(TextureSlot.LAYER0, SurgeofKhroma.resource("item/spanner_middle")), itemModels.modelOutput);
+		var spannerTop = ModelTemplates.FLAT_HANDHELD_ITEM.create(SurgeofKhroma.resource("item/khroma_spanner_top"),
+				new TextureMapping().put(TextureSlot.LAYER0, SurgeofKhroma.resource("item/spanner_top")), itemModels.modelOutput);
+		var spannerBottom = ModelTemplates.FLAT_HANDHELD_ITEM.create(SurgeofKhroma.resource("item/khroma_spanner_bottom"),
+				new TextureMapping().put(TextureSlot.LAYER0, SurgeofKhroma.resource("item/spanner_bottom")), itemModels.modelOutput);
+
+		itemModels.itemModelOutput.accept(RegistryReference.ITEM_KHROMETAL_SPANNER.get(), new CompositeModel.Unbaked(List.of(
+				new BlockModelWrapper.Unbaked(spannerBase, List.of(new SpannerColorTint(SpannerItem.SpannerColorLocation.BASE))),
+				new BlockModelWrapper.Unbaked(spannerMiddle, List.of(new SpannerColorTint(SpannerItem.SpannerColorLocation.MIDDLE))),
+				new BlockModelWrapper.Unbaked(spannerTop, List.of(new SpannerColorTint(SpannerItem.SpannerColorLocation.TOP))),
+				new BlockModelWrapper.Unbaked(spannerBottom, List.of(new SpannerColorTint(SpannerItem.SpannerColorLocation.BOTTOM))))));
 	}
 
 	private void registerKhromaLine(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {

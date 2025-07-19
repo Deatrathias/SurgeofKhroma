@@ -63,7 +63,6 @@ public class KhromaApertureBlock extends BaseKhromaRelayBlock<KhromaApertureBloc
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
 		if (!level.isClientSide) {
 			player.openMenu(state.getMenuProvider(level, pos));
-			return InteractionResult.CONSUME;
 		}
 
 		return InteractionResult.SUCCESS;

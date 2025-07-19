@@ -7,6 +7,7 @@ import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.TagReference;
 import net.deatrathias.khroma.khroma.Khroma;
+import net.deatrathias.khroma.recipes.CraftingSpannerRecipe;
 import net.deatrathias.khroma.recipes.KhromaImbuementRecipe;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.HolderLookup.RegistryLookup;
@@ -23,6 +24,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.Tags;
 
@@ -171,6 +173,16 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 				.group(getItemName(Items.GREEN_DYE))
 				.unlockedBy("has_kelp", has(Items.KELP))
 				.save(output, getModdedConversionRecipeName(Items.GREEN_DYE, Items.KELP));
+
+		RecipeOutputWrapper<ShapedRecipe, CraftingSpannerRecipe> spannerOutput = new RecipeOutputWrapper<ShapedRecipe, CraftingSpannerRecipe>(output, CraftingSpannerRecipe::new);
+		shaped(RecipeCategory.TOOLS, RegistryReference.ITEM_KHROMETAL_SPANNER)
+				.define('#', TagReference.ITEM_KHROMETAL_INGOTS)
+				.pattern("# #")
+				.pattern(" # ")
+				.pattern(" # ")
+				.group(getItemName(RegistryReference.ITEM_KHROMETAL_SPANNER))
+				.unlockedBy("has_khrometal", has(TagReference.ITEM_KHROMETAL_INGOTS))
+				.save(spannerOutput);
 	}
 
 	private void khromaDevicesRecipes() {

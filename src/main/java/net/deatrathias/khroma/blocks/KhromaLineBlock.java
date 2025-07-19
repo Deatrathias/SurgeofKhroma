@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.mojang.serialization.MapCodec;
 
 import net.deatrathias.khroma.RegistryReference;
+import net.deatrathias.khroma.items.SpannerItem;
 import net.deatrathias.khroma.khroma.IKhromaConsumer;
 import net.deatrathias.khroma.khroma.IKhromaProvider;
 import net.deatrathias.khroma.khroma.Khroma;
@@ -19,14 +22,18 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
@@ -36,11 +43,12 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.common.ItemAbility;
+import net.neoforged.neoforge.common.extensions.IBlockExtension;
 
-public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock {
+public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock, IBlockExtension {
 
 	public static final MapCodec<KhromaLineBlock> CODEC = simpleCodec(KhromaLineBlock::new);
 
@@ -66,11 +74,7 @@ public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock
 				.setValue(UP, false)
 				.setValue(DOWN, false)
 				.setValue(WATERLOGGED, false));
-	}
-
-	@Override
-	protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		return Shapes.or(super.getShape(state, level, pos, context), cube(6));
+		shapes = getShapeForEachState(shapes.andThen(shape -> Shapes.or(shape, cube(6))));
 	}
 
 	@Override
@@ -124,8 +128,12 @@ public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock
 		boolean connected = state.getValue(sideProperty);
 		if (connected && level instanceof Level && !canSideConnect((Level) level, state, pos, direction))
 			return state.setValue(sideProperty, false);
-		if (neighborState.is(this) && neighborState.getValue(PROPERTY_BY_DIRECTION.get(direction.getOpposite())))
-			return state.setValue(sideProperty, true);
+		if (neighborState.is(this)) {
+			if (neighborState.getValue(PROPERTY_BY_DIRECTION.get(direction.getOpposite())))
+				return state.setValue(sideProperty, true);
+			else
+				return state.setValue(sideProperty, false);
+		}
 		return state;
 	}
 
@@ -184,6 +192,70 @@ public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock
 		if (network != null)
 			network.debugNetwork();
 		return InteractionResult.PASS;
+	}
+
+	@Override
+	public BlockState rotate(BlockState state, LevelAccessor level, BlockPos pos, Rotation rotation) {
+		BlockState newState = state;
+		for (Direction dir : Direction.values()) {
+			newState.setValue(PROPERTY_BY_DIRECTION.get(rotation.rotate(dir)), state.getValue(PROPERTY_BY_DIRECTION.get(dir)));
+		}
+		return newState;
+	}
+
+	@Override
+	protected BlockState mirror(BlockState state, Mirror mirror) {
+		switch (mirror) {
+		case FRONT_BACK:
+			return state.setValue(NORTH, state.getValue(SOUTH)).setValue(SOUTH, state.getValue(NORTH));
+		case LEFT_RIGHT:
+			return state.setValue(WEST, state.getValue(EAST)).setValue(EAST, state.getValue(WEST));
+		default:
+			return state;
+		}
+	}
+
+	@Override
+	public @Nullable BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
+		ItemStack itemStack = context.getItemInHand();
+		if (!itemStack.canPerformAction(itemAbility))
+			return null;
+
+		if (itemAbility == SpannerItem.SPANNER_ADJUST) {
+			BlockPos pos = context.getClickedPos();
+			Vec3 hit = context.getClickLocation().subtract(pos.getX(), pos.getY(), pos.getZ());
+			Direction hitDirection;
+			if (hit.x <= 0.3125f)
+				hitDirection = Direction.WEST;
+			else if (hit.x >= 0.6875f)
+				hitDirection = Direction.EAST;
+			else if (hit.y <= 0.3125f)
+				hitDirection = Direction.DOWN;
+			else if (hit.y >= 0.6875f)
+				hitDirection = Direction.UP;
+			else if (hit.z <= 0.3125f)
+				hitDirection = Direction.NORTH;
+			else if (hit.z >= 0.6875f)
+				hitDirection = Direction.SOUTH;
+			else
+				return null;
+
+			return connect(context.getLevel(), state, pos, hitDirection);
+		}
+
+		return null;
+	}
+
+	public static @Nullable BlockState connect(Level level, BlockState state, BlockPos pos, Direction direction) {
+		var property = PROPERTY_BY_DIRECTION.get(direction);
+
+		if (state.getValue(property))
+			return state.setValue(property, false);
+
+		if (canSideConnect(level, state, pos, direction))
+			return state.setValue(property, true);
+
+		return null;
 	}
 
 	@Override

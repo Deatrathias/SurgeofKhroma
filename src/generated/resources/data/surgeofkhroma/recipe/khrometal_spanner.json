@@ -1,0 +1,17 @@
+{
+  "type": "surgeofkhroma:crafting_spanner",
+  "category": "equipment",
+  "group": "khrometal_spanner",
+  "key": {
+    "#": "#surgeofkhroma:ingots/khrometal"
+  },
+  "pattern": [
+    "# #",
+    " # ",
+    " # "
+  ],
+  "result": {
+    "count": 1,
+    "id": "surgeofkhroma:khrometal_spanner"
+  }
+}

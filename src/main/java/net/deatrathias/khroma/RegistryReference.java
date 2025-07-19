@@ -32,12 +32,15 @@ import net.deatrathias.khroma.items.KhrometalBlackPickaxeItem;
 import net.deatrathias.khroma.items.KhrometalBlackSwordItem;
 import net.deatrathias.khroma.items.KhrometalGreenToolItem;
 import net.deatrathias.khroma.items.KhrometalWhitePickaxeItem;
+import net.deatrathias.khroma.items.SpannerItem;
 import net.deatrathias.khroma.khroma.IKhromaConsumer;
 import net.deatrathias.khroma.khroma.IKhromaProvider;
 import net.deatrathias.khroma.khroma.KhromaBiomeData;
+import net.deatrathias.khroma.recipes.CraftingSpannerRecipe;
 import net.deatrathias.khroma.recipes.KhromaImbuementRecipe;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -99,6 +102,7 @@ public class RegistryReference {
 	public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(BuiltInRegistries.ATTRIBUTE, SurgeofKhroma.MODID);
 	public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, SurgeofKhroma.MODID);
 	public static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, SurgeofKhroma.MODID);
+	public static final DeferredRegister.DataComponents DATA_COMPONENT_TYPES = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, SurgeofKhroma.MODID);
 
 	public static final Holder<Attribute> ATTRIBUTE_TELEPORT_DROPS = ATTRIBUTES.register("teleport_drops",
 			() -> new BooleanAttribute("attribute.surgeofkhroma.teleport_drops", false).setSyncable(true));
@@ -113,6 +117,14 @@ public class RegistryReference {
 	public static final ToolMaterial BLUE_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 12, 2, 24, TagReference.ITEM_KHROMETAL_INGOT_BLUE);
 	public static final ToolMaterial WHITE_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 6, 2, 14, TagReference.ITEM_KHROMETAL_INGOT_WHITE);
 	public static final ToolMaterial BLACK_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 6, 2, 14, TagReference.ITEM_KHROMETAL_INGOT_BLACK);
+
+	/**
+	 * 
+	 * DATA COMPONENTS
+	 * 
+	 */
+	public static final Supplier<DataComponentType<SpannerItem.SpannerColors>> DATA_COMPONENT_SPANNER_COLORS = DATA_COMPONENT_TYPES.registerComponentType("spanner_colors",
+			builder -> builder.persistent(SpannerItem.SpannerColors.CODEC).networkSynchronized(SpannerItem.SpannerColors.STREAM_CODEC));
 
 	/**
 	 * 
@@ -224,6 +236,8 @@ public class RegistryReference {
 	public static final DeferredItem<Item> ITEM_KHROMETAL_INGOT_BLACK = ITEMS.registerSimpleItem("khrometal_ingot_black");
 	public static final DeferredItem<Item> ITEM_CHROMATIC_NUCLEUS = ITEMS.registerSimpleItem("chromatic_nucleus");
 	public static final DeferredItem<Item> ITEM_CHROMATIC_GLASSES = ITEMS.registerSimpleItem("chromatic_glasses", new Item.Properties().stacksTo(1));
+	public static final DeferredItem<Item> ITEM_KHROMETAL_SPANNER = ITEMS.registerItem("khrometal_spanner",
+			props -> new SpannerItem(SpannerItem.spanner(props).stacksTo(1).component(DATA_COMPONENT_SPANNER_COLORS, new SpannerItem.SpannerColors(0xFF808080, 0xFF808080, 0xFF808080, 0xFF808080))));
 
 	public static final DeferredItem<Item> ITEM_KHROMETAL_RED_SWORD = ITEMS.registerItem("khrometal_red_sword", props -> new Item(props.sword(RED_KHROMETAL_TIER, 3, -2.4f)));
 	public static final DeferredItem<Item> ITEM_KHROMETAL_RED_PICKAXE = ITEMS.registerItem("khrometal_red_pickaxe", props -> new Item(props.pickaxe(RED_KHROMETAL_TIER, 1, -2)));
@@ -279,9 +293,13 @@ public class RegistryReference {
 	 * 
 	 */
 	public static final Supplier<RecipeType<KhromaImbuementRecipe>> RECIPE_KHROMA_IMBUEMENT = RECIPE_TYPES.register("khroma_imbuement",
-			() -> RecipeType.<KhromaImbuementRecipe>simple(SurgeofKhroma.resource("khroma_imbuement")));
+			() -> RecipeType.simple(SurgeofKhroma.resource("khroma_imbuement")));
 	public static final Supplier<RecipeSerializer<KhromaImbuementRecipe>> RECIPE_SERIALIZER_KHROMA_IMBUEMENT = RECIPE_SERIALIZERS.register("khroma_imbuement",
 			KhromaImbuementRecipe.KhromaImbuementSerializer::new);
+	public static final Supplier<RecipeType<CraftingSpannerRecipe>> RECIPE_CRAFTING_SPANNER = RECIPE_TYPES.register("crafting_spanner",
+			() -> RecipeType.simple(SurgeofKhroma.resource("crafting_spanner")));
+	public static final Supplier<RecipeSerializer<CraftingSpannerRecipe>> RECIPE_SERIALIZER_CRAFTING_SPANNER = RECIPE_SERIALIZERS.register("crafting_spanner",
+			CraftingSpannerRecipe.Serializer::new);
 
 	/**
 	 * 
@@ -329,6 +347,7 @@ public class RegistryReference {
 		output.accept(ITEM_KHROMETAL_WHITE_PICKAXE);
 		output.accept(ITEM_KHROMETAL_BLACK_SWORD);
 		output.accept(ITEM_KHROMETAL_BLACK_PICKAXE);
+		output.accept(ITEM_KHROMETAL_SPANNER);
 		output.accept(ITEM_BLOCK_KHROMETAL_BLOCK_RED);
 		output.accept(ITEM_BLOCK_KHROMETAL_BLOCK_GREEN);
 		output.accept(ITEM_BLOCK_KHROMETAL_BLOCK_BLUE);

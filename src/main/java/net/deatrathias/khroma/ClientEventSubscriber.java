@@ -7,6 +7,7 @@ import net.deatrathias.khroma.entities.renderer.KhromaNodeEntityRenderer;
 import net.deatrathias.khroma.gui.KhromaApertureScreen;
 import net.deatrathias.khroma.gui.KhromaImbuerScreen;
 import net.deatrathias.khroma.items.renderer.ChromaticGlassesRenderer;
+import net.deatrathias.khroma.items.renderer.SpannerColorTint;
 import net.deatrathias.khroma.khroma.Khroma;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -42,6 +43,11 @@ public class ClientEventSubscriber {
 			Khroma khroma = state.getValue(KhromaLineBlock.KHROMA);
 			return Khroma.KhromaColors[khroma.asInt()];
 		}), RegistryReference.BLOCK_KHROMA_LINE.value());
+	}
+
+	@SubscribeEvent
+	public static void registerItemTintSources(RegisterColorHandlersEvent.ItemTintSources event) {
+		event.register(SurgeofKhroma.resource("spanner_color"), SpannerColorTint.CODEC);
 	}
 
 	@SubscribeEvent

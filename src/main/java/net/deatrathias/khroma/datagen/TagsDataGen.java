@@ -119,6 +119,7 @@ public final class TagsDataGen {
 			tag(Tags.Items.RAW_MATERIALS).addTag(TagReference.C_ITEM_RAW_MATERIALS_CHROMIUM);
 			tag(Tags.Items.MELEE_WEAPON_TOOLS).addTags(TagReference.ITEM_KHROMETAL_SWORDS, TagReference.ITEM_KHROMETAL_AXES);
 			tag(Tags.Items.MINING_TOOL_TOOLS).addTag(TagReference.ITEM_KHROMETAL_PICKAXES);
+			tag(Tags.Items.TOOLS_WRENCH).add(RegistryReference.ITEM_KHROMETAL_SPANNER.get());
 		}
 
 		private void minecraftTags() {

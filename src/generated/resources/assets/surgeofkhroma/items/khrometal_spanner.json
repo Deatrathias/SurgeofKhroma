@@ -1,0 +1,47 @@
+{
+  "model": {
+    "type": "minecraft:composite",
+    "models": [
+      {
+        "type": "minecraft:model",
+        "model": "surgeofkhroma:item/khroma_spanner_base",
+        "tints": [
+          {
+            "type": "surgeofkhroma:spanner_color",
+            "location": "base"
+          }
+        ]
+      },
+      {
+        "type": "minecraft:model",
+        "model": "surgeofkhroma:item/khroma_spanner_middle",
+        "tints": [
+          {
+            "type": "surgeofkhroma:spanner_color",
+            "location": "middle"
+          }
+        ]
+      },
+      {
+        "type": "minecraft:model",
+        "model": "surgeofkhroma:item/khroma_spanner_top",
+        "tints": [
+          {
+            "type": "surgeofkhroma:spanner_color",
+            "location": "top"
+          }
+        ]
+      },
+      {
+        "type": "minecraft:model",
+        "model": "surgeofkhroma:item/khroma_spanner_bottom",
+        "tints": [
+          {
+            "type": "surgeofkhroma:spanner_color",
+            "location": "bottom"
+          }
+        ]
+      }
+    ]
+  }
+}
