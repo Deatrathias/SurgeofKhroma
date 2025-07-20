@@ -4,7 +4,8 @@
    "ambientocclusion": false,
    "textures": {
       "center": "surgeofkhroma:block/khroma_line_center",
-      "side": "surgeofkhroma:block/khroma_line_side"
+      "side": "surgeofkhroma:block/khroma_line_side",
+      "paticle": "surgeofkhroma:block/khroma_line_center"
    },
     "elements": [
       {

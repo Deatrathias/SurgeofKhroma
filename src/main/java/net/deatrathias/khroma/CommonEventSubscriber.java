@@ -1,6 +1,7 @@
 package net.deatrathias.khroma;
 
 import net.deatrathias.khroma.blocks.KhrometalBlackBlock;
+import net.deatrathias.khroma.compat.curios.CuriosRegister;
 import net.deatrathias.khroma.gui.KhromaApertureMenu;
 import net.deatrathias.khroma.khroma.IKhromaConsumerBlock;
 import net.deatrathias.khroma.khroma.IKhromaProviderBlock;
@@ -8,8 +9,8 @@ import net.deatrathias.khroma.network.ServerboundSetApertureLimitPacket;
 import net.deatrathias.khroma.network.ServerboundWalkOnBlackKhrometalPacket;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -20,9 +21,7 @@ import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.MainThreadPayloadHandler;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-import top.theillusivec4.curios.api.CuriosCapability;
-import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.capability.ICurio;
+import top.theillusivec4.curios.api.CuriosResources;
 
 @EventBusSubscriber(modid = SurgeofKhroma.MODID)
 public final class CommonEventSubscriber {
@@ -41,17 +40,8 @@ public final class CommonEventSubscriber {
 				RegistryReference.BLOCK_KHROMA_APERTURE.get(), RegistryReference.BLOCK_KHROMA_COMBINER.get(), RegistryReference.BLOCK_KHROMA_MACHINE.get(),
 				RegistryReference.BLOCK_KHROMA_SEPARATOR.get(), RegistryReference.BLOCK_KHROMA_IMBUER.get());
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, RegistryReference.BLOCK_ENTITY_KHROMA_IMBUER.get(), SidedInvWrapper::new);
-		event.registerItem(CuriosCapability.ITEM, (stack, context) -> new ICurio() {
-			@Override
-			public ItemStack getStack() {
-				return stack;
-			}
-
-			@Override
-			public boolean canEquipFromUse(SlotContext slotContext) {
-				return true;
-			}
-		}, RegistryReference.ITEM_CHROMATIC_GLASSES);
+		if (ModList.get().isLoaded(CuriosResources.MOD_ID))
+			CuriosRegister.registerCurioCapabilities(event);
 	}
 
 	@SubscribeEvent

@@ -54,6 +54,14 @@ public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock
 
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
+	public static float PIPE_SIZE = 4f;
+
+	public static float CENTER_SIZE = 6f;
+
+	public static float MIN_SIDE = (16f - CENTER_SIZE) / 32f;
+
+	public static float MAX_SIDE = 1f - MIN_SIDE;
+
 	@Override
 	protected MapCodec<KhromaLineBlock> codec() {
 		return CODEC;
@@ -62,7 +70,7 @@ public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock
 	public static final KhromaProperty KHROMA = KhromaProperty.create("khroma");
 
 	public KhromaLineBlock(Properties properties) {
-		super(4f, properties);
+		super(PIPE_SIZE, properties);
 
 		registerDefaultState(stateDefinition
 				.any()
@@ -74,7 +82,7 @@ public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock
 				.setValue(UP, false)
 				.setValue(DOWN, false)
 				.setValue(WATERLOGGED, false));
-		shapes = getShapeForEachState(shapes.andThen(shape -> Shapes.or(shape, cube(6))));
+		shapes = getShapeForEachState(shapes.andThen(shape -> Shapes.or(shape, cube(CENTER_SIZE))));
 	}
 
 	@Override
@@ -225,17 +233,17 @@ public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock
 			BlockPos pos = context.getClickedPos();
 			Vec3 hit = context.getClickLocation().subtract(pos.getX(), pos.getY(), pos.getZ());
 			Direction hitDirection;
-			if (hit.x <= 0.3125f)
+			if (hit.x <= MIN_SIDE)
 				hitDirection = Direction.WEST;
-			else if (hit.x >= 0.6875f)
+			else if (hit.x >= MAX_SIDE)
 				hitDirection = Direction.EAST;
-			else if (hit.y <= 0.3125f)
+			else if (hit.y <= MIN_SIDE)
 				hitDirection = Direction.DOWN;
-			else if (hit.y >= 0.6875f)
+			else if (hit.y >= MAX_SIDE)
 				hitDirection = Direction.UP;
-			else if (hit.z <= 0.3125f)
+			else if (hit.z <= MIN_SIDE)
 				hitDirection = Direction.NORTH;
-			else if (hit.z >= 0.6875f)
+			else if (hit.z >= MAX_SIDE)
 				hitDirection = Direction.SOUTH;
 			else
 				return null;

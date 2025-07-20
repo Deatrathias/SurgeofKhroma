@@ -43,7 +43,7 @@ public class DataGenDefinitions {
 			RegistryReference.ITEM_KHROMETAL_GREEN_PICKAXE, RegistryReference.ITEM_KHROMETAL_BLUE_PICKAXE, RegistryReference.ITEM_KHROMETAL_WHITE_PICKAXE, RegistryReference.ITEM_KHROMETAL_BLACK_SWORD,
 			RegistryReference.ITEM_KHROMETAL_BLACK_PICKAXE);
 
-	public static final List<DeferredBlock<Block>> khromaDevices = List.of(RegistryReference.BLOCK_NODE_COLLECTOR, RegistryReference.BLOCK_KHROMA_PROVIDER,
+	public static final List<DeferredBlock<Block>> khromaDevices = List.of(RegistryReference.BLOCK_KHROMA_LINE, RegistryReference.BLOCK_NODE_COLLECTOR, RegistryReference.BLOCK_KHROMA_PROVIDER,
 			RegistryReference.BLOCK_KHROMA_MACHINE, RegistryReference.BLOCK_KHROMA_APERTURE,
 			RegistryReference.BLOCK_KHROMA_COMBINER, RegistryReference.BLOCK_KHROMA_SEPARATOR, RegistryReference.BLOCK_KHROMA_IMBUER);
 

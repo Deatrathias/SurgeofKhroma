@@ -1,9 +1,11 @@
 package net.deatrathias.khroma;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
@@ -58,6 +60,11 @@ public class TagReference {
 	public static final TagKey<Item> C_ITEM_ORES_CHROMIUM = itemTag(C_BLOCK_ORES_CHROMIUM);
 	public static final TagKey<Item> C_ITEM_STORAGE_BLOCKS_CHROMIUM = itemTag(C_BLOCK_STORAGE_BLOCKS_CHROMIUM);
 	public static final TagKey<Item> C_ITEM_STORAGE_BLOCKS_RAW_CHROMIUM = itemTag(C_BLOCK_STORAGE_BLOCKS_RAW_CHROMIUM);
+
+	/**
+	 * Entity tags
+	 */
+	public static final TagKey<EntityType<?>> C_ENTITY_BIRDS = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath("c", "birds"));
 
 	private static TagKey<Block> blockTagB(String path) {
 		return BlockTags.create(SurgeofKhroma.resource(path));

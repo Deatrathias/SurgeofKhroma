@@ -71,7 +71,9 @@ public abstract class BaseKhromaUserBlock<T extends BaseKhromaUserBlockEntity> e
 			return null;
 
 		if (itemAbility == SpannerItem.SPANNER_ADJUST) {
-			return rotate(state, context.getLevel(), context.getClickedPos(), Rotation.CLOCKWISE_90);
+			BlockState rotated = rotate(state, context.getLevel(), context.getClickedPos(), Rotation.CLOCKWISE_90);
+			if (rotated != state)
+				return rotated;
 		}
 		return null;
 	}

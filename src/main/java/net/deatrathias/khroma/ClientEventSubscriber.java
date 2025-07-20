@@ -2,11 +2,11 @@ package net.deatrathias.khroma;
 
 import mezz.jei.api.constants.ModIds;
 import net.deatrathias.khroma.blocks.KhromaLineBlock;
+import net.deatrathias.khroma.compat.curios.CuriosRegister;
 import net.deatrathias.khroma.compat.jei.JeiKhromaPlugin;
 import net.deatrathias.khroma.entities.renderer.KhromaNodeEntityRenderer;
 import net.deatrathias.khroma.gui.KhromaApertureScreen;
 import net.deatrathias.khroma.gui.KhromaImbuerScreen;
-import net.deatrathias.khroma.items.renderer.ChromaticGlassesRenderer;
 import net.deatrathias.khroma.items.renderer.SpannerColorTint;
 import net.deatrathias.khroma.khroma.Khroma;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -26,7 +26,7 @@ import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
-import top.theillusivec4.curios.api.client.ICurioRenderer;
+import top.theillusivec4.curios.api.CuriosResources;
 
 @OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(modid = SurgeofKhroma.MODID, value = Dist.CLIENT)
@@ -34,7 +34,8 @@ public class ClientEventSubscriber {
 	@SubscribeEvent
 	public static void onClientSetup(FMLClientSetupEvent event) {
 		SurgeofKhroma.LOGGER.info("client started");
-		ICurioRenderer.register(RegistryReference.ITEM_CHROMATIC_GLASSES.get(), () -> new ChromaticGlassesRenderer());
+		if (ModList.get().isLoaded(CuriosResources.MOD_ID))
+			CuriosRegister.registerCurioRenderer();
 	}
 
 	@SubscribeEvent

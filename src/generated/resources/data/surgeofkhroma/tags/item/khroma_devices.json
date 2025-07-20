@@ -1,5 +1,6 @@
 {
   "values": [
+    "surgeofkhroma:khroma_line",
     "surgeofkhroma:node_collector",
     "surgeofkhroma:khroma_provider",
     "surgeofkhroma:khroma_machine",

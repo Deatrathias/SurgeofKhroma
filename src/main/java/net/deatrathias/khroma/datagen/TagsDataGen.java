@@ -11,11 +11,13 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.DamageTypeTagsProvider;
+import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -171,6 +173,18 @@ public final class TagsDataGen {
 		@Override
 		protected void addTags(Provider provider) {
 			tag(DamageTypeTags.NO_KNOCKBACK).addOptional(RegistryReference.DAMAGE_RED_KHROMETAL_BLOCK.location());
+		}
+	}
+
+	public static class EntityTypeTag extends EntityTypeTagsProvider {
+
+		public EntityTypeTag(PackOutput output, CompletableFuture<Provider> provider) {
+			super(output, provider, SurgeofKhroma.MODID);
+		}
+
+		@Override
+		protected void addTags(Provider provider) {
+			tag(TagReference.C_ENTITY_BIRDS).add(EntityType.CHICKEN, EntityType.PARROT);
 		}
 	}
 }

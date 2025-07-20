@@ -7,7 +7,6 @@ import java.util.stream.Stream;
 import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
@@ -35,12 +34,12 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.common.world.BiomeModifiers.AddFeaturesBiomeModifier;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
-import top.theillusivec4.curios.api.CuriosDataProvider;
 import top.theillusivec4.curios.api.CuriosResources;
 
 @EventBusSubscriber(modid = SurgeofKhroma.MODID)
@@ -83,17 +82,12 @@ public class DataGen {
 
 		event.createBlockAndItemTags(TagsDataGen.BlockTag::new, TagsDataGen.ItemTag::new);
 		event.createProvider(TagsDataGen.DamageTypeTag::new);
+		event.createProvider(TagsDataGen.EntityTypeTag::new);
 		event.createProvider((output, lookupProvider) -> new LootTableProvider(output, Set.of(), List.of(new SubProviderEntry(BLootProvider::new, LootContextParamSets.BLOCK)), lookupProvider));
 
 		event.createProvider(RecipeDaraGen.Runner::new);
-
-		event.createProvider((output, lookupProvider) -> new CuriosDataProvider(SurgeofKhroma.MODID, output, lookupProvider) {
-			@Override
-			public void generate(Provider registries) {
-				createSlot("eyes").order(50).icon(SurgeofKhroma.resource("slot/empty_eyes_slot")).addValidator(CuriosResources.resource("tag"));
-				createEntities("player").addPlayer().addSlots("eyes");
-			}
-		});
+		if (ModList.get().isLoaded(CuriosResources.MOD_ID))
+			event.createProvider(CuriosDataGen::new);
 	}
 
 	private static RegistrySetBuilder registrySet() {
