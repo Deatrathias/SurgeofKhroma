@@ -2,25 +2,27 @@ package net.deatrathias.khroma.blocks;
 
 import com.mojang.serialization.MapCodec;
 
-import net.deatrathias.khroma.RegistryReference;
-import net.deatrathias.khroma.blockentities.KhromaMachineBlockEntity;
+import net.deatrathias.khroma.SurgeofKhroma;
+import net.deatrathias.khroma.khroma.IKhromaConsumer;
+import net.deatrathias.khroma.khroma.IKhromaConsumingBlock;
+import net.deatrathias.khroma.khroma.KhromaConsumerImpl;
+import net.deatrathias.khroma.khroma.KhromaNetwork;
+import net.deatrathias.khroma.util.BlockDirection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class KhromaMachineBlock extends BaseKhromaUserBlock<KhromaMachineBlockEntity> {
+public class KhromaMachineBlock extends BaseKhromaUserBlock implements IKhromaConsumingBlock {
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
 	public static final MapCodec<KhromaMachineBlock> CODEC = simpleCodec(KhromaMachineBlock::new);
@@ -46,26 +48,25 @@ public class KhromaMachineBlock extends BaseKhromaUserBlock<KhromaMachineBlockEn
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new KhromaMachineBlockEntity(pos, state);
-	}
-
-	@Override
-	public KhromaMachineBlockEntity getBlockEntity(Level level, BlockPos pos) {
-		return level.getBlockEntity(pos, RegistryReference.BLOCK_ENTITY_KHROMA_MACHINE.get()).get();
-	}
-
-	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
 		if (!level.isClientSide()) {
-			getBlockEntity(level, pos).onUse();
-			return InteractionResult.SUCCESS_SERVER;
+			KhromaNetwork network = KhromaNetwork.findNetwork(level, new BlockDirection(pos, state.getValue(FACING)));
+			Component component = Component.translatable(network.getKhroma().getLocalizedName());
+			SurgeofKhroma.LOGGER.debug("consumed: " + network.getKhromaRatio() + " " + component.getString());
 		}
 		return InteractionResult.SUCCESS;
 	}
 
 	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-		return level.isClientSide ? null : createTickerHelper(blockEntityType, RegistryReference.BLOCK_ENTITY_KHROMA_MACHINE.get(), KhromaMachineBlockEntity::serverTick);
+	public IKhromaConsumer getConsumer(Level level, BlockPos pos, BlockState state, Direction face, KhromaNetwork network) {
+		return state.getValue(FACING) == face ? new KhromaConsumerImpl(true, 1, false) : KhromaConsumerImpl.disabled;
 	}
+
+	@Override
+	public ConnectionType khromaConnection(BlockState state, Direction direction) {
+		if (direction == state.getValue(FACING))
+			return ConnectionType.CONSUMER;
+		return ConnectionType.NONE;
+	}
+
 }

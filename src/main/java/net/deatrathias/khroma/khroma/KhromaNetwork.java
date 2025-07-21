@@ -6,38 +6,45 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import org.slf4j.Logger;
+
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.blocks.KhromaLineBlock;
+import net.deatrathias.khroma.khroma.IKhromaUsingBlock.ConnectionType;
 import net.deatrathias.khroma.util.BlockDirection;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.saveddata.SavedDataType;
 
 public class KhromaNetwork implements Comparable<KhromaNetwork> {
 	private static final Map<Level, List<KhromaNetwork>> networksPerLevel = new HashMap<Level, List<KhromaNetwork>>();
 
 	private Set<BlockPos> lines;
 
-	private Set<BlockDirection> providers;
+	private Map<BlockDirection, IKhromaProvider> providers;
 
-	private Set<BlockDirection> consumers;
+	private Map<BlockDirection, IKhromaConsumer> consumers;
 
-	private Set<BlockDirection> relays;
-
-	private Set<BlockDirection> relaysTo;
+	private Map<BlockDirection, IKhromaConsumer> relays;
 
 	private boolean master;
 
 	private Level level;
-
-	private KhromaThroughput khromaContent;
 
 	private Khroma khroma;
 
@@ -65,13 +72,14 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 
 	private KhromaNetwork(Level level) {
 		lines = new HashSet<>();
-		providers = new HashSet<BlockDirection>();
-		consumers = new HashSet<BlockDirection>();
-		relays = new HashSet<BlockDirection>();
-		relaysTo = new HashSet<BlockDirection>();
-		khromaContent = new KhromaThroughput(Khroma.KHROMA_EMPTY, 0);
+		providers = new HashMap<BlockDirection, IKhromaProvider>();
+		consumers = new HashMap<BlockDirection, IKhromaConsumer>();
+		relays = new HashMap<BlockDirection, IKhromaConsumer>();
 		khroma = Khroma.KHROMA_EMPTY;
 		this.level = level;
+	}
+
+	private void addToLevel() {
 		if (networksPerLevel.containsKey(level)) {
 			networksPerLevel.get(level).add(this);
 		} else {
@@ -82,11 +90,12 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 	}
 
 	public static KhromaNetwork create(Level level, BlockDirection provider) {
-		IKhromaProvider prov = level.getCapability(RegistryReference.KHROMA_PROVIDER_BLOCK, provider.getPos(), provider.getDirection());
+		KhromaNetwork network = new KhromaNetwork(level);
+		IKhromaProvider prov = network.getProvider(level, provider);
 		if (prov == null || !prov.canProvide())
 			return null;
-		KhromaNetwork network = new KhromaNetwork(level);
-		network.providers.add(provider);
+		network.addToLevel();
+		network.providers.put(provider, prov);
 		network.markDirty();
 		return network;
 	}
@@ -100,14 +109,14 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 	}
 
 	public boolean rebuildNetwork(Set<BlockDirection> leftoverProviders, Set<BlockDirection> allProviders) {
-		Set<BlockDirection> remainingProviders = new HashSet<BlockDirection>(providers);
+		Set<BlockDirection> remainingProviders = new HashSet<BlockDirection>(providers.keySet());
 		updateLineStates();
 
 		IKhromaProvider provider = null;
 		BlockDirection providerBlockDirection = null;
 
-		for (BlockDirection provBlock : providers) {
-			IKhromaProvider prov = level.getCapability(RegistryReference.KHROMA_PROVIDER_BLOCK, provBlock.getPos(), provBlock.getDirection());
+		for (BlockDirection provBlock : providers.keySet()) {
+			IKhromaProvider prov = getProvider(level, provBlock);
 			if (prov != null && prov.canProvide()) {
 				provider = prov;
 				providerBlockDirection = provBlock;
@@ -124,44 +133,43 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 		leftoverProviders.remove(providerBlockDirection);
 
 		Queue<BlockDirection> lineQueue = new LinkedList<BlockDirection>();
-		lineQueue.add(new BlockDirection(providerBlockDirection.getPos().relative(providerBlockDirection.getDirection()), providerBlockDirection.getDirection().getOpposite()));
+		lineQueue.add(new BlockDirection(providerBlockDirection.pos().relative(providerBlockDirection.direction()), providerBlockDirection.direction().getOpposite()));
 		KhromaLineBlock khromaLineBlock = (KhromaLineBlock) RegistryReference.BLOCK_KHROMA_LINE.get();
 
-		Set<BlockPos> visited = new HashSet<BlockPos>();
+		Set<BlockDirection> visited = new HashSet<BlockDirection>();
 		lines.clear();
 		providers.clear();
-		providers.add(providerBlockDirection);
+		providers.put(providerBlockDirection, provider);
+		visited.add(providerBlockDirection);
 		consumers.clear();
 		relays.clear();
-		relaysTo.clear();
 		while (!lineQueue.isEmpty()) {
 			BlockDirection element = lineQueue.poll();
-			if (visited.contains(element.getPos()))
+			if (visited.contains(element))
 				continue;
-			visited.add(element.getPos());
-			BlockState state = level.getBlockState(element.getPos());
-			if (state.is(khromaLineBlock) && state.getValue(KhromaLineBlock.PROPERTY_BY_DIRECTION.get(element.getDirection()))) {
-				lines.add(element.getPos());
-				lineQueue.addAll(khromaLineBlock.getAllConnections(level, element.getPos()));
+			visited.add(element);
+			BlockState state = level.getBlockState(element.pos());
+			if (state.is(khromaLineBlock) && state.getValue(KhromaLineBlock.PROPERTY_BY_DIRECTION.get(element.direction()))) {
+				lines.add(element.pos());
+				for (Direction dir : Direction.values())
+					visited.add(new BlockDirection(element.pos(), dir));
+				lineQueue.addAll(khromaLineBlock.getAllConnections(level, element.pos()));
 				continue;
 			}
-			IKhromaProvider foundProvider = level.getCapability(RegistryReference.KHROMA_PROVIDER_BLOCK, element.getPos(), element.getDirection());
+			IKhromaProvider foundProvider = getProvider(level, element);
 			if (foundProvider != null && foundProvider.canProvide()) {
 				allProviders.add(element);
 				remainingProviders.remove(element);
 				leftoverProviders.remove(element);
-				providers.add(element);
+				providers.put(element, foundProvider);
 				continue;
 			}
-			IKhromaConsumer foundConsumer = level.getCapability(RegistryReference.KHROMA_CONSUMER_BLOCK, element.getPos(), element.getDirection());
+			IKhromaConsumer foundConsumer = getConsumer(level, element);
 			if (foundConsumer != null && foundConsumer.canConsume()) {
-				// BlockDirection[] relayProviders = foundConsumer.relaysTo();
 				if (foundConsumer.isRelay()) {
-					relays.add(element);
-					// for (BlockDirection relay : relayProviders)
-					// relaysTo.add(relay);
+					relays.put(element, foundConsumer);
 				} else
-					consumers.add(element);
+					consumers.put(element, foundConsumer);
 
 			}
 
@@ -173,68 +181,27 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 		return true;
 	}
 
-	public void update() {
-		Khroma previousKhroma = khromaContent.getKhroma();
-
-		khromaContent = new KhromaThroughput(Khroma.KHROMA_EMPTY, 0);
-		for (BlockDirection providerPos : providers) {
-			IKhromaProvider provider = level.getCapability(RegistryReference.KHROMA_PROVIDER_BLOCK, providerPos.getPos(), providerPos.getDirection());
-
-			khromaContent = KhromaThroughput.merge(khromaContent, provider.provides());
-		}
-
-		Map<IKhromaConsumer, Float> consumerAndDemand = new HashMap<IKhromaConsumer, Float>();
-		float provided = khromaContent.getRate();
-		float consumed = 0;
-		for (BlockDirection consumerPos : consumers) {
-			IKhromaConsumer consumer = level.getCapability(RegistryReference.KHROMA_CONSUMER_BLOCK, consumerPos.getPos(), consumerPos.getDirection());
-
-			float consumerConsume = consumer.consumes(khromaContent, true);
-			consumed += consumerConsume;
-			consumerAndDemand.put(consumer, consumerConsume);
-		}
-
-		float ratio = 1;
-		if (provided <= 0)
-			ratio = 0;
-		else if (consumed > provided)
-			ratio = provided / consumed;
-
-		for (var entry : consumerAndDemand.entrySet()) {
-			entry.getKey().consumes(new KhromaThroughput(khromaContent.getKhroma(), entry.getValue() * ratio), false);
-		}
-
-		if (previousKhroma != khromaContent.getKhroma())
-			updateLineStates();
-
-		updatedThisTick = true;
-
-		if (relaysTo != null) {
-			for (BlockDirection relay : relaysTo) {
-				KhromaNetwork slaveNetwork = findNetwork(level, relay);
-				if (slaveNetwork != null && !slaveNetwork.updatedThisTick)
-					slaveNetwork.update();
-			}
-		}
-	}
-
 	public boolean calculateRequests() {
 		if (updating) {
 			requestCalculatedThisTick = true;
 			request = 0;
 			return true;
 		}
+		request = 0;
 		updating = true;
 		float relayRequest = 0;
-		for (var relay : relays) {
-			IKhromaConsumer khromaConsumer = level.getCapability(RegistryReference.KHROMA_CONSUMER_BLOCK, relay.getPos(), relay.getDirection());
-			float requested = khromaConsumer.consumes(khromaContent, true);
+		for (var relay : relays.values()) {
+			float requested = relay.request();
 			while (requested < 0) {
 				toUpdateNext.calculateRequests();
-				requested = khromaConsumer.consumes(khromaContent, true);
+				requested = relay.request();
 			}
 
 			relayRequest += requested;
+		}
+
+		for (var consumer : consumers.values()) {
+			request += consumer.request();
 		}
 
 		request += relayRequest;
@@ -250,9 +217,8 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 			return true;
 		}
 		updating = true;
-		KhromaThroughput providing = khromaContent;
-		for (BlockDirection providerPos : providers) {
-			IKhromaProvider provider = level.getCapability(RegistryReference.KHROMA_PROVIDER_BLOCK, providerPos.getPos(), providerPos.getDirection());
+		KhromaThroughput providing = KhromaThroughput.empty;
+		for (IKhromaProvider provider : providers.values()) {
 
 			if (provider.isRelay()) {
 				KhromaThroughput provided = provider.provides();
@@ -261,25 +227,24 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 					provided = provider.provides();
 				}
 				providing = KhromaThroughput.merge(providing, provided);
+			} else {
+				providing = KhromaThroughput.merge(providing, provider.provides());
 			}
 		}
 
-		khromaContent = providing;
-
 		if (request > 0)
-			khromaRatio = khromaContent.getRate() / request;
+			khromaRatio = providing.getRate() / request;
 		else
 			khromaRatio = 0;
 
 		updatedThisTick = true;
 
-		if (khroma != khromaContent.getKhroma()) {
-			khroma = khromaContent.getKhroma();
+		if (khroma != providing.getKhroma()) {
+			khroma = providing.getKhroma();
 			updateLineStates();
 		}
 		lastRequest = request;
 		request = 0;
-		khromaContent = KhromaThroughput.empty;
 
 		return true;
 	}
@@ -292,17 +257,14 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 		}
 	}
 
-	public void provide(KhromaThroughput throughput) {
-		khromaContent = KhromaThroughput.merge(khromaContent, throughput);
-	}
-
-	public static KhromaNetwork findNetwork(Level level, BlockDirection blockDirection) {
+	public static @Nullable KhromaNetwork findNetwork(Level level, BlockDirection blockDirection) {
 		var networks = networksPerLevel.get(level);
 		if (networks == null)
 			return null;
 
 		for (var network : networks) {
-			if (network.lines.contains(blockDirection.getPos()) || network.providers.contains(blockDirection) || network.consumers.contains(blockDirection) || network.relays.contains(blockDirection))
+			if (network.lines.contains(blockDirection.pos()) || network.providers.containsKey(blockDirection) || network.consumers.containsKey(blockDirection)
+					|| network.relays.containsKey(blockDirection))
 				return network;
 		}
 
@@ -318,18 +280,15 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 		boolean found = false;
 		for (var network : networks) {
 			if (network.lines.contains(pos)) {
-				if (found)
-					SurgeofKhroma.LOGGER.error("found twice " + pos.toString());
+				if (found) {
+					SurgeofKhroma.LOGGER.error("found twice " + pos.toString(), new Exception("Khroma line found in multiple networks"));
+				}
 				found = true;
 				result = network.khroma;
 			}
 		}
 
 		return result;
-	}
-
-	public KhromaThroughput getKhromaContent() {
-		return khromaContent;
 	}
 
 	public KhromaThroughput getKhromaThroughput() {
@@ -356,10 +315,17 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 		return khroma;
 	}
 
+	public Optional<IKhromaProvider> providerAt(BlockDirection blockDir) {
+		return Optional.ofNullable(providers.get(blockDir));
+	}
+
+	public Optional<IKhromaConsumer> consumerAt(BlockDirection blockDir, boolean relay) {
+		return relay ? Optional.ofNullable(relays.get(blockDir)) : Optional.ofNullable(consumers.get(blockDir));
+	}
+
 	public void countRelays() {
 		relaysNumber = 0;
-		for (BlockDirection provBlock : providers) {
-			IKhromaProvider provider = level.getCapability(RegistryReference.KHROMA_PROVIDER_BLOCK, provBlock.getPos(), provBlock.getDirection());
+		for (IKhromaProvider provider : providers.values()) {
 			if (provider.isRelay())
 				relaysNumber++;
 		}
@@ -369,25 +335,59 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 		Logger logger = SurgeofKhroma.LOGGER;
 		logger.debug("network " + this);
 		logger.debug("master: " + master);
-		logger.debug("content: " + khromaContent.toString());
 		logger.debug("relays: " + relaysNumber);
 		logger.debug("providers:");
-		for (var provider : providers) {
-			logger.debug(provider.getPos().toString() + " " + provider.getDirection().toString());
+		for (var provider : providers.keySet()) {
+			logger.debug(provider.pos().toString() + " " + provider.direction().toString());
 		}
 		logger.debug("consumers:");
-		for (var consumer : consumers) {
-			logger.debug(consumer.getPos().toString() + " " + consumer.getDirection().toString());
+		for (var consumer : consumers.keySet()) {
+			logger.debug(consumer.pos().toString() + " " + consumer.direction().toString());
 		}
 		logger.debug("relays:");
-		for (var consumer : relays) {
-			logger.debug(consumer.getPos().toString() + " " + consumer.getDirection().toString());
+		for (var consumer : relays.keySet()) {
+			logger.debug(consumer.pos().toString() + " " + consumer.direction().toString());
 		}
 		logger.debug("request: " + lastRequest);
 		logger.debug("ratio: " + khromaRatio);
 	}
 
+	public static class NetworkSavedData extends SavedData {
+		public static final Codec<NetworkSavedData> CODEC = RecordCodecBuilder
+				.create(instance -> instance.group(Codec.list(BlockDirection.CODEC).fieldOf("providers").forGetter(s -> s.providers)).apply(instance, NetworkSavedData::new));
+
+		public static final SavedDataType<NetworkSavedData> ID = new SavedDataType<KhromaNetwork.NetworkSavedData>("khroma_network",
+				NetworkSavedData::new, CODEC);
+
+		private List<BlockDirection> providers;
+
+		public List<BlockDirection> getProviders() {
+			return providers;
+		}
+
+		public NetworkSavedData() {
+			providers = List.of();
+		}
+
+		public NetworkSavedData(List<BlockDirection> providers) {
+			this.providers = providers;
+		}
+
+		public void compareWtihSet(Set<BlockDirection> providerSet) {
+			if (providers.size() != providerSet.size() || !providerSet.containsAll(providers)) {
+				providers = List.copyOf(providerSet);
+				setDirty();
+			}
+		}
+
+	}
+
+	public static boolean isLevelLoaded(Level level) {
+		return networksPerLevel.containsKey(level);
+	}
+
 	public static void updateNetworksForLevel(Level level) {
+		boolean dirty = false;
 
 		var networks = networksPerLevel.get(level);
 		if (networks == null)
@@ -400,6 +400,7 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 			KhromaNetwork network = networkIter.next();
 			if (network.dirty) {
 				SurgeofKhroma.LOGGER.debug("rebuilding network");
+				dirty = true;
 				if (!network.rebuildNetwork(leftoverProviders, allProviders))
 					networkIter.remove();
 			}
@@ -407,6 +408,7 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 		}
 
 		while (!leftoverProviders.isEmpty()) {
+			dirty = true;
 			SurgeofKhroma.LOGGER.debug("creating new network");
 			BlockDirection first = leftoverProviders.iterator().next();
 			leftoverProviders.remove(first);
@@ -432,7 +434,6 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 
 		toUpdateNext = null;
 		networkQueue.addAll(networks);
-		// for (KhromaNetwork network : networks) {
 		while (!networkQueue.isEmpty()) {
 			KhromaNetwork network = networkQueue.poll();
 			if (!network.updatedThisTick)
@@ -440,6 +441,37 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 					networkQueue.add(network);
 		}
 
+		if (dirty) {
+			updateeSaveData(level);
+		}
+	}
+
+	private static void updateeSaveData(Level level) {
+		Set<BlockDirection> providers = new HashSet<BlockDirection>();
+		networksPerLevel.get(level).forEach((network) -> providers.addAll(network.providers.keySet()));
+		var saveData = ((ServerLevel) level).getDataStorage().computeIfAbsent(NetworkSavedData.ID);
+		saveData.compareWtihSet(providers);
+	}
+
+	public static ConnectionType getConnectionType(Level level, BlockPos pos, Direction face) {
+		BlockState state = level.getBlockState(pos);
+		if (state.getBlock() instanceof IKhromaUsingBlock khromaUser)
+			return khromaUser.khromaConnection(state, face);
+		return ConnectionType.NONE;
+	}
+
+	public IKhromaProvider getProvider(Level level, BlockDirection blockDirection) {
+		BlockState state = level.getBlockState(blockDirection.pos());
+		if (state.getBlock() instanceof IKhromaProvidingBlock providing)
+			return providing.getProvider(level, blockDirection.pos(), state, blockDirection.direction(), this);
+		return null;
+	}
+
+	public IKhromaConsumer getConsumer(Level level, BlockDirection blockDirection) {
+		BlockState state = level.getBlockState(blockDirection.pos());
+		if (state.getBlock() instanceof IKhromaConsumingBlock consuming)
+			return consuming.getConsumer(level, blockDirection.pos(), state, blockDirection.direction(), this);
+		return null;
 	}
 
 	@Override

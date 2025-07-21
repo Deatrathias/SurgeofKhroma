@@ -5,6 +5,7 @@ import net.deatrathias.khroma.khroma.KhromaNetwork;
 import net.deatrathias.khroma.khroma.KhromaNode;
 import net.minecraft.core.Holder;
 import net.minecraft.network.protocol.game.ClientboundSoundEntityPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -15,6 +16,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import net.neoforged.neoforge.event.level.BlockDropsEvent;
 import net.neoforged.neoforge.event.level.ChunkEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
@@ -24,6 +26,16 @@ public class GameServerEventSubscriber {
 	@SubscribeEvent
 	private static void serverStarted(ServerStartedEvent event) {
 
+	}
+
+	@SubscribeEvent
+	private static void levelLoadEvent(LevelEvent.Load event) {
+		if (event.getLevel() instanceof ServerLevel serverLevel && !KhromaNetwork.isLevelLoaded(serverLevel)) {
+			var data = serverLevel.getDataStorage().computeIfAbsent(KhromaNetwork.NetworkSavedData.ID);
+			for (var provider : data.getProviders()) {
+				KhromaNetwork.create(serverLevel, provider);
+			}
+		}
 	}
 
 	@SubscribeEvent
@@ -52,7 +64,7 @@ public class GameServerEventSubscriber {
 	@SubscribeEvent
 	private static void blockDrops(BlockDropsEvent event) {
 		if (event.getBreaker() instanceof Player player) {
-			if (player.getAttribute(RegistryReference.ATTRIBUTE_TELEPORT_DROPS).getValue() > 0) {
+			if (player.getAttributeValue(RegistryReference.ATTRIBUTE_TELEPORT_DROPS) > 0) {
 				var iter = event.getDrops().iterator();
 				while (iter.hasNext()) {
 					var drop = iter.next();
@@ -74,7 +86,7 @@ public class GameServerEventSubscriber {
 	@SubscribeEvent
 	private static void livingDrops(LivingDropsEvent event) {
 		if (event.getSource() != null && event.getSource().getEntity() != null && event.getSource().getEntity() instanceof Player player) {
-			if (player.getAttribute(RegistryReference.ATTRIBUTE_TELEPORT_DROPS).getValue() > 0) {
+			if (player.getAttributeValue(RegistryReference.ATTRIBUTE_TELEPORT_DROPS) > 0) {
 				var iter = event.getDrops().iterator();
 				while (iter.hasNext()) {
 					var drop = iter.next();

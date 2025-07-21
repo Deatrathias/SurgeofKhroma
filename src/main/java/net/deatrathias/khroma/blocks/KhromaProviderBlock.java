@@ -2,8 +2,12 @@ package net.deatrathias.khroma.blocks;
 
 import com.mojang.serialization.MapCodec;
 
-import net.deatrathias.khroma.RegistryReference;
-import net.deatrathias.khroma.blockentities.KhromaProviderBlockEntity;
+import net.deatrathias.khroma.khroma.IKhromaProvider;
+import net.deatrathias.khroma.khroma.IKhromaProvidingBlock;
+import net.deatrathias.khroma.khroma.Khroma;
+import net.deatrathias.khroma.khroma.KhromaNetwork;
+import net.deatrathias.khroma.khroma.KhromaProviderImpl;
+import net.deatrathias.khroma.khroma.KhromaThroughput;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
@@ -11,18 +15,21 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class KhromaProviderBlock extends BaseKhromaUserBlock<KhromaProviderBlockEntity> implements EntityBlock {
+public class KhromaProviderBlock extends BaseKhromaUserBlock implements IKhromaProvidingBlock {
+	private static final Khroma[] CYCLE = new Khroma[] { Khroma.get(true, true, false, false, false), Khroma.get(true, false, true, false, false), Khroma.get(true, false, false, true, false),
+			Khroma.get(true, false, false, false, true), Khroma.get(false, true, true, false, false), Khroma.get(false, true, false, true, false), Khroma.get(false, true, false, false, true),
+			Khroma.get(false, false, true, true, false), Khroma.get(false, false, true, false, true), Khroma.get(false, false, false, true, true) };
+
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
+
+	public static final IntegerProperty COLOR = IntegerProperty.create("color", 0, CYCLE.length - 1);
 
 	public static final MapCodec<KhromaProviderBlock> CODEC = simpleCodec(KhromaProviderBlock::new);
 
@@ -33,7 +40,7 @@ public class KhromaProviderBlock extends BaseKhromaUserBlock<KhromaProviderBlock
 
 	public KhromaProviderBlock(Properties properties) {
 		super(properties);
-		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(COLOR, 0));
 	}
 
 	@Override
@@ -43,27 +50,46 @@ public class KhromaProviderBlock extends BaseKhromaUserBlock<KhromaProviderBlock
 
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(FACING);
+		builder.add(FACING).add(COLOR);
 	}
 
 	@Override
-	public KhromaProviderBlockEntity getBlockEntity(Level level, BlockPos pos) {
-		return level.getBlockEntity(pos, RegistryReference.BLOCK_ENTITY_KHROMA_PROVIDER.get()).get();
+	protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+		if (state.getBlock() != oldState.getBlock() || state.getValue(FACING) != oldState.getValue(FACING))
+			super.onPlace(state, level, pos, oldState, movedByPiston);
 	}
 
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-		getBlockEntity(level, pos).use(player);
+		if (!level.isClientSide)
+			level.setBlock(pos, state.setValue(COLOR, (state.getValue(COLOR) + 1) % CYCLE.length), 18);
 		return InteractionResult.SUCCESS;
 	}
 
 	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new KhromaProviderBlockEntity(pos, state);
+	public ConnectionType khromaConnection(BlockState state, Direction direction) {
+		return state.getValue(FACING) == direction ? ConnectionType.PROVIDER : ConnectionType.NONE;
 	}
 
 	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-		return level.isClientSide ? null : createTickerHelper(blockEntityType, RegistryReference.BLOCK_ENTITY_KHROMA_PROVIDER.get(), KhromaProviderBlockEntity::serverTick);
+	public IKhromaProvider getProvider(Level level, BlockPos pos, BlockState state, Direction face, KhromaNetwork network) {
+		if (face == state.getValue(FACING))
+			return new IKhromaProvider() {
+				@Override
+				public KhromaThroughput provides() {
+					return new KhromaThroughput(CYCLE[level.getBlockState(pos).getValue(COLOR)], 100f);
+				}
+
+				@Override
+				public boolean isRelay() {
+					return false;
+				}
+
+				@Override
+				public boolean canProvide() {
+					return true;
+				}
+			};
+		return KhromaProviderImpl.disabled;
 	}
 }

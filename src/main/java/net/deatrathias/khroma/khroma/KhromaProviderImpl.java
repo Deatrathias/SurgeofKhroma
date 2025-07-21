@@ -1,22 +1,20 @@
 package net.deatrathias.khroma.khroma;
 
-import java.util.function.Supplier;
-
 public class KhromaProviderImpl implements IKhromaProvider {
-	public static final KhromaProviderImpl disabled = new KhromaProviderImpl(false, () -> KhromaThroughput.empty, false);
+	public static final KhromaProviderImpl disabled = new KhromaProviderImpl(false, KhromaThroughput.empty, false);
 	private boolean canProvide;
-	private Supplier<KhromaThroughput> provideSupplier;
+	private KhromaThroughput providing;
 	private boolean relay;
 
-	public KhromaProviderImpl(boolean canProvide, Supplier<KhromaThroughput> provideSupplier, boolean relay) {
+	public KhromaProviderImpl(boolean canProvide, KhromaThroughput providing, boolean relay) {
 		this.canProvide = canProvide;
-		this.provideSupplier = provideSupplier;
+		this.providing = providing;
 		this.relay = relay;
 	}
 
 	@Override
 	public KhromaThroughput provides() {
-		return provideSupplier.get();
+		return providing;
 	}
 
 	@Override

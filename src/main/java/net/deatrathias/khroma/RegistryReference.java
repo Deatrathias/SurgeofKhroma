@@ -3,12 +3,7 @@ package net.deatrathias.khroma;
 import java.util.function.Supplier;
 
 import net.deatrathias.khroma.blockentities.KhromaApertureBlockEntity;
-import net.deatrathias.khroma.blockentities.KhromaCombinerBlockEntity;
 import net.deatrathias.khroma.blockentities.KhromaImbuerBlockEntity;
-import net.deatrathias.khroma.blockentities.KhromaMachineBlockEntity;
-import net.deatrathias.khroma.blockentities.KhromaProviderBlockEntity;
-import net.deatrathias.khroma.blockentities.KhromaSeparatorBlockEntity;
-import net.deatrathias.khroma.blockentities.NodeCollectorBlockEntity;
 import net.deatrathias.khroma.blocks.KhromaApertureBlock;
 import net.deatrathias.khroma.blocks.KhromaCombinerBlock;
 import net.deatrathias.khroma.blocks.KhromaImbuerBlock;
@@ -32,12 +27,9 @@ import net.deatrathias.khroma.items.KhrometalBlackSwordItem;
 import net.deatrathias.khroma.items.KhrometalGreenToolItem;
 import net.deatrathias.khroma.items.KhrometalWhitePickaxeItem;
 import net.deatrathias.khroma.items.SpannerItem;
-import net.deatrathias.khroma.khroma.IKhromaConsumer;
-import net.deatrathias.khroma.khroma.IKhromaProvider;
 import net.deatrathias.khroma.khroma.KhromaBiomeData;
 import net.deatrathias.khroma.recipes.CraftingSpannerRecipe;
 import net.deatrathias.khroma.recipes.KhromaImbuementRecipe;
-import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
@@ -80,7 +72,6 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.common.BooleanAttribute;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -199,23 +190,8 @@ public class RegistryReference {
 	 * BLOCK ENTITIES
 	 * 
 	 */
-	public static final Supplier<BlockEntityType<NodeCollectorBlockEntity>> BLOCK_ENTITY_NODE_COLLECTOR = BLOCK_ENTITY_TYPES.register("node_collector_entity",
-			() -> (new BlockEntityType<>(NodeCollectorBlockEntity::new, BLOCK_NODE_COLLECTOR.get())));
-
-	public static final Supplier<BlockEntityType<KhromaProviderBlockEntity>> BLOCK_ENTITY_KHROMA_PROVIDER = BLOCK_ENTITY_TYPES.register("khroma_provider_entity",
-			() -> (new BlockEntityType<>(KhromaProviderBlockEntity::new, BLOCK_KHROMA_PROVIDER.get())));
-
-	public static final Supplier<BlockEntityType<KhromaMachineBlockEntity>> BLOCK_ENTITY_KHROMA_MACHINE = BLOCK_ENTITY_TYPES.register("khroma_machine_entity",
-			() -> (new BlockEntityType<>(KhromaMachineBlockEntity::new, BLOCK_KHROMA_MACHINE.get())));
-
 	public static final Supplier<BlockEntityType<KhromaApertureBlockEntity>> BLOCK_ENTITY_KHROMA_APERTURE = BLOCK_ENTITY_TYPES.register("khroma_aperture_entity",
 			() -> (new BlockEntityType<>(KhromaApertureBlockEntity::new, BLOCK_KHROMA_APERTURE.get())));
-
-	public static final Supplier<BlockEntityType<KhromaCombinerBlockEntity>> BLOCK_ENTITY_KHROMA_COMBINER = BLOCK_ENTITY_TYPES.register("khroma_combiner_entity",
-			() -> (new BlockEntityType<>(KhromaCombinerBlockEntity::new, BLOCK_KHROMA_COMBINER.get())));
-
-	public static final Supplier<BlockEntityType<KhromaSeparatorBlockEntity>> BLOCK_ENTITY_KHROMA_SEPARATOR = BLOCK_ENTITY_TYPES.register("khroma_separator_entity",
-			() -> (new BlockEntityType<>(KhromaSeparatorBlockEntity::new, BLOCK_KHROMA_SEPARATOR.get())));
 
 	public static final Supplier<BlockEntityType<KhromaImbuerBlockEntity>> BLOCK_ENTITY_KHROMA_IMBUER = BLOCK_ENTITY_TYPES.register("khroma_imbuer_entity",
 			() -> (new BlockEntityType<>(KhromaImbuerBlockEntity::new, BLOCK_KHROMA_IMBUER.get())));
@@ -275,8 +251,14 @@ public class RegistryReference {
 	public static final Supplier<MenuType<KhromaImbuerMenu>> MENU_KHROMA_IMBUER = MENUS.register("khroma_imbuer_menu",
 			() -> new MenuType<KhromaImbuerMenu>(KhromaImbuerMenu::new, FeatureFlags.DEFAULT_FLAGS));
 
-	public static final BlockCapability<IKhromaProvider, Direction> KHROMA_PROVIDER_BLOCK = BlockCapability.createSided(SurgeofKhroma.resource("khroma_provider"), IKhromaProvider.class);
-	public static final BlockCapability<IKhromaConsumer, Direction> KHROMA_CONSUMER_BLOCK = BlockCapability.createSided(SurgeofKhroma.resource("khroma_consumer"), IKhromaConsumer.class);
+	// public static final BlockCapability<IKhromaProvider, Direction>
+	// KHROMA_PROVIDER_BLOCK =
+	// BlockCapability.createSided(SurgeofKhroma.resource("khroma_provider"),
+	// IKhromaProvider.class);
+	// public static final BlockCapability<IKhromaConsumer, Direction>
+	// KHROMA_CONSUMER_BLOCK =
+	// BlockCapability.createSided(SurgeofKhroma.resource("khroma_consumer"),
+	// IKhromaConsumer.class);
 
 	/**
 	 * 

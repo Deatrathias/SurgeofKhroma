@@ -1,22 +1,28 @@
 package net.deatrathias.khroma.khroma;
 
-import java.util.function.BiFunction;
-
 public class KhromaConsumerImpl implements IKhromaConsumer {
-	public static final KhromaConsumerImpl disabled = new KhromaConsumerImpl(false, (t, r) -> 0f, false);
+	public static final KhromaConsumerImpl disabled = new KhromaConsumerImpl(false, 0, false);
 	private boolean canConsume;
-	private BiFunction<KhromaThroughput, Boolean, Float> consumeFunction;
+	private float request;
 	private boolean relay;
 
-	public KhromaConsumerImpl(boolean canConsume, BiFunction<KhromaThroughput, Boolean, Float> consumeFunction, boolean relay) {
+	public KhromaConsumerImpl(boolean canConsume, float request, boolean relay) {
 		this.canConsume = canConsume;
-		this.consumeFunction = consumeFunction;
+		this.request = request;
 		this.relay = relay;
 	}
 
+	public KhromaConsumerImpl() {
+		this(true, 0, false);
+	}
+
+	public void setRequest(float request) {
+		this.request = request;
+	}
+
 	@Override
-	public float consumes(KhromaThroughput throughput, boolean simulate) {
-		return consumeFunction.apply(throughput, simulate);
+	public float request() {
+		return request;
 	}
 
 	@Override

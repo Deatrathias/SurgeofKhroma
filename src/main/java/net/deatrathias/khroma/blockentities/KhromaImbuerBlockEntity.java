@@ -4,6 +4,7 @@ import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.blocks.KhromaImbuerBlock;
 import net.deatrathias.khroma.gui.KhromaImbuerMenu;
+import net.deatrathias.khroma.khroma.IKhromaUsingBlock.ConnectionType;
 import net.deatrathias.khroma.khroma.Khroma;
 import net.deatrathias.khroma.khroma.KhromaThroughput;
 import net.deatrathias.khroma.recipes.ItemKhromaRecipeInput;
@@ -27,6 +28,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class KhromaImbuerBlockEntity extends BaseKhromaConsumerBlockEntity implements WorldlyContainer, MenuProvider {
@@ -98,6 +100,10 @@ public class KhromaImbuerBlockEntity extends BaseKhromaConsumerBlockEntity imple
 		progress = 0;
 	}
 
+	public static void serverTick(Level level, BlockPos pos, BlockState state, KhromaImbuerBlockEntity blockEntity) {
+		blockEntity.tick();
+	}
+
 	@Override
 	protected void tick() {
 		Direction side = getBlockState().getValue(KhromaImbuerBlock.FACING).getOpposite();
@@ -164,7 +170,6 @@ public class KhromaImbuerBlockEntity extends BaseKhromaConsumerBlockEntity imple
 			progress = 0;
 	}
 
-	@Override
 	public ConnectionType khromaConnection(Direction direction) {
 		if (getBlockState().getValue(KhromaImbuerBlock.FACING).getOpposite() == direction)
 			return ConnectionType.CONSUMER;

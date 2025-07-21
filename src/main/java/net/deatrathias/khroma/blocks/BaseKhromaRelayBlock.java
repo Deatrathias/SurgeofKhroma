@@ -3,7 +3,8 @@ package net.deatrathias.khroma.blocks;
 import java.util.function.Function;
 
 import net.deatrathias.khroma.RegistryReference;
-import net.deatrathias.khroma.blockentities.BaseKhromaUserBlockEntity;
+import net.deatrathias.khroma.khroma.IKhromaConsumingBlock;
+import net.deatrathias.khroma.khroma.IKhromaProvidingBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,7 +14,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -28,7 +28,7 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public abstract class BaseKhromaRelayBlock<T extends BaseKhromaUserBlockEntity> extends BaseKhromaUserBlock<T> implements EntityBlock, SimpleWaterloggedBlock {
+public abstract class BaseKhromaRelayBlock extends BaseKhromaUserBlock implements SimpleWaterloggedBlock, IKhromaConsumingBlock, IKhromaProvidingBlock {
 
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -63,9 +63,6 @@ public abstract class BaseKhromaRelayBlock<T extends BaseKhromaUserBlockEntity> 
 	protected FluidState getFluidState(BlockState state) {
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
-
-	@Override
-	public abstract T getBlockEntity(Level level, BlockPos pos);
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {

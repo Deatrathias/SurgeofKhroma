@@ -4,6 +4,10 @@ import com.mojang.serialization.MapCodec;
 
 import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.blockentities.KhromaImbuerBlockEntity;
+import net.deatrathias.khroma.khroma.IKhromaConsumer;
+import net.deatrathias.khroma.khroma.IKhromaConsumingBlock;
+import net.deatrathias.khroma.khroma.KhromaConsumerImpl;
+import net.deatrathias.khroma.khroma.KhromaNetwork;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -25,7 +29,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class KhromaImbuerBlock extends BaseKhromaUserBlock<KhromaImbuerBlockEntity> {
+public class KhromaImbuerBlock extends BaseKhromaUserEntityBlock implements IKhromaConsumingBlock {
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
 	public static final MapCodec<KhromaImbuerBlock> CODEC = simpleCodec(KhromaImbuerBlock::new);
@@ -56,11 +60,6 @@ public class KhromaImbuerBlock extends BaseKhromaUserBlock<KhromaImbuerBlockEnti
 	}
 
 	@Override
-	public KhromaImbuerBlockEntity getBlockEntity(Level level, BlockPos pos) {
-		return level.getBlockEntity(pos, RegistryReference.BLOCK_ENTITY_KHROMA_IMBUER.get()).get();
-	}
-
-	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
 		return level.isClientSide ? null : createTickerHelper(blockEntityType, RegistryReference.BLOCK_ENTITY_KHROMA_IMBUER.get(), KhromaImbuerBlockEntity::serverTick);
 	}
@@ -73,6 +72,13 @@ public class KhromaImbuerBlock extends BaseKhromaUserBlock<KhromaImbuerBlockEnti
 		}
 
 		return InteractionResult.SUCCESS;
+	}
+
+	@Override
+	public ConnectionType khromaConnection(BlockState state, Direction direction) {
+		if (state.getValue(KhromaImbuerBlock.FACING).getOpposite() == direction)
+			return ConnectionType.CONSUMER;
+		return ConnectionType.NONE;
 	}
 
 	@Override
@@ -100,5 +106,13 @@ public class KhromaImbuerBlock extends BaseKhromaUserBlock<KhromaImbuerBlockEnti
 	@Override
 	protected BlockState mirror(BlockState state, Mirror mirror) {
 		return state.rotate(mirror.getRotation(state.getValue(FACING)));
+	}
+
+	@Override
+	public IKhromaConsumer getConsumer(Level level, BlockPos pos, BlockState state, Direction face, KhromaNetwork network) {
+		var be = level.getBlockEntity(pos, RegistryReference.BLOCK_ENTITY_KHROMA_IMBUER.get());
+		if (be.isPresent())
+			return be.get().getConsumer(level, pos, state, face, network);
+		return KhromaConsumerImpl.disabled;
 	}
 }

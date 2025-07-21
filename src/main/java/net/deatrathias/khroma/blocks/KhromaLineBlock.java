@@ -10,8 +10,7 @@ import com.mojang.serialization.MapCodec;
 
 import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.items.SpannerItem;
-import net.deatrathias.khroma.khroma.IKhromaConsumer;
-import net.deatrathias.khroma.khroma.IKhromaProvider;
+import net.deatrathias.khroma.khroma.IKhromaUsingBlock.ConnectionType;
 import net.deatrathias.khroma.khroma.Khroma;
 import net.deatrathias.khroma.khroma.KhromaNetwork;
 import net.deatrathias.khroma.khroma.KhromaProperty;
@@ -107,11 +106,7 @@ public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock
 		BlockState neighbor = level.getBlockState(neighborPos);
 		if (neighbor.is(RegistryReference.BLOCK_KHROMA_LINE))
 			return true;
-		IKhromaProvider providerCapability = level.getCapability(RegistryReference.KHROMA_PROVIDER_BLOCK, neighborPos, neighbor, level.getBlockEntity(neighborPos), reverseSide);
-		if (providerCapability != null && providerCapability.canProvide())
-			return true;
-		IKhromaConsumer consumerCapability = level.getCapability(RegistryReference.KHROMA_CONSUMER_BLOCK, neighborPos, neighbor, level.getBlockEntity(neighborPos), reverseSide);
-		if (consumerCapability != null && consumerCapability.canConsume())
+		if (KhromaNetwork.getConnectionType(level, neighborPos, reverseSide) != ConnectionType.NONE)
 			return true;
 
 		return false;
@@ -189,7 +184,7 @@ public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock
 	protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		Khroma khroma = KhromaNetwork.getKhromaAtPos(level, pos);
 		if (state.getValue(KHROMA) != khroma)
-			level.setBlockAndUpdate(pos, state.setValue(KHROMA, khroma));
+			level.setBlock(pos, state.setValue(KHROMA, khroma), 18);
 	}
 
 	@Override

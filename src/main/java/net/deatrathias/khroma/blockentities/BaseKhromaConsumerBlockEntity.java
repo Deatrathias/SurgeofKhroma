@@ -1,7 +1,8 @@
 package net.deatrathias.khroma.blockentities;
 
+import net.deatrathias.khroma.blocks.BaseKhromaUserBlock;
 import net.deatrathias.khroma.khroma.IKhromaConsumer;
-import net.deatrathias.khroma.khroma.IKhromaConsumerBlock;
+import net.deatrathias.khroma.khroma.IKhromaUsingBlock.ConnectionType;
 import net.deatrathias.khroma.khroma.Khroma;
 import net.deatrathias.khroma.khroma.KhromaConsumerImpl;
 import net.deatrathias.khroma.khroma.KhromaNetwork;
@@ -10,36 +11,64 @@ import net.deatrathias.khroma.util.BlockDirection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public abstract class BaseKhromaConsumerBlockEntity extends BaseKhromaUserBlockEntity implements IKhromaConsumerBlock {
+public abstract class BaseKhromaConsumerBlockEntity extends BlockEntity {
 
-	protected KhromaConsumerImpl consumer = new KhromaConsumerImpl(true, (t, s) -> consumes(t, s), false);
+	protected class VariableConsumer implements IKhromaConsumer {
+
+		private float request;
+
+		private KhromaNetwork network;
+
+		public void setNetwork(KhromaNetwork network) {
+			this.network = network;
+		}
+
+		@Override
+		public float request() {
+			float result = request;
+			request = 0;
+			return result;
+		}
+
+		public KhromaThroughput requestKhroma() {
+			request = 1;
+			if (network != null)
+				return network.getKhromaThroughput();
+			return KhromaThroughput.empty;
+		}
+
+		@Override
+		public boolean canConsume() {
+			return true;
+		}
+
+		@Override
+		public boolean isRelay() {
+			return false;
+		}
+
+	}
+
+	protected VariableConsumer consumer = new VariableConsumer();
 
 	public BaseKhromaConsumerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
 		super(type, pos, blockState);
 	}
 
-	@Override
-	public IKhromaConsumer getConsumer(Level level, BlockPos pos, BlockState state, Direction face) {
-		if (khromaConnection(face) == ConnectionType.CONSUMER)
+	public IKhromaConsumer getConsumer(Level level, BlockPos pos, BlockState state, Direction face, KhromaNetwork network) {
+		if (((BaseKhromaUserBlock) state.getBlock()).khromaConnection(state, face) == ConnectionType.CONSUMER) {
+			consumer.setNetwork(network);
 			return consumer;
+		}
 		return KhromaConsumerImpl.disabled;
 	}
 
-	public float consumes(KhromaThroughput throughput, boolean simulate) {
-		return 1f;
-	}
-
 	public KhromaThroughput requestOnSide(Direction side) {
-		KhromaNetwork network = KhromaNetwork.findNetwork(level, new BlockDirection(worldPosition, side));
-		if (network != null) {
-			network.request();
-			return network.getKhromaThroughput();
-		}
-
-		return KhromaThroughput.empty;
+		return consumer.requestKhroma();
 	}
 
 	public Khroma getKhromaOnSide(Direction side) {
