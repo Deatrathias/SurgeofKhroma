@@ -66,7 +66,7 @@ public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock
 		return CODEC;
 	}
 
-	public static final KhromaProperty KHROMA = KhromaProperty.create("khroma");
+	public static final KhromaProperty KHROMA = KhromaProperty.KHROMA;
 
 	public KhromaLineBlock(Properties properties) {
 		super(PIPE_SIZE, properties);
@@ -184,7 +184,7 @@ public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock
 	protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		Khroma khroma = KhromaNetwork.getKhromaAtPos(level, pos);
 		if (state.getValue(KHROMA) != khroma)
-			level.setBlock(pos, state.setValue(KHROMA, khroma), 18);
+			level.setBlock(pos, state.setValue(KHROMA, khroma), UPDATE_CLIENTS | UPDATE_KNOWN_SHAPE);
 	}
 
 	@Override

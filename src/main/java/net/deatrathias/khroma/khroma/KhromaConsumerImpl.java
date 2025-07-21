@@ -13,7 +13,7 @@ public class KhromaConsumerImpl implements IKhromaConsumer {
 	}
 
 	public KhromaConsumerImpl() {
-		this(true, 0, false);
+		this(true, 1, false);
 	}
 
 	public void setRequest(float request) {

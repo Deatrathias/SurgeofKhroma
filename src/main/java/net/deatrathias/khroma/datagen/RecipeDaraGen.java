@@ -229,7 +229,12 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 				.pattern("oXo")
 				.unlockedBy("has_line", has(RegistryReference.ITEM_BLOCK_KHROMA_LINE))
 				.save(output);
-
+		shaped(RecipeCategory.MISC, RegistryReference.ITEM_BLOCK_KHROMA_DISSIPATOR)
+				.define('X', RegistryReference.ITEM_BLOCK_KHROMA_LINE)
+				.define('#', Items.IRON_BARS)
+				.pattern("##X")
+				.unlockedBy("has_line", has(RegistryReference.ITEM_BLOCK_KHROMA_LINE))
+				.save(output);
 		shaped(RecipeCategory.MISC, RegistryReference.ITEM_BLOCK_NODE_COLLECTOR)
 				.define('c', RegistryReference.ITEM_CHROMATIC_NUCLEUS)
 				.define('#', TagReference.ITEM_BASE_INGOT)

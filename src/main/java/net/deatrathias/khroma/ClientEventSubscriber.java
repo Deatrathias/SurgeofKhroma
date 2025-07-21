@@ -9,6 +9,7 @@ import net.deatrathias.khroma.gui.KhromaApertureScreen;
 import net.deatrathias.khroma.gui.KhromaImbuerScreen;
 import net.deatrathias.khroma.items.renderer.SpannerColorTint;
 import net.deatrathias.khroma.khroma.Khroma;
+import net.deatrathias.khroma.particles.KhromaParticle.KhromaParticleProvider;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.crafting.RecipeMap;
@@ -24,6 +25,7 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RecipesReceivedEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import top.theillusivec4.curios.api.CuriosResources;
@@ -43,7 +45,7 @@ public class ClientEventSubscriber {
 		event.register(((state, level, pos, tintIndex) -> {
 			Khroma khroma = state.getValue(KhromaLineBlock.KHROMA);
 			return Khroma.KhromaColors[khroma.asInt()];
-		}), RegistryReference.BLOCK_KHROMA_LINE.value());
+		}), RegistryReference.BLOCK_KHROMA_LINE.get(), RegistryReference.BLOCK_KHROMA_DISSIPATOR.get());
 	}
 
 	@SubscribeEvent
@@ -83,6 +85,11 @@ public class ClientEventSubscriber {
 			public boolean areBreakingParticlesTinted(BlockState state, ClientLevel level, BlockPos pos) {
 				return false;
 			}
-		}, RegistryReference.BLOCK_KHROMA_LINE);
+		}, RegistryReference.BLOCK_KHROMA_LINE, RegistryReference.BLOCK_KHROMA_DISSIPATOR);
+	}
+
+	@SubscribeEvent
+	public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
+		event.registerSpecial(RegistryReference.PARTICLE_KHROMA.get(), new KhromaParticleProvider());
 	}
 }

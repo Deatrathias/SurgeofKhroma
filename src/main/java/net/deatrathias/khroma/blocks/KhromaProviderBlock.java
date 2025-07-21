@@ -62,7 +62,7 @@ public class KhromaProviderBlock extends BaseKhromaUserBlock implements IKhromaP
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
 		if (!level.isClientSide)
-			level.setBlock(pos, state.setValue(COLOR, (state.getValue(COLOR) + 1) % CYCLE.length), 18);
+			level.setBlock(pos, state.setValue(COLOR, (state.getValue(COLOR) + 1) % CYCLE.length), UPDATE_CLIENTS | UPDATE_KNOWN_SHAPE);
 		return InteractionResult.SUCCESS;
 	}
 

@@ -126,17 +126,9 @@ public class KhromaGauge implements Renderable, LayoutElement {
 			return;
 
 		int color = Khroma.KhromaColors[khroma.asInt()];
-//		float blue = (color & 255) / 255f;
-//		float green = ((color >> 8) & 255) / 255f;
-//		float red = ((color >> 16) & 255) / 255f;
-//		float alpha = ((color >> 24) & 255) / 255f;
 
 		guiGraphics.blitSprite(RenderType::guiTextured, currentTexture, x, y, 16, 16, color);
 		guiGraphics.blitSprite(RenderType::guiTextured, currentTexture, x, y + 16, 16, 16, color);
-
-		// guiGraphics.blit(x, y, 0, 16, 16, currentTexture, red, green, blue, alpha);
-		// guiGraphics.blit(x, y + 16, 0, 16, 16, currentTexture, red, green, blue,
-		// alpha);
 	}
 
 	public void renderTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {

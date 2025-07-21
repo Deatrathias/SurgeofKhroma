@@ -2,16 +2,12 @@ package net.deatrathias.khroma.blocks;
 
 import java.util.function.Function;
 
-import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.khroma.IKhromaConsumingBlock;
 import net.deatrathias.khroma.khroma.IKhromaProvidingBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
@@ -68,15 +64,6 @@ public abstract class BaseKhromaRelayBlock extends BaseKhromaUserBlock implement
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
 		return this.defaultBlockState().setValue(getFacingProperty(), context.getClickedFace()).setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
-	}
-
-	@Override
-	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		Direction backFace = state.getValue(getFacingProperty()).getOpposite();
-		BlockPos neighborPos = pos.relative(backFace);
-		BlockState neighborState = level.getBlockState(neighborPos);
-		if (neighborState.is(RegistryReference.BLOCK_KHROMA_LINE))
-			level.setBlockAndUpdate(neighborPos, neighborState.setValue(KhromaLineBlock.PROPERTY_BY_DIRECTION.get(backFace.getOpposite()), true));
 	}
 
 	@Override

@@ -17,8 +17,7 @@ public class DataGenDefinitions {
 	public static final List<DeferredBlock<Block>> simpleBlocks = List.of(RegistryReference.BLOCK_NODE_COLLECTOR);
 
 	public static final List<DeferredBlock<Block>> horDirectionBlocks = List.of(RegistryReference.BLOCK_KHROMA_PROVIDER, RegistryReference.BLOCK_KHROMA_MACHINE,
-			RegistryReference.BLOCK_KHROMA_COMBINER, RegistryReference.BLOCK_KHROMA_SEPARATOR,
-			RegistryReference.BLOCK_KHROMA_IMBUER);
+			RegistryReference.BLOCK_KHROMA_COMBINER, RegistryReference.BLOCK_KHROMA_SEPARATOR, RegistryReference.BLOCK_KHROMA_IMBUER);
 
 	public static final List<DeferredBlock<Block>> fullDirectionBlocks = List.of(RegistryReference.BLOCK_KHROMA_APERTURE);
 
@@ -26,13 +25,13 @@ public class DataGenDefinitions {
 			RegistryReference.ITEM_BLOCK_CHROMIUM_BLOCK, RegistryReference.ITEM_BLOCK_RAW_CHROMIUM_BLOCK, RegistryReference.ITEM_BLOCK_KHROMETAL_BLOCK_RED,
 			RegistryReference.ITEM_BLOCK_KHROMETAL_BLOCK_GREEN, RegistryReference.ITEM_BLOCK_KHROMETAL_BLOCK_BLUE, RegistryReference.ITEM_BLOCK_KHROMETAL_BLOCK_WHITE,
 			RegistryReference.ITEM_BLOCK_KHROMETAL_BLOCK_BLACK, RegistryReference.ITEM_BLOCK_KHROMA_APERTURE, RegistryReference.ITEM_BLOCK_KHROMA_COMBINER, RegistryReference.ITEM_BLOCK_KHROMA_IMBUER,
-			RegistryReference.ITEM_BLOCK_KHROMA_SEPARATOR, RegistryReference.ITEM_BLOCK_NODE_COLLECTOR);
+			RegistryReference.ITEM_BLOCK_KHROMA_SEPARATOR, RegistryReference.ITEM_BLOCK_KHROMA_DISSIPATOR, RegistryReference.ITEM_BLOCK_NODE_COLLECTOR);
 
 	public static final List<DeferredBlock<Block>> dropsSelfBlocks = List.of(RegistryReference.BLOCK_CHROMIUM_BLOCK, RegistryReference.BLOCK_RAW_CHROMIUM_BLOCK,
 			RegistryReference.BLOCK_KHROMETAL_BLOCK_RED, RegistryReference.BLOCK_KHROMETAL_BLOCK_GREEN, RegistryReference.BLOCK_KHROMETAL_BLOCK_BLUE, RegistryReference.BLOCK_KHROMETAL_BLOCK_WHITE,
 			RegistryReference.BLOCK_KHROMETAL_BLOCK_BLACK, RegistryReference.BLOCK_KHROMA_APERTURE, RegistryReference.BLOCK_KHROMA_COMBINER, RegistryReference.BLOCK_KHROMA_SEPARATOR,
-			RegistryReference.BLOCK_KHROMA_PROVIDER, RegistryReference.BLOCK_KHROMA_MACHINE, RegistryReference.BLOCK_KHROMA_LINE, RegistryReference.BLOCK_NODE_COLLECTOR,
-			RegistryReference.BLOCK_KHROMA_IMBUER);
+			RegistryReference.BLOCK_KHROMA_DISSIPATOR, RegistryReference.BLOCK_KHROMA_PROVIDER, RegistryReference.BLOCK_KHROMA_MACHINE, RegistryReference.BLOCK_KHROMA_LINE,
+			RegistryReference.BLOCK_NODE_COLLECTOR, RegistryReference.BLOCK_KHROMA_IMBUER);
 	public static final List<DeferredBlock<Block>> dropsOreBlocks = List.of(RegistryReference.BLOCK_CHROMIUM_ORE, RegistryReference.BLOCK_DEEPSLATE_CHROMIUM_ORE);
 
 	public static final List<DeferredItem<Item>> simpleItems = List.of(RegistryReference.ITEM_RAW_CHROMIUM, RegistryReference.ITEM_CHROMIUM_INGOT, RegistryReference.ITEM_CHROMIUM_NUGGET,
@@ -44,8 +43,8 @@ public class DataGenDefinitions {
 			RegistryReference.ITEM_KHROMETAL_BLACK_PICKAXE);
 
 	public static final List<DeferredBlock<Block>> khromaDevices = List.of(RegistryReference.BLOCK_KHROMA_LINE, RegistryReference.BLOCK_NODE_COLLECTOR, RegistryReference.BLOCK_KHROMA_PROVIDER,
-			RegistryReference.BLOCK_KHROMA_MACHINE, RegistryReference.BLOCK_KHROMA_APERTURE,
-			RegistryReference.BLOCK_KHROMA_COMBINER, RegistryReference.BLOCK_KHROMA_SEPARATOR, RegistryReference.BLOCK_KHROMA_IMBUER);
+			RegistryReference.BLOCK_KHROMA_MACHINE, RegistryReference.BLOCK_KHROMA_APERTURE, RegistryReference.BLOCK_KHROMA_COMBINER, RegistryReference.BLOCK_KHROMA_SEPARATOR,
+			RegistryReference.BLOCK_KHROMA_DISSIPATOR, RegistryReference.BLOCK_KHROMA_IMBUER);
 
 	public static final List<DeferredBlock<Block>> needsStoneTool = List.of(RegistryReference.BLOCK_CHROMIUM_ORE, RegistryReference.BLOCK_DEEPSLATE_CHROMIUM_ORE,
 			RegistryReference.BLOCK_CHROMIUM_BLOCK, RegistryReference.BLOCK_RAW_CHROMIUM_BLOCK);

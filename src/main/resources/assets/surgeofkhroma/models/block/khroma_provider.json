@@ -1,9 +1,9 @@
 {
    "parent": "minecraft:block/orientable_with_bottom",
    "textures": {
-      "front": "minecraft:block/furnace_front",
-      "side": "minecraft:block/furnace_side",
-      "top": "minecraft:block/furnace_top",
-      "bottom": "minecraft:block/furnace_top"
+      "front": "surgeofkhroma:block/khroma_creative_connection",
+      "side": "surgeofkhroma:block/khroma_creative_side",
+      "top": "surgeofkhroma:block/khroma_creative_side",
+      "bottom": "surgeofkhroma:block/khroma_creative_side"
    }
 }

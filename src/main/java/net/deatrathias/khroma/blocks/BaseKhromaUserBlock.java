@@ -15,6 +15,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -58,6 +59,18 @@ public abstract class BaseKhromaUserBlock extends Block implements IKhromaUsingB
 	protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
 		if (!level.isClientSide)
 			dirtyNetwork(level, pos);
+	}
+
+	@Override
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		for (Direction direction : Direction.values()) {
+			if (khromaConnection(state, direction) == ConnectionType.NONE)
+				continue;
+			BlockPos neighborPos = pos.relative(direction);
+			BlockState neighborState = level.getBlockState(neighborPos);
+			if (neighborState.is(RegistryReference.BLOCK_KHROMA_LINE))
+				level.setBlockAndUpdate(neighborPos, neighborState.setValue(KhromaLineBlock.PROPERTY_BY_DIRECTION.get(direction.getOpposite()), true));
+		}
 	}
 
 	@Override

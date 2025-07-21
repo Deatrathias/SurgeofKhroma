@@ -1,11 +1,15 @@
 package net.deatrathias.khroma;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
+
+import com.mojang.serialization.MapCodec;
 
 import net.deatrathias.khroma.blockentities.KhromaApertureBlockEntity;
 import net.deatrathias.khroma.blockentities.KhromaImbuerBlockEntity;
 import net.deatrathias.khroma.blocks.KhromaApertureBlock;
 import net.deatrathias.khroma.blocks.KhromaCombinerBlock;
+import net.deatrathias.khroma.blocks.KhromaDissipatorBlock;
 import net.deatrathias.khroma.blocks.KhromaImbuerBlock;
 import net.deatrathias.khroma.blocks.KhromaLineBlock;
 import net.deatrathias.khroma.blocks.KhromaMachineBlock;
@@ -28,14 +32,19 @@ import net.deatrathias.khroma.items.KhrometalGreenToolItem;
 import net.deatrathias.khroma.items.KhrometalWhitePickaxeItem;
 import net.deatrathias.khroma.items.SpannerItem;
 import net.deatrathias.khroma.khroma.KhromaBiomeData;
+import net.deatrathias.khroma.particles.KhromaParticleOption;
 import net.deatrathias.khroma.recipes.CraftingSpannerRecipe;
 import net.deatrathias.khroma.recipes.KhromaImbuementRecipe;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -93,6 +102,7 @@ public class RegistryReference {
 	public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, SurgeofKhroma.MODID);
 	public static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, SurgeofKhroma.MODID);
 	public static final DeferredRegister.DataComponents DATA_COMPONENT_TYPES = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, SurgeofKhroma.MODID);
+	public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(BuiltInRegistries.PARTICLE_TYPE, SurgeofKhroma.MODID);
 
 	public static final Holder<Attribute> ATTRIBUTE_TELEPORT_DROPS = ATTRIBUTES.register("teleport_drops",
 			() -> new BooleanAttribute("attribute.surgeofkhroma.teleport_drops", false).setSyncable(true));
@@ -180,6 +190,10 @@ public class RegistryReference {
 	public static final DeferredBlock<Block> BLOCK_KHROMA_SEPARATOR = BLOCKS.register("khroma_separator",
 			registryName -> new KhromaSeparatorBlock(blockProps(registryName).mapColor(MapColor.METAL).strength(1.0f, 2.0f).sound(SoundType.METAL).pushReaction(PushReaction.BLOCK)));
 	public static final DeferredItem<BlockItem> ITEM_BLOCK_KHROMA_SEPARATOR = ITEMS.registerSimpleBlockItem(BLOCK_KHROMA_SEPARATOR);
+
+	public static final DeferredBlock<Block> BLOCK_KHROMA_DISSIPATOR = BLOCKS.register("khroma_dissipator",
+			registryName -> new KhromaDissipatorBlock(blockProps(registryName).mapColor(MapColor.METAL).strength(3.0f, 3.5f).sound(SoundType.METAL).pushReaction(PushReaction.BLOCK)));
+	public static final DeferredItem<BlockItem> ITEM_BLOCK_KHROMA_DISSIPATOR = ITEMS.registerSimpleBlockItem(BLOCK_KHROMA_DISSIPATOR);
 
 	public static final DeferredBlock<Block> BLOCK_KHROMA_IMBUER = BLOCKS.register("khroma_imbuer",
 			registryName -> new KhromaImbuerBlock(blockProps(registryName).mapColor(MapColor.METAL).strength(3.0f, 3.5f).sound(SoundType.METAL).pushReaction(PushReaction.BLOCK)));
@@ -300,6 +314,14 @@ public class RegistryReference {
 
 	/**
 	 * 
+	 * PARTICLES
+	 * 
+	 */
+	public static final Supplier<ParticleType<KhromaParticleOption>> PARTICLE_KHROMA = PARTICLE_TYPES.register("particle_khroma",
+			registryName -> RegistryReference.registerParticle(false, type -> KhromaParticleOption.CODEC, type -> KhromaParticleOption.STREAM_CODEC));
+
+	/**
+	 * 
 	 * CREATIVE TAB
 	 * 
 	 */
@@ -339,6 +361,7 @@ public class RegistryReference {
 		output.accept(ITEM_BLOCK_KHROMA_APERTURE);
 		output.accept(ITEM_BLOCK_KHROMA_COMBINER);
 		output.accept(ITEM_BLOCK_KHROMA_SEPARATOR);
+		output.accept(ITEM_BLOCK_KHROMA_DISSIPATOR);
 		output.accept(ITEM_BLOCK_NODE_COLLECTOR);
 		output.accept(ITEM_BLOCK_KHROMA_IMBUER);
 	}
@@ -354,5 +377,20 @@ public class RegistryReference {
 	public static Item.Properties addAttributeModifer(Item.Properties props, Holder<Attribute> attribute, AttributeModifier modifier, EquipmentSlotGroup slot) {
 		ItemAttributeModifiers attributes = (ItemAttributeModifiers) props.components.map.get(DataComponents.ATTRIBUTE_MODIFIERS);
 		return props.attributes(attributes.withModifierAdded(attribute, modifier, slot));
+	}
+
+	private static <T extends ParticleOptions> ParticleType<T> registerParticle(boolean overrideLimitter, final Function<ParticleType<T>, MapCodec<T>> codecGetter,
+			final Function<ParticleType<T>, StreamCodec<? super RegistryFriendlyByteBuf, T>> streamCodecGetter) {
+		return new ParticleType<T>(overrideLimitter) {
+			@Override
+			public MapCodec<T> codec() {
+				return codecGetter.apply(this);
+			}
+
+			@Override
+			public StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec() {
+				return streamCodecGetter.apply(this);
+			}
+		};
 	}
 }

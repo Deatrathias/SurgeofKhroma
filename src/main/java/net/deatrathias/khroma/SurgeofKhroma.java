@@ -31,6 +31,7 @@ public class SurgeofKhroma {
 		RegistryReference.CREATIVE_MODE_TABS.register(modEventBus);
 		RegistryReference.MOB_EFFECTS.register(modEventBus);
 		RegistryReference.DATA_COMPONENT_TYPES.register(modEventBus);
+		RegistryReference.PARTICLE_TYPES.register(modEventBus);
 
 		modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 	}

@@ -13,6 +13,7 @@ import net.deatrathias.khroma.blocks.KhromaLineBlock;
 import net.deatrathias.khroma.items.SpannerItem;
 import net.deatrathias.khroma.items.renderer.SpannerColorTint;
 import net.deatrathias.khroma.khroma.Khroma;
+import net.deatrathias.khroma.khroma.KhromaProperty;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
@@ -33,6 +34,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class ModelDataGen extends ModelProvider {
 	public static final Map<Direction, VariantMutator> MULTIFACE_GENERATOR_NO_LOCK = ImmutableMap.of(
@@ -91,6 +93,7 @@ public class ModelDataGen extends ModelProvider {
 			itemModels.generateFlatItem(element.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 
 		registerKhromaLine(blockModels, itemModels);
+		registerDissipator(blockModels, itemModels);
 
 		var spannerBase = ModelTemplates.FLAT_HANDHELD_ITEM.create(SurgeofKhroma.resource("item/khroma_spanner_base"),
 				new TextureMapping().put(TextureSlot.LAYER0, SurgeofKhroma.resource("item/spanner_base")), itemModels.modelOutput);
@@ -172,6 +175,56 @@ public class ModelDataGen extends ModelProvider {
 		blockModels.blockStateOutput.accept(multipart);
 
 		itemModels.itemModelOutput.accept(RegistryReference.ITEM_BLOCK_KHROMA_LINE.get(), new BlockModelWrapper.Unbaked(SurgeofKhroma.resource("item/khroma_line"), Collections.emptyList()));
+	}
+
+	private void registerDissipator(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
+		var notEmptyCondition = BlockModelGenerators.condition().negatedTerm(KhromaProperty.KHROMA, Khroma.KHROMA_EMPTY).build();
+		var notSpectrumCondition = BlockModelGenerators.condition().negatedTerm(KhromaProperty.KHROMA, Khroma.KHROMA_SPECTRUM).build();
+		var notLightSpectrumCondition = BlockModelGenerators.condition().negatedTerm(KhromaProperty.KHROMA, Khroma.KHROMA_LIGHT_SPECTRUM).build();
+		var notDarkSpectrumCondition = BlockModelGenerators.condition().negatedTerm(KhromaProperty.KHROMA, Khroma.KHROMA_DARK_SPECTRUM).build();
+		var notKhromegaCondition = BlockModelGenerators.condition().negatedTerm(KhromaProperty.KHROMA, Khroma.KHROMA_KHROMEGA).build();
+		var spectrumCondition = BlockModelGenerators.condition().term(KhromaProperty.KHROMA, Khroma.KHROMA_SPECTRUM).build();
+		var lightSpectrumCondition = BlockModelGenerators.condition().term(KhromaProperty.KHROMA, Khroma.KHROMA_LIGHT_SPECTRUM).build();
+		var darkSpectrumCondition = BlockModelGenerators.condition().term(KhromaProperty.KHROMA, Khroma.KHROMA_DARK_SPECTRUM).build();
+		var khromegaCondition = BlockModelGenerators.condition().term(KhromaProperty.KHROMA, Khroma.KHROMA_KHROMEGA).build();
+
+		var variants = BlockModelGenerators.plainVariant(SurgeofKhroma.resource("block/khroma_dissipator"));
+
+		var multipart = MultiPartGenerator.multiPart(RegistryReference.BLOCK_KHROMA_DISSIPATOR.get());
+
+		for (Direction direction : BlockStateProperties.HORIZONTAL_FACING.getPossibleValues()) {
+			var directionCondition = BlockModelGenerators.condition().term(BlockStateProperties.HORIZONTAL_FACING, direction).build();
+			var reverseDirectionCondition = BlockModelGenerators.condition().term(BlockStateProperties.HORIZONTAL_FACING, direction.getOpposite()).build();
+			var directionVariant = MULTIFACE_GENERATOR_NO_LOCK.get(direction);
+
+			multipart.with(directionCondition, variants.with(directionVariant))
+					.with(new CombinedCondition(Operation.AND, List.of(
+							reverseDirectionCondition,
+							notEmptyCondition,
+							notSpectrumCondition,
+							notLightSpectrumCondition,
+							notDarkSpectrumCondition,
+							notKhromegaCondition)),
+							plain("block/khroma_line_side_inside").with(directionVariant))
+					.with(new CombinedCondition(Operation.AND, List.of(
+							reverseDirectionCondition,
+							spectrumCondition)),
+							plain("block/khroma_line_side_inside_spectrum").with(directionVariant))
+					.with(new CombinedCondition(Operation.AND, List.of(
+							reverseDirectionCondition,
+							lightSpectrumCondition)),
+							plain("block/khroma_line_side_inside_spectrum_white").with(directionVariant))
+					.with(new CombinedCondition(Operation.AND, List.of(
+							reverseDirectionCondition,
+							darkSpectrumCondition)),
+							plain("block/khroma_line_side_inside_spectrum_black").with(directionVariant))
+					.with(new CombinedCondition(Operation.AND, List.of(
+							reverseDirectionCondition,
+							khromegaCondition)),
+							plain("block/khroma_line_side_inside_khromega").with(directionVariant));
+		}
+
+		blockModels.blockStateOutput.accept(multipart);
 	}
 
 	private MultiVariant plain(String path) {

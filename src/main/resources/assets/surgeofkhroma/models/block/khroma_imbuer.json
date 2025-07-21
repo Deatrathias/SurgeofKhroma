@@ -1,9 +1,12 @@
 {
-   "parent": "minecraft:block/orientable_with_bottom",
+   "parent": "minecraft:block/cube",
    "textures": {
-      "front": "minecraft:block/furnace_front",
-      "side": "minecraft:block/furnace_side",
-      "top": "minecraft:block/furnace_top",
-      "bottom": "minecraft:block/furnace_top"
+      "particle": "surgeofkhroma:block/khroma_device_side",
+      "north": "surgeofkhroma:block/khroma_imbuer",
+      "south": "surgeofkhroma:block/khroma_device_connection",
+      "west": "surgeofkhroma:block/khroma_device_side",
+      "east": "surgeofkhroma:block/khroma_device_side",
+      "down": "surgeofkhroma:block/khroma_device_side",
+      "up": "surgeofkhroma:block/khroma_device_side"
    }
 }

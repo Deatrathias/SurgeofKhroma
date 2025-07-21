@@ -1,0 +1,402 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "surgeofkhroma:block/khroma_dissipator"
+      },
+      "when": {
+        "facing": "north"
+      }
+    },
+    {
+      "apply": {
+        "model": "surgeofkhroma:block/khroma_line_side_inside"
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "khroma": "!empty"
+          },
+          {
+            "khroma": "!redgreenblue"
+          },
+          {
+            "khroma": "!redgreenbluewhite"
+          },
+          {
+            "khroma": "!redgreenblueblack"
+          },
+          {
+            "khroma": "!redgreenbluewhiteblack"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum"
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "khroma": "redgreenblue"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum_white"
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "khroma": "redgreenbluewhite"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum_black"
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "khroma": "redgreenblueblack"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "surgeofkhroma:block/khroma_line_side_inside_khromega"
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "south"
+          },
+          {
+            "khroma": "redgreenbluewhiteblack"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "surgeofkhroma:block/khroma_dissipator",
+        "y": 180
+      },
+      "when": {
+        "facing": "south"
+      }
+    },
+    {
+      "apply": {
+        "model": "surgeofkhroma:block/khroma_line_side_inside",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "khroma": "!empty"
+          },
+          {
+            "khroma": "!redgreenblue"
+          },
+          {
+            "khroma": "!redgreenbluewhite"
+          },
+          {
+            "khroma": "!redgreenblueblack"
+          },
+          {
+            "khroma": "!redgreenbluewhiteblack"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "khroma": "redgreenblue"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum_white",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "khroma": "redgreenbluewhite"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum_black",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "khroma": "redgreenblueblack"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "surgeofkhroma:block/khroma_line_side_inside_khromega",
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "north"
+          },
+          {
+            "khroma": "redgreenbluewhiteblack"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "surgeofkhroma:block/khroma_dissipator",
+        "y": 270
+      },
+      "when": {
+        "facing": "west"
+      }
+    },
+    {
+      "apply": {
+        "model": "surgeofkhroma:block/khroma_line_side_inside",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "khroma": "!empty"
+          },
+          {
+            "khroma": "!redgreenblue"
+          },
+          {
+            "khroma": "!redgreenbluewhite"
+          },
+          {
+            "khroma": "!redgreenblueblack"
+          },
+          {
+            "khroma": "!redgreenbluewhiteblack"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "khroma": "redgreenblue"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum_white",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "khroma": "redgreenbluewhite"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum_black",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "khroma": "redgreenblueblack"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "surgeofkhroma:block/khroma_line_side_inside_khromega",
+        "y": 270
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "east"
+          },
+          {
+            "khroma": "redgreenbluewhiteblack"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "surgeofkhroma:block/khroma_dissipator",
+        "y": 90
+      },
+      "when": {
+        "facing": "east"
+      }
+    },
+    {
+      "apply": {
+        "model": "surgeofkhroma:block/khroma_line_side_inside",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "khroma": "!empty"
+          },
+          {
+            "khroma": "!redgreenblue"
+          },
+          {
+            "khroma": "!redgreenbluewhite"
+          },
+          {
+            "khroma": "!redgreenblueblack"
+          },
+          {
+            "khroma": "!redgreenbluewhiteblack"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "khroma": "redgreenblue"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum_white",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "khroma": "redgreenbluewhite"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "surgeofkhroma:block/khroma_line_side_inside_spectrum_black",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "khroma": "redgreenblueblack"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "surgeofkhroma:block/khroma_line_side_inside_khromega",
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "facing": "west"
+          },
+          {
+            "khroma": "redgreenbluewhiteblack"
+          }
+        ]
+      }
+    }
+  ]
+}

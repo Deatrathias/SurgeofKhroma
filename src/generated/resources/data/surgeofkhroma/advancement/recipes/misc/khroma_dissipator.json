@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_line": {
+      "conditions": {
+        "items": [
+          {
+            "items": "surgeofkhroma:khroma_line"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "surgeofkhroma:khroma_dissipator"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_line"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "surgeofkhroma:khroma_dissipator"
+    ]
+  }
+}

@@ -31,7 +31,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
 
-public class KhromaNetwork implements Comparable<KhromaNetwork> {
+public class KhromaNetwork {
 	private static final Map<Level, List<KhromaNetwork>> networksPerLevel = new HashMap<Level, List<KhromaNetwork>>();
 
 	private Set<BlockPos> lines;
@@ -42,8 +42,6 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 
 	private Map<BlockDirection, IKhromaConsumer> relays;
 
-	private boolean master;
-
 	private Level level;
 
 	private Khroma khroma;
@@ -53,8 +51,6 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 	private boolean dirty;
 
 	private boolean updatedThisTick;
-
-	private int relaysNumber;
 
 	private float request;
 
@@ -255,6 +251,12 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 			if (!level.getBlockTicks().hasScheduledTick(linePos, khromaLineBlock))
 				level.scheduleTick(linePos, RegistryReference.BLOCK_KHROMA_LINE.get(), 0);
 		}
+
+		for (var consumer : consumers.keySet()) {
+			BlockState consumerState = level.getBlockState(consumer.pos());
+			if (!level.getBlockTicks().hasScheduledTick(consumer.pos(), consumerState.getBlock()))
+				level.scheduleTick(consumer.pos(), consumerState.getBlock(), 0);
+		}
 	}
 
 	public static @Nullable KhromaNetwork findNetwork(Level level, BlockDirection blockDirection) {
@@ -323,19 +325,9 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 		return relay ? Optional.ofNullable(relays.get(blockDir)) : Optional.ofNullable(consumers.get(blockDir));
 	}
 
-	public void countRelays() {
-		relaysNumber = 0;
-		for (IKhromaProvider provider : providers.values()) {
-			if (provider.isRelay())
-				relaysNumber++;
-		}
-	}
-
 	public void debugNetwork() {
 		Logger logger = SurgeofKhroma.LOGGER;
 		logger.debug("network " + this);
-		logger.debug("master: " + master);
-		logger.debug("relays: " + relaysNumber);
 		logger.debug("providers:");
 		for (var provider : providers.keySet()) {
 			logger.debug(provider.pos().toString() + " " + provider.direction().toString());
@@ -399,10 +391,12 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 		while (networkIter.hasNext()) {
 			KhromaNetwork network = networkIter.next();
 			if (network.dirty) {
-				SurgeofKhroma.LOGGER.debug("rebuilding network");
 				dirty = true;
-				if (!network.rebuildNetwork(leftoverProviders, allProviders))
+				SurgeofKhroma.LOGGER.debug("rebuilding network");
+				if (!network.rebuildNetwork(leftoverProviders, allProviders)) {
+					SurgeofKhroma.LOGGER.debug("Network removed");
 					networkIter.remove();
+				}
 			}
 
 		}
@@ -472,14 +466,5 @@ public class KhromaNetwork implements Comparable<KhromaNetwork> {
 		if (state.getBlock() instanceof IKhromaConsumingBlock consuming)
 			return consuming.getConsumer(level, blockDirection.pos(), state, blockDirection.direction(), this);
 		return null;
-	}
-
-	@Override
-	public int compareTo(KhromaNetwork o) {
-		if (master && !o.master)
-			return -1;
-		else if (!master && o.master)
-			return 1;
-		return relaysNumber - o.relaysNumber;
 	}
 }

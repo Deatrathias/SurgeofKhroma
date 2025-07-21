@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": "minecraft:iron_bars",
+    "X": "surgeofkhroma:khroma_line"
+  },
+  "pattern": [
+    "##X"
+  ],
+  "result": {
+    "count": 1,
+    "id": "surgeofkhroma:khroma_dissipator"
+  }
+}

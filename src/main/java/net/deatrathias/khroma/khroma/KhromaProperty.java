@@ -6,6 +6,7 @@ import java.util.Optional;
 import net.minecraft.world.level.block.state.properties.Property;
 
 public class KhromaProperty extends Property<Khroma> {
+	public static final KhromaProperty KHROMA = KhromaProperty.create("khroma");
 
 	protected KhromaProperty(String name) {
 		super(name, Khroma.class);
