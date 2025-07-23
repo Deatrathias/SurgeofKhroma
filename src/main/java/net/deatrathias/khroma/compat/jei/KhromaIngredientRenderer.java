@@ -24,7 +24,7 @@ public class KhromaIngredientRenderer implements IIngredientRenderer<Khroma> {
 	@Override
 	public void render(GuiGraphics guiGraphics, Khroma ingredient) {
 		TextureAtlasSprite sprite = sprites.getSprite(KhromaGauge.getTexturePerKhroma(ingredient));
-		int color = Khroma.KhromaColors[ingredient.asInt()];
+		int color = ingredient.getTint();
 
 		guiGraphics.blitSprite(RenderType::guiTextured, sprite, 0, 0, 16, 16, color);
 	}

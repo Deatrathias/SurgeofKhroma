@@ -1,5 +1,7 @@
 package net.deatrathias.khroma.blockentities;
 
+import java.util.Optional;
+
 import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.blocks.KhromaImbuerBlock;
@@ -42,6 +44,8 @@ public class KhromaImbuerBlockEntity extends BaseKhromaConsumerBlockEntity imple
 	private final RecipeManager.CachedCheck<ItemKhromaRecipeInput, KhromaImbuementRecipe> quickCheck;
 
 	protected NonNullList<ItemStack> items = NonNullList.withSize(2, ItemStack.EMPTY);
+
+	private Optional<RecipeHolder<KhromaImbuementRecipe>> currentRecipe;
 
 	private KhromaThroughput lastThroughput;
 
@@ -98,6 +102,7 @@ public class KhromaImbuerBlockEntity extends BaseKhromaConsumerBlockEntity imple
 		super(RegistryReference.BLOCK_ENTITY_KHROMA_IMBUER.get(), pos, blockState);
 		quickCheck = RecipeManager.createCheck(RegistryReference.RECIPE_KHROMA_IMBUEMENT.get());
 		progress = 0;
+		currentRecipe = Optional.empty();
 	}
 
 	public static void serverTick(Level level, BlockPos pos, BlockState state, KhromaImbuerBlockEntity blockEntity) {
@@ -111,17 +116,16 @@ public class KhromaImbuerBlockEntity extends BaseKhromaConsumerBlockEntity imple
 		lastThroughput = new KhromaThroughput(khroma, 0);
 		effectiveRate = 0;
 
-		RecipeHolder<KhromaImbuementRecipe> recipe = null;
-		if (khroma != Khroma.KHROMA_EMPTY && !items.get(SLOT_INPUT).isEmpty()) {
-			var recipeFound = quickCheck.getRecipeFor(new ItemKhromaRecipeInput(items.get(SLOT_INPUT), khroma), (ServerLevel) level);
-			if (recipeFound.isPresent())
-				recipe = recipeFound.get();
+		if (currentRecipe.isEmpty() && khroma != Khroma.KHROMA_EMPTY && !items.get(SLOT_INPUT).isEmpty()) {
+			currentRecipe = quickCheck.getRecipeFor(new ItemKhromaRecipeInput(items.get(SLOT_INPUT), khroma), (ServerLevel) level);
 		}
-		if (recipe != null) {
+		if (currentRecipe.isPresent()) {
+			var recipe = currentRecipe.get();
 			if (!canProcess(recipe, khroma)) {
 				if (progress != 0)
 					setChanged();
 				progress = 0;
+				currentRecipe = Optional.empty();
 			} else {
 				KhromaThroughput throughput = requestOnSide(side);
 				effectiveRate = throughput.recipeProgress(recipe.value(), getSoftLimit());
@@ -189,6 +193,7 @@ public class KhromaImbuerBlockEntity extends BaseKhromaConsumerBlockEntity imple
 		super.saveAdditional(tag, registries);
 		ContainerHelper.saveAllItems(tag, items, registries);
 		tag.putFloat("progress", progress);
+		// tag.putString("recipe", currentRecipe.);
 	}
 
 	@Override

@@ -125,7 +125,7 @@ public class KhromaGauge implements Renderable, LayoutElement {
 		if (currentTexture == null)
 			return;
 
-		int color = Khroma.KhromaColors[khroma.asInt()];
+		int color = khroma.getTint();
 
 		guiGraphics.blitSprite(RenderType::guiTextured, currentTexture, x, y, 16, 16, color);
 		guiGraphics.blitSprite(RenderType::guiTextured, currentTexture, x, y + 16, 16, 16, color);

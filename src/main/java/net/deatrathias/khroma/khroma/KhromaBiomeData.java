@@ -1,8 +1,7 @@
 package net.deatrathias.khroma.khroma;
 
 import java.util.Arrays;
-
-import javax.annotation.Nullable;
+import java.util.Optional;
 
 import org.jetbrains.annotations.UnknownNullability;
 
@@ -24,8 +23,7 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
 
 public class KhromaBiomeData implements INBTSerializable<CompoundTag> {
 	private boolean generated;
-	@Nullable
-	private KhromaNode node;
+	private Optional<KhromaNode> node;
 
 	private static final int red = 0;
 	private static final int green = 1;
@@ -35,14 +33,14 @@ public class KhromaBiomeData implements INBTSerializable<CompoundTag> {
 
 	public KhromaBiomeData() {
 		generated = false;
-		node = null;
+		node = Optional.empty();
 	}
 
 	public boolean isGenerated() {
 		return generated;
 	}
 
-	public KhromaNode getNode() {
+	public Optional<KhromaNode> getNode() {
 		return node;
 	}
 
@@ -50,15 +48,15 @@ public class KhromaBiomeData implements INBTSerializable<CompoundTag> {
 	public @UnknownNullability CompoundTag serializeNBT(Provider provider) {
 		CompoundTag nbt = new CompoundTag();
 		nbt.putBoolean("generated", generated);
-		if (node != null)
-			nbt.put("node", node.serializeNBT(provider));
+		if (node.isPresent())
+			nbt.put("node", node.get().serializeNBT(provider));
 		return nbt;
 	}
 
 	@Override
 	public void deserializeNBT(Provider provider, CompoundTag nbt) {
 		generated = nbt.getBoolean("generated").orElse(false);
-		node = nbt.getCompound("node").map(tag -> new KhromaNode(provider, tag)).orElse(null);
+		node = nbt.getCompound("node").map(tag -> new KhromaNode(provider, tag));
 	}
 
 	private long getSeed(long a, long b, long c) {
@@ -76,16 +74,22 @@ public class KhromaBiomeData implements INBTSerializable<CompoundTag> {
 		int z = random.nextIntBetweenInclusive(0, chunksPerNode - 1);
 		if (groupx != x || groupz != z) {
 			generated = true;
-			node = null;
+			node = Optional.empty();
 			return;
 		}
 
 		int height = chunk.getHeight(Types.OCEAN_FLOOR, 8, 8);
 
 		BlockPos nodePos = new BlockPos(chunkPos.getMiddleBlockX(), height + 4, chunkPos.getMiddleBlockZ());
-		Khroma color = determineColor(chunk.getNoiseBiome(nodePos.getX() / 4, nodePos.getY() / 4, nodePos.getZ() / 4), nodePos, random);
+		var biome = chunk.getNoiseBiome(nodePos.getX() / 4, nodePos.getY() / 4, nodePos.getZ() / 4);
+		if (!biome.is(BiomeTags.IS_OVERWORLD)) {
+			generated = true;
+			node = Optional.empty();
+			return;
+		}
+		Khroma color = determineColor(biome, nodePos, random);
 		if (color != Khroma.KHROMA_EMPTY)
-			node = new KhromaNode(nodePos, color, 1);
+			node = Optional.of(new KhromaNode(nodePos, color, 1));
 		SurgeofKhroma.LOGGER.debug("seed " + seed + " chunk x " + chunkPos.x + " z " + chunkPos.z);
 		generated = true;
 	}

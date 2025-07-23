@@ -40,7 +40,7 @@ public class KhromaParticle extends TextureSheetParticle {
 		super(level, x, y, z, xSpeed, ySpeed, zSpeed);
 		setSprite(Minecraft.getInstance().getModelManager().getAtlas(TextureAtlas.LOCATION_BLOCKS).getSprite(getTexturePerKhroma(khroma)));
 		this.setParticleSpeed(xSpeed, ySpeed, zSpeed);
-		setColor(Khroma.KhromaColors[khroma.asInt()]);
+		setColor(khroma.getTint());
 		// this.quadSize /= (random.nextFloat() * 6f + 3f);
 		this.quadSize *= random.nextFloat() * 0.4f;
 		startingSize = quadSize;

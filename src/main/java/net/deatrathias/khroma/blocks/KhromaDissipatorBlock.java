@@ -21,6 +21,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -90,6 +91,9 @@ public class KhromaDissipatorBlock extends BaseKhromaUserBlock implements IKhrom
 
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+		if (player.hasItemInSlot(EquipmentSlot.MAINHAND))
+			return InteractionResult.PASS;
+
 		if (level.isClientSide)
 			return InteractionResult.SUCCESS_SERVER;
 		else {

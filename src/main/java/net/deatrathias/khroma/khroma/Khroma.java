@@ -23,7 +23,7 @@ public final class Khroma implements Comparable<Khroma>, Serializable, StringRep
 
 	public static final String[] KhromaNames = new String[] { "red", "green", "blue", "white", "black" };
 
-	public static final int[] KhromaColors = new int[] { 0x00FFFFFF, // empty
+	private static final int[] KhromaColors = new int[] { 0x00FFFFFF, // empty
 			0xFFFF0000, // red
 			0xFF00FF00, // green
 			0xFFFFFF00, // red green

@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 
 import net.deatrathias.khroma.Config;
 import net.deatrathias.khroma.RegistryReference;
+import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.entities.KhromaNodeEntity;
 import net.deatrathias.khroma.khroma.IKhromaProvider;
 import net.deatrathias.khroma.khroma.IKhromaProvidingBlock;
@@ -59,7 +60,7 @@ public class NodeCollectorBlock extends BaseKhromaUserBlock implements IKhromaPr
 	protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
 		ChunkAccess chunk = level.getChunk(pos);
 		KhromaBiomeData data = chunk.getData(RegistryReference.KHROMA_BIOME_DATA);
-		return data != null && data.isGenerated() && data.getNode() != null && pos.equals(data.getNode().getPosition());
+		return data != null && data.isGenerated() && data.getNode().isPresent() && pos.equals(data.getNode().get().getPosition());
 	}
 
 	@Override
@@ -97,7 +98,12 @@ public class NodeCollectorBlock extends BaseKhromaUserBlock implements IKhromaPr
 		if (face == Direction.DOWN) {
 			ChunkAccess chunk = level.getChunk(pos);
 			KhromaBiomeData data = chunk.getData(RegistryReference.KHROMA_BIOME_DATA);
-			return new KhromaProviderImpl(true, new KhromaThroughput(data.getNode().getKhroma(), Config.KHROMA_RATE_PER_LEVEL.get().get(data.getNode().getLevel() - 1).floatValue()), false);
+			if (data.getNode().isEmpty()) {
+				SurgeofKhroma.LOGGER.error("No node in chunk " + chunk.getPos().toString() + " for collector at " + pos.toString());
+				return KhromaProviderImpl.disabled;
+			}
+			var node = data.getNode().get();
+			return new KhromaProviderImpl(true, new KhromaThroughput(node.getKhroma(), Config.KHROMA_RATE_PER_LEVEL.get().get(node.getLevel() - 1).floatValue()), false);
 		}
 		return KhromaProviderImpl.disabled;
 	}

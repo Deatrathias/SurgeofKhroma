@@ -3,10 +3,10 @@ package net.deatrathias.khroma.entities.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
+import net.deatrathias.khroma.ClientOnlyReference;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.entities.KhromaNodeEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -40,7 +40,7 @@ public class KhromaNodeEntityRenderer extends EntityRenderer<KhromaNodeEntity, K
 	@Override
 	public void render(KhromaNodeEntityRenderState renderState, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
 		poseStack.pushPose();
-		VertexConsumer consumer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(SurgeofKhroma.resource("textures/entity/node.png")));
+		VertexConsumer consumer = bufferSource.getBuffer(ClientOnlyReference.RENDER_KHROMA_NODE.apply(SurgeofKhroma.resource("textures/entity/node.png")));
 		poseStack.translate(0, 0.5f, 0);
 		poseStack.mulPose(entityRenderDispatcher.cameraOrientation());
 		PoseStack.Pose pose = poseStack.last();

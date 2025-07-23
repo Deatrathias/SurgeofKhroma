@@ -26,6 +26,7 @@ import net.neoforged.neoforge.client.event.RecipesReceivedEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import top.theillusivec4.curios.api.CuriosResources;
@@ -34,52 +35,52 @@ import top.theillusivec4.curios.api.CuriosResources;
 @EventBusSubscriber(modid = SurgeofKhroma.MODID, value = Dist.CLIENT)
 public class ClientEventSubscriber {
 	@SubscribeEvent
-	public static void onClientSetup(FMLClientSetupEvent event) {
+	private static void onClientSetup(FMLClientSetupEvent event) {
 		SurgeofKhroma.LOGGER.info("client started");
 		if (ModList.get().isLoaded(CuriosResources.MOD_ID))
 			CuriosRegister.registerCurioRenderer();
 	}
 
 	@SubscribeEvent
-	public static void registerBlockColorHandles(RegisterColorHandlersEvent.Block event) {
+	private static void registerBlockColorHandles(RegisterColorHandlersEvent.Block event) {
 		event.register(((state, level, pos, tintIndex) -> {
 			Khroma khroma = state.getValue(KhromaLineBlock.KHROMA);
-			return Khroma.KhromaColors[khroma.asInt()];
+			return khroma.getTint();
 		}), RegistryReference.BLOCK_KHROMA_LINE.get(), RegistryReference.BLOCK_KHROMA_DISSIPATOR.get());
 	}
 
 	@SubscribeEvent
-	public static void registerItemTintSources(RegisterColorHandlersEvent.ItemTintSources event) {
+	private static void registerItemTintSources(RegisterColorHandlersEvent.ItemTintSources event) {
 		event.register(SurgeofKhroma.resource("spanner_color"), SpannerColorTint.CODEC);
 	}
 
 	@SubscribeEvent
-	public static void registerScreens(RegisterMenuScreensEvent event) {
+	private static void registerScreens(RegisterMenuScreensEvent event) {
 		event.register(RegistryReference.MENU_KHROMA_APERTURE.get(), KhromaApertureScreen::new);
 		event.register(RegistryReference.MENU_KHROMA_IMBUER.get(), KhromaImbuerScreen::new);
 	}
 
 	@SubscribeEvent
-	public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+	private static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
 		event.registerEntityRenderer(RegistryReference.ENTITY_KHROMA_NODE.get(), KhromaNodeEntityRenderer::new);
 	}
 
 	@SubscribeEvent
-	public static void recipesReceived(RecipesReceivedEvent event) {
+	private static void recipesReceived(RecipesReceivedEvent event) {
 		if (ModList.get().isLoaded(ModIds.JEI_ID)) {
 			JeiKhromaPlugin.setRecipes(event.getRecipeMap());
 		}
 	}
 
 	@SubscribeEvent
-	public static void logout(ClientPlayerNetworkEvent.LoggingOut event) {
+	private static void logout(ClientPlayerNetworkEvent.LoggingOut event) {
 		if (ModList.get().isLoaded(ModIds.JEI_ID)) {
 			JeiKhromaPlugin.setRecipes(RecipeMap.EMPTY);
 		}
 	}
 
 	@SubscribeEvent
-	public static void registerExtensions(RegisterClientExtensionsEvent event) {
+	private static void registerExtensions(RegisterClientExtensionsEvent event) {
 		event.registerBlock(new IClientBlockExtensions() {
 			@Override
 			public boolean areBreakingParticlesTinted(BlockState state, ClientLevel level, BlockPos pos) {
@@ -89,7 +90,12 @@ public class ClientEventSubscriber {
 	}
 
 	@SubscribeEvent
-	public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
+	private static void registerParticleProviders(RegisterParticleProvidersEvent event) {
 		event.registerSpecial(RegistryReference.PARTICLE_KHROMA.get(), new KhromaParticleProvider());
+	}
+
+	@SubscribeEvent
+	private static void registerRenderPipelines(RegisterRenderPipelinesEvent event) {
+		event.registerPipeline(ClientOnlyReference.PIPELINE_KHROMA_NODE);
 	}
 }

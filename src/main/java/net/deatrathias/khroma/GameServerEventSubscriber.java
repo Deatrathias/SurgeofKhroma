@@ -54,8 +54,8 @@ public class GameServerEventSubscriber {
 		if (!data.isGenerated()) {
 			data.generateNode(event.getLevel(), event.getChunk());
 			event.getChunk().setData(RegistryReference.KHROMA_BIOME_DATA, data);
-			if (data.getNode() != null) {
-				KhromaNode node = data.getNode();
+			if (data.getNode().isPresent()) {
+				KhromaNode node = data.getNode().get();
 				event.getLevel().addFreshEntity(KhromaNodeEntity.create((Level) event.getLevel(), node.getPosition(), node.getKhroma(), node.getLevel()));
 			}
 		}

@@ -112,7 +112,7 @@ public class RegistryReference {
 	 * TIERS
 	 * 
 	 */
-	public static final ToolMaterial RED_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_DIAMOND_TOOL, 250, 6, 4, 14, TagReference.ITEM_KHROMETAL_INGOT_RED);
+	public static final ToolMaterial RED_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_DIAMOND_TOOL, 250, 6, 5, 14, TagReference.ITEM_KHROMETAL_INGOT_RED);
 	public static final ToolMaterial GREEN_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 2000, 6, 2, 14, TagReference.ITEM_KHROMETAL_INGOT_GREEN);
 	public static final ToolMaterial BLUE_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 12, 2, 24, TagReference.ITEM_KHROMETAL_INGOT_BLUE);
 	public static final ToolMaterial WHITE_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 6, 2, 14, TagReference.ITEM_KHROMETAL_INGOT_WHITE);
@@ -231,9 +231,15 @@ public class RegistryReference {
 	public static final DeferredItem<Item> ITEM_KHROMETAL_RED_SWORD = ITEMS.registerItem("khrometal_red_sword", props -> new Item(props.sword(RED_KHROMETAL_TIER, 3, -2.4f)));
 	public static final DeferredItem<Item> ITEM_KHROMETAL_RED_PICKAXE = ITEMS.registerItem("khrometal_red_pickaxe", props -> new Item(props.pickaxe(RED_KHROMETAL_TIER, 1, -2)));
 
+	public static final DeferredItem<Item> ITEM_KHROMETAL_GREEN_SWORD = ITEMS.registerItem("khrometal_green_sword", props -> new KhrometalGreenToolItem(props.sword(GREEN_KHROMETAL_TIER, 3, -2.4f)));
 	public static final DeferredItem<Item> ITEM_KHROMETAL_GREEN_PICKAXE = ITEMS.registerItem("khrometal_green_pickaxe",
 			props -> new KhrometalGreenToolItem(props.pickaxe(GREEN_KHROMETAL_TIER, 1, -2f)));
+
+	public static final DeferredItem<Item> ITEM_KHROMETAL_BLUE_SWORD = ITEMS.registerItem("khrometal_blue_sword", props -> new Item(props.sword(BLUE_KHROMETAL_TIER, 3, -0.4f)));
 	public static final DeferredItem<Item> ITEM_KHROMETAL_BLUE_PICKAXE = ITEMS.registerItem("khrometal_blue_pickaxe", props -> new Item(props.pickaxe(BLUE_KHROMETAL_TIER, 1, 0)));
+
+	public static final DeferredItem<Item> ITEM_KHROMETAL_WHITE_SWORD = ITEMS.registerItem("khrometal_white_sword", props -> new Item(addAttributeModifer(props.sword(WHITE_KHROMETAL_TIER, 3, -2.4f),
+			Attributes.ATTACK_KNOCKBACK, new AttributeModifier(SurgeofKhroma.resource("white_khrometal_bonus"), 4, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)));
 	public static final DeferredItem<Item> ITEM_KHROMETAL_WHITE_PICKAXE = ITEMS.registerItem("khrometal_white_pickaxe",
 			props -> new KhrometalWhitePickaxeItem(addAttributeModifer(props.pickaxe(WHITE_KHROMETAL_TIER, 1, -2f), Attributes.ATTACK_KNOCKBACK,
 					new AttributeModifier(SurgeofKhroma.resource("white_khrometal_bonus"), 4, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)));
@@ -346,8 +352,11 @@ public class RegistryReference {
 		output.accept(ITEM_CHROMATIC_GLASSES);
 		output.accept(ITEM_KHROMETAL_RED_SWORD);
 		output.accept(ITEM_KHROMETAL_RED_PICKAXE);
+		output.accept(ITEM_KHROMETAL_GREEN_SWORD);
 		output.accept(ITEM_KHROMETAL_GREEN_PICKAXE);
+		output.accept(ITEM_KHROMETAL_BLUE_SWORD);
 		output.accept(ITEM_KHROMETAL_BLUE_PICKAXE);
+		output.accept(ITEM_KHROMETAL_WHITE_SWORD);
 		output.accept(ITEM_KHROMETAL_WHITE_PICKAXE);
 		output.accept(ITEM_KHROMETAL_BLACK_SWORD);
 		output.accept(ITEM_KHROMETAL_BLACK_PICKAXE);

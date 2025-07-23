@@ -2,6 +2,7 @@ package net.deatrathias.khroma.entities;
 
 import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.khroma.Khroma;
+import net.deatrathias.khroma.particles.KhromaParticleOption;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -23,6 +24,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -124,6 +126,29 @@ public class KhromaNodeEntity extends Entity {
 	@Override
 	public boolean shouldRenderAtSqrDistance(double distance) {
 		return distance < 65536;
+	}
+
+	@Override
+	public void tick() {
+		super.tick();
+		if (level().isClientSide) {
+			generateParticles();
+		}
+
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	private void generateParticles() {
+		Vec3 camPos = Minecraft.getInstance().getCameraEntity().position();
+		if (!shouldRender(camPos.x, camPos.y, camPos.z) || getEntityData().get(FORCE_VISIBLE))
+			return;
+		Vec3 pos = new Vec3(getX(), getY() + 0.5, getZ());
+		if (camPos.distanceToSqr(pos) < 4096) {
+			Vec3 vector = new Vec3(random.nextDouble() * 2 - 1, random.nextDouble() * 2 - 1, random.nextDouble() * 2 - 1).normalize();
+			pos = pos.add(vector.scale(random.nextDouble() * 0.5 + 0.3));
+			Vec3 speed = vector.scale(random.nextDouble() * 0.1 + 0.05);
+			level().addParticle(new KhromaParticleOption(getKhroma()), pos.x, pos.y, pos.z, speed.x, speed.y, speed.z);
+		}
 	}
 
 	public Khroma getKhroma() {
