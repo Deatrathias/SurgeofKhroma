@@ -1,13 +1,11 @@
 package net.deatrathias.khroma.khroma;
 
-import org.jetbrains.annotations.UnknownNullability;
-
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup.Provider;
-import net.minecraft.nbt.CompoundTag;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.common.util.ValueIOSerializable;
 
-public class KhromaNode implements INBTSerializable<CompoundTag> {
+public class KhromaNode implements ValueIOSerializable {
 	private BlockPos position;
 
 	private Khroma khroma;
@@ -32,23 +30,21 @@ public class KhromaNode implements INBTSerializable<CompoundTag> {
 		this.level = level;
 	}
 
-	public KhromaNode(Provider provider, CompoundTag nbt) {
-		deserializeNBT(provider, nbt);
+	public KhromaNode(ValueInput input) {
+		deserialize(input);
 	}
 
 	@Override
-	public @UnknownNullability CompoundTag serializeNBT(Provider provider) {
-		CompoundTag nbt = new CompoundTag();
-		nbt.putInt("khroma", khroma.asInt());
-		nbt.putInt("level", level);
-		nbt.putLong("position", position.asLong());
-		return nbt;
+	public void serialize(ValueOutput output) {
+		output.putInt("khroma", khroma.asInt());
+		output.putInt("level", level);
+		output.putLong("position", position.asLong());
 	}
 
 	@Override
-	public void deserializeNBT(Provider provider, CompoundTag nbt) {
-		khroma = Khroma.fromInt(nbt.getInt("khroma").orElse(0));
-		level = nbt.getInt("level").orElse(1);
-		position = BlockPos.of(nbt.getLong("position").orElse(0L));
+	public void deserialize(ValueInput input) {
+		khroma = Khroma.fromInt(input.getIntOr("khroma", 0));
+		level = input.getIntOr("level", 1);
+		position = BlockPos.of(input.getLongOr("position", 0L));
 	}
 }

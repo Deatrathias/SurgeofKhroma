@@ -1,13 +1,12 @@
 package net.deatrathias.khroma.entities;
 
 import net.deatrathias.khroma.RegistryReference;
+import net.deatrathias.khroma.entities.renderer.KhromaNodeEntityRenderer;
 import net.deatrathias.khroma.khroma.Khroma;
 import net.deatrathias.khroma.particles.KhromaParticleOption;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -23,11 +22,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import top.theillusivec4.curios.api.CuriosApi;
 
 public class KhromaNodeEntity extends Entity {
 
@@ -58,19 +56,19 @@ public class KhromaNodeEntity extends Entity {
 	}
 
 	@Override
-	protected void readAdditionalSaveData(CompoundTag compound) {
+	protected void readAdditionalSaveData(ValueInput input) {
 		SynchedEntityData data = getEntityData();
-		data.set(KHROMA, compound.getInt("khroma").orElse(0));
-		data.set(LEVEL, compound.getInt("level").orElse(1));
-		data.set(FORCE_VISIBLE, compound.getBoolean("force_visible").orElse(false));
+		data.set(KHROMA, input.getIntOr("khroma", 0));
+		data.set(LEVEL, input.getIntOr("level", 1));
+		data.set(FORCE_VISIBLE, input.getBooleanOr("force_visible", false));
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag compound) {
+	protected void addAdditionalSaveData(ValueOutput output) {
 		SynchedEntityData data = getEntityData();
-		compound.putInt("khroma", data.get(KHROMA));
-		compound.putInt("level", data.get(LEVEL));
-		compound.putBoolean("force_visible", data.get(FORCE_VISIBLE));
+		output.putInt("khroma", data.get(KHROMA));
+		output.putInt("level", data.get(LEVEL));
+		output.putBoolean("force_visible", data.get(FORCE_VISIBLE));
 	}
 
 	@Override
@@ -108,17 +106,10 @@ public class KhromaNodeEntity extends Entity {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
 	public boolean shouldRender(double x, double y, double z) {
 		if (getEntityData().get(FORCE_VISIBLE))
 			return true;
-		LocalPlayer player = Minecraft.getInstance().player;
-		if (player == null)
-			return false;
-		var inventory = CuriosApi.getCuriosInventory(player);
-		if (inventory.isEmpty())
-			return false;
-		if (inventory.get().isEquipped(RegistryReference.ITEM_CHROMATIC_GLASSES.get()))
+		if (KhromaNodeEntityRenderer.canSeeNodes())
 			return super.shouldRender(x, y, z);
 		return false;
 	}
@@ -134,10 +125,8 @@ public class KhromaNodeEntity extends Entity {
 		if (level().isClientSide) {
 			generateParticles();
 		}
-
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	private void generateParticles() {
 		Vec3 camPos = Minecraft.getInstance().getCameraEntity().position();
 		if (!shouldRender(camPos.x, camPos.y, camPos.z) || getEntityData().get(FORCE_VISIBLE))

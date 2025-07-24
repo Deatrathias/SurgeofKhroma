@@ -15,7 +15,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.crafting.RecipeMap;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -31,7 +30,6 @@ import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import top.theillusivec4.curios.api.CuriosResources;
 
-@OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(modid = SurgeofKhroma.MODID, value = Dist.CLIENT)
 public class ClientEventSubscriber {
 	@SubscribeEvent

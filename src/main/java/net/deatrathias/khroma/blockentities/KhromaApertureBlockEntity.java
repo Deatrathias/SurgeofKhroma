@@ -4,8 +4,6 @@ import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.gui.KhromaApertureMenu;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup.Provider;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.MenuProvider;
@@ -16,6 +14,8 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class KhromaApertureBlockEntity extends BlockEntity implements MenuProvider {
 
@@ -42,15 +42,15 @@ public class KhromaApertureBlockEntity extends BlockEntity implements MenuProvid
 	}
 
 	@Override
-	protected void loadAdditional(CompoundTag tag, Provider registries) {
-		super.loadAdditional(tag, registries);
-		limit = tag.getFloat("limit").orElse(1f);
+	protected void loadAdditional(ValueInput input) {
+		super.loadAdditional(input);
+		limit = input.getFloatOr("limit", 1f);
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag tag, Provider registries) {
-		super.saveAdditional(tag, registries);
-		tag.putFloat("limit", limit);
+	protected void saveAdditional(ValueOutput output) {
+		super.saveAdditional(output);
+		output.putFloat("limit", limit);
 	}
 
 	@Override

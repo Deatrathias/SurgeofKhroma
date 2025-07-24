@@ -15,12 +15,9 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
 
-@OnlyIn(Dist.CLIENT)
 public class ChromaticGlassesRenderer implements ICurioRenderer {
 
 	public static final ModelLayerLocation LAYER = new ModelLayerLocation(SurgeofKhroma.resource("chromatic_glasses"), "chromatic_glasses");

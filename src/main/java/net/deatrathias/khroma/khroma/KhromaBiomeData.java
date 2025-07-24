@@ -3,14 +3,10 @@ package net.deatrathias.khroma.khroma;
 import java.util.Arrays;
 import java.util.Optional;
 
-import org.jetbrains.annotations.UnknownNullability;
-
 import net.deatrathias.khroma.Config;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup.Provider;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -19,9 +15,11 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
-import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.common.util.ValueIOSerializable;
 
-public class KhromaBiomeData implements INBTSerializable<CompoundTag> {
+public class KhromaBiomeData implements ValueIOSerializable {
 	private boolean generated;
 	private Optional<KhromaNode> node;
 
@@ -45,18 +43,17 @@ public class KhromaBiomeData implements INBTSerializable<CompoundTag> {
 	}
 
 	@Override
-	public @UnknownNullability CompoundTag serializeNBT(Provider provider) {
-		CompoundTag nbt = new CompoundTag();
-		nbt.putBoolean("generated", generated);
-		if (node.isPresent())
-			nbt.put("node", node.get().serializeNBT(provider));
-		return nbt;
+	public void serialize(ValueOutput output) {
+		output.putBoolean("generated", generated);
+		if (node.isPresent()) {
+			node.get().serialize(output.child("node"));
+		}
 	}
 
 	@Override
-	public void deserializeNBT(Provider provider, CompoundTag nbt) {
-		generated = nbt.getBoolean("generated").orElse(false);
-		node = nbt.getCompound("node").map(tag -> new KhromaNode(provider, tag));
+	public void deserialize(ValueInput input) {
+		generated = input.getBooleanOr("generated", false);
+		node = input.child("node").map(value -> new KhromaNode(value));
 	}
 
 	private long getSeed(long a, long b, long c) {

@@ -1,8 +1,5 @@
 {
   "values": [
-    {
-      "id": "surgeofkhroma:red_khrometal_block",
-      "required": false
-    }
+    "surgeofkhroma:red_khrometal_block"
   ]
 }

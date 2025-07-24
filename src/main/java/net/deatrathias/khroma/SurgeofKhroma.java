@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -38,5 +40,9 @@ public class SurgeofKhroma {
 
 	public static ResourceLocation resource(String path) {
 		return ResourceLocation.fromNamespaceAndPath(MODID, path);
+	}
+
+	public static <T> ResourceKey<T> resourceKey(ResourceKey<? extends Registry<T>> registry, String path) {
+		return ResourceKey.create(registry, ResourceLocation.fromNamespaceAndPath(MODID, path));
 	}
 }

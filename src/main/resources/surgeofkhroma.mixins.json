@@ -3,6 +3,5 @@
    "package": "net.deatrathias.khroma.mixins",
    "compatibilityLevel": "JAVA_21",
    "client": [
-      "NeoForgeFixMixin"
    ]
 }

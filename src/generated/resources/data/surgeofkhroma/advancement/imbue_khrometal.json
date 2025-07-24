@@ -1,0 +1,78 @@
+{
+  "parent": "surgeofkhroma:place_collector",
+  "criteria": {
+    "khrometal_black": {
+      "conditions": {
+        "items": [
+          {
+            "items": "surgeofkhroma:khrometal_ingot_black"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "khrometal_blue": {
+      "conditions": {
+        "items": [
+          {
+            "items": "surgeofkhroma:khrometal_ingot_blue"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "khrometal_green": {
+      "conditions": {
+        "items": [
+          {
+            "items": "surgeofkhroma:khrometal_ingot_green"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "khrometal_red": {
+      "conditions": {
+        "items": [
+          {
+            "items": "surgeofkhroma:khrometal_ingot_red"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "khrometal_white": {
+      "conditions": {
+        "items": [
+          {
+            "items": "surgeofkhroma:khrometal_ingot_white"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.surgeofkhroma.imbue_khrometal.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "surgeofkhroma:khroma_imbuer"
+    },
+    "title": {
+      "translate": "advancements.surgeofkhroma.imbue_khrometal.title"
+    }
+  },
+  "requirements": [
+    [
+      "khrometal_red",
+      "khrometal_green",
+      "khrometal_blue",
+      "khrometal_white",
+      "khrometal_black"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

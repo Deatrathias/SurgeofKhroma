@@ -8,7 +8,7 @@ import net.deatrathias.khroma.khroma.Khroma;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.GuiSpriteManager;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.TooltipFlag;
@@ -26,7 +26,7 @@ public class KhromaIngredientRenderer implements IIngredientRenderer<Khroma> {
 		TextureAtlasSprite sprite = sprites.getSprite(KhromaGauge.getTexturePerKhroma(ingredient));
 		int color = ingredient.getTint();
 
-		guiGraphics.blitSprite(RenderType::guiTextured, sprite, 0, 0, 16, 16, color);
+		guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, sprite, 0, 0, 16, 16, color);
 	}
 
 	@Override

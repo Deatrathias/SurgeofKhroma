@@ -12,10 +12,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class KhromaParticle extends TextureSheetParticle {
 
 	public static ResourceLocation getTexturePerKhroma(Khroma khroma) {
@@ -84,7 +81,6 @@ public class KhromaParticle extends TextureSheetParticle {
 		super.tick();
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public static class KhromaParticleProvider implements ParticleProvider<KhromaParticleOption> {
 
 		@Override

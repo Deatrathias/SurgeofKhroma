@@ -38,8 +38,10 @@ import net.deatrathias.khroma.recipes.KhromaImbuementRecipe;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -48,11 +50,13 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -72,6 +76,8 @@ import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.equipment.EquipmentAssets;
+import net.minecraft.world.item.equipment.Equippable;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -105,7 +111,9 @@ public class RegistryReference {
 	public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(BuiltInRegistries.PARTICLE_TYPE, SurgeofKhroma.MODID);
 
 	public static final Holder<Attribute> ATTRIBUTE_TELEPORT_DROPS = ATTRIBUTES.register("teleport_drops",
-			() -> new BooleanAttribute("attribute.surgeofkhroma.teleport_drops", false).setSyncable(true));
+			() -> new BooleanAttribute("attribute." + SurgeofKhroma.MODID + ".teleport_drops", false).setSyncable(true));
+	public static final Holder<Attribute> ATTRIBUTE_CAN_SEE_NODES = ATTRIBUTES.register("can_see_nodes",
+			() -> new BooleanAttribute("attribute." + SurgeofKhroma.MODID + ".can_see_nodes", false).setSyncable(true));
 
 	/**
 	 * 
@@ -224,7 +232,10 @@ public class RegistryReference {
 	public static final DeferredItem<Item> ITEM_KHROMETAL_INGOT_WHITE = ITEMS.registerSimpleItem("khrometal_ingot_white");
 	public static final DeferredItem<Item> ITEM_KHROMETAL_INGOT_BLACK = ITEMS.registerSimpleItem("khrometal_ingot_black");
 	public static final DeferredItem<Item> ITEM_CHROMATIC_NUCLEUS = ITEMS.registerSimpleItem("chromatic_nucleus");
-	public static final DeferredItem<Item> ITEM_CHROMATIC_GLASSES = ITEMS.registerSimpleItem("chromatic_glasses", new Item.Properties().stacksTo(1));
+	public static final DeferredItem<Item> ITEM_CHROMATIC_GLASSES = ITEMS.registerSimpleItem("chromatic_glasses", new Item.Properties().stacksTo(1)
+			.component(DataComponents.EQUIPPABLE, Equippable.builder(EquipmentSlot.HEAD).setAsset(SurgeofKhroma.resourceKey(EquipmentAssets.ROOT_ID, "chromatic_glasses")).build()).attributes(
+					ItemAttributeModifiers.builder().add(ATTRIBUTE_CAN_SEE_NODES, new AttributeModifier(SurgeofKhroma.resource("chromatic_glasses"), 1, Operation.ADD_VALUE), EquipmentSlotGroup.HEAD)
+							.build()));
 	public static final DeferredItem<Item> ITEM_KHROMETAL_SPANNER = ITEMS.registerItem("khrometal_spanner",
 			props -> new SpannerItem(SpannerItem.spanner(props).stacksTo(1).component(DATA_COMPONENT_SPANNER_COLORS, new SpannerItem.SpannerColors(0xFF808080, 0xFF808080, 0xFF808080, 0xFF808080))));
 
@@ -315,8 +326,9 @@ public class RegistryReference {
 	 * MOB EFFECTS
 	 * 
 	 */
-	public static final Holder<MobEffect> TELEPORT_SICKNESS = MOB_EFFECTS.register("teleport_sickness", () -> new MobEffect(MobEffectCategory.HARMFUL, 0x00000000) {
-	});
+	public static final Holder<MobEffect> TELEPORT_SICKNESS = MOB_EFFECTS.register("teleport_sickness",
+			() -> new MobEffect(MobEffectCategory.HARMFUL, 0x00000000, ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, ARGB.color(0, 0))) {
+			});
 
 	/**
 	 * 

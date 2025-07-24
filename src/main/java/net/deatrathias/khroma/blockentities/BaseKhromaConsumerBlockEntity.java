@@ -19,6 +19,8 @@ public abstract class BaseKhromaConsumerBlockEntity extends BlockEntity {
 
 	protected class VariableConsumer implements IKhromaConsumer {
 
+		private float previousRequest = 0;
+
 		private float request;
 
 		private KhromaNetwork network;
@@ -30,15 +32,21 @@ public abstract class BaseKhromaConsumerBlockEntity extends BlockEntity {
 		@Override
 		public float request() {
 			float result = request;
+			previousRequest = result;
 			request = 0;
 			return result;
 		}
 
-		public KhromaThroughput requestKhroma() {
-			request = 1;
+		public KhromaThroughput requestKhroma(float requestIntensity) {
+			request = requestIntensity;
 			if (network != null)
-				return network.getKhromaThroughput();
+				return network.getKhromaThroughput().multiply(previousRequest);
+			previousRequest = 0;
 			return KhromaThroughput.empty;
+		}
+
+		public KhromaThroughput requestKhroma() {
+			return requestKhroma(1f);
 		}
 
 		@Override

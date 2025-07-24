@@ -4,7 +4,7 @@ import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.network.ServerboundSetApertureLimitPacket;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -52,7 +52,7 @@ public class KhromaApertureScreen extends AbstractContainerScreen<KhromaAperture
 
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-		guiGraphics.blit(RenderType::guiTextured, KHROMA_APERTURE_LOCATION, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
+		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, KHROMA_APERTURE_LOCATION, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 	}
 
 	@Override
@@ -66,22 +66,20 @@ public class KhromaApertureScreen extends AbstractContainerScreen<KhromaAperture
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		this.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
-		net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(new net.neoforged.neoforge.client.event.ContainerScreenEvent.Render.Background(this, guiGraphics, mouseX, mouseY));
 		for (net.minecraft.client.gui.components.Renderable renderable : this.renderables) {
 			renderable.render(guiGraphics, mouseX, mouseY, partialTick);
 		}
 
-		guiGraphics.pose().pushPose();
-		guiGraphics.pose().translate((float) leftPos, (float) topPos, 0.0F);
+		guiGraphics.pose().pushMatrix();
+		guiGraphics.pose().translate((float) leftPos, (float) topPos);
 		renderLabels(guiGraphics, mouseX, mouseY);
-		net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(new net.neoforged.neoforge.client.event.ContainerScreenEvent.Render.Foreground(this, guiGraphics, mouseX, mouseY));
 
-		guiGraphics.pose().popPose();
+		guiGraphics.pose().popMatrix();
 
 	}
 
 	@Override
 	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-		guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 4210752, false);
+		guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, -12566464, false);
 	}
 }

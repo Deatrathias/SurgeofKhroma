@@ -18,8 +18,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 public class KhrometalBlackBlock extends KhrometalBlock {
 
@@ -40,7 +38,6 @@ public class KhrometalBlackBlock extends KhrometalBlock {
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	private void handleClientStep(Player player) {
 		if (!player.isLocalPlayer())
 			return;

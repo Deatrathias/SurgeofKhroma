@@ -1,0 +1,79 @@
+{
+  "criteria": {
+    "black_dye": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:black_dye"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "blue_dye": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:blue_dye"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "green_dye": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:green_dye"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "red_dye": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:red_dye"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "white_dye": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:white_dye"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "surgeofkhroma:gui/advancements/backgrounds/surgeofkhroma",
+    "description": {
+      "translate": "advancements.surgeofkhroma.root.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "surgeofkhroma:chromatic_nucleus"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.surgeofkhroma.root.title"
+    }
+  },
+  "requirements": [
+    [
+      "red_dye",
+      "green_dye",
+      "blue_dye",
+      "white_dye",
+      "black_dye"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

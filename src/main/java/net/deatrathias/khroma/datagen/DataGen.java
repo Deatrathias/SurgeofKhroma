@@ -2,14 +2,19 @@ package net.deatrathias.khroma.datagen;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
 import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
+import net.minecraft.client.data.models.EquipmentAssetProvider;
+import net.minecraft.client.resources.model.EquipmentClientInfo;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.data.DataProvider;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.data.loot.LootTableProvider.SubProviderEntry;
@@ -20,6 +25,8 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.damagesource.DamageScaling;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.item.equipment.EquipmentAsset;
+import net.minecraft.world.item.equipment.EquipmentAssets;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -69,6 +76,7 @@ public class DataGen {
 	@SubscribeEvent
 	public static void gatherDataClient(GatherDataEvent.Client event) {
 		event.createProvider(ModelDataGen::new);
+		event.createProvider(output -> equipmentProvider(output));
 		generateServerData(event);
 	}
 
@@ -80,10 +88,12 @@ public class DataGen {
 	private static void generateServerData(GatherDataEvent event) {
 		event.createDatapackRegistryObjects(registrySet(), Set.of(SurgeofKhroma.MODID));
 
-		event.createBlockAndItemTags(TagsDataGen.BlockTag::new, TagsDataGen.ItemTag::new);
+		event.createProvider(TagsDataGen.BlockTag::new);
+		event.createProvider(TagsDataGen.ItemTag::new);
 		event.createProvider(TagsDataGen.DamageTypeTag::new);
 		event.createProvider(TagsDataGen.EntityTypeTag::new);
 		event.createProvider((output, lookupProvider) -> new LootTableProvider(output, Set.of(), List.of(new SubProviderEntry(BLootProvider::new, LootContextParamSets.BLOCK)), lookupProvider));
+		event.createProvider(AdvancementDataGen::new);
 
 		event.createProvider(RecipeDaraGen.Runner::new);
 		if (ModList.get().isLoaded(CuriosResources.MOD_ID))
@@ -130,5 +140,16 @@ public class DataGen {
 				new AddFeaturesBiomeModifier(biomes.getOrThrow(BiomeTags.IS_OVERWORLD),
 						HolderSet.direct(placedFeatures.getOrThrow(placekey)),
 						Decoration.UNDERGROUND_ORES));
+	}
+
+	private static DataProvider equipmentProvider(PackOutput output) {
+		return new EquipmentAssetProvider(output) {
+			@Override
+			protected void registerModels(BiConsumer<ResourceKey<EquipmentAsset>, EquipmentClientInfo> output) {
+				output.accept(SurgeofKhroma.resourceKey(EquipmentAssets.ROOT_ID, "chromatic_glasses"), EquipmentClientInfo.builder()
+						.addMainHumanoidLayer(SurgeofKhroma.resource("chromatic_glasses"), false)
+						.build());
+			}
+		};
 	}
 }

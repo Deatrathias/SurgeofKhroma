@@ -1,0 +1,34 @@
+{
+  "parent": "surgeofkhroma:smelt_chromium",
+  "criteria": {
+    "chromatic_glasses": {
+      "conditions": {
+        "items": [
+          {
+            "items": "surgeofkhroma:chromatic_glasses"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.surgeofkhroma.craft_glasses.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "surgeofkhroma:chromatic_glasses"
+    },
+    "title": {
+      "translate": "advancements.surgeofkhroma.craft_glasses.title"
+    }
+  },
+  "requirements": [
+    [
+      "chromatic_glasses"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

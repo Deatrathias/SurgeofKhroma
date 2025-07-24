@@ -1,0 +1,34 @@
+{
+  "parent": "surgeofkhroma:craft_glasses",
+  "criteria": {
+    "node_collector": {
+      "conditions": {
+        "location": [
+          {
+            "block": "surgeofkhroma:node_collector",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.surgeofkhroma.place_collector.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "surgeofkhroma:node_collector"
+    },
+    "title": {
+      "translate": "advancements.surgeofkhroma.place_collector.title"
+    }
+  },
+  "requirements": [
+    [
+      "node_collector"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -4,7 +4,6 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 import net.deatrathias.khroma.SurgeofKhroma;
@@ -16,14 +15,11 @@ import net.minecraft.client.gui.GuiSpriteManager;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.layouts.LayoutElement;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class KhromaGauge implements Renderable, LayoutElement {
 
 	private static final ResourceLocation TEXTURE_KHROMA = SurgeofKhroma.resource("khroma/khroma");
@@ -127,8 +123,8 @@ public class KhromaGauge implements Renderable, LayoutElement {
 
 		int color = khroma.getTint();
 
-		guiGraphics.blitSprite(RenderType::guiTextured, currentTexture, x, y, 16, 16, color);
-		guiGraphics.blitSprite(RenderType::guiTextured, currentTexture, x, y + 16, 16, 16, color);
+		guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, currentTexture, x, y, 16, 16, color);
+		guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, currentTexture, x, y + 16, 16, 16, color);
 	}
 
 	public void renderTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
@@ -138,7 +134,7 @@ public class KhromaGauge implements Renderable, LayoutElement {
 		tooltipComponents.add(Component.translatable("tooltip." + SurgeofKhroma.MODID + ".khroma_gauge.consumed", format.format(consumed)));
 		tooltipComponents.add(Component.translatable("tooltip." + SurgeofKhroma.MODID + ".khroma_gauge.softLimit", format.format(softLimit)));
 		tooltipComponents.add(Component.translatable("tooltip." + SurgeofKhroma.MODID + ".khroma_gauge.effective", format.format(effective)));
-		guiGraphics.renderTooltip(font, tooltipComponents, Optional.empty(), mouseX, mouseY);
+		guiGraphics.setComponentTooltipForNextFrame(font, tooltipComponents, mouseX, mouseY);
 	}
 
 	@Override

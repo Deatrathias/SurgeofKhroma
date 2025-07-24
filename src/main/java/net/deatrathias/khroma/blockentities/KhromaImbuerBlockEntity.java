@@ -13,9 +13,7 @@ import net.deatrathias.khroma.recipes.ItemKhromaRecipeInput;
 import net.deatrathias.khroma.recipes.KhromaImbuementRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -32,6 +30,8 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class KhromaImbuerBlockEntity extends BaseKhromaConsumerBlockEntity implements WorldlyContainer, MenuProvider {
 
@@ -181,19 +181,18 @@ public class KhromaImbuerBlockEntity extends BaseKhromaConsumerBlockEntity imple
 	}
 
 	@Override
-	protected void loadAdditional(CompoundTag tag, Provider registries) {
-		super.loadAdditional(tag, registries);
+	protected void loadAdditional(ValueInput input) {
+		super.loadAdditional(input);
 		items = NonNullList.withSize(getContainerSize(), ItemStack.EMPTY);
-		ContainerHelper.loadAllItems(tag, this.items, registries);
-		progress = tag.getFloat("progress").orElse(0f);
+		ContainerHelper.loadAllItems(input, items);
+		progress = input.getFloatOr("progress", 0);
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag tag, Provider registries) {
-		super.saveAdditional(tag, registries);
-		ContainerHelper.saveAllItems(tag, items, registries);
-		tag.putFloat("progress", progress);
-		// tag.putString("recipe", currentRecipe.);
+	protected void saveAdditional(ValueOutput output) {
+		super.saveAdditional(output);
+		ContainerHelper.saveAllItems(output, items);
+		output.putFloat("progress", progress);
 	}
 
 	@Override

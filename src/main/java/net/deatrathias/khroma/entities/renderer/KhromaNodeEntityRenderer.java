@@ -4,17 +4,17 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.deatrathias.khroma.ClientOnlyReference;
+import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.entities.KhromaNodeEntity;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraft.world.entity.player.Player;
 
-@OnlyIn(Dist.CLIENT)
 public class KhromaNodeEntityRenderer extends EntityRenderer<KhromaNodeEntity, KhromaNodeEntityRenderState> {
 
 	public KhromaNodeEntityRenderer(Context context) {
@@ -52,5 +52,12 @@ public class KhromaNodeEntityRenderer extends EntityRenderer<KhromaNodeEntity, K
 		consumer.addVertex(pose, -0.5f, 0.5f, 0).setUv(0, 1).setLight(light).setColor(color).setNormal(pose, 0, 0, 1).setOverlay(OverlayTexture.NO_OVERLAY);
 		poseStack.popPose();
 		super.render(renderState, poseStack, bufferSource, packedLight);
+	}
+
+	public static boolean canSeeNodes() {
+		Player player = Minecraft.getInstance().player;
+		if (player == null)
+			return false;
+		return player.getAttribute(RegistryReference.ATTRIBUTE_CAN_SEE_NODES).getValue() > 0;
 	}
 }

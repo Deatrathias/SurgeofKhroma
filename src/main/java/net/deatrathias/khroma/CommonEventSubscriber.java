@@ -39,6 +39,7 @@ public final class CommonEventSubscriber {
 	@SubscribeEvent
 	private static void modifyAttributes(EntityAttributeModificationEvent event) {
 		event.add(EntityType.PLAYER, RegistryReference.ATTRIBUTE_TELEPORT_DROPS);
+		event.add(EntityType.PLAYER, RegistryReference.ATTRIBUTE_CAN_SEE_NODES);
 	}
 
 	@SubscribeEvent

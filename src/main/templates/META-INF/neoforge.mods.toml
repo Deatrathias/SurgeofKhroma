@@ -50,7 +50,7 @@ issueTrackerURL="https://github.com/Deatrathias/SurgeofKhroma"
 	
 [[dependencies.${mod_id}]]
     modId="curios"
-    type="required"
+    type="optional"
     versionRange="[${curios_version},)"
     ordering="NONE"
     side="BOTH"

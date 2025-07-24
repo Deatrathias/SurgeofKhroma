@@ -10,11 +10,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.TriState;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class ClientOnlyReference {
 	public static final RenderPipeline PIPELINE_KHROMA_NODE = RenderPipeline.builder(RenderPipelines.ENTITY_SNIPPET)
 			.withLocation(SurgeofKhroma.resource("pipelines/khroma_node"))
@@ -30,7 +26,7 @@ public class ClientOnlyReference {
 
 	public static final Function<ResourceLocation, RenderType> RENDER_KHROMA_NODE = Util.memoize(
 			p_404026_ -> {
-				RenderStateShard.TextureStateShard renderstateshard$texturestateshard = new RenderStateShard.TextureStateShard(p_404026_, TriState.FALSE, false);
+				RenderStateShard.TextureStateShard renderstateshard$texturestateshard = new RenderStateShard.TextureStateShard(p_404026_, false);
 				return RenderType.create(
 						"khroma_node",
 						1536,
