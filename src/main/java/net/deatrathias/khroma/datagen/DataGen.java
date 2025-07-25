@@ -7,6 +7,9 @@ import java.util.stream.Stream;
 
 import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
+import net.deatrathias.khroma.TagReference;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.EntityTypePredicate;
 import net.minecraft.client.data.models.EquipmentAssetProvider;
 import net.minecraft.client.resources.model.EquipmentClientInfo;
 import net.minecraft.core.HolderLookup;
@@ -22,9 +25,18 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.EnchantmentTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.damagesource.DamageScaling;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
+import net.minecraft.world.item.enchantment.EnchantmentTarget;
+import net.minecraft.world.item.enchantment.LevelBasedValue;
+import net.minecraft.world.item.enchantment.effects.AddValue;
+import net.minecraft.world.item.enchantment.effects.ApplyMobEffect;
 import net.minecraft.world.item.equipment.EquipmentAsset;
 import net.minecraft.world.item.equipment.EquipmentAssets;
 import net.minecraft.world.level.block.Block;
@@ -39,7 +51,9 @@ import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
+import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -92,6 +106,7 @@ public class DataGen {
 		event.createProvider(TagsDataGen.ItemTag::new);
 		event.createProvider(TagsDataGen.DamageTypeTag::new);
 		event.createProvider(TagsDataGen.EntityTypeTag::new);
+		event.createProvider(TagsDataGen.EnchantmentTag::new);
 		event.createProvider((output, lookupProvider) -> new LootTableProvider(output, Set.of(), List.of(new SubProviderEntry(BLootProvider::new, LootContextParamSets.BLOCK)), lookupProvider));
 		event.createProvider(AdvancementDataGen::new);
 
@@ -105,7 +120,8 @@ public class DataGen {
 				.add(Registries.DAMAGE_TYPE, DataGen::registerDamageTypes)
 				.add(Registries.CONFIGURED_FEATURE, DataGen::registerConfiguredFeatures)
 				.add(Registries.PLACED_FEATURE, DataGen::registerPlacedFeatures)
-				.add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, DataGen::registerBiomeModifiers);
+				.add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, DataGen::registerBiomeModifiers)
+				.add(Registries.ENCHANTMENT, DataGen::registerEnchantments);
 		return registrySetBuilder;
 	}
 
@@ -140,6 +156,28 @@ public class DataGen {
 				new AddFeaturesBiomeModifier(biomes.getOrThrow(BiomeTags.IS_OVERWORLD),
 						HolderSet.direct(placedFeatures.getOrThrow(placekey)),
 						Decoration.UNDERGROUND_ORES));
+	}
+
+	private static void registerEnchantments(BootstrapContext<Enchantment> bootstrap) {
+		var itemLookup = bootstrap.lookup(Registries.ITEM);
+		var enchanmentLookup = bootstrap.lookup(Registries.ENCHANTMENT);
+		var entityTypeLookup = bootstrap.lookup(Registries.ENTITY_TYPE);
+		var key = SurgeofKhroma.resourceKey(Registries.ENCHANTMENT, "featherclip");
+		bootstrap.register(key,
+				Enchantment.enchantment(Enchantment.definition(itemLookup.getOrThrow(ItemTags.WEAPON_ENCHANTABLE), itemLookup.getOrThrow(ItemTags.SWORD_ENCHANTABLE),
+						5, 5, Enchantment.dynamicCost(5, 8), Enchantment.dynamicCost(25, 8), 2, EquipmentSlotGroup.MAINHAND))
+						.exclusiveWith(enchanmentLookup.getOrThrow(EnchantmentTags.DAMAGE_EXCLUSIVE))
+						.withEffect(EnchantmentEffectComponents.DAMAGE,
+								new AddValue(LevelBasedValue.perLevel(2.5f)),
+								LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
+										EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypeLookup, TagReference.ENTITY_SENSITIVE_TO_FEATHERCLIP))))
+						.withEffect(EnchantmentEffectComponents.POST_ATTACK, EnchantmentTarget.ATTACKER, EnchantmentTarget.VICTIM,
+								new ApplyMobEffect(HolderSet.direct(RegistryReference.EFFECT_PULL_DOWN),
+										LevelBasedValue.perLevel(2),
+										LevelBasedValue.perLevel(2),
+										LevelBasedValue.constant(0),
+										LevelBasedValue.constant(0)))
+						.build(key.location()));
 	}
 
 	private static DataProvider equipmentProvider(PackOutput output) {

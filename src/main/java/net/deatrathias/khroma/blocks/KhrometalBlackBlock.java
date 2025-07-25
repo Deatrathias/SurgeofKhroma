@@ -29,7 +29,7 @@ public class KhrometalBlackBlock extends KhrometalBlock {
 	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
 		// We don't have the delta movement on the server player so we only call it for
 		// other entities and we send a message instead from the client
-		if (entity.isSteppingCarefully() || (entity instanceof LivingEntity living && living.hasEffect(RegistryReference.TELEPORT_SICKNESS)))
+		if (entity.isSteppingCarefully() || (entity instanceof LivingEntity living && living.hasEffect(RegistryReference.EFFECT_TELEPORT_SICKNESS)))
 			return;
 		if (!level.isClientSide && !(entity instanceof Player))
 			doTeleport(level, pos, entity, getDirectionFromMovement(entity.getDeltaMovement()));
@@ -57,7 +57,7 @@ public class KhrometalBlackBlock extends KhrometalBlock {
 				if (living.isFree(teleport.x, teleport.y, teleport.z)) {
 					level.playSound(null, pos, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS);
 					living.teleportRelative(teleport.x, teleport.y, teleport.z);
-					living.addEffect(new MobEffectInstance(RegistryReference.TELEPORT_SICKNESS, 60));
+					living.addEffect(new MobEffectInstance(RegistryReference.EFFECT_TELEPORT_SICKNESS, 60));
 				}
 			}
 		}

@@ -13,11 +13,13 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BlockItemTagsProvider;
 import net.minecraft.data.tags.DamageTypeTagsProvider;
+import net.minecraft.data.tags.EnchantmentTagsProvider;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.data.tags.TagAppender;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -252,6 +254,23 @@ public final class TagsDataGen {
 		@Override
 		protected void addTags(Provider provider) {
 			tag(TagReference.C_ENTITY_BIRDS).add(EntityType.CHICKEN, EntityType.PARROT);
+			tag(TagReference.ENTITY_SENSITIVE_TO_FEATHERCLIP).addTag(TagReference.C_ENTITY_BIRDS);
 		}
+	}
+
+	public static class EnchantmentTag extends EnchantmentTagsProvider {
+
+		public EnchantmentTag(PackOutput output, CompletableFuture<Provider> lookupProvider) {
+			super(output, lookupProvider, SurgeofKhroma.MODID);
+		}
+
+		@Override
+		protected void addTags(Provider provider) {
+			var featherclipKey = SurgeofKhroma.resourceKey(Registries.ENCHANTMENT, "featherclip");
+			tag(EnchantmentTags.DAMAGE_EXCLUSIVE).add(featherclipKey);
+			tag(EnchantmentTags.NON_TREASURE).add(featherclipKey);
+			tag(EnchantmentTags.TOOLTIP_ORDER).add(featherclipKey);
+		}
+
 	}
 }

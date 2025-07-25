@@ -23,6 +23,7 @@ import net.deatrathias.khroma.blocks.KhrometalWhiteBlock;
 import net.deatrathias.khroma.blocks.NodeCollectorBlock;
 import net.deatrathias.khroma.blocks.items.KromaLineBlockItem;
 import net.deatrathias.khroma.blocks.items.NodeCollectorBlockItem;
+import net.deatrathias.khroma.effects.PullDownMobEffect;
 import net.deatrathias.khroma.entities.KhromaNodeEntity;
 import net.deatrathias.khroma.gui.KhromaApertureMenu;
 import net.deatrathias.khroma.gui.KhromaImbuerMenu;
@@ -326,9 +327,10 @@ public class RegistryReference {
 	 * MOB EFFECTS
 	 * 
 	 */
-	public static final Holder<MobEffect> TELEPORT_SICKNESS = MOB_EFFECTS.register("teleport_sickness",
+	public static final Holder<MobEffect> EFFECT_TELEPORT_SICKNESS = MOB_EFFECTS.register("teleport_sickness",
 			() -> new MobEffect(MobEffectCategory.HARMFUL, 0x00000000, ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, ARGB.color(0, 0))) {
 			});
+	public static final Holder<MobEffect> EFFECT_PULL_DOWN = MOB_EFFECTS.register("pull_down", () -> new PullDownMobEffect(MobEffectCategory.HARMFUL, 0xFF8d6700));
 
 	/**
 	 * 

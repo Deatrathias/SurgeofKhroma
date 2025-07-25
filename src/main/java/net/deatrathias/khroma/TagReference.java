@@ -64,6 +64,7 @@ public class TagReference {
 	/**
 	 * Entity tags
 	 */
+	public static final TagKey<EntityType<?>> ENTITY_SENSITIVE_TO_FEATHERCLIP = TagKey.create(Registries.ENTITY_TYPE, SurgeofKhroma.resource("sensitive_to_featherclip"));
 	public static final TagKey<EntityType<?>> C_ENTITY_BIRDS = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath("c", "birds"));
 
 	private static TagKey<Block> blockTagB(String path) {

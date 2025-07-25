@@ -32,7 +32,6 @@
   "surgeofkhroma.khroma.greenbluewhiteblack":"Gray Cyan",
   "surgeofkhroma.khroma.redgreenbluewhiteblack":"Khromega",
 	
-  "block.surgeofkhroma.example_block": "Example Block",
   "block.surgeofkhroma.chromium_ore": "Chromium Ore",
   "block.surgeofkhroma.deepslate_chromium_ore": "Deepslate Chromium Ore",
   "block.surgeofkhroma.chromium_block": "Block of Chromium",
@@ -129,6 +128,8 @@
   "tag.item.c.storage_blocks.raw_chromium": "Raw Chromium Storage Blocks",
   "tag.entity_type.c.birds": "Birds",
 
+  "enchantment.surgeofkhroma.featherclip": "Featherclip",
+  "enchantment.surgeofkhroma.featherclip.desc": "Deals extra damage to birds and pulls targets to the ground.",
   
   "advancements.surgeofkhroma.root.title": "Surge of Khroma",
   "advancements.surgeofkhroma.root.description": "Get red, green, blue, white or black dye",
@@ -169,6 +170,7 @@
   "death.attack.surgeofkhroma.red_khrometal_block.player": "%1$s was destroyed by a red Khrometal block while fighting %2$s",
   
   "effect.surgeofkhroma.teleport_sickness": "Teleport Sickness",
+  "effect.surgeofkhroma.pull_down": "Pull Down",
   
   "jei.surgeofkhroma.error.incompatible_khroma": "Incompatible Khroma"
 }
