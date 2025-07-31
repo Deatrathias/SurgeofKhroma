@@ -8,8 +8,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.khroma.Khroma;
+import net.deatrathias.khroma.registries.BlockReference;
+import net.deatrathias.khroma.registries.RecipeReference;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -117,7 +118,7 @@ public class KhromaImbuementRecipe implements Recipe<ItemKhromaRecipeInput> {
 	@Override
 	public List<RecipeDisplay> display() {
 		return List.of(new ImbuementRecipeDisplay(ingredient.display(), khroma, khromaCost, new SlotDisplay.ItemStackSlotDisplay(result),
-				new SlotDisplay.ItemSlotDisplay(RegistryReference.ITEM_BLOCK_KHROMA_IMBUER)));
+				new SlotDisplay.ItemSlotDisplay(BlockReference.KHROMA_IMBUER.asItem())));
 	}
 
 	public static class KhromaImbuementSerializer implements RecipeSerializer<KhromaImbuementRecipe> {
@@ -157,12 +158,12 @@ public class KhromaImbuementRecipe implements Recipe<ItemKhromaRecipeInput> {
 
 	@Override
 	public RecipeSerializer<KhromaImbuementRecipe> getSerializer() {
-		return RegistryReference.RECIPE_SERIALIZER_KHROMA_IMBUEMENT.get();
+		return RecipeReference.SERIALIZER_KHROMA_IMBUEMENT.get();
 	}
 
 	@Override
 	public RecipeType<KhromaImbuementRecipe> getType() {
-		return RegistryReference.RECIPE_KHROMA_IMBUEMENT.get();
+		return RecipeReference.KHROMA_IMBUEMENT.get();
 	}
 
 	@Override

@@ -12,9 +12,9 @@ import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.recipe.types.IRecipeType;
-import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.khroma.Khroma;
+import net.deatrathias.khroma.registries.BlockReference;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -46,7 +46,7 @@ public class KhromaCombiningCategory implements IRecipeCategory<KhromaCombiningR
 
 	@Override
 	public @Nullable IDrawable getIcon() {
-		return helpers.getGuiHelper().createDrawableItemLike(RegistryReference.ITEM_BLOCK_KHROMA_COMBINER);
+		return helpers.getGuiHelper().createDrawableItemLike(BlockReference.KHROMA_COMBINER);
 	}
 
 	@Override

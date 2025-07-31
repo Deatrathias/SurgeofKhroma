@@ -9,10 +9,11 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
-import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.gui.KhromaImbuerScreen;
 import net.deatrathias.khroma.khroma.Khroma;
+import net.deatrathias.khroma.registries.BlockReference;
+import net.deatrathias.khroma.registries.RecipeReference;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeMap;
 
@@ -65,7 +66,7 @@ public class JeiKhromaPlugin implements IModPlugin {
 
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
-		var imbuementRecipes = recipes.byType(RegistryReference.RECIPE_KHROMA_IMBUEMENT.get()).stream().filter(holder -> !holder.value().getIngredient().isEmpty()).toList();
+		var imbuementRecipes = recipes.byType(RecipeReference.KHROMA_IMBUEMENT.get()).stream().filter(holder -> !holder.value().getIngredient().isEmpty()).toList();
 		registration.addRecipes(khromaImbuementCategory.getRecipeType(), imbuementRecipes);
 
 		registration.addRecipes(khromaCombiningCategory.getRecipeType(), KhromaCombiningCategory.generateAllRecipes());
@@ -80,9 +81,9 @@ public class JeiKhromaPlugin implements IModPlugin {
 
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-		registration.addCraftingStation(khromaImbuementCategory.getRecipeType(), RegistryReference.ITEM_BLOCK_KHROMA_IMBUER);
-		registration.addCraftingStation(khromaCombiningCategory.getRecipeType(), RegistryReference.ITEM_BLOCK_KHROMA_COMBINER);
-		registration.addCraftingStation(khromaSeparatingCategory.getRecipeType(), RegistryReference.ITEM_BLOCK_KHROMA_SEPARATOR);
+		registration.addCraftingStation(khromaImbuementCategory.getRecipeType(), BlockReference.KHROMA_IMBUER);
+		registration.addCraftingStation(khromaCombiningCategory.getRecipeType(), BlockReference.KHROMA_COMBINER);
+		registration.addCraftingStation(khromaSeparatingCategory.getRecipeType(), BlockReference.KHROMA_SEPARATOR);
 	}
 
 	@Override

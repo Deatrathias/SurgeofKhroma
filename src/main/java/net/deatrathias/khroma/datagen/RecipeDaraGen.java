@@ -3,12 +3,14 @@ package net.deatrathias.khroma.datagen;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
-import net.deatrathias.khroma.TagReference;
 import net.deatrathias.khroma.khroma.Khroma;
 import net.deatrathias.khroma.recipes.CraftingSpannerRecipe;
 import net.deatrathias.khroma.recipes.KhromaImbuementRecipe;
+import net.deatrathias.khroma.registries.BlockReference;
+import net.deatrathias.khroma.registries.ImbuedTree.TreeBlock;
+import net.deatrathias.khroma.registries.ItemReference;
+import net.deatrathias.khroma.registries.TagReference;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.HolderLookup.RegistryLookup;
 import net.minecraft.core.registries.Registries;
@@ -20,6 +22,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -44,6 +47,7 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 		var itemRegistry = registries.lookupOrThrow(Registries.ITEM);
 
 		chromiumRecipes();
+		imbuedWoodRecipes();
 		for (String khromaName : Khroma.KhromaNames) {
 			recipesPerKhroma(itemRegistry, khromaName);
 		}
@@ -52,16 +56,16 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 	}
 
 	private void chromiumRecipes() {
-		oreSmelting(List.of(RegistryReference.ITEM_BLOCK_CHROMIUM_ORE, RegistryReference.ITEM_BLOCK_DEEPSLATE_CHROMIUM_ORE, RegistryReference.ITEM_RAW_CHROMIUM), RecipeCategory.MISC,
-				RegistryReference.ITEM_CHROMIUM_INGOT, 0.7f, 200, getItemName(RegistryReference.ITEM_CHROMIUM_INGOT));
-		oreBlasting(List.of(RegistryReference.ITEM_BLOCK_CHROMIUM_ORE, RegistryReference.ITEM_BLOCK_DEEPSLATE_CHROMIUM_ORE, RegistryReference.ITEM_RAW_CHROMIUM), RecipeCategory.MISC,
-				RegistryReference.ITEM_CHROMIUM_INGOT, 0.7f, 100, getItemName(RegistryReference.ITEM_CHROMIUM_INGOT));
-		nineBlockStorageRecipesRecipesWithCustomUnpacking(RecipeCategory.MISC, RegistryReference.ITEM_CHROMIUM_INGOT, RecipeCategory.BUILDING_BLOCKS,
-				RegistryReference.ITEM_BLOCK_CHROMIUM_BLOCK, getModdedConversionRecipeName(RegistryReference.ITEM_CHROMIUM_INGOT, RegistryReference.ITEM_BLOCK_CHROMIUM_BLOCK),
-				getItemName(RegistryReference.ITEM_CHROMIUM_INGOT));
-		nineBlockStorageRecipesWithCustomPacking(RecipeCategory.MISC, RegistryReference.ITEM_CHROMIUM_NUGGET, RecipeCategory.MISC, RegistryReference.ITEM_CHROMIUM_INGOT,
-				getModdedRecipeName(RegistryReference.ITEM_CHROMIUM_INGOT) + "_from_nuggets", getItemName(RegistryReference.ITEM_CHROMIUM_INGOT));
-		nineBlockStorageRecipes(RecipeCategory.MISC, RegistryReference.ITEM_RAW_CHROMIUM, RecipeCategory.BUILDING_BLOCKS, RegistryReference.BLOCK_RAW_CHROMIUM_BLOCK);
+		oreSmelting(List.of(BlockReference.CHROMIUM_ORE, BlockReference.DEEPSLATE_CHROMIUM_ORE, ItemReference.RAW_CHROMIUM), RecipeCategory.MISC,
+				ItemReference.CHROMIUM_INGOT, 0.7f, 200, getItemName(ItemReference.CHROMIUM_INGOT));
+		oreBlasting(List.of(BlockReference.CHROMIUM_ORE, BlockReference.DEEPSLATE_CHROMIUM_ORE, ItemReference.RAW_CHROMIUM), RecipeCategory.MISC,
+				ItemReference.CHROMIUM_INGOT, 0.7f, 100, getItemName(ItemReference.CHROMIUM_INGOT));
+		nineBlockStorageRecipesRecipesWithCustomUnpacking(RecipeCategory.MISC, ItemReference.CHROMIUM_INGOT, RecipeCategory.BUILDING_BLOCKS,
+				BlockReference.CHROMIUM_BLOCK, getModdedConversionRecipeName(ItemReference.CHROMIUM_INGOT, BlockReference.CHROMIUM_BLOCK),
+				getItemName(ItemReference.CHROMIUM_INGOT));
+		nineBlockStorageRecipesWithCustomPacking(RecipeCategory.MISC, ItemReference.CHROMIUM_NUGGET, RecipeCategory.MISC, ItemReference.CHROMIUM_INGOT,
+				getModdedRecipeName(ItemReference.CHROMIUM_INGOT) + "_from_nuggets", getItemName(ItemReference.CHROMIUM_INGOT));
+		nineBlockStorageRecipes(RecipeCategory.MISC, ItemReference.RAW_CHROMIUM, RecipeCategory.BUILDING_BLOCKS, BlockReference.RAW_CHROMIUM_BLOCK);
 	}
 
 	/**
@@ -147,7 +151,7 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 	}
 
 	private void khromaItemsRecipes() {
-		shaped(RecipeCategory.MISC, RegistryReference.ITEM_CHROMATIC_NUCLEUS)
+		shaped(RecipeCategory.MISC, ItemReference.CHROMATIC_NUCLEUS)
 				.define('r', Tags.Items.DYES_RED)
 				.define('g', Tags.Items.DYES_GREEN)
 				.define('u', Tags.Items.DYES_BLUE)
@@ -159,11 +163,11 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 				.unlockedBy("has_nugget", has(TagReference.ITEM_BASE_NUGGET))
 				.save(output);
 
-		shaped(RecipeCategory.MISC, RegistryReference.ITEM_CHROMATIC_GLASSES)
-				.define('c', RegistryReference.ITEM_CHROMATIC_NUCLEUS)
+		shaped(RecipeCategory.MISC, ItemReference.CHROMATIC_GLASSES)
+				.define('c', ItemReference.CHROMATIC_NUCLEUS)
 				.define('g', Tags.Items.GLASS_PANES)
 				.pattern("gcg")
-				.unlockedBy("has_nucleus", has(RegistryReference.ITEM_CHROMATIC_NUCLEUS))
+				.unlockedBy("has_nucleus", has(ItemReference.CHROMATIC_NUCLEUS))
 				.save(output);
 
 		shaped(RecipeCategory.MISC, Items.GREEN_DYE)
@@ -175,82 +179,97 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 				.save(output, getModdedConversionRecipeName(Items.GREEN_DYE, Items.KELP));
 
 		RecipeOutputWrapper<ShapedRecipe, CraftingSpannerRecipe> spannerOutput = new RecipeOutputWrapper<ShapedRecipe, CraftingSpannerRecipe>(output, CraftingSpannerRecipe::new);
-		shaped(RecipeCategory.TOOLS, RegistryReference.ITEM_KHROMETAL_SPANNER)
+		shaped(RecipeCategory.TOOLS, ItemReference.KHROMETAL_SPANNER)
 				.define('#', TagReference.ITEM_KHROMETAL_INGOTS)
 				.pattern("# #")
 				.pattern(" # ")
 				.pattern(" # ")
-				.group(getItemName(RegistryReference.ITEM_KHROMETAL_SPANNER))
+				.group(getItemName(ItemReference.KHROMETAL_SPANNER))
 				.unlockedBy("has_khrometal", has(TagReference.ITEM_KHROMETAL_INGOTS))
 				.save(spannerOutput);
 	}
 
+	private void imbuedWoodRecipes() {
+		for (var tree : DataGenDefinitions.trees) {
+			woodFromLogs(tree.get(TreeBlock.WOOD), tree.get(TreeBlock.LOG));
+			woodFromLogs(tree.get(TreeBlock.STRIPPED_WOOD), tree.get(TreeBlock.STRIPPED_LOG));
+			planksFromLogs(tree.get(TreeBlock.PLANKS), tree.getItemLogsTag(), 4);
+			tree.ifPresent(TreeBlock.HANGING_SIGN, block -> hangingSign(block, tree.get(TreeBlock.STRIPPED_LOG)));
+			generateRecipes(tree.getFamily(), FeatureFlags.VANILLA_SET);
+			if (tree.getBoatItem() != null) {
+				woodenBoat(tree.getBoatItem(), tree.get(TreeBlock.PLANKS));
+				if (tree.getChestBoatItem() != null)
+					chestBoat(tree.getChestBoatItem(), tree.getBoatItem());
+			}
+		}
+	}
+
 	private void khromaDevicesRecipes() {
-		shaped(RecipeCategory.MISC, RegistryReference.ITEM_BLOCK_KHROMA_LINE, 8)
-				.define('c', RegistryReference.ITEM_CHROMATIC_NUCLEUS)
+		shaped(RecipeCategory.MISC, BlockReference.KHROMA_LINE, 8)
+				.define('c', ItemReference.CHROMATIC_NUCLEUS)
 				.define('g', Tags.Items.GLASS_PANES)
 				.define('#', TagReference.ITEM_BASE_INGOT)
 				.pattern(" g ")
 				.pattern("#c#")
 				.pattern(" g ")
-				.group(getItemName(RegistryReference.ITEM_BLOCK_KHROMA_LINE))
-				.unlockedBy("has_nucleus", has(RegistryReference.ITEM_CHROMATIC_NUCLEUS))
+				.group(getItemName(BlockReference.KHROMA_LINE))
+				.unlockedBy("has_nucleus", has(ItemReference.CHROMATIC_NUCLEUS))
 				.save(output);
-		shaped(RecipeCategory.MISC, RegistryReference.ITEM_BLOCK_KHROMA_LINE, 8)
+		shaped(RecipeCategory.MISC, BlockReference.KHROMA_LINE, 8)
 				.define('g', Tags.Items.GLASS_PANES)
 				.define('#', TagReference.ITEM_KHROMETAL_INGOTS)
 				.pattern(" g ")
 				.pattern("# #")
 				.pattern(" g ")
-				.group(getItemName(RegistryReference.ITEM_BLOCK_KHROMA_LINE))
+				.group(getItemName(BlockReference.KHROMA_LINE))
 				.unlockedBy("has_khrometal", has(TagReference.ITEM_KHROMETAL_INGOTS))
-				.save(output, getModdedRecipeName(RegistryReference.ITEM_BLOCK_KHROMA_LINE) + "_from_khrometal");
+				.save(output, getModdedRecipeName(BlockReference.KHROMA_LINE) + "_from_khrometal");
 
-		shaped(RecipeCategory.MISC, RegistryReference.ITEM_BLOCK_KHROMA_APERTURE)
+		shaped(RecipeCategory.MISC, BlockReference.KHROMA_APERTURE)
 				.define('o', Items.DROPPER)
-				.define('X', RegistryReference.ITEM_BLOCK_KHROMA_LINE)
+				.define('X', BlockReference.KHROMA_LINE)
 				.define('#', Items.LEVER)
 				.pattern("#Xo")
-				.unlockedBy("has_line", has(RegistryReference.ITEM_BLOCK_KHROMA_LINE))
+				.unlockedBy("has_line", has(BlockReference.KHROMA_LINE))
 				.save(output);
-		shaped(RecipeCategory.MISC, RegistryReference.ITEM_BLOCK_KHROMA_COMBINER)
+		shaped(RecipeCategory.MISC, BlockReference.KHROMA_COMBINER)
 				.define('o', Items.DROPPER)
-				.define('X', RegistryReference.ITEM_BLOCK_KHROMA_LINE)
+				.define('X', BlockReference.KHROMA_LINE)
 				.define('#', Items.PISTON)
 				.pattern("#X#")
 				.pattern(" o ")
-				.unlockedBy("has_line", has(RegistryReference.ITEM_BLOCK_KHROMA_LINE))
+				.unlockedBy("has_line", has(BlockReference.KHROMA_LINE))
 				.save(output);
-		shaped(RecipeCategory.MISC, RegistryReference.ITEM_BLOCK_KHROMA_SEPARATOR)
+		shaped(RecipeCategory.MISC, BlockReference.KHROMA_SEPARATOR)
 				.define('o', Items.DROPPER)
-				.define('X', RegistryReference.ITEM_BLOCK_KHROMA_LINE)
+				.define('X', BlockReference.KHROMA_LINE)
 				.define('#', Items.PISTON)
 				.pattern(" # ")
 				.pattern("oXo")
-				.unlockedBy("has_line", has(RegistryReference.ITEM_BLOCK_KHROMA_LINE))
+				.unlockedBy("has_line", has(BlockReference.KHROMA_LINE))
 				.save(output);
-		shaped(RecipeCategory.MISC, RegistryReference.ITEM_BLOCK_KHROMA_DISSIPATOR)
-				.define('X', RegistryReference.ITEM_BLOCK_KHROMA_LINE)
+		shaped(RecipeCategory.MISC, BlockReference.KHROMA_DISSIPATOR)
+				.define('X', BlockReference.KHROMA_LINE)
 				.define('#', Items.IRON_BARS)
 				.pattern("##X")
-				.unlockedBy("has_line", has(RegistryReference.ITEM_BLOCK_KHROMA_LINE))
+				.unlockedBy("has_line", has(BlockReference.KHROMA_LINE))
 				.save(output);
-		shaped(RecipeCategory.MISC, RegistryReference.ITEM_BLOCK_NODE_COLLECTOR)
-				.define('c', RegistryReference.ITEM_CHROMATIC_NUCLEUS)
+		shaped(RecipeCategory.MISC, BlockReference.NODE_COLLECTOR)
+				.define('c', ItemReference.CHROMATIC_NUCLEUS)
 				.define('#', TagReference.ITEM_BASE_INGOT)
 				.pattern("###")
 				.pattern("#c#")
 				.pattern("###")
-				.unlockedBy("has_nucleus", has(RegistryReference.ITEM_CHROMATIC_NUCLEUS))
+				.unlockedBy("has_nucleus", has(ItemReference.CHROMATIC_NUCLEUS))
 				.save(output);
-		shaped(RecipeCategory.MISC, RegistryReference.ITEM_BLOCK_KHROMA_IMBUER)
-				.define('c', RegistryReference.ITEM_CHROMATIC_NUCLEUS)
-				.define('X', RegistryReference.ITEM_BLOCK_KHROMA_LINE)
+		shaped(RecipeCategory.MISC, BlockReference.KHROMA_IMBUER)
+				.define('c', ItemReference.CHROMATIC_NUCLEUS)
+				.define('X', BlockReference.KHROMA_LINE)
 				.define('#', TagReference.ITEM_BASE_INGOT)
 				.pattern("###")
 				.pattern("XcX")
 				.pattern("###")
-				.unlockedBy("has_nucleus", has(RegistryReference.ITEM_CHROMATIC_NUCLEUS))
+				.unlockedBy("has_nucleus", has(ItemReference.CHROMATIC_NUCLEUS))
 				.save(output);
 
 	}

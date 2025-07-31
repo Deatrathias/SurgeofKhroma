@@ -1,6 +1,6 @@
 package net.deatrathias.khroma.blocks.items;
 
-import net.deatrathias.khroma.blocks.KhromaLineBlock;
+import net.deatrathias.khroma.blocks.logistics.KhromaLineBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;

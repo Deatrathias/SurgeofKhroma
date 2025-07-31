@@ -1,9 +1,10 @@
 package net.deatrathias.khroma.entities;
 
-import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.entities.renderer.KhromaNodeEntityRenderer;
 import net.deatrathias.khroma.khroma.Khroma;
 import net.deatrathias.khroma.particles.KhromaParticleOption;
+import net.deatrathias.khroma.registries.BlockReference;
+import net.deatrathias.khroma.registries.EntityReference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -39,7 +40,7 @@ public class KhromaNodeEntity extends Entity {
 	}
 
 	public static KhromaNodeEntity create(Level level, BlockPos blockPos, Khroma nodeKhroma, int nodeLevel) {
-		KhromaNodeEntity result = new KhromaNodeEntity(RegistryReference.ENTITY_KHROMA_NODE.get(), level);
+		KhromaNodeEntity result = new KhromaNodeEntity(EntityReference.KHROMA_NODE.get(), level);
 		SynchedEntityData data = result.getEntityData();
 		result.setPos(blockPos.getBottomCenter());
 		data.set(KHROMA, nodeKhroma.asInt());
@@ -99,7 +100,7 @@ public class KhromaNodeEntity extends Entity {
 	@Override
 	public InteractionResult interact(Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemBySlot(LivingEntity.getSlotForHand(hand));
-		if (stack != null && stack.is(RegistryReference.ITEM_BLOCK_NODE_COLLECTOR)) {
+		if (stack != null && stack.is(BlockReference.NODE_COLLECTOR.asItem())) {
 			return stack.useOn(new UseOnContext(player, hand, new BlockHitResult(getEyePosition(), Direction.DOWN, new BlockPos(getOnPos()), false)));
 		}
 		return InteractionResult.PASS;

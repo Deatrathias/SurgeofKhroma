@@ -17,10 +17,10 @@ import org.slf4j.Logger;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
-import net.deatrathias.khroma.blocks.KhromaLineBlock;
+import net.deatrathias.khroma.blocks.logistics.KhromaLineBlock;
 import net.deatrathias.khroma.khroma.IKhromaUsingBlock.ConnectionType;
+import net.deatrathias.khroma.registries.BlockReference;
 import net.deatrathias.khroma.util.BlockDirection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -130,7 +130,7 @@ public class KhromaNetwork {
 
 		Queue<BlockDirection> lineQueue = new LinkedList<BlockDirection>();
 		lineQueue.add(new BlockDirection(providerBlockDirection.pos().relative(providerBlockDirection.direction()), providerBlockDirection.direction().getOpposite()));
-		KhromaLineBlock khromaLineBlock = (KhromaLineBlock) RegistryReference.BLOCK_KHROMA_LINE.get();
+		KhromaLineBlock khromaLineBlock = (KhromaLineBlock) BlockReference.KHROMA_LINE.get();
 
 		Set<BlockDirection> visited = new HashSet<BlockDirection>();
 		lines.clear();
@@ -246,10 +246,10 @@ public class KhromaNetwork {
 	}
 
 	public void updateLineStates() {
-		Block khromaLineBlock = RegistryReference.BLOCK_KHROMA_LINE.get();
+		Block khromaLineBlock = BlockReference.KHROMA_LINE.get();
 		for (var linePos : lines) {
 			if (!level.getBlockTicks().hasScheduledTick(linePos, khromaLineBlock))
-				level.scheduleTick(linePos, RegistryReference.BLOCK_KHROMA_LINE.get(), 0);
+				level.scheduleTick(linePos, BlockReference.KHROMA_LINE.get(), 0);
 		}
 
 		for (var consumer : consumers.keySet()) {

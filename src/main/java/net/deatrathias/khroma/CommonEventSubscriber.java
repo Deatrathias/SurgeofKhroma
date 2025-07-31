@@ -1,18 +1,25 @@
 package net.deatrathias.khroma;
 
-import net.deatrathias.khroma.blocks.KhrometalBlackBlock;
+import net.deatrathias.khroma.blocks.khrometal.KhrometalBlackBlock;
 import net.deatrathias.khroma.compat.curios.CuriosRegister;
 import net.deatrathias.khroma.gui.KhromaApertureMenu;
 import net.deatrathias.khroma.network.ServerboundSetApertureLimitPacket;
 import net.deatrathias.khroma.network.ServerboundWalkOnBlackKhrometalPacket;
+import net.deatrathias.khroma.registries.BlockReference;
+import net.deatrathias.khroma.registries.ImbuedTree.TreeBlock;
+import net.deatrathias.khroma.registries.RecipeReference;
+import net.deatrathias.khroma.registries.RegistryReference;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
@@ -30,8 +37,13 @@ public final class CommonEventSubscriber {
 	}
 
 	@SubscribeEvent
+	private static void loadComplete(FMLLoadCompleteEvent event) {
+		event.enqueueWork(BlockReference::configureExtra);
+	}
+
+	@SubscribeEvent
 	private static void registerCapabilities(RegisterCapabilitiesEvent event) {
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, RegistryReference.BLOCK_ENTITY_KHROMA_IMBUER.get(), SidedInvWrapper::new);
+		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BlockReference.BE_KHROMA_IMBUER.get(), SidedInvWrapper::new);
 		if (ModList.get().isLoaded(CuriosResources.MOD_ID))
 			CuriosRegister.registerCurioCapabilities(event);
 	}
@@ -57,14 +69,20 @@ public final class CommonEventSubscriber {
 		}));
 		registrar.playToServer(ServerboundWalkOnBlackKhrometalPacket.TYPE, ServerboundWalkOnBlackKhrometalPacket.STREAM_CODEC, new MainThreadPayloadHandler<>((data, context) -> {
 			Player player = context.player();
-			if (player.getBlockStateOn().is(RegistryReference.BLOCK_KHROMETAL_BLOCK_BLACK)) {
-				((KhrometalBlackBlock) RegistryReference.BLOCK_KHROMETAL_BLOCK_BLACK.get()).doTeleport(player.level(), player.getOnPos(), player, data.direction());
+			if (player.getBlockStateOn().is(BlockReference.KHROMETAL_BLOCK_BLACK)) {
+				((KhrometalBlackBlock) BlockReference.KHROMETAL_BLOCK_BLACK.get()).doTeleport(player.level(), player.getOnPos(), player, data.direction());
 			}
 		}));
 	}
 
 	@SubscribeEvent
 	private static void onDatapackSync(OnDatapackSyncEvent event) {
-		event.sendRecipes(RegistryReference.RECIPE_KHROMA_IMBUEMENT.get());
+		event.sendRecipes(RecipeReference.KHROMA_IMBUEMENT.get());
+	}
+
+	@SubscribeEvent
+	private static void addBlockToBlockEntities(BlockEntityTypeAddBlocksEvent event) {
+		event.modify(BlockEntityType.SIGN, BlockReference.SPARKTREE.get(TreeBlock.SIGN), BlockReference.SPARKTREE.get(TreeBlock.WALL_SIGN));
+		event.modify(BlockEntityType.HANGING_SIGN, BlockReference.SPARKTREE.get(TreeBlock.HANGING_SIGN), BlockReference.SPARKTREE.get(TreeBlock.WALL_HANGING_SIGN));
 	}
 }

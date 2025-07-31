@@ -13,9 +13,10 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.recipe.types.IRecipeHolderType;
 import mezz.jei.api.recipe.types.IRecipeType;
-import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.recipes.KhromaImbuementRecipe;
+import net.deatrathias.khroma.registries.BlockReference;
+import net.deatrathias.khroma.registries.RecipeReference;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -32,7 +33,7 @@ public class KhromaImbuementCategory implements IRecipeCategory<RecipeHolder<Khr
 
 	public KhromaImbuementCategory(IJeiHelpers helpers) {
 		this.helpers = helpers;
-		recipeType = IRecipeType.create(RegistryReference.RECIPE_KHROMA_IMBUEMENT.get());
+		recipeType = IRecipeType.create(RecipeReference.KHROMA_IMBUEMENT.get());
 		khromaBackground = helpers.getGuiHelper().drawableBuilder(SurgeofKhroma.resource("textures/gui/jei/khroma_bg.png"), 0, 0, 30, 29).setTextureSize(30, 29).build();
 	}
 
@@ -65,7 +66,7 @@ public class KhromaImbuementCategory implements IRecipeCategory<RecipeHolder<Khr
 
 	@Override
 	public @Nullable IDrawable getIcon() {
-		return helpers.getGuiHelper().createDrawableItemLike(RegistryReference.ITEM_BLOCK_KHROMA_IMBUER);
+		return helpers.getGuiHelper().createDrawableItemLike(BlockReference.KHROMA_IMBUER);
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package net.deatrathias.khroma.gui;
 
-import net.deatrathias.khroma.RegistryReference;
+import net.deatrathias.khroma.registries.BlockReference;
+import net.deatrathias.khroma.registries.UIReference;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -21,7 +22,7 @@ public class KhromaApertureMenu extends AbstractContainerMenu {
 	}
 
 	public KhromaApertureMenu(int containerId, Inventory playerInv, ContainerLevelAccess access, DataSlot data) {
-		super(RegistryReference.MENU_KHROMA_APERTURE.get(), containerId);
+		super(UIReference.KHROMA_APERTURE.get(), containerId);
 		this.access = access;
 		limitData = data;
 		addDataSlot(data);
@@ -34,7 +35,7 @@ public class KhromaApertureMenu extends AbstractContainerMenu {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return AbstractContainerMenu.stillValid(access, player, RegistryReference.BLOCK_KHROMA_APERTURE.get());
+		return AbstractContainerMenu.stillValid(access, player, BlockReference.KHROMA_APERTURE.get());
 	}
 
 	public float getLimit() {

@@ -11,10 +11,10 @@ import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandlerHelper;
 import mezz.jei.api.recipe.transfer.IRecipeTransferInfo;
 import mezz.jei.api.recipe.types.IRecipeHolderType;
-import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.gui.KhromaImbuerMenu;
 import net.deatrathias.khroma.khroma.Khroma;
 import net.deatrathias.khroma.recipes.KhromaImbuementRecipe;
+import net.deatrathias.khroma.registries.UIReference;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
@@ -46,7 +46,7 @@ public class KhromaImbuementRecipeTransfer implements IRecipeTransferHandler<Khr
 
 			@Override
 			public Optional<MenuType<KhromaImbuerMenu>> getMenuType() {
-				return Optional.of(RegistryReference.MENU_KHROMA_IMBUER.get());
+				return Optional.of(UIReference.KHROMA_IMBUER.get());
 			}
 
 			@Override
@@ -74,7 +74,7 @@ public class KhromaImbuementRecipeTransfer implements IRecipeTransferHandler<Khr
 
 	@Override
 	public Optional<MenuType<KhromaImbuerMenu>> getMenuType() {
-		return Optional.of(RegistryReference.MENU_KHROMA_IMBUER.get());
+		return Optional.of(UIReference.KHROMA_IMBUER.get());
 	}
 
 	@Override

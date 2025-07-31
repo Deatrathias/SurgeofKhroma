@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "surgeofkhroma:block/master_khroma_processing_core"
+    }
+  }
+}

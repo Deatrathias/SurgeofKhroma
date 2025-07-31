@@ -4,6 +4,12 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
+import net.deatrathias.khroma.registries.BlockReference;
+import net.deatrathias.khroma.registries.EntityReference;
+import net.deatrathias.khroma.registries.ItemReference;
+import net.deatrathias.khroma.registries.RecipeReference;
+import net.deatrathias.khroma.registries.RegistryReference;
+import net.deatrathias.khroma.registries.UIReference;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -22,14 +28,14 @@ public class SurgeofKhroma {
 
 	public SurgeofKhroma(IEventBus modEventBus, ModContainer modContainer) {
 		RegistryReference.ATTRIBUTES.register(modEventBus);
-		RegistryReference.BLOCKS.register(modEventBus);
-		RegistryReference.ITEMS.register(modEventBus);
-		RegistryReference.BLOCK_ENTITY_TYPES.register(modEventBus);
-		RegistryReference.ENTITY_TYPES.register(modEventBus);
-		RegistryReference.MENUS.register(modEventBus);
+		BlockReference.BLOCKS.register(modEventBus);
+		ItemReference.ITEMS.register(modEventBus);
+		BlockReference.BLOCK_ENTITY_TYPES.register(modEventBus);
+		EntityReference.ENTITY_TYPES.register(modEventBus);
+		UIReference.MENUS.register(modEventBus);
 		RegistryReference.ATTACHMENT_TYPES.register(modEventBus);
-		RegistryReference.RECIPE_TYPES.register(modEventBus);
-		RegistryReference.RECIPE_SERIALIZERS.register(modEventBus);
+		RecipeReference.RECIPE_TYPES.register(modEventBus);
+		RecipeReference.RECIPE_SERIALIZERS.register(modEventBus);
 		RegistryReference.CREATIVE_MODE_TABS.register(modEventBus);
 		RegistryReference.MOB_EFFECTS.register(modEventBus);
 		RegistryReference.DATA_COMPONENT_TYPES.register(modEventBus);

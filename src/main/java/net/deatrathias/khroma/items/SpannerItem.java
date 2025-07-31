@@ -6,9 +6,9 @@ import java.util.Optional;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import net.deatrathias.khroma.RegistryReference;
-import net.deatrathias.khroma.TagReference;
-import net.deatrathias.khroma.blocks.KhromaLineBlock;
+import net.deatrathias.khroma.blocks.logistics.KhromaLineBlock;
+import net.deatrathias.khroma.registries.BlockReference;
+import net.deatrathias.khroma.registries.TagReference;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -104,12 +104,12 @@ public class SpannerItem extends Item implements IItemExtension {
 		BlockState state = level.getBlockState(pos);
 		Optional<BlockState> optional = Optional.empty();
 
-		if (state.is(RegistryReference.BLOCK_KHROMA_LINE)) {
+		if (state.is(BlockReference.KHROMA_LINE)) {
 			optional = Optional.ofNullable(state.getToolModifiedState(context, SPANNER_ADJUST, false));
 		} else if (optional.isEmpty()) {
 			pos = pos.relative(context.getClickedFace());
 			state = level.getBlockState(pos);
-			if (state.is(RegistryReference.BLOCK_KHROMA_LINE)) {
+			if (state.is(BlockReference.KHROMA_LINE)) {
 				optional = Optional.ofNullable(KhromaLineBlock.connect(level, state, pos, context.getClickedFace().getOpposite()));
 			}
 

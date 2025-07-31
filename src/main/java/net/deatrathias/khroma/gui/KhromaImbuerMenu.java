@@ -1,8 +1,8 @@
 package net.deatrathias.khroma.gui;
 
-import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.khroma.Khroma;
 import net.deatrathias.khroma.khroma.KhromaThroughput;
+import net.deatrathias.khroma.registries.UIReference;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -32,7 +32,7 @@ public class KhromaImbuerMenu extends AbstractContainerMenu {
 	}
 
 	public KhromaImbuerMenu(int containerId, Inventory playerInventory, Container container, ContainerData data) {
-		super(RegistryReference.MENU_KHROMA_IMBUER.get(), containerId);
+		super(UIReference.KHROMA_IMBUER.get(), containerId);
 		checkContainerSize(container, SLOT_COUNT);
 		checkContainerDataCount(data, DATA_COUNT);
 		this.container = container;

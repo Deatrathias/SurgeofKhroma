@@ -1,8 +1,8 @@
 package net.deatrathias.khroma.blockentities;
 
-import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.gui.KhromaApertureMenu;
+import net.deatrathias.khroma.registries.BlockReference;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -37,7 +37,7 @@ public class KhromaApertureBlockEntity extends BlockEntity implements MenuProvid
 	};
 
 	public KhromaApertureBlockEntity(BlockPos pos, BlockState blockState) {
-		super(RegistryReference.BLOCK_ENTITY_KHROMA_APERTURE.get(), pos, blockState);
+		super(BlockReference.BE_KHROMA_APERTURE.get(), pos, blockState);
 		limit = 1;
 	}
 

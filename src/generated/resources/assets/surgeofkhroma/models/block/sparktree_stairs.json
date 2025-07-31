@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "surgeofkhroma:block/sparktree_planks",
+    "side": "surgeofkhroma:block/sparktree_planks",
+    "top": "surgeofkhroma:block/sparktree_planks"
+  }
+}

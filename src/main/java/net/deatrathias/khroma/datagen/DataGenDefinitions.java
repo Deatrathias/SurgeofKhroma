@@ -1,51 +1,106 @@
 package net.deatrathias.khroma.datagen;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
-import net.deatrathias.khroma.RegistryReference;
-import net.minecraft.world.item.BlockItem;
+import net.deatrathias.khroma.registries.BlockReference;
+import net.deatrathias.khroma.registries.ImbuedTree;
+import net.deatrathias.khroma.registries.ItemReference;
+import net.minecraft.data.BlockFamily;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredItem;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class DataGenDefinitions {
-	public static final List<DeferredBlock<Block>> cubeBlocks = List.of(RegistryReference.BLOCK_CHROMIUM_ORE, RegistryReference.BLOCK_DEEPSLATE_CHROMIUM_ORE, RegistryReference.BLOCK_CHROMIUM_BLOCK,
-			RegistryReference.BLOCK_RAW_CHROMIUM_BLOCK, RegistryReference.BLOCK_KHROMETAL_BLOCK_RED, RegistryReference.BLOCK_KHROMETAL_BLOCK_GREEN, RegistryReference.BLOCK_KHROMETAL_BLOCK_BLUE,
-			RegistryReference.BLOCK_KHROMETAL_BLOCK_WHITE, RegistryReference.BLOCK_KHROMETAL_BLOCK_BLACK);
 
-	public static final List<DeferredBlock<Block>> simpleBlocks = List.of(RegistryReference.BLOCK_NODE_COLLECTOR);
+	public static record TreeDefinition(TagKey<Block> blockLogTag, TagKey<Item> itemLogTag, Block log, Block wood, Block strippedLog,
+			Block strippedWood, Block leaves, Block sapling, Block pottedSapling, Block planks,
+			BlockFamily family) {
 
-	public static final List<DeferredBlock<Block>> horDirectionBlocks = List.of(RegistryReference.BLOCK_KHROMA_PROVIDER, RegistryReference.BLOCK_KHROMA_MACHINE,
-			RegistryReference.BLOCK_KHROMA_COMBINER, RegistryReference.BLOCK_KHROMA_SEPARATOR, RegistryReference.BLOCK_KHROMA_IMBUER);
+	}
 
-	public static final List<DeferredBlock<Block>> fullDirectionBlocks = List.of(RegistryReference.BLOCK_KHROMA_APERTURE);
+	// Simple cube-all models
+	public static List<Block> cubeBlocks;
 
-	public static final List<DeferredItem<BlockItem>> simpleItemBlocks = List.of(RegistryReference.ITEM_BLOCK_CHROMIUM_ORE, RegistryReference.ITEM_BLOCK_DEEPSLATE_CHROMIUM_ORE,
-			RegistryReference.ITEM_BLOCK_CHROMIUM_BLOCK, RegistryReference.ITEM_BLOCK_RAW_CHROMIUM_BLOCK, RegistryReference.ITEM_BLOCK_KHROMETAL_BLOCK_RED,
-			RegistryReference.ITEM_BLOCK_KHROMETAL_BLOCK_GREEN, RegistryReference.ITEM_BLOCK_KHROMETAL_BLOCK_BLUE, RegistryReference.ITEM_BLOCK_KHROMETAL_BLOCK_WHITE,
-			RegistryReference.ITEM_BLOCK_KHROMETAL_BLOCK_BLACK, RegistryReference.ITEM_BLOCK_KHROMA_APERTURE, RegistryReference.ITEM_BLOCK_KHROMA_COMBINER, RegistryReference.ITEM_BLOCK_KHROMA_IMBUER,
-			RegistryReference.ITEM_BLOCK_KHROMA_SEPARATOR, RegistryReference.ITEM_BLOCK_KHROMA_DISSIPATOR, RegistryReference.ITEM_BLOCK_NODE_COLLECTOR);
+	// Blocks with no rotation and existing models
+	public static List<Block> simpleBlocks;
 
-	public static final List<DeferredBlock<Block>> dropsSelfBlocks = List.of(RegistryReference.BLOCK_CHROMIUM_BLOCK, RegistryReference.BLOCK_RAW_CHROMIUM_BLOCK,
-			RegistryReference.BLOCK_KHROMETAL_BLOCK_RED, RegistryReference.BLOCK_KHROMETAL_BLOCK_GREEN, RegistryReference.BLOCK_KHROMETAL_BLOCK_BLUE, RegistryReference.BLOCK_KHROMETAL_BLOCK_WHITE,
-			RegistryReference.BLOCK_KHROMETAL_BLOCK_BLACK, RegistryReference.BLOCK_KHROMA_APERTURE, RegistryReference.BLOCK_KHROMA_COMBINER, RegistryReference.BLOCK_KHROMA_SEPARATOR,
-			RegistryReference.BLOCK_KHROMA_DISSIPATOR, RegistryReference.BLOCK_KHROMA_PROVIDER, RegistryReference.BLOCK_KHROMA_MACHINE, RegistryReference.BLOCK_KHROMA_LINE,
-			RegistryReference.BLOCK_NODE_COLLECTOR, RegistryReference.BLOCK_KHROMA_IMBUER);
-	public static final List<DeferredBlock<Block>> dropsOreBlocks = List.of(RegistryReference.BLOCK_CHROMIUM_ORE, RegistryReference.BLOCK_DEEPSLATE_CHROMIUM_ORE);
+	// Blocks with horizontal facing
+	public static List<Block> horDirectionBlocks;
 
-	public static final List<DeferredItem<Item>> simpleItems = List.of(RegistryReference.ITEM_RAW_CHROMIUM, RegistryReference.ITEM_CHROMIUM_INGOT, RegistryReference.ITEM_CHROMIUM_NUGGET,
-			RegistryReference.ITEM_KHROMETAL_INGOT_RED, RegistryReference.ITEM_KHROMETAL_INGOT_GREEN, RegistryReference.ITEM_KHROMETAL_INGOT_BLUE, RegistryReference.ITEM_KHROMETAL_INGOT_WHITE,
-			RegistryReference.ITEM_KHROMETAL_INGOT_BLACK, RegistryReference.ITEM_CHROMATIC_NUCLEUS, RegistryReference.ITEM_CHROMATIC_GLASSES);
+	// Blocks with full facing
+	public static List<Block> fullDirectionBlocks;
 
-	public static final List<DeferredItem<Item>> handheldItems = List.of(RegistryReference.ITEM_KHROMETAL_RED_SWORD, RegistryReference.ITEM_KHROMETAL_RED_PICKAXE,
-			RegistryReference.ITEM_KHROMETAL_GREEN_SWORD, RegistryReference.ITEM_KHROMETAL_GREEN_PICKAXE, RegistryReference.ITEM_KHROMETAL_BLUE_SWORD, RegistryReference.ITEM_KHROMETAL_BLUE_PICKAXE,
-			RegistryReference.ITEM_KHROMETAL_WHITE_SWORD, RegistryReference.ITEM_KHROMETAL_WHITE_PICKAXE, RegistryReference.ITEM_KHROMETAL_BLACK_SWORD, RegistryReference.ITEM_KHROMETAL_BLACK_PICKAXE);
+	public static List<ImbuedTree> trees;
 
-	public static final List<DeferredBlock<Block>> khromaDevices = List.of(RegistryReference.BLOCK_KHROMA_LINE, RegistryReference.BLOCK_NODE_COLLECTOR, RegistryReference.BLOCK_KHROMA_PROVIDER,
-			RegistryReference.BLOCK_KHROMA_MACHINE, RegistryReference.BLOCK_KHROMA_APERTURE, RegistryReference.BLOCK_KHROMA_COMBINER, RegistryReference.BLOCK_KHROMA_SEPARATOR,
-			RegistryReference.BLOCK_KHROMA_DISSIPATOR, RegistryReference.BLOCK_KHROMA_IMBUER);
+	public static List<Block> dropsOreBlocks;
 
-	public static final List<DeferredBlock<Block>> needsStoneTool = List.of(RegistryReference.BLOCK_CHROMIUM_ORE, RegistryReference.BLOCK_DEEPSLATE_CHROMIUM_ORE,
-			RegistryReference.BLOCK_CHROMIUM_BLOCK, RegistryReference.BLOCK_RAW_CHROMIUM_BLOCK);
+	public static List<Item> simpleItems;
+
+	public static List<Item> handheldItems;
+
+	public static List<Block> khromaDevices;
+
+	public static List<Block> needsStoneTool;
+
+	private static boolean initialized = false;
+
+	public static <R, T extends R> T get(DeferredHolder<R, T> obj) {
+		return obj.get();
+	}
+
+	@SafeVarargs
+	private static <R, T extends R> List<T> deferredList(DeferredHolder<R, T>... elements) {
+		return Arrays.stream(elements).map(DeferredHolder::get).toList();
+	}
+
+	@SafeVarargs
+	private static <R, T extends R> List<T> deferredCombinedList(Collection<? extends DeferredHolder<R, T>>... elements) {
+		Stream<DeferredHolder<R, T>> result = Stream.of();
+		for (var element : elements) {
+			result = Stream.concat(result, element.stream());
+		}
+
+		return result.map(DeferredHolder::get).toList();
+	}
+
+	public static void init() {
+		if (initialized)
+			return;
+		initialized = true;
+
+		cubeBlocks = deferredList(BlockReference.CHROMIUM_ORE, BlockReference.DEEPSLATE_CHROMIUM_ORE, BlockReference.CHROMIUM_BLOCK,
+				BlockReference.RAW_CHROMIUM_BLOCK, BlockReference.KHROMETAL_BLOCK_RED, BlockReference.KHROMETAL_BLOCK_GREEN, BlockReference.KHROMETAL_BLOCK_BLUE,
+				BlockReference.KHROMETAL_BLOCK_WHITE, BlockReference.KHROMETAL_BLOCK_BLACK);
+
+		simpleBlocks = deferredCombinedList(List.of(BlockReference.NODE_COLLECTOR), BlockReference.KHROMA_PROCESSING_CORE_TIERED.values());
+
+		horDirectionBlocks = deferredList(BlockReference.KHROMA_PROVIDER, BlockReference.KHROMA_MACHINE,
+				BlockReference.KHROMA_COMBINER, BlockReference.KHROMA_SEPARATOR, BlockReference.KHROMA_IMBUER);
+
+		fullDirectionBlocks = deferredList(BlockReference.KHROMA_APERTURE);
+
+		trees = List.of(BlockReference.SPARKTREE);
+
+		dropsOreBlocks = deferredList(BlockReference.CHROMIUM_ORE, BlockReference.DEEPSLATE_CHROMIUM_ORE);
+
+		simpleItems = deferredList(ItemReference.RAW_CHROMIUM, ItemReference.CHROMIUM_INGOT, ItemReference.CHROMIUM_NUGGET,
+				ItemReference.KHROMETAL_INGOT_RED, ItemReference.KHROMETAL_INGOT_GREEN, ItemReference.KHROMETAL_INGOT_BLUE, ItemReference.KHROMETAL_INGOT_WHITE,
+				ItemReference.KHROMETAL_INGOT_BLACK, ItemReference.CHROMATIC_NUCLEUS, ItemReference.CHROMATIC_GLASSES, BlockReference.SPARKTREE.getBoatItem(),
+				BlockReference.SPARKTREE.getChestBoatItem());
+
+		handheldItems = deferredList(ItemReference.KHROMETAL_RED_SWORD, ItemReference.KHROMETAL_RED_PICKAXE,
+				ItemReference.KHROMETAL_GREEN_SWORD, ItemReference.KHROMETAL_GREEN_PICKAXE, ItemReference.KHROMETAL_BLUE_SWORD, ItemReference.KHROMETAL_BLUE_PICKAXE,
+				ItemReference.KHROMETAL_WHITE_SWORD, ItemReference.KHROMETAL_WHITE_PICKAXE, ItemReference.KHROMETAL_BLACK_SWORD, ItemReference.KHROMETAL_BLACK_PICKAXE);
+
+		khromaDevices = deferredCombinedList(List.of(BlockReference.KHROMA_LINE, BlockReference.NODE_COLLECTOR, BlockReference.KHROMA_PROVIDER,
+				BlockReference.KHROMA_MACHINE, BlockReference.KHROMA_APERTURE, BlockReference.KHROMA_COMBINER, BlockReference.KHROMA_SEPARATOR,
+				BlockReference.KHROMA_DISSIPATOR, BlockReference.KHROMA_IMBUER), BlockReference.KHROMA_PROCESSING_CORE_TIERED.values());
+
+		needsStoneTool = deferredList(BlockReference.CHROMIUM_ORE, BlockReference.DEEPSLATE_CHROMIUM_ORE,
+				BlockReference.CHROMIUM_BLOCK, BlockReference.RAW_CHROMIUM_BLOCK);
+	}
 }

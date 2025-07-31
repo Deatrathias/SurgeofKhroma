@@ -1,0 +1,10 @@
+{
+  "values": {
+    "#surgeofkhroma:imbued_tree_leaves": {
+      "chance": 0.3
+    },
+    "#surgeofkhroma:imbued_tree_sapling": {
+      "chance": 0.3
+    }
+  }
+}

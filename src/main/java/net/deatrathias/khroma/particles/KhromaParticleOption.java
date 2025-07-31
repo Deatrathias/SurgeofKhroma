@@ -3,8 +3,8 @@ package net.deatrathias.khroma.particles;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.khroma.Khroma;
+import net.deatrathias.khroma.registries.RegistryReference;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.RegistryFriendlyByteBuf;

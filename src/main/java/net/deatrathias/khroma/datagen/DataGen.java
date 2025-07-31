@@ -2,35 +2,35 @@ package net.deatrathias.khroma.datagen;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
-import java.util.stream.Stream;
 
-import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
-import net.deatrathias.khroma.TagReference;
+import net.deatrathias.khroma.registries.BlockReference;
+import net.deatrathias.khroma.registries.ImbuedTree.TreeBlock;
+import net.deatrathias.khroma.registries.RegistryReference;
+import net.deatrathias.khroma.registries.TagReference;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.EntityTypePredicate;
 import net.minecraft.client.data.models.EquipmentAssetProvider;
 import net.minecraft.client.resources.model.EquipmentClientInfo;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.loot.BlockLootSubProvider;
-import net.minecraft.data.loot.LootTableProvider;
-import net.minecraft.data.loot.LootTableProvider.SubProviderEntry;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.damagesource.DamageScaling;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentTarget;
@@ -39,12 +39,18 @@ import net.minecraft.world.item.enchantment.effects.AddValue;
 import net.minecraft.world.item.enchantment.effects.ApplyMobEffect;
 import net.minecraft.world.item.equipment.EquipmentAsset;
 import net.minecraft.world.item.equipment.EquipmentAssets;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration.TreeConfigurationBuilder;
+import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.PineFoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.treedecorators.PlaceOnGroundDecorator;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.CherryTrunkPlacer;
 import net.minecraft.world.level.levelgen.placement.BiomeFilter;
 import net.minecraft.world.level.levelgen.placement.CountPlacement;
 import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
@@ -52,43 +58,25 @@ import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.common.data.DataMapProvider;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.common.world.BiomeModifiers.AddFeaturesBiomeModifier;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.neoforged.neoforge.registries.datamaps.builtin.Compostable;
+import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 import top.theillusivec4.curios.api.CuriosResources;
 
 @EventBusSubscriber(modid = SurgeofKhroma.MODID)
 public class DataGen {
 
-	private static class BLootProvider extends BlockLootSubProvider {
-
-		protected BLootProvider(HolderLookup.Provider lookupProvider) {
-			super(Set.of(), FeatureFlags.DEFAULT_FLAGS, lookupProvider);
-		}
-
-		@Override
-		protected Iterable<Block> getKnownBlocks() {
-			return Stream.concat(DataGenDefinitions.dropsSelfBlocks.stream().map(e -> (Block) e.get()), DataGenDefinitions.dropsOreBlocks.stream().map(e -> (Block) e.get())).toList();
-		}
-
-		@Override
-		protected void generate() {
-			for (var element : DataGenDefinitions.dropsSelfBlocks)
-				dropSelf(element.get());
-			add(RegistryReference.BLOCK_CHROMIUM_ORE.get(), block -> createOreDrop(block, RegistryReference.ITEM_RAW_CHROMIUM.get()));
-			add(RegistryReference.BLOCK_DEEPSLATE_CHROMIUM_ORE.get(), block -> createOreDrop(block, RegistryReference.ITEM_RAW_CHROMIUM.get()));
-		}
-
-	}
-
 	@SubscribeEvent
 	public static void gatherDataClient(GatherDataEvent.Client event) {
+		DataGenDefinitions.init();
 		event.createProvider(ModelDataGen::new);
 		event.createProvider(output -> equipmentProvider(output));
 		generateServerData(event);
@@ -96,6 +84,7 @@ public class DataGen {
 
 	@SubscribeEvent
 	public static void gatherDataServer(GatherDataEvent.Server event) {
+		DataGenDefinitions.init();
 		generateServerData(event);
 	}
 
@@ -107,10 +96,11 @@ public class DataGen {
 		event.createProvider(TagsDataGen.DamageTypeTag::new);
 		event.createProvider(TagsDataGen.EntityTypeTag::new);
 		event.createProvider(TagsDataGen.EnchantmentTag::new);
-		event.createProvider((output, lookupProvider) -> new LootTableProvider(output, Set.of(), List.of(new SubProviderEntry(BLootProvider::new, LootContextParamSets.BLOCK)), lookupProvider));
+		event.createProvider(LootTableDataGen::new);
 		event.createProvider(AdvancementDataGen::new);
 
 		event.createProvider(RecipeDaraGen.Runner::new);
+		event.createProvider(DataMapDataGen::new);
 		if (ModList.get().isLoaded(CuriosResources.MOD_ID))
 			event.createProvider(CuriosDataGen::new);
 	}
@@ -130,11 +120,21 @@ public class DataGen {
 	}
 
 	private static void registerConfiguredFeatures(BootstrapContext<ConfiguredFeature<?, ?>> bootstrap) {
-		bootstrap.register(ResourceKey.create(Registries.CONFIGURED_FEATURE, SurgeofKhroma.resource("ore_chromium")),
+		bootstrap.register(SurgeofKhroma.resourceKey(Registries.CONFIGURED_FEATURE, "ore_chromium"),
 				new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(
-						List.of(OreConfiguration.target(new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES), RegistryReference.BLOCK_CHROMIUM_ORE.get().defaultBlockState()),
-								OreConfiguration.target(new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES), RegistryReference.BLOCK_DEEPSLATE_CHROMIUM_ORE.get().defaultBlockState())),
+						List.of(OreConfiguration.target(new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES), BlockReference.CHROMIUM_ORE.get().defaultBlockState()),
+								OreConfiguration.target(new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES), BlockReference.DEEPSLATE_CHROMIUM_ORE.get().defaultBlockState())),
 						9)));
+
+		var treeConfiguration = new TreeConfigurationBuilder(
+				BlockStateProvider.simple(BlockReference.SPARKTREE.get(TreeBlock.LOG)),
+				new CherryTrunkPlacer(4, 2, 0, ConstantInt.of(3), ConstantInt.of(2), UniformInt.of(-2, -1), UniformInt.of(-1, 0)),
+				BlockStateProvider.simple(BlockReference.SPARKTREE.get(TreeBlock.LEAVES)),
+				new PineFoliagePlacer(ConstantInt.of(2), ConstantInt.ZERO, ConstantInt.of(3)),
+				new TwoLayersFeatureSize(2, 0, 2))
+				.decorators(List.of(new PlaceOnGroundDecorator(128, 3, 1, BlockStateProvider.simple(Blocks.FIRE))))
+				.ignoreVines().build();
+		bootstrap.register(SurgeofKhroma.resourceKey(Registries.CONFIGURED_FEATURE, "sparktree"), new ConfiguredFeature<>(Feature.TREE, treeConfiguration));
 	}
 
 	private static void registerPlacedFeatures(BootstrapContext<PlacedFeature> bootstrap) {
@@ -189,5 +189,19 @@ public class DataGen {
 						.build());
 			}
 		};
+	}
+
+	private static class DataMapDataGen extends DataMapProvider {
+
+		protected DataMapDataGen(PackOutput packOutput, CompletableFuture<Provider> lookupProvider) {
+			super(packOutput, lookupProvider);
+		}
+
+		@Override
+		protected void gather(Provider provider) {
+			builder(NeoForgeDataMaps.COMPOSTABLES)
+					.add(TagReference.ITEM_IMBUED_TREE_LEAVES, new Compostable(0.3f), false)
+					.add(TagReference.ITEM_IMBUED_TREE_SAPLINGS, new Compostable(0.3f), false);
+		}
 	}
 }

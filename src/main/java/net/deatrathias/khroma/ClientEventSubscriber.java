@@ -1,7 +1,7 @@
 package net.deatrathias.khroma;
 
 import mezz.jei.api.constants.ModIds;
-import net.deatrathias.khroma.blocks.KhromaLineBlock;
+import net.deatrathias.khroma.blocks.logistics.KhromaLineBlock;
 import net.deatrathias.khroma.compat.curios.CuriosRegister;
 import net.deatrathias.khroma.compat.jei.JeiKhromaPlugin;
 import net.deatrathias.khroma.entities.renderer.KhromaNodeEntityRenderer;
@@ -10,7 +10,16 @@ import net.deatrathias.khroma.gui.KhromaImbuerScreen;
 import net.deatrathias.khroma.items.renderer.SpannerColorTint;
 import net.deatrathias.khroma.khroma.Khroma;
 import net.deatrathias.khroma.particles.KhromaParticle.KhromaParticleProvider;
+import net.deatrathias.khroma.registries.BlockReference;
+import net.deatrathias.khroma.registries.EntityReference;
+import net.deatrathias.khroma.registries.ImbuedTree.TreeBlock;
+import net.deatrathias.khroma.registries.RegistryReference;
+import net.deatrathias.khroma.registries.UIReference;
+import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.entity.BoatRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.crafting.RecipeMap;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,9 +43,17 @@ import top.theillusivec4.curios.api.CuriosResources;
 public class ClientEventSubscriber {
 	@SubscribeEvent
 	private static void onClientSetup(FMLClientSetupEvent event) {
-		SurgeofKhroma.LOGGER.info("client started");
 		if (ModList.get().isLoaded(CuriosResources.MOD_ID))
 			CuriosRegister.registerCurioRenderer();
+		configureRenderLayers();
+	}
+
+	@SuppressWarnings("deprecation")
+	private static void configureRenderLayers() {
+		ItemBlockRenderTypes.setRenderLayer(BlockReference.SPARKTREE.get(TreeBlock.SAPLING), ChunkSectionLayer.CUTOUT);
+		ItemBlockRenderTypes.setRenderLayer(BlockReference.SPARKTREE.get(TreeBlock.POTTED_SAPLING), ChunkSectionLayer.CUTOUT);
+		ItemBlockRenderTypes.setRenderLayer(BlockReference.SPARKTREE.get(TreeBlock.DOOR), ChunkSectionLayer.CUTOUT);
+		ItemBlockRenderTypes.setRenderLayer(BlockReference.SPARKTREE.get(TreeBlock.TRAPDOOR), ChunkSectionLayer.CUTOUT);
 	}
 
 	@SubscribeEvent
@@ -44,7 +61,7 @@ public class ClientEventSubscriber {
 		event.register(((state, level, pos, tintIndex) -> {
 			Khroma khroma = state.getValue(KhromaLineBlock.KHROMA);
 			return khroma.getTint();
-		}), RegistryReference.BLOCK_KHROMA_LINE.get(), RegistryReference.BLOCK_KHROMA_DISSIPATOR.get());
+		}), BlockReference.KHROMA_LINE.get(), BlockReference.KHROMA_DISSIPATOR.get());
 	}
 
 	@SubscribeEvent
@@ -54,13 +71,21 @@ public class ClientEventSubscriber {
 
 	@SubscribeEvent
 	private static void registerScreens(RegisterMenuScreensEvent event) {
-		event.register(RegistryReference.MENU_KHROMA_APERTURE.get(), KhromaApertureScreen::new);
-		event.register(RegistryReference.MENU_KHROMA_IMBUER.get(), KhromaImbuerScreen::new);
+		event.register(UIReference.KHROMA_APERTURE.get(), KhromaApertureScreen::new);
+		event.register(UIReference.KHROMA_IMBUER.get(), KhromaImbuerScreen::new);
+	}
+
+	@SubscribeEvent
+	private static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+		event.registerLayerDefinition(ClientOnlyReference.SPARKTREE_BOAT, BoatModel::createBoatModel);
+		event.registerLayerDefinition(ClientOnlyReference.SPARKTREE_CHEST_BOAT, BoatModel::createChestBoatModel);
 	}
 
 	@SubscribeEvent
 	private static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-		event.registerEntityRenderer(RegistryReference.ENTITY_KHROMA_NODE.get(), KhromaNodeEntityRenderer::new);
+		event.registerEntityRenderer(EntityReference.KHROMA_NODE.get(), KhromaNodeEntityRenderer::new);
+		event.registerEntityRenderer(BlockReference.SPARKTREE.getBoatEntity().get(), context -> new BoatRenderer(context, ClientOnlyReference.SPARKTREE_BOAT));
+		event.registerEntityRenderer(BlockReference.SPARKTREE.getChestBoatEntity().get(), context -> new BoatRenderer(context, ClientOnlyReference.SPARKTREE_CHEST_BOAT));
 	}
 
 	@SubscribeEvent
@@ -84,7 +109,7 @@ public class ClientEventSubscriber {
 			public boolean areBreakingParticlesTinted(BlockState state, ClientLevel level, BlockPos pos) {
 				return false;
 			}
-		}, RegistryReference.BLOCK_KHROMA_LINE, RegistryReference.BLOCK_KHROMA_DISSIPATOR);
+		}, BlockReference.KHROMA_LINE, BlockReference.KHROMA_DISSIPATOR);
 	}
 
 	@SubscribeEvent

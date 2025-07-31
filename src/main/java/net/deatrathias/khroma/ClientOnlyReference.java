@@ -5,7 +5,9 @@ import java.util.function.Function;
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 
+import net.deatrathias.khroma.registries.BlockReference;
 import net.minecraft.Util;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -35,4 +37,7 @@ public class ClientOnlyReference {
 						PIPELINE_KHROMA_NODE,
 						RenderType.CompositeState.builder().setTextureState(renderstateshard$texturestateshard).createCompositeState(false));
 			});
+
+	public static final ModelLayerLocation SPARKTREE_BOAT = new ModelLayerLocation(SurgeofKhroma.resource("boat/" + BlockReference.SPARKTREE.getName()), "main");
+	public static final ModelLayerLocation SPARKTREE_CHEST_BOAT = new ModelLayerLocation(SurgeofKhroma.resource("chest_boat/" + BlockReference.SPARKTREE.getName()), "main");
 }

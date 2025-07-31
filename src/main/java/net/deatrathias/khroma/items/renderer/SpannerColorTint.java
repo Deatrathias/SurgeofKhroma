@@ -3,8 +3,8 @@ package net.deatrathias.khroma.items.renderer;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.items.SpannerItem.SpannerColorLocation;
+import net.deatrathias.khroma.registries.RegistryReference;
 import net.minecraft.client.color.item.ItemTintSource;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.util.StringRepresentable;

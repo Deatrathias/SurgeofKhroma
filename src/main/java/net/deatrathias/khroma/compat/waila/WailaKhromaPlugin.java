@@ -1,9 +1,9 @@
 package net.deatrathias.khroma.compat.waila;
 
-import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.entities.KhromaNodeEntity;
 import net.deatrathias.khroma.entities.renderer.KhromaNodeEntityRenderer;
+import net.deatrathias.khroma.registries.EntityReference;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import snownee.jade.api.EntityAccessor;
@@ -40,7 +40,7 @@ public class WailaKhromaPlugin implements IWailaPlugin {
 		registration.registerEntityComponent(new KhromaNodeComponentProvider(), KhromaNodeEntity.class);
 		registration.addRayTraceCallback((hitResult, accessor, originalAccessor) -> {
 			if (accessor instanceof EntityAccessor entityAcc) {
-				if (entityAcc.getEntity().getType() == RegistryReference.ENTITY_KHROMA_NODE.get()) {
+				if (entityAcc.getEntity().getType() == EntityReference.KHROMA_NODE.get()) {
 					if (KhromaNodeEntityRenderer.canSeeNodes())
 						return accessor;
 					return null;

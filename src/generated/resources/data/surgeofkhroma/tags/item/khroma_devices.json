@@ -8,6 +8,10 @@
     "surgeofkhroma:khroma_combiner",
     "surgeofkhroma:khroma_separator",
     "surgeofkhroma:khroma_dissipator",
-    "surgeofkhroma:khroma_imbuer"
+    "surgeofkhroma:khroma_imbuer",
+    "surgeofkhroma:basic_khroma_processing_core",
+    "surgeofkhroma:expert_khroma_processing_core",
+    "surgeofkhroma:master_khroma_processing_core",
+    "surgeofkhroma:legendary_khroma_processing_core"
   ]
 }

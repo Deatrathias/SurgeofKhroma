@@ -4,10 +4,11 @@ import java.util.Optional;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.deatrathias.khroma.RegistryReference;
+import net.deatrathias.khroma.blocks.logistics.KhromaLineBlock;
 import net.deatrathias.khroma.items.SpannerItem;
 import net.deatrathias.khroma.khroma.IKhromaUsingBlock;
 import net.deatrathias.khroma.khroma.KhromaNetwork;
+import net.deatrathias.khroma.registries.BlockReference;
 import net.deatrathias.khroma.util.BlockDirection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,7 +30,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.common.ItemAbility;
 
-public abstract class BaseKhromaUserBlock extends Block implements IKhromaUsingBlock {
+public abstract class BaseKhromaUserBlock extends Block implements IKhromaUsingBlock, IKhromaDevice {
 
 	protected BaseKhromaUserBlock(Properties properties) {
 		super(properties);
@@ -68,7 +69,7 @@ public abstract class BaseKhromaUserBlock extends Block implements IKhromaUsingB
 				continue;
 			BlockPos neighborPos = pos.relative(direction);
 			BlockState neighborState = level.getBlockState(neighborPos);
-			if (neighborState.is(RegistryReference.BLOCK_KHROMA_LINE))
+			if (neighborState.is(BlockReference.KHROMA_LINE))
 				level.setBlockAndUpdate(neighborPos, neighborState.setValue(KhromaLineBlock.PROPERTY_BY_DIRECTION.get(direction.getOpposite()), true));
 		}
 	}
@@ -91,7 +92,7 @@ public abstract class BaseKhromaUserBlock extends Block implements IKhromaUsingB
 	@Override
 	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
 		var connection = khromaConnection(state, hitResult.getDirection());
-		if (connection != ConnectionType.NONE && stack.is(RegistryReference.ITEM_BLOCK_KHROMA_LINE.get()))
+		if (connection != ConnectionType.NONE && stack.is(BlockReference.KHROMA_LINE.asItem()))
 			return InteractionResult.PASS;
 		if (stack.canPerformAction(SpannerItem.SPANNER_ADJUST))
 			return InteractionResult.PASS;

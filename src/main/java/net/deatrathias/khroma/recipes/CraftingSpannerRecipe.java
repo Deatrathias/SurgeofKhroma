@@ -6,8 +6,10 @@ import java.util.function.Function;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.MapCodec;
 
-import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.items.SpannerItem;
+import net.deatrathias.khroma.registries.ItemReference;
+import net.deatrathias.khroma.registries.RecipeReference;
+import net.deatrathias.khroma.registries.RegistryReference;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -22,11 +24,11 @@ import net.minecraft.world.item.crafting.ShapedRecipePattern;
 public class CraftingSpannerRecipe extends ShapedRecipe {
 
 	private static final Map<ResourceLocation, Integer> INGOT_TO_COLOR = ImmutableMap.of(
-			RegistryReference.ITEM_KHROMETAL_INGOT_RED.getId(), 0xFFFF0000,
-			RegistryReference.ITEM_KHROMETAL_INGOT_GREEN.getId(), 0xFF00FF00,
-			RegistryReference.ITEM_KHROMETAL_INGOT_BLUE.getId(), 0xFF0000FF,
-			RegistryReference.ITEM_KHROMETAL_INGOT_WHITE.getId(), 0xFFFFFFFF,
-			RegistryReference.ITEM_KHROMETAL_INGOT_BLACK.getId(), 0xFF202020);
+			ItemReference.KHROMETAL_INGOT_RED.getId(), 0xFFFF0000,
+			ItemReference.KHROMETAL_INGOT_GREEN.getId(), 0xFF00FF00,
+			ItemReference.KHROMETAL_INGOT_BLUE.getId(), 0xFF0000FF,
+			ItemReference.KHROMETAL_INGOT_WHITE.getId(), 0xFFFFFFFF,
+			ItemReference.KHROMETAL_INGOT_BLACK.getId(), 0xFF202020);
 
 	private static final int MISSING_COLOR = 0xFFFF00FF;
 
@@ -44,7 +46,7 @@ public class CraftingSpannerRecipe extends ShapedRecipe {
 
 	@Override
 	public RecipeSerializer<? extends ShapedRecipe> getSerializer() {
-		return RegistryReference.RECIPE_SERIALIZER_CRAFTING_SPANNER.get();
+		return RecipeReference.SERIALIZER_CRAFTING_SPANNER.get();
 	}
 
 	@Override
@@ -72,6 +74,7 @@ public class CraftingSpannerRecipe extends ShapedRecipe {
 			return CODEC;
 		}
 
+		@SuppressWarnings("deprecation")
 		@Override
 		public StreamCodec<RegistryFriendlyByteBuf, CraftingSpannerRecipe> streamCodec() {
 			return STREAM_CODEC;

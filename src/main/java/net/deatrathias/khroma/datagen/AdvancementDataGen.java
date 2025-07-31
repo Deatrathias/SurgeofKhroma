@@ -4,8 +4,9 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
+import net.deatrathias.khroma.registries.BlockReference;
+import net.deatrathias.khroma.registries.ItemReference;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementRequirements.Strategy;
@@ -29,7 +30,7 @@ public class AdvancementDataGen extends AdvancementProvider {
 		@Override
 		public void generate(Provider registries, Consumer<AdvancementHolder> writer) {
 			var root = Advancement.Builder.advancement()
-					.display(RegistryReference.ITEM_CHROMATIC_NUCLEUS, Component.translatable("advancements.surgeofkhroma.root.title"),
+					.display(ItemReference.CHROMATIC_NUCLEUS, Component.translatable("advancements.surgeofkhroma.root.title"),
 							Component.translatable("advancements.surgeofkhroma.root.description"), SurgeofKhroma.resource("gui/advancements/backgrounds/surgeofkhroma"), AdvancementType.TASK, false,
 							false, false)
 					.addCriterion("red_dye", InventoryChangeTrigger.TriggerInstance.hasItems(Items.RED_DYE))
@@ -40,28 +41,28 @@ public class AdvancementDataGen extends AdvancementProvider {
 					.requirements(Strategy.OR)
 					.save(writer, SurgeofKhroma.resource("root"));
 			var smelt_chromium = Advancement.Builder.advancement().parent(root)
-					.display(RegistryReference.ITEM_CHROMIUM_INGOT, Component.translatable("advancements.surgeofkhroma.smelt_chromium.title"),
+					.display(ItemReference.CHROMIUM_INGOT, Component.translatable("advancements.surgeofkhroma.smelt_chromium.title"),
 							Component.translatable("advancements.surgeofkhroma.smelt_chromium.description"), null, AdvancementType.TASK, true, false, false)
-					.addCriterion("chromium", InventoryChangeTrigger.TriggerInstance.hasItems(RegistryReference.ITEM_CHROMIUM_INGOT))
+					.addCriterion("chromium", InventoryChangeTrigger.TriggerInstance.hasItems(ItemReference.CHROMIUM_INGOT))
 					.save(writer, SurgeofKhroma.resource("smelt_chromium"));
 			var craft_glasses = Advancement.Builder.advancement().parent(smelt_chromium)
-					.display(RegistryReference.ITEM_CHROMATIC_GLASSES, Component.translatable("advancements.surgeofkhroma.craft_glasses.title"),
+					.display(ItemReference.CHROMATIC_GLASSES, Component.translatable("advancements.surgeofkhroma.craft_glasses.title"),
 							Component.translatable("advancements.surgeofkhroma.craft_glasses.description"), null, AdvancementType.TASK, true, false, false)
-					.addCriterion("chromatic_glasses", InventoryChangeTrigger.TriggerInstance.hasItems(RegistryReference.ITEM_CHROMATIC_GLASSES))
+					.addCriterion("chromatic_glasses", InventoryChangeTrigger.TriggerInstance.hasItems(ItemReference.CHROMATIC_GLASSES))
 					.save(writer, SurgeofKhroma.resource("craft_glasses"));
 			var place_collector = Advancement.Builder.advancement().parent(craft_glasses)
-					.display(RegistryReference.ITEM_BLOCK_NODE_COLLECTOR, Component.translatable("advancements.surgeofkhroma.place_collector.title"),
+					.display(BlockReference.NODE_COLLECTOR, Component.translatable("advancements.surgeofkhroma.place_collector.title"),
 							Component.translatable("advancements.surgeofkhroma.place_collector.description"), null, AdvancementType.TASK, true, true, false)
-					.addCriterion("node_collector", ItemUsedOnLocationTrigger.TriggerInstance.placedBlock(RegistryReference.BLOCK_NODE_COLLECTOR.get()))
+					.addCriterion("node_collector", ItemUsedOnLocationTrigger.TriggerInstance.placedBlock(BlockReference.NODE_COLLECTOR.get()))
 					.save(writer, SurgeofKhroma.resource("place_collector"));
 			Advancement.Builder.advancement().parent(place_collector)
-					.display(RegistryReference.ITEM_BLOCK_KHROMA_IMBUER, Component.translatable("advancements.surgeofkhroma.imbue_khrometal.title"),
+					.display(BlockReference.KHROMA_IMBUER, Component.translatable("advancements.surgeofkhroma.imbue_khrometal.title"),
 							Component.translatable("advancements.surgeofkhroma.imbue_khrometal.description"), null, AdvancementType.TASK, true, false, false)
-					.addCriterion("khrometal_red", InventoryChangeTrigger.TriggerInstance.hasItems(RegistryReference.ITEM_KHROMETAL_INGOT_RED))
-					.addCriterion("khrometal_green", InventoryChangeTrigger.TriggerInstance.hasItems(RegistryReference.ITEM_KHROMETAL_INGOT_GREEN))
-					.addCriterion("khrometal_blue", InventoryChangeTrigger.TriggerInstance.hasItems(RegistryReference.ITEM_KHROMETAL_INGOT_BLUE))
-					.addCriterion("khrometal_white", InventoryChangeTrigger.TriggerInstance.hasItems(RegistryReference.ITEM_KHROMETAL_INGOT_WHITE))
-					.addCriterion("khrometal_black", InventoryChangeTrigger.TriggerInstance.hasItems(RegistryReference.ITEM_KHROMETAL_INGOT_BLACK))
+					.addCriterion("khrometal_red", InventoryChangeTrigger.TriggerInstance.hasItems(ItemReference.KHROMETAL_INGOT_RED))
+					.addCriterion("khrometal_green", InventoryChangeTrigger.TriggerInstance.hasItems(ItemReference.KHROMETAL_INGOT_GREEN))
+					.addCriterion("khrometal_blue", InventoryChangeTrigger.TriggerInstance.hasItems(ItemReference.KHROMETAL_INGOT_BLUE))
+					.addCriterion("khrometal_white", InventoryChangeTrigger.TriggerInstance.hasItems(ItemReference.KHROMETAL_INGOT_WHITE))
+					.addCriterion("khrometal_black", InventoryChangeTrigger.TriggerInstance.hasItems(ItemReference.KHROMETAL_INGOT_BLACK))
 					.requirements(Strategy.OR)
 					.save(writer, SurgeofKhroma.resource("imbue_khrometal"));
 		}

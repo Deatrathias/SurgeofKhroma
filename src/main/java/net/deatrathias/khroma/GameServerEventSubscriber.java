@@ -3,6 +3,7 @@ package net.deatrathias.khroma;
 import net.deatrathias.khroma.entities.KhromaNodeEntity;
 import net.deatrathias.khroma.khroma.KhromaNetwork;
 import net.deatrathias.khroma.khroma.KhromaNode;
+import net.deatrathias.khroma.registries.RegistryReference;
 import net.minecraft.core.Holder;
 import net.minecraft.network.protocol.game.ClientboundSoundEntityPacket;
 import net.minecraft.server.level.ServerLevel;

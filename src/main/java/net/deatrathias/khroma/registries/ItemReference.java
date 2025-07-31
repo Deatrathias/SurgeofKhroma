@@ -1,0 +1,98 @@
+package net.deatrathias.khroma.registries;
+
+import net.deatrathias.khroma.SurgeofKhroma;
+import net.deatrathias.khroma.items.KhrometalBlackPickaxeItem;
+import net.deatrathias.khroma.items.KhrometalBlackSwordItem;
+import net.deatrathias.khroma.items.KhrometalGreenToolItem;
+import net.deatrathias.khroma.items.KhrometalWhitePickaxeItem;
+import net.deatrathias.khroma.items.SpannerItem;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.item.ToolMaterial;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.equipment.EquipmentAssets;
+import net.minecraft.world.item.equipment.Equippable;
+import net.neoforged.neoforge.registries.DeferredItem;
+import net.neoforged.neoforge.registries.DeferredRegister;
+
+public final class ItemReference {
+
+	public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(SurgeofKhroma.MODID);
+
+	/**
+	 * 
+	 * TIERS
+	 * 
+	 */
+	public static final ToolMaterial RED_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_DIAMOND_TOOL, 250, 6, 5, 14, TagReference.ITEM_KHROMETAL_INGOT_RED);
+	public static final ToolMaterial GREEN_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 2000, 6, 2, 14, TagReference.ITEM_KHROMETAL_INGOT_GREEN);
+	public static final ToolMaterial BLUE_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 12, 2, 24, TagReference.ITEM_KHROMETAL_INGOT_BLUE);
+	public static final ToolMaterial WHITE_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 6, 2, 14, TagReference.ITEM_KHROMETAL_INGOT_WHITE);
+	public static final ToolMaterial BLACK_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 6, 2, 14, TagReference.ITEM_KHROMETAL_INGOT_BLACK);
+
+	/**
+	 * 
+	 * ITEMS
+	 * 
+	 */
+	public static final DeferredItem<Item> RAW_CHROMIUM = ITEMS.registerSimpleItem("raw_chromium");
+
+	public static final DeferredItem<Item> CHROMIUM_INGOT = ITEMS.registerSimpleItem("chromium_ingot");
+	public static final DeferredItem<Item> CHROMIUM_NUGGET = ITEMS.registerSimpleItem("chromium_nugget");
+	public static final DeferredItem<Item> KHROMETAL_INGOT_RED = ITEMS.registerSimpleItem("khrometal_ingot_red");
+	public static final DeferredItem<Item> KHROMETAL_INGOT_GREEN = ITEMS.registerSimpleItem("khrometal_ingot_green");
+	public static final DeferredItem<Item> KHROMETAL_INGOT_BLUE = ITEMS.registerSimpleItem("khrometal_ingot_blue");
+	public static final DeferredItem<Item> KHROMETAL_INGOT_WHITE = ITEMS.registerSimpleItem("khrometal_ingot_white");
+	public static final DeferredItem<Item> KHROMETAL_INGOT_BLACK = ITEMS.registerSimpleItem("khrometal_ingot_black");
+	public static final DeferredItem<Item> CHROMATIC_NUCLEUS = ITEMS.registerSimpleItem("chromatic_nucleus");
+
+	public static final DeferredItem<Item> CHROMATIC_GLASSES = ITEMS.registerSimpleItem("chromatic_glasses", new Item.Properties().stacksTo(1)
+			.component(DataComponents.EQUIPPABLE, Equippable.builder(EquipmentSlot.HEAD).setAsset(SurgeofKhroma.resourceKey(EquipmentAssets.ROOT_ID, "chromatic_glasses")).build()).attributes(
+					ItemAttributeModifiers.builder()
+							.add(RegistryReference.ATTRIBUTE_CAN_SEE_NODES, new AttributeModifier(SurgeofKhroma.resource("chromatic_glasses"), 1, Operation.ADD_VALUE), EquipmentSlotGroup.HEAD)
+							.build()));
+
+	public static final DeferredItem<Item> KHROMETAL_SPANNER = ITEMS.registerItem("khrometal_spanner",
+			props -> new SpannerItem(
+					SpannerItem.spanner(props).stacksTo(1).component(RegistryReference.DATA_COMPONENT_SPANNER_COLORS, new SpannerItem.SpannerColors(0xFF808080, 0xFF808080, 0xFF808080, 0xFF808080))));
+	public static final DeferredItem<Item> KHROMETAL_RED_SWORD = ITEMS.registerItem("khrometal_red_sword", props -> new Item(props.sword(RED_KHROMETAL_TIER, 3, -2.4f)));
+	public static final DeferredItem<Item> KHROMETAL_RED_PICKAXE = ITEMS.registerItem("khrometal_red_pickaxe", props -> new Item(props.pickaxe(RED_KHROMETAL_TIER, 1, -2)));
+	public static final DeferredItem<Item> KHROMETAL_GREEN_SWORD = ITEMS.registerItem("khrometal_green_sword", props -> new KhrometalGreenToolItem(props.sword(GREEN_KHROMETAL_TIER, 3, -2.4f)));
+	public static final DeferredItem<Item> KHROMETAL_GREEN_PICKAXE = ITEMS.registerItem("khrometal_green_pickaxe",
+			props -> new KhrometalGreenToolItem(props.pickaxe(GREEN_KHROMETAL_TIER, 1, -2f)));
+	public static final DeferredItem<Item> KHROMETAL_BLUE_SWORD = ITEMS.registerItem("khrometal_blue_sword", props -> new Item(props.sword(BLUE_KHROMETAL_TIER, 3, -0.4f)));
+	public static final DeferredItem<Item> KHROMETAL_BLUE_PICKAXE = ITEMS.registerItem("khrometal_blue_pickaxe", props -> new Item(props.pickaxe(BLUE_KHROMETAL_TIER, 1, 0)));
+	public static final DeferredItem<Item> KHROMETAL_WHITE_SWORD = ITEMS.registerItem("khrometal_white_sword", props -> new Item(addAttributeModifer(props.sword(WHITE_KHROMETAL_TIER, 3, -2.4f),
+			Attributes.ATTACK_KNOCKBACK, new AttributeModifier(SurgeofKhroma.resource("white_khrometal_bonus"), 4, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)));
+	public static final DeferredItem<Item> KHROMETAL_WHITE_PICKAXE = ITEMS.registerItem("khrometal_white_pickaxe",
+			props -> new KhrometalWhitePickaxeItem(addAttributeModifer(props.pickaxe(WHITE_KHROMETAL_TIER, 1, -2f), Attributes.ATTACK_KNOCKBACK,
+					new AttributeModifier(SurgeofKhroma.resource("white_khrometal_bonus"), 4, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)));
+	public static final DeferredItem<Item> KHROMETAL_BLACK_SWORD = ITEMS.registerItem("khrometal_black_sword",
+			props -> new KhrometalBlackSwordItem(addAttributeModifer(props.sword(BLACK_KHROMETAL_TIER, 3, -2.4f), RegistryReference.ATTRIBUTE_TELEPORT_DROPS,
+					new AttributeModifier(SurgeofKhroma.resource("black_khrometal_bonus"), 1, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)));
+	public static final DeferredItem<Item> KHROMETAL_BLACK_PICKAXE = ITEMS.registerItem("khrometal_black_pickaxe",
+			props -> new KhrometalBlackPickaxeItem(addAttributeModifer(props.pickaxe(BLACK_KHROMETAL_TIER, 1, -2f), RegistryReference.ATTRIBUTE_TELEPORT_DROPS,
+					new AttributeModifier(SurgeofKhroma.resource("black_khrometal_bonus"), 1, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)));
+
+	public static Item.Properties itemProps(ResourceLocation registryName) {
+		return new Properties().setId(ResourceKey.create(Registries.ITEM, registryName));
+	}
+
+	public static Item.Properties addAttributeModifer(Item.Properties props, Holder<Attribute> attribute, AttributeModifier modifier, EquipmentSlotGroup slot) {
+		ItemAttributeModifiers attributes = (ItemAttributeModifiers) props.components.map.get(DataComponents.ATTRIBUTE_MODIFIERS);
+		return props.attributes(attributes.withModifierAdded(attribute, modifier, slot));
+	}
+
+}

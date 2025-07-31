@@ -2,15 +2,16 @@ package net.deatrathias.khroma.blockentities;
 
 import java.util.Optional;
 
-import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
-import net.deatrathias.khroma.blocks.KhromaImbuerBlock;
+import net.deatrathias.khroma.blocks.machine.KhromaImbuerBlock;
 import net.deatrathias.khroma.gui.KhromaImbuerMenu;
 import net.deatrathias.khroma.khroma.IKhromaUsingBlock.ConnectionType;
 import net.deatrathias.khroma.khroma.Khroma;
 import net.deatrathias.khroma.khroma.KhromaThroughput;
 import net.deatrathias.khroma.recipes.ItemKhromaRecipeInput;
 import net.deatrathias.khroma.recipes.KhromaImbuementRecipe;
+import net.deatrathias.khroma.registries.BlockReference;
+import net.deatrathias.khroma.registries.RecipeReference;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -99,8 +100,8 @@ public class KhromaImbuerBlockEntity extends BaseKhromaConsumerBlockEntity imple
 	protected static final int[] SLOT_NOT_DOWN = new int[] { SLOT_INPUT };
 
 	public KhromaImbuerBlockEntity(BlockPos pos, BlockState blockState) {
-		super(RegistryReference.BLOCK_ENTITY_KHROMA_IMBUER.get(), pos, blockState);
-		quickCheck = RecipeManager.createCheck(RegistryReference.RECIPE_KHROMA_IMBUEMENT.get());
+		super(BlockReference.BE_KHROMA_IMBUER.get(), pos, blockState);
+		quickCheck = RecipeManager.createCheck(RecipeReference.KHROMA_IMBUEMENT.get());
 		progress = 0;
 		currentRecipe = Optional.empty();
 	}
@@ -193,11 +194,6 @@ public class KhromaImbuerBlockEntity extends BaseKhromaConsumerBlockEntity imple
 		super.saveAdditional(output);
 		ContainerHelper.saveAllItems(output, items);
 		output.putFloat("progress", progress);
-	}
-
-	@Override
-	public float getSoftLimit() {
-		return 20f;
 	}
 
 	@Override

@@ -7,14 +7,17 @@ import java.util.stream.Stream;
 
 import com.google.common.collect.ImmutableMap;
 
-import net.deatrathias.khroma.RegistryReference;
 import net.deatrathias.khroma.SurgeofKhroma;
-import net.deatrathias.khroma.blocks.KhromaLineBlock;
+import net.deatrathias.khroma.blocks.logistics.KhromaLineBlock;
 import net.deatrathias.khroma.items.SpannerItem;
 import net.deatrathias.khroma.items.renderer.SpannerColorTint;
 import net.deatrathias.khroma.khroma.Khroma;
 import net.deatrathias.khroma.khroma.KhromaProperty;
+import net.deatrathias.khroma.registries.BlockReference;
+import net.deatrathias.khroma.registries.ImbuedTree.TreeBlock;
+import net.deatrathias.khroma.registries.ItemReference;
 import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.BlockModelGenerators.PlantType;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.MultiVariant;
@@ -24,6 +27,7 @@ import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.data.models.model.TexturedModel;
 import net.minecraft.client.renderer.block.model.VariantMutator;
 import net.minecraft.client.renderer.block.model.multipart.CombinedCondition;
 import net.minecraft.client.renderer.block.model.multipart.CombinedCondition.Operation;
@@ -68,29 +72,38 @@ public class ModelDataGen extends ModelProvider {
 	@Override
 	protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
 		for (var element : DataGenDefinitions.cubeBlocks) {
-			blockModels.createTrivialCube(element.get());
+			blockModels.createTrivialCube(element);
+		}
+
+		for (var tree : DataGenDefinitions.trees) {
+			blockModels.woodProvider(tree.get(TreeBlock.LOG)).logWithHorizontal(tree.get(TreeBlock.LOG)).wood(tree.get(TreeBlock.WOOD));
+			blockModels.woodProvider(tree.get(TreeBlock.STRIPPED_LOG)).logWithHorizontal(tree.get(TreeBlock.STRIPPED_LOG)).wood(tree.get(TreeBlock.STRIPPED_WOOD));
+			blockModels.createTrivialBlock(tree.get(TreeBlock.LEAVES), TexturedModel.LEAVES);
+			blockModels.createPlantWithDefaultItem(tree.get(TreeBlock.SAPLING), tree.get(TreeBlock.POTTED_SAPLING), PlantType.NOT_TINTED);
+			tree.ifPresent(TreeBlock.HANGING_SIGN, block -> blockModels.createHangingSign(tree.get(TreeBlock.STRIPPED_LOG), block, tree.get(TreeBlock.WALL_HANGING_SIGN)));
+			blockModels.family(tree.get(TreeBlock.PLANKS)).generateFor(tree.getFamily());
 		}
 
 		for (var element : DataGenDefinitions.simpleBlocks) {
-			blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(element.get(), BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(element.get()))));
+			blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(element, BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(element))));
 		}
 
 		for (var element : DataGenDefinitions.horDirectionBlocks) {
 			blockModels.blockStateOutput.accept(
-					MultiVariantGenerator.dispatch(element.get(), BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(element.get())))
+					MultiVariantGenerator.dispatch(element, BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(element)))
 							.with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING));
 		}
 
 		for (var element : DataGenDefinitions.fullDirectionBlocks) {
 			blockModels.blockStateOutput.accept(
-					MultiVariantGenerator.dispatch(element.get(), BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(element.get()))).with(BlockModelGenerators.ROTATION_FACING));
+					MultiVariantGenerator.dispatch(element, BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(element))).with(BlockModelGenerators.ROTATION_FACING));
 		}
 
 		for (var element : DataGenDefinitions.simpleItems)
-			itemModels.generateFlatItem(element.get(), ModelTemplates.FLAT_ITEM);
+			itemModels.generateFlatItem(element, ModelTemplates.FLAT_ITEM);
 
 		for (var element : DataGenDefinitions.handheldItems)
-			itemModels.generateFlatItem(element.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+			itemModels.generateFlatItem(element, ModelTemplates.FLAT_HANDHELD_ITEM);
 
 		registerKhromaLine(blockModels, itemModels);
 		registerDissipator(blockModels, itemModels);
@@ -104,7 +117,7 @@ public class ModelDataGen extends ModelProvider {
 		var spannerBottom = ModelTemplates.FLAT_HANDHELD_ITEM.create(SurgeofKhroma.resource("item/khroma_spanner_bottom"),
 				new TextureMapping().put(TextureSlot.LAYER0, SurgeofKhroma.resource("item/spanner_bottom")), itemModels.modelOutput);
 
-		itemModels.itemModelOutput.accept(RegistryReference.ITEM_KHROMETAL_SPANNER.get(), new CompositeModel.Unbaked(List.of(
+		itemModels.itemModelOutput.accept(ItemReference.KHROMETAL_SPANNER.get(), new CompositeModel.Unbaked(List.of(
 				new BlockModelWrapper.Unbaked(spannerBase, List.of(new SpannerColorTint(SpannerItem.SpannerColorLocation.BASE))),
 				new BlockModelWrapper.Unbaked(spannerMiddle, List.of(new SpannerColorTint(SpannerItem.SpannerColorLocation.MIDDLE))),
 				new BlockModelWrapper.Unbaked(spannerTop, List.of(new SpannerColorTint(SpannerItem.SpannerColorLocation.TOP))),
@@ -122,7 +135,7 @@ public class ModelDataGen extends ModelProvider {
 		var darkSpectrumCondition = BlockModelGenerators.condition().term(KhromaLineBlock.KHROMA, Khroma.KHROMA_DARK_SPECTRUM).build();
 		var khromegaCondition = BlockModelGenerators.condition().term(KhromaLineBlock.KHROMA, Khroma.KHROMA_KHROMEGA).build();
 
-		var multipart = MultiPartGenerator.multiPart(RegistryReference.BLOCK_KHROMA_LINE.get())
+		var multipart = MultiPartGenerator.multiPart(BlockReference.KHROMA_LINE.get())
 				.with(BlockModelGenerators.plainVariant(SurgeofKhroma.resource("block/khroma_line_center")))
 				.with(new CombinedCondition(Operation.AND, List.of(
 						notEmptyCondition,
@@ -174,7 +187,7 @@ public class ModelDataGen extends ModelProvider {
 
 		blockModels.blockStateOutput.accept(multipart);
 
-		itemModels.itemModelOutput.accept(RegistryReference.ITEM_BLOCK_KHROMA_LINE.get(), new BlockModelWrapper.Unbaked(SurgeofKhroma.resource("item/khroma_line"), Collections.emptyList()));
+		itemModels.itemModelOutput.accept(BlockReference.KHROMA_LINE.asItem(), new BlockModelWrapper.Unbaked(SurgeofKhroma.resource("item/khroma_line"), Collections.emptyList()));
 	}
 
 	private void registerDissipator(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
@@ -190,7 +203,7 @@ public class ModelDataGen extends ModelProvider {
 
 		var variants = BlockModelGenerators.plainVariant(SurgeofKhroma.resource("block/khroma_dissipator"));
 
-		var multipart = MultiPartGenerator.multiPart(RegistryReference.BLOCK_KHROMA_DISSIPATOR.get());
+		var multipart = MultiPartGenerator.multiPart(BlockReference.KHROMA_DISSIPATOR.get());
 
 		for (Direction direction : BlockStateProperties.HORIZONTAL_FACING.getPossibleValues()) {
 			var directionCondition = BlockModelGenerators.condition().term(BlockStateProperties.HORIZONTAL_FACING, direction).build();
