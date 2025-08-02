@@ -1,6 +1,7 @@
 package net.deatrathias.khroma.registries;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiFunction;
@@ -60,10 +61,18 @@ public final class BlockReference {
 
 	public static class BlockSetReference {
 		public static final BlockSetType SPARKTREE = BlockSetType.register(new BlockSetType(SurgeofKhroma.MODID + ":sparktree"));
+		public static final BlockSetType BLOOMTREE = BlockSetType.register(new BlockSetType(SurgeofKhroma.MODID + ":bloomtree"));
+		public static final BlockSetType FLOWTREE = BlockSetType.register(new BlockSetType(SurgeofKhroma.MODID + ":flowtree"));
+		public static final BlockSetType SKYTREE = BlockSetType.register(new BlockSetType(SurgeofKhroma.MODID + ":skytree"));
+		public static final BlockSetType GRIMTREE = BlockSetType.register(new BlockSetType(SurgeofKhroma.MODID + ":grimtree"));
 	}
 
 	public static class WoodReference {
 		public static final WoodType SPARKTREE = WoodType.register(new WoodType(SurgeofKhroma.MODID + ":sparktree", BlockSetReference.SPARKTREE));
+		public static final WoodType BLOOMTREE = WoodType.register(new WoodType(SurgeofKhroma.MODID + ":bloomtree", BlockSetReference.BLOOMTREE));
+		public static final WoodType FLOWTREE = WoodType.register(new WoodType(SurgeofKhroma.MODID + ":flowtree", BlockSetReference.FLOWTREE));
+		public static final WoodType SKYTREE = WoodType.register(new WoodType(SurgeofKhroma.MODID + ":skytree", BlockSetReference.SKYTREE));
+		public static final WoodType GRIMTREE = WoodType.register(new WoodType(SurgeofKhroma.MODID + ":grimtree", BlockSetReference.GRIMTREE));
 	}
 
 	public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(SurgeofKhroma.MODID);
@@ -138,6 +147,31 @@ public final class BlockReference {
 			.boat()
 			.chestBoat()
 			.build(BlockSetReference.SPARKTREE, WoodReference.SPARKTREE);
+
+	public static final ImbuedTree BLOOMTREE = ImbuedTree.Builder.create("bloomtree")
+			.log(p -> p.strength(2f, 6f), MapColor.TERRACOTTA_GREEN, MapColor.COLOR_GREEN)
+			.wood(p -> p.strength(2f, 6f), MapColor.TERRACOTTA_GREEN)
+			.strippedLog(p -> p.strength(2f, 6f), MapColor.COLOR_GREEN, MapColor.COLOR_GREEN)
+			.strippedWood(p -> p.strength(2f, 6f), MapColor.COLOR_GREEN)
+			.leaves(SoundType.GRASS, 0.01f, 0xff21e421)
+			.sapling(TreeGrowerReference.BLOOMTREE)
+			.pottedSapling()
+			.planks(p -> p.strength(2f, 6f), MapColor.COLOR_GREEN)
+			.button()
+			.fence(p -> p.strength(2f, 6f))
+			.fenceGate(p -> p.strength(2f, 6f))
+			.slab(p -> p.strength(2f, 6f))
+			.stairs(p -> p.strength(2f, 6f))
+			.pressurePlate()
+			.door(p -> p.strength(3f, 6f))
+			.trapdoor(p -> p.strength(3f, 6f))
+			.sign()
+			.hangingSign()
+			.boat()
+			.chestBoat()
+			.build(BlockSetReference.BLOOMTREE, WoodReference.BLOOMTREE);
+
+	public static final List<ImbuedTree> IMBUED_TREES = List.of(SPARKTREE, BLOOMTREE);
 
 	public static final DeferredBlock<Block> KHROMA_LINE = registerBlock("khroma_line", KhromaLineBlock::new,
 			blockProps().mapColor(MapColor.METAL).strength(0.1F, 1.0F).sound(SoundType.METAL).pushReaction(PushReaction.DESTROY), KromaLineBlockItem::new, new Item.Properties());
@@ -240,5 +274,19 @@ public final class BlockReference {
 		SurgeofKhroma.LOGGER.info("configured");
 		setCompostable(SPARKTREE.get(TreeBlock.LEAVES), 0.3f);
 		setCompostable(SPARKTREE.get(TreeBlock.SAPLING), 0.3f);
+
+		setCompostable(BLOOMTREE.get(TreeBlock.LEAVES), 1f);
+		setCompostable(BLOOMTREE.get(TreeBlock.SAPLING), 1f);
+
+		setFlammable(BLOOMTREE.get(TreeBlock.LOG), 5, 5);
+		setFlammable(BLOOMTREE.get(TreeBlock.WOOD), 5, 5);
+		setFlammable(BLOOMTREE.get(TreeBlock.STRIPPED_LOG), 5, 5);
+		setFlammable(BLOOMTREE.get(TreeBlock.STRIPPED_WOOD), 5, 5);
+		setFlammable(BLOOMTREE.get(TreeBlock.LEAVES), 30, 60);
+		setFlammable(BLOOMTREE.get(TreeBlock.PLANKS), 5, 20);
+		setFlammable(BLOOMTREE.get(TreeBlock.FENCE), 5, 20);
+		setFlammable(BLOOMTREE.get(TreeBlock.FENCE_GATE), 5, 20);
+		setFlammable(BLOOMTREE.get(TreeBlock.SLAB), 5, 20);
+		setFlammable(BLOOMTREE.get(TreeBlock.STAIRS), 5, 20);
 	}
 }

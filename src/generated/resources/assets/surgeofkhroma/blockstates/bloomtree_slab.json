@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "surgeofkhroma:block/bloomtree_slab"
+    },
+    "type=double": {
+      "model": "surgeofkhroma:block/bloomtree_planks"
+    },
+    "type=top": {
+      "model": "surgeofkhroma:block/bloomtree_slab_top"
+    }
+  }
+}

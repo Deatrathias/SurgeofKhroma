@@ -3,7 +3,6 @@ package net.deatrathias.khroma.datagen;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -34,10 +33,7 @@ import net.minecraft.client.renderer.block.model.multipart.CombinedCondition.Ope
 import net.minecraft.client.renderer.item.BlockModelWrapper;
 import net.minecraft.client.renderer.item.CompositeModel;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class ModelDataGen extends ModelProvider {
@@ -59,29 +55,23 @@ public class ModelDataGen extends ModelProvider {
 		super(output, SurgeofKhroma.MODID);
 	}
 
-	protected Stream<? extends Holder<Block>> getKnownBlocksa() {
-		List<String> ignored = List.of("khroma_line");
-		return super.getKnownBlocks().filter(holder -> !ignored.contains(holder.getKey().location().getPath()));
-	}
-
-	protected Stream<? extends Holder<Item>> getKnownItemsa() {
-		List<String> ignored = List.of("khroma_line");
-		return super.getKnownItems().filter(holder -> !ignored.contains(holder.getKey().location().getPath()));
-	}
-
 	@Override
 	protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
 		for (var element : DataGenDefinitions.cubeBlocks) {
 			blockModels.createTrivialCube(element);
 		}
 
-		for (var tree : DataGenDefinitions.trees) {
+		for (var tree : BlockReference.IMBUED_TREES) {
 			blockModels.woodProvider(tree.get(TreeBlock.LOG)).logWithHorizontal(tree.get(TreeBlock.LOG)).wood(tree.get(TreeBlock.WOOD));
 			blockModels.woodProvider(tree.get(TreeBlock.STRIPPED_LOG)).logWithHorizontal(tree.get(TreeBlock.STRIPPED_LOG)).wood(tree.get(TreeBlock.STRIPPED_WOOD));
 			blockModels.createTrivialBlock(tree.get(TreeBlock.LEAVES), TexturedModel.LEAVES);
 			blockModels.createPlantWithDefaultItem(tree.get(TreeBlock.SAPLING), tree.get(TreeBlock.POTTED_SAPLING), PlantType.NOT_TINTED);
 			tree.ifPresent(TreeBlock.HANGING_SIGN, block -> blockModels.createHangingSign(tree.get(TreeBlock.STRIPPED_LOG), block, tree.get(TreeBlock.WALL_HANGING_SIGN)));
 			blockModels.family(tree.get(TreeBlock.PLANKS)).generateFor(tree.getFamily());
+			if (tree.getBoatItem() != null)
+				itemModels.generateFlatItem(tree.getBoatItem().get(), ModelTemplates.FLAT_ITEM);
+			if (tree.getChestBoatItem() != null)
+				itemModels.generateFlatItem(tree.getChestBoatItem().get(), ModelTemplates.FLAT_ITEM);
 		}
 
 		for (var element : DataGenDefinitions.simpleBlocks) {

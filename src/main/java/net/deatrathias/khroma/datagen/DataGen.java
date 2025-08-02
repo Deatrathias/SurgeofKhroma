@@ -10,6 +10,8 @@ import net.deatrathias.khroma.registries.BlockReference;
 import net.deatrathias.khroma.registries.ImbuedTree.TreeBlock;
 import net.deatrathias.khroma.registries.RegistryReference;
 import net.deatrathias.khroma.registries.TagReference;
+import net.deatrathias.khroma.worldgen.BloomtreeTrunkPlacer;
+import net.deatrathias.khroma.worldgen.PlaceFlowersDecorator;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.EntityTypePredicate;
 import net.minecraft.client.data.models.EquipmentAssetProvider;
@@ -47,8 +49,11 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration.TreeConfigurationBuilder;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.MegaJungleFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.PineFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.feature.treedecorators.AlterGroundDecorator;
+import net.minecraft.world.level.levelgen.feature.treedecorators.LeaveVineDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.PlaceOnGroundDecorator;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.CherryTrunkPlacer;
 import net.minecraft.world.level.levelgen.placement.BiomeFilter;
@@ -128,13 +133,26 @@ public class DataGen {
 
 		var treeConfiguration = new TreeConfigurationBuilder(
 				BlockStateProvider.simple(BlockReference.SPARKTREE.get(TreeBlock.LOG)),
-				new CherryTrunkPlacer(4, 2, 0, ConstantInt.of(3), ConstantInt.of(2), UniformInt.of(-2, -1), UniformInt.of(-1, 0)),
+				new CherryTrunkPlacer(5, 1, 0, ConstantInt.of(3), ConstantInt.of(2), UniformInt.of(-2, -1), UniformInt.of(-1, 0)),
 				BlockStateProvider.simple(BlockReference.SPARKTREE.get(TreeBlock.LEAVES)),
 				new PineFoliagePlacer(ConstantInt.of(2), ConstantInt.ZERO, ConstantInt.of(3)),
 				new TwoLayersFeatureSize(2, 0, 2))
 				.decorators(List.of(new PlaceOnGroundDecorator(128, 3, 1, BlockStateProvider.simple(Blocks.FIRE))))
 				.ignoreVines().build();
 		bootstrap.register(SurgeofKhroma.resourceKey(Registries.CONFIGURED_FEATURE, "sparktree"), new ConfiguredFeature<>(Feature.TREE, treeConfiguration));
+
+		treeConfiguration = new TreeConfigurationBuilder(
+				BlockStateProvider.simple(BlockReference.BLOOMTREE.get(TreeBlock.LOG)),
+				new BloomtreeTrunkPlacer(11, 4, 2, 0.5f, UniformInt.of(3, 5), UniformInt.of(2, 5)),
+				BlockStateProvider.simple(BlockReference.BLOOMTREE.get(TreeBlock.LEAVES)),
+				new MegaJungleFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 2),
+				new TwoLayersFeatureSize(1, 1, 2))
+				.ignoreVines()
+				.decorators(List.of(new LeaveVineDecorator(0.9f),
+						new AlterGroundDecorator(BlockStateProvider.simple(Blocks.GRASS_BLOCK)),
+						new PlaceFlowersDecorator(20, 5, 1)))
+				.build();
+		bootstrap.register(SurgeofKhroma.resourceKey(Registries.CONFIGURED_FEATURE, "bloomtree"), new ConfiguredFeature<>(Feature.TREE, treeConfiguration));
 	}
 
 	private static void registerPlacedFeatures(BootstrapContext<PlacedFeature> bootstrap) {

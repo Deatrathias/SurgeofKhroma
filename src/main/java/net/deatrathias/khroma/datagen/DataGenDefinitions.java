@@ -2,11 +2,14 @@ package net.deatrathias.khroma.datagen;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Stream;
 
+import net.deatrathias.khroma.khroma.KhromaDeviceTier;
 import net.deatrathias.khroma.registries.BlockReference;
-import net.deatrathias.khroma.registries.ImbuedTree;
 import net.deatrathias.khroma.registries.ItemReference;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.tags.TagKey;
@@ -33,8 +36,6 @@ public class DataGenDefinitions {
 
 	// Blocks with full facing
 	public static List<Block> fullDirectionBlocks;
-
-	public static List<ImbuedTree> trees;
 
 	public static List<Block> dropsOreBlocks;
 
@@ -76,21 +77,18 @@ public class DataGenDefinitions {
 				BlockReference.RAW_CHROMIUM_BLOCK, BlockReference.KHROMETAL_BLOCK_RED, BlockReference.KHROMETAL_BLOCK_GREEN, BlockReference.KHROMETAL_BLOCK_BLUE,
 				BlockReference.KHROMETAL_BLOCK_WHITE, BlockReference.KHROMETAL_BLOCK_BLACK);
 
-		simpleBlocks = deferredCombinedList(List.of(BlockReference.NODE_COLLECTOR), BlockReference.KHROMA_PROCESSING_CORE_TIERED.values());
+		simpleBlocks = deferredCombinedList(List.of(BlockReference.NODE_COLLECTOR), sortedTierList(BlockReference.KHROMA_PROCESSING_CORE_TIERED));
 
 		horDirectionBlocks = deferredList(BlockReference.KHROMA_PROVIDER, BlockReference.KHROMA_MACHINE,
 				BlockReference.KHROMA_COMBINER, BlockReference.KHROMA_SEPARATOR, BlockReference.KHROMA_IMBUER);
 
 		fullDirectionBlocks = deferredList(BlockReference.KHROMA_APERTURE);
 
-		trees = List.of(BlockReference.SPARKTREE);
-
 		dropsOreBlocks = deferredList(BlockReference.CHROMIUM_ORE, BlockReference.DEEPSLATE_CHROMIUM_ORE);
 
 		simpleItems = deferredList(ItemReference.RAW_CHROMIUM, ItemReference.CHROMIUM_INGOT, ItemReference.CHROMIUM_NUGGET,
 				ItemReference.KHROMETAL_INGOT_RED, ItemReference.KHROMETAL_INGOT_GREEN, ItemReference.KHROMETAL_INGOT_BLUE, ItemReference.KHROMETAL_INGOT_WHITE,
-				ItemReference.KHROMETAL_INGOT_BLACK, ItemReference.CHROMATIC_NUCLEUS, ItemReference.CHROMATIC_GLASSES, BlockReference.SPARKTREE.getBoatItem(),
-				BlockReference.SPARKTREE.getChestBoatItem());
+				ItemReference.KHROMETAL_INGOT_BLACK, ItemReference.CHROMATIC_NUCLEUS, ItemReference.CHROMATIC_GLASSES);
 
 		handheldItems = deferredList(ItemReference.KHROMETAL_RED_SWORD, ItemReference.KHROMETAL_RED_PICKAXE,
 				ItemReference.KHROMETAL_GREEN_SWORD, ItemReference.KHROMETAL_GREEN_PICKAXE, ItemReference.KHROMETAL_BLUE_SWORD, ItemReference.KHROMETAL_BLUE_PICKAXE,
@@ -98,9 +96,22 @@ public class DataGenDefinitions {
 
 		khromaDevices = deferredCombinedList(List.of(BlockReference.KHROMA_LINE, BlockReference.NODE_COLLECTOR, BlockReference.KHROMA_PROVIDER,
 				BlockReference.KHROMA_MACHINE, BlockReference.KHROMA_APERTURE, BlockReference.KHROMA_COMBINER, BlockReference.KHROMA_SEPARATOR,
-				BlockReference.KHROMA_DISSIPATOR, BlockReference.KHROMA_IMBUER), BlockReference.KHROMA_PROCESSING_CORE_TIERED.values());
+				BlockReference.KHROMA_DISSIPATOR, BlockReference.KHROMA_IMBUER), sortedTierList(BlockReference.KHROMA_PROCESSING_CORE_TIERED));
 
 		needsStoneTool = deferredList(BlockReference.CHROMIUM_ORE, BlockReference.DEEPSLATE_CHROMIUM_ORE,
 				BlockReference.CHROMIUM_BLOCK, BlockReference.RAW_CHROMIUM_BLOCK);
+	}
+
+	private static class TierEntryComparator implements Comparator<Map.Entry<KhromaDeviceTier, ?>> {
+
+		@Override
+		public int compare(Entry<KhromaDeviceTier, ?> o1, Entry<KhromaDeviceTier, ?> o2) {
+			return o1.getKey().compareTo(o2.getKey());
+		}
+
+	}
+
+	private static <T> Collection<T> sortedTierList(Map<KhromaDeviceTier, T> tierMap) {
+		return tierMap.entrySet().stream().sorted(new TierEntryComparator()).map(entry -> entry.getValue()).toList();
 	}
 }

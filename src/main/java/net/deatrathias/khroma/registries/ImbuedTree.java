@@ -315,13 +315,13 @@ public class ImbuedTree {
 			return hangingSign(identity);
 		}
 
-		public Builder slab(BlockBehaviour.Properties properties) {
-			props.put(TreeBlock.SLAB, properties);
+		public Builder slab(PropertyModifier modifier) {
+			props.put(TreeBlock.SLAB, modifier.modify(plankProperties(plankColor)));
 			return this;
 		}
 
 		public Builder slab() {
-			slab(plankProperties(plankColor));
+			slab(identity);
 			return this;
 		}
 

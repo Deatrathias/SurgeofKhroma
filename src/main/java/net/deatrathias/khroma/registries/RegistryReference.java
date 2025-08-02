@@ -10,6 +10,8 @@ import net.deatrathias.khroma.effects.PullDownMobEffect;
 import net.deatrathias.khroma.items.SpannerItem;
 import net.deatrathias.khroma.khroma.KhromaBiomeData;
 import net.deatrathias.khroma.particles.KhromaParticleOption;
+import net.deatrathias.khroma.worldgen.BloomtreeTrunkPlacer;
+import net.deatrathias.khroma.worldgen.PlaceFlowersDecorator;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.particles.ColorParticleOption;
@@ -31,6 +33,8 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTab.ItemDisplayParameters;
 import net.minecraft.world.item.CreativeModeTab.Output;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.common.BooleanAttribute;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -41,6 +45,8 @@ public class RegistryReference {
 
 	public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, SurgeofKhroma.MODID);
 	public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(BuiltInRegistries.ATTRIBUTE, SurgeofKhroma.MODID);
+	public static final DeferredRegister<TrunkPlacerType<?>> TRUNK_PLACER_TYPES = DeferredRegister.create(BuiltInRegistries.TRUNK_PLACER_TYPE, SurgeofKhroma.MODID);
+	public static final DeferredRegister<TreeDecoratorType<?>> TREE_DECORATOR_TYPES = DeferredRegister.create(BuiltInRegistries.TREE_DECORATOR_TYPE, SurgeofKhroma.MODID);
 	public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, SurgeofKhroma.MODID);
 	public static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, SurgeofKhroma.MODID);
 	public static final DeferredRegister.DataComponents DATA_COMPONENT_TYPES = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, SurgeofKhroma.MODID);
@@ -71,6 +77,22 @@ public class RegistryReference {
 	 */
 	public static final Supplier<AttachmentType<KhromaBiomeData>> KHROMA_BIOME_DATA = ATTACHMENT_TYPES.register("khroma_biome_data",
 			() -> AttachmentType.serializable(() -> new KhromaBiomeData()).build());
+
+	/**
+	 * 
+	 * TRUNK PLACERS
+	 * 
+	 */
+	public static final Supplier<TrunkPlacerType<BloomtreeTrunkPlacer>> TRUNK_PLACER_BLOOMTREE = TRUNK_PLACER_TYPES.register("bloomtree",
+			registryName -> new TrunkPlacerType<BloomtreeTrunkPlacer>(BloomtreeTrunkPlacer.CODEC));
+
+	/**
+	 * 
+	 * TREE DECORATORS
+	 * 
+	 */
+	public static final Supplier<TreeDecoratorType<PlaceFlowersDecorator>> DECORATOR_PLACE_FLOWERS = TREE_DECORATOR_TYPES.register("place_flowers",
+			registryName -> new TreeDecoratorType<PlaceFlowersDecorator>(PlaceFlowersDecorator.CODEC));
 
 	/**
 	 * 

@@ -39,7 +39,7 @@ public class LootTableDataGen extends LootTableProvider {
 		protected void generate() {
 			add(BlockReference.CHROMIUM_ORE.get(), block -> createOreDrop(block, ItemReference.RAW_CHROMIUM.get()));
 			add(BlockReference.DEEPSLATE_CHROMIUM_ORE.get(), block -> createOreDrop(block, ItemReference.RAW_CHROMIUM.get()));
-			for (var tree : DataGenDefinitions.trees) {
+			for (var tree : BlockReference.IMBUED_TREES) {
 				add(tree.get(TreeBlock.LEAVES), createLeavesDrops(tree.get(TreeBlock.LEAVES), tree.get(TreeBlock.SAPLING), NORMAL_LEAVES_SAPLING_CHANCES));
 				dropPottedContents(tree.get(TreeBlock.POTTED_SAPLING));
 				tree.ifPresent(TreeBlock.DOOR, block -> add(block, createDoorTable(block)));

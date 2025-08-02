@@ -40,4 +40,6 @@ public class ClientOnlyReference {
 
 	public static final ModelLayerLocation SPARKTREE_BOAT = new ModelLayerLocation(SurgeofKhroma.resource("boat/" + BlockReference.SPARKTREE.getName()), "main");
 	public static final ModelLayerLocation SPARKTREE_CHEST_BOAT = new ModelLayerLocation(SurgeofKhroma.resource("chest_boat/" + BlockReference.SPARKTREE.getName()), "main");
+	public static final ModelLayerLocation BLOOMTREE_BOAT = new ModelLayerLocation(SurgeofKhroma.resource("boat/" + BlockReference.BLOOMTREE.getName()), "main");
+	public static final ModelLayerLocation BLOOMTREE_CHEST_BOAT = new ModelLayerLocation(SurgeofKhroma.resource("chest_boat/" + BlockReference.BLOOMTREE.getName()), "main");
 }

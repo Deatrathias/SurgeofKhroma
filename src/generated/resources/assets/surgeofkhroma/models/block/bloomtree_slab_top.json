@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "surgeofkhroma:block/bloomtree_planks",
+    "side": "surgeofkhroma:block/bloomtree_planks",
+    "top": "surgeofkhroma:block/bloomtree_planks"
+  }
+}

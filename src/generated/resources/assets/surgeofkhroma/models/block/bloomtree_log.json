@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "surgeofkhroma:block/bloomtree_log_top",
+    "side": "surgeofkhroma:block/bloomtree_log"
+  }
+}

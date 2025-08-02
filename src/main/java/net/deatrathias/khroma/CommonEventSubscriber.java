@@ -82,7 +82,9 @@ public final class CommonEventSubscriber {
 
 	@SubscribeEvent
 	private static void addBlockToBlockEntities(BlockEntityTypeAddBlocksEvent event) {
-		event.modify(BlockEntityType.SIGN, BlockReference.SPARKTREE.get(TreeBlock.SIGN), BlockReference.SPARKTREE.get(TreeBlock.WALL_SIGN));
-		event.modify(BlockEntityType.HANGING_SIGN, BlockReference.SPARKTREE.get(TreeBlock.HANGING_SIGN), BlockReference.SPARKTREE.get(TreeBlock.WALL_HANGING_SIGN));
+		event.modify(BlockEntityType.SIGN, BlockReference.SPARKTREE.get(TreeBlock.SIGN), BlockReference.SPARKTREE.get(TreeBlock.WALL_SIGN),
+				BlockReference.BLOOMTREE.get(TreeBlock.SIGN), BlockReference.BLOOMTREE.get(TreeBlock.WALL_SIGN));
+		event.modify(BlockEntityType.HANGING_SIGN, BlockReference.SPARKTREE.get(TreeBlock.HANGING_SIGN), BlockReference.SPARKTREE.get(TreeBlock.WALL_HANGING_SIGN),
+				BlockReference.BLOOMTREE.get(TreeBlock.HANGING_SIGN), BlockReference.BLOOMTREE.get(TreeBlock.WALL_HANGING_SIGN));
 	}
 }

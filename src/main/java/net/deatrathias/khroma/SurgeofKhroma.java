@@ -33,6 +33,8 @@ public class SurgeofKhroma {
 		BlockReference.BLOCK_ENTITY_TYPES.register(modEventBus);
 		EntityReference.ENTITY_TYPES.register(modEventBus);
 		UIReference.MENUS.register(modEventBus);
+		RegistryReference.TRUNK_PLACER_TYPES.register(modEventBus);
+		RegistryReference.TREE_DECORATOR_TYPES.register(modEventBus);
 		RegistryReference.ATTACHMENT_TYPES.register(modEventBus);
 		RecipeReference.RECIPE_TYPES.register(modEventBus);
 		RecipeReference.RECIPE_SERIALIZERS.register(modEventBus);

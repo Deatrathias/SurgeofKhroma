@@ -1,5 +1,6 @@
 {
   "values": [
-    "surgeofkhroma:stripped_sparktree_log"
+    "surgeofkhroma:stripped_sparktree_log",
+    "surgeofkhroma:stripped_bloomtree_log"
   ]
 }

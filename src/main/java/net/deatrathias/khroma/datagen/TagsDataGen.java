@@ -77,7 +77,7 @@ public final class TagsDataGen {
 			var woodenTrapdoor = tag(BlockTags.WOODEN_TRAPDOORS, ItemTags.WOODEN_TRAPDOORS);
 			var woodenPressurePlate = tag(BlockTags.WOODEN_PRESSURE_PLATES, ItemTags.WOODEN_PRESSURE_PLATES);
 
-			for (var tree : DataGenDefinitions.trees) {
+			for (var tree : BlockReference.IMBUED_TREES) {
 				strippedLogs.add(tree.get(TreeBlock.STRIPPED_LOG));
 				strippedWoods.add(tree.get(TreeBlock.STRIPPED_WOOD));
 				tag(tree.getBlockLogsTag(), tree.getItemLogsTag()).add(tree.get(TreeBlock.LOG), tree.get(TreeBlock.WOOD), tree.get(TreeBlock.STRIPPED_LOG), tree.get(TreeBlock.STRIPPED_WOOD));
@@ -131,7 +131,7 @@ public final class TagsDataGen {
 			var wallSigns = tag(BlockTags.WALL_SIGNS);
 			var ceilingHangingSigns = tag(BlockTags.CEILING_HANGING_SIGNS);
 			var wallHangingSigns = tag(BlockTags.WALL_HANGING_SIGNS);
-			for (var tree : DataGenDefinitions.trees) {
+			for (var tree : BlockReference.IMBUED_TREES) {
 				flowerPots.add(tree.get(TreeBlock.POTTED_SAPLING));
 				tree.ifPresent(TreeBlock.SIGN, block -> standingSigns.add(block));
 				tree.ifPresent(TreeBlock.WALL_SIGN, block -> wallSigns.add(block));
@@ -218,7 +218,7 @@ public final class TagsDataGen {
 			var hangingSigns = tag(ItemTags.HANGING_SIGNS);
 			var boats = tag(ItemTags.BOATS);
 			var chestBoats = tag(ItemTags.CHEST_BOATS);
-			for (var tree : DataGenDefinitions.trees) {
+			for (var tree : BlockReference.IMBUED_TREES) {
 				tree.ifPresent(TreeBlock.SIGN, block -> sign.add(block.asItem()));
 				tree.ifPresent(TreeBlock.HANGING_SIGN, block -> hangingSigns.add(block.asItem()));
 				if (tree.getBoatItem() != null)
@@ -329,7 +329,7 @@ public final class TagsDataGen {
 			tag(TagReference.ENTITY_SENSITIVE_TO_FEATHERCLIP).addTag(TagReference.C_ENTITY_BIRDS);
 			var boat = tag(EntityTypeTags.BOAT);
 			var c_boat = tag(Tags.EntityTypes.BOATS);
-			for (var tree : DataGenDefinitions.trees) {
+			for (var tree : BlockReference.IMBUED_TREES) {
 				if (tree.getBoatEntity() != null)
 					boat.add(tree.getBoatEntity().get());
 				if (tree.getChestBoatEntity() != null)

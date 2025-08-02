@@ -50,10 +50,12 @@ public class ClientEventSubscriber {
 
 	@SuppressWarnings("deprecation")
 	private static void configureRenderLayers() {
-		ItemBlockRenderTypes.setRenderLayer(BlockReference.SPARKTREE.get(TreeBlock.SAPLING), ChunkSectionLayer.CUTOUT);
-		ItemBlockRenderTypes.setRenderLayer(BlockReference.SPARKTREE.get(TreeBlock.POTTED_SAPLING), ChunkSectionLayer.CUTOUT);
-		ItemBlockRenderTypes.setRenderLayer(BlockReference.SPARKTREE.get(TreeBlock.DOOR), ChunkSectionLayer.CUTOUT);
-		ItemBlockRenderTypes.setRenderLayer(BlockReference.SPARKTREE.get(TreeBlock.TRAPDOOR), ChunkSectionLayer.CUTOUT);
+		for (var tree : BlockReference.IMBUED_TREES) {
+			tree.ifPresent(TreeBlock.SAPLING, block -> ItemBlockRenderTypes.setRenderLayer(block, ChunkSectionLayer.CUTOUT));
+			tree.ifPresent(TreeBlock.POTTED_SAPLING, block -> ItemBlockRenderTypes.setRenderLayer(block, ChunkSectionLayer.CUTOUT));
+			tree.ifPresent(TreeBlock.DOOR, block -> ItemBlockRenderTypes.setRenderLayer(block, ChunkSectionLayer.CUTOUT));
+			tree.ifPresent(TreeBlock.TRAPDOOR, block -> ItemBlockRenderTypes.setRenderLayer(block, ChunkSectionLayer.CUTOUT));
+		}
 	}
 
 	@SubscribeEvent
@@ -79,6 +81,8 @@ public class ClientEventSubscriber {
 	private static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
 		event.registerLayerDefinition(ClientOnlyReference.SPARKTREE_BOAT, BoatModel::createBoatModel);
 		event.registerLayerDefinition(ClientOnlyReference.SPARKTREE_CHEST_BOAT, BoatModel::createChestBoatModel);
+		event.registerLayerDefinition(ClientOnlyReference.BLOOMTREE_BOAT, BoatModel::createBoatModel);
+		event.registerLayerDefinition(ClientOnlyReference.BLOOMTREE_CHEST_BOAT, BoatModel::createChestBoatModel);
 	}
 
 	@SubscribeEvent
@@ -86,6 +90,8 @@ public class ClientEventSubscriber {
 		event.registerEntityRenderer(EntityReference.KHROMA_NODE.get(), KhromaNodeEntityRenderer::new);
 		event.registerEntityRenderer(BlockReference.SPARKTREE.getBoatEntity().get(), context -> new BoatRenderer(context, ClientOnlyReference.SPARKTREE_BOAT));
 		event.registerEntityRenderer(BlockReference.SPARKTREE.getChestBoatEntity().get(), context -> new BoatRenderer(context, ClientOnlyReference.SPARKTREE_CHEST_BOAT));
+		event.registerEntityRenderer(BlockReference.BLOOMTREE.getBoatEntity().get(), context -> new BoatRenderer(context, ClientOnlyReference.BLOOMTREE_BOAT));
+		event.registerEntityRenderer(BlockReference.BLOOMTREE.getChestBoatEntity().get(), context -> new BoatRenderer(context, ClientOnlyReference.BLOOMTREE_CHEST_BOAT));
 	}
 
 	@SubscribeEvent
