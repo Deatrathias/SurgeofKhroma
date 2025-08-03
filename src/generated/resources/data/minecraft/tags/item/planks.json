@@ -1,6 +1,9 @@
 {
   "values": [
     "surgeofkhroma:sparktree_planks",
-    "surgeofkhroma:bloomtree_planks"
+    "surgeofkhroma:bloomtree_planks",
+    "surgeofkhroma:flowtree_planks",
+    "surgeofkhroma:skytree_planks",
+    "surgeofkhroma:grimtree_planks"
   ]
 }

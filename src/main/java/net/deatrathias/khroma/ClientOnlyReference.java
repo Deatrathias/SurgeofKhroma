@@ -42,4 +42,10 @@ public class ClientOnlyReference {
 	public static final ModelLayerLocation SPARKTREE_CHEST_BOAT = new ModelLayerLocation(SurgeofKhroma.resource("chest_boat/" + BlockReference.SPARKTREE.getName()), "main");
 	public static final ModelLayerLocation BLOOMTREE_BOAT = new ModelLayerLocation(SurgeofKhroma.resource("boat/" + BlockReference.BLOOMTREE.getName()), "main");
 	public static final ModelLayerLocation BLOOMTREE_CHEST_BOAT = new ModelLayerLocation(SurgeofKhroma.resource("chest_boat/" + BlockReference.BLOOMTREE.getName()), "main");
+	public static final ModelLayerLocation FLOWTREE_BOAT = new ModelLayerLocation(SurgeofKhroma.resource("boat/" + BlockReference.FLOWTREE.getName()), "main");
+	public static final ModelLayerLocation FLOWTREE_CHEST_BOAT = new ModelLayerLocation(SurgeofKhroma.resource("chest_boat/" + BlockReference.FLOWTREE.getName()), "main");
+	public static final ModelLayerLocation SKYTREE_BOAT = new ModelLayerLocation(SurgeofKhroma.resource("boat/" + BlockReference.SKYTREE.getName()), "main");
+	public static final ModelLayerLocation SKYTREE_CHEST_BOAT = new ModelLayerLocation(SurgeofKhroma.resource("chest_boat/" + BlockReference.SKYTREE.getName()), "main");
+	public static final ModelLayerLocation GRIMTREE_BOAT = new ModelLayerLocation(SurgeofKhroma.resource("boat/" + BlockReference.GRIMTREE.getName()), "main");
+	public static final ModelLayerLocation GRIMTREE_CHEST_BOAT = new ModelLayerLocation(SurgeofKhroma.resource("chest_boat/" + BlockReference.GRIMTREE.getName()), "main");
 }

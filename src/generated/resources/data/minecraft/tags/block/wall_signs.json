@@ -1,6 +1,9 @@
 {
   "values": [
     "surgeofkhroma:sparktree_wall_sign",
-    "surgeofkhroma:bloomtree_wall_sign"
+    "surgeofkhroma:bloomtree_wall_sign",
+    "surgeofkhroma:flowtree_wall_sign",
+    "surgeofkhroma:skytree_wall_sign",
+    "surgeofkhroma:grimtree_wall_sign"
   ]
 }

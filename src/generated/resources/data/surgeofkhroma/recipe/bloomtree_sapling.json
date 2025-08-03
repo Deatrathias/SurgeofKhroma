@@ -1,0 +1,10 @@
+{
+  "type": "surgeofkhroma:khroma_imbuement",
+  "ingredient": "#minecraft:saplings",
+  "khroma": "green",
+  "khromacost": 5000.0,
+  "result": {
+    "count": 1,
+    "id": "surgeofkhroma:bloomtree_sapling"
+  }
+}

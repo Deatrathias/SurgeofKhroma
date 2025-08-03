@@ -1,6 +1,9 @@
 {
   "values": [
     "#surgeofkhroma:sparktree_logs",
-    "#surgeofkhroma:bloomtree_logs"
+    "#surgeofkhroma:bloomtree_logs",
+    "#surgeofkhroma:flowtree_logs",
+    "#surgeofkhroma:skytree_logs",
+    "#surgeofkhroma:grimtree_logs"
   ]
 }

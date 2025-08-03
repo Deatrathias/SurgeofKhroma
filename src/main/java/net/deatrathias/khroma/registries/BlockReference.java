@@ -14,6 +14,19 @@ import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.blockentities.KhromaApertureBlockEntity;
 import net.deatrathias.khroma.blockentities.KhromaImbuerBlockEntity;
 import net.deatrathias.khroma.blockentities.KhromaProcessingCoreBlockEntity;
+import net.deatrathias.khroma.blocks.FlowtreeSaplingBlock;
+import net.deatrathias.khroma.blocks.GrimDoorBlock;
+import net.deatrathias.khroma.blocks.GrimImbuedLogBlock;
+import net.deatrathias.khroma.blocks.GrimRotatedPillarBlock;
+import net.deatrathias.khroma.blocks.GrimSimpleBlock;
+import net.deatrathias.khroma.blocks.GrimSlabBlock;
+import net.deatrathias.khroma.blocks.GrimStairBlock;
+import net.deatrathias.khroma.blocks.GrimTrapDoor;
+import net.deatrathias.khroma.blocks.SkyImbuedLogBlock;
+import net.deatrathias.khroma.blocks.SkyRotatedPillarBlock;
+import net.deatrathias.khroma.blocks.SkySimpleBlock;
+import net.deatrathias.khroma.blocks.SkySlabBlock;
+import net.deatrathias.khroma.blocks.SkyStairBlock;
 import net.deatrathias.khroma.blocks.items.KromaLineBlockItem;
 import net.deatrathias.khroma.blocks.items.NodeCollectorBlockItem;
 import net.deatrathias.khroma.blocks.khrometal.KhrometalBlackBlock;
@@ -39,10 +52,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -104,27 +115,6 @@ public final class BlockReference {
 	public static final DeferredBlock<Block> KHROMETAL_BLOCK_WHITE = registerBlock("khrometal_block_white", KhrometalWhiteBlock::new, metalBlockProps(MapColor.QUARTZ));
 	public static final DeferredBlock<Block> KHROMETAL_BLOCK_BLACK = registerBlock("khrometal_block_black", KhrometalBlackBlock::new, metalBlockProps(MapColor.COLOR_BLACK));
 
-//	public static final DeferredBlock<Block> STRIPPED_SPARKTREE_LOG = registerBlock("stripped_sparktree_log", properties -> new ImbuedLogBlock(properties, false, null),
-//			logProperties(MapColor.COLOR_RED, MapColor.COLOR_RED));
-//	public static final DeferredBlock<Block> STRIPPED_SPARKTREE_WOOD = registerBlock("stripped_sparktree_wood", properties -> new ImbuedLogBlock(properties, false, null),
-//			woodProperties(MapColor.COLOR_RED));
-//	public static final DeferredBlock<Block> SPARKTREE_LOG = registerBlock("sparktree_log", properties -> new ImbuedLogBlock(properties, false, STRIPPED_SPARKTREE_LOG),
-//			logProperties(MapColor.TERRACOTTA_BROWN, MapColor.COLOR_RED));
-//	public static final DeferredBlock<Block> SPARKTREE_WOOD = registerBlock("sparktree_wood", properties -> new ImbuedLogBlock(properties, false, STRIPPED_SPARKTREE_WOOD),
-//			woodProperties(MapColor.TERRACOTTA_BROWN));
-//	public static final DeferredBlock<Block> SPARKTREE_LEAVES = registerBlock("sparktree_leaves", properties -> new FixedTintParticleLeavesBlock(0.01F, 0xffe42121, properties),
-//			leavesProperties(SoundType.GRASS));
-//	public static final DeferredBlock<Block> SPARKTREE_SAPLING = registerBlock("sparktree_sapling", properties -> new SaplingBlock(TreeGrowerReference.SPARKTREE, properties), saplingProperties());
-//	@SuppressWarnings("deprecation")
-//	public static final DeferredBlock<Block> POTTED_SPARKTREE_SAPLING = registerBlockNoItem("potted_sparktree_sapling",
-//			properties -> new FlowerPotBlock(SPARKTREE_SAPLING.get(), properties), flowerPotProperties());
-//	public static final DeferredBlock<Block> SPARKTREE_PLANKS = registerBlock("sparktree_planks", Block::new, plankProperties(MapColor.COLOR_RED));
-//
-//	public static final DeferredBlock<Block> SPARKTREE_BUTTON = registerBlock("sparktree_button", properties -> new ButtonBlock(BlockSetReference.SPARKTREE, 30, properties), buttonProperties());
-//	public static final DeferredBlock<Block> SPARKTREE_FENCE = registerBlock("sparktree_fence", FenceBlock::new, plankProperties(MapColor.COLOR_RED).forceSolidOn());
-//	public static final DeferredBlock<Block> SPARKTREE_FENCE_GATE = registerBlock("sparktree_fence_gate", properties -> new FenceGateBlock(WoodReference.SPARKTREE, properties),
-//			plankProperties(MapColor.COLOR_RED).forceSolidOn());
-
 	public static final ImbuedTree SPARKTREE = ImbuedTree.Builder.create("sparktree")
 			.log(MapColor.TERRACOTTA_BROWN, MapColor.COLOR_RED)
 			.wood(MapColor.TERRACOTTA_BROWN)
@@ -171,7 +161,89 @@ public final class BlockReference {
 			.chestBoat()
 			.build(BlockSetReference.BLOOMTREE, WoodReference.BLOOMTREE);
 
-	public static final List<ImbuedTree> IMBUED_TREES = List.of(SPARKTREE, BLOOMTREE);
+	public static final ImbuedTree FLOWTREE = ImbuedTree.Builder.create("flowtree")
+			.log(p -> p.friction(0.98f), MapColor.TERRACOTTA_BLUE, MapColor.COLOR_BLUE)
+			.wood(p -> p.friction(0.98f), MapColor.TERRACOTTA_BLUE)
+			.strippedLog(p -> p.friction(0.98f), MapColor.COLOR_BLUE, MapColor.COLOR_BLUE)
+			.strippedWood(p -> p.friction(0.98f), MapColor.COLOR_BLUE)
+			.leaves(SoundType.GRASS, 0.01f, 0xff2121e4)
+			.sapling(ImbuedTree.Builder.identity, TreeGrowerReference.FLOWTREE)
+			.setSaplingFactory(FlowtreeSaplingBlock::new)
+			.pottedSapling()
+			.planks(p -> p.friction(0.98f), MapColor.COLOR_BLUE)
+			.button()
+			.fence(p -> p.friction(0.98f))
+			.fenceGate(p -> p.friction(0.98f))
+			.slab(p -> p.friction(0.98f))
+			.stairs(p -> p.friction(0.98f))
+			.pressurePlate()
+			.door(p -> p.friction(0.98f))
+			.trapdoor(p -> p.friction(0.98f))
+			.sign()
+			.hangingSign()
+			.boat()
+			.chestBoat()
+			.build(BlockSetReference.FLOWTREE, WoodReference.FLOWTREE);
+
+	public static final ImbuedTree SKYTREE = ImbuedTree.Builder.create("skytree")
+			.log(MapColor.TERRACOTTA_WHITE, MapColor.QUARTZ)
+			.wood(MapColor.TERRACOTTA_WHITE)
+			.setLogFactory(SkyImbuedLogBlock::new)
+			.strippedLog(MapColor.QUARTZ, MapColor.QUARTZ)
+			.strippedWood(MapColor.QUARTZ)
+			.setStrippedLogFactory(SkyRotatedPillarBlock::new)
+			.leaves(SoundType.GRASS, 0.01f, 0xfffbfbfb)
+			.sapling(TreeGrowerReference.SKYTREE)
+			.pottedSapling()
+			.planks(MapColor.QUARTZ)
+			.setPlanksFactory(SkySimpleBlock::new)
+			.button()
+			.fence()
+			.fenceGate()
+			.slab()
+			.setSlabFactory(SkySlabBlock::new)
+			.stairs()
+			.setStairFactory(SkyStairBlock::new)
+			.pressurePlate()
+			.door()
+			.trapdoor()
+			.sign()
+			.hangingSign()
+			.boat()
+			.chestBoat()
+			.build(BlockSetReference.SKYTREE, WoodReference.SKYTREE);
+
+	public static final ImbuedTree GRIMTREE = ImbuedTree.Builder.create("grimtree")
+			.log(MapColor.COLOR_GRAY, MapColor.COLOR_BLACK)
+			.wood(MapColor.COLOR_GRAY)
+			.setLogFactory(GrimImbuedLogBlock::new)
+			.strippedLog(MapColor.COLOR_BLACK, MapColor.COLOR_BLACK)
+			.strippedWood(MapColor.COLOR_BLACK)
+			.setStrippedLogFactory(GrimRotatedPillarBlock::new)
+			.leaves(SoundType.GRASS, 0.01f, 0xff414141)
+			.sapling(TreeGrowerReference.GRIMTREE)
+			.pottedSapling()
+			.planks(MapColor.COLOR_BLACK)
+			.setPlanksFactory(GrimSimpleBlock::new)
+			.button()
+			.fence()
+			.fenceGate()
+			.slab()
+			.setSlabFactory(GrimSlabBlock::new)
+			.stairs()
+			.setStairFactory(GrimStairBlock::new)
+			.pressurePlate()
+			.door()
+			.setDoorFactory(GrimDoorBlock::new)
+			.trapdoor()
+			.setTrapdoorFactory(GrimTrapDoor::new)
+			.sign()
+			.hangingSign()
+			.boat()
+			.chestBoat()
+			.build(BlockSetReference.GRIMTREE, WoodReference.GRIMTREE);
+
+	public static final List<ImbuedTree> IMBUED_TREES = List.of(SPARKTREE, BLOOMTREE, FLOWTREE, SKYTREE, GRIMTREE);
 
 	public static final DeferredBlock<Block> KHROMA_LINE = registerBlock("khroma_line", KhromaLineBlock::new,
 			blockProps().mapColor(MapColor.METAL).strength(0.1F, 1.0F).sound(SoundType.METAL).pushReaction(PushReaction.DESTROY), KromaLineBlockItem::new, new Item.Properties());
@@ -265,28 +337,20 @@ public final class BlockReference {
 		((FireBlock) Blocks.FIRE).setFlammable(block, encouragement, flammability);
 	}
 
-	@SuppressWarnings("deprecation")
-	private static void setCompostable(ItemLike item, float chance) {
-		ComposterBlock.COMPOSTABLES.put(item, chance);
-	}
-
 	public static void configureExtra() {
-		SurgeofKhroma.LOGGER.info("configured");
-		setCompostable(SPARKTREE.get(TreeBlock.LEAVES), 0.3f);
-		setCompostable(SPARKTREE.get(TreeBlock.SAPLING), 0.3f);
-
-		setCompostable(BLOOMTREE.get(TreeBlock.LEAVES), 1f);
-		setCompostable(BLOOMTREE.get(TreeBlock.SAPLING), 1f);
-
-		setFlammable(BLOOMTREE.get(TreeBlock.LOG), 5, 5);
-		setFlammable(BLOOMTREE.get(TreeBlock.WOOD), 5, 5);
-		setFlammable(BLOOMTREE.get(TreeBlock.STRIPPED_LOG), 5, 5);
-		setFlammable(BLOOMTREE.get(TreeBlock.STRIPPED_WOOD), 5, 5);
-		setFlammable(BLOOMTREE.get(TreeBlock.LEAVES), 30, 60);
-		setFlammable(BLOOMTREE.get(TreeBlock.PLANKS), 5, 20);
-		setFlammable(BLOOMTREE.get(TreeBlock.FENCE), 5, 20);
-		setFlammable(BLOOMTREE.get(TreeBlock.FENCE_GATE), 5, 20);
-		setFlammable(BLOOMTREE.get(TreeBlock.SLAB), 5, 20);
-		setFlammable(BLOOMTREE.get(TreeBlock.STAIRS), 5, 20);
+		for (var tree : IMBUED_TREES) {
+			if (tree != SPARKTREE) {
+				setFlammable(tree.get(TreeBlock.LOG), 5, 5);
+				setFlammable(tree.get(TreeBlock.WOOD), 5, 5);
+				setFlammable(tree.get(TreeBlock.STRIPPED_LOG), 5, 5);
+				setFlammable(tree.get(TreeBlock.STRIPPED_WOOD), 5, 5);
+				setFlammable(tree.get(TreeBlock.LEAVES), 30, 60);
+				setFlammable(tree.get(TreeBlock.PLANKS), 5, 20);
+				setFlammable(tree.get(TreeBlock.FENCE), 5, 20);
+				setFlammable(tree.get(TreeBlock.FENCE_GATE), 5, 20);
+				setFlammable(tree.get(TreeBlock.SLAB), 5, 20);
+				setFlammable(tree.get(TreeBlock.STAIRS), 5, 20);
+			}
+		}
 	}
 }

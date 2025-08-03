@@ -1,6 +1,9 @@
 {
   "values": [
     "surgeofkhroma:sparktree_trapdoor",
-    "surgeofkhroma:bloomtree_trapdoor"
+    "surgeofkhroma:bloomtree_trapdoor",
+    "surgeofkhroma:flowtree_trapdoor",
+    "surgeofkhroma:skytree_trapdoor",
+    "surgeofkhroma:grimtree_trapdoor"
   ]
 }

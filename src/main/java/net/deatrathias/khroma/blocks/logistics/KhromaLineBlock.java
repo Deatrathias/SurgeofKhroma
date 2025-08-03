@@ -126,6 +126,9 @@ public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock
 	@Override
 	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess scheduledTickAccess, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState,
 			RandomSource random) {
+		if (state.getValue(WATERLOGGED))
+			scheduledTickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+
 		BooleanProperty sideProperty = PROPERTY_BY_DIRECTION.get(direction);
 
 		boolean connected = state.getValue(sideProperty);

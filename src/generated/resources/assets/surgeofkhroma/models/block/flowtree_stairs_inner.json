@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "surgeofkhroma:block/flowtree_planks",
+    "side": "surgeofkhroma:block/flowtree_planks",
+    "top": "surgeofkhroma:block/flowtree_planks"
+  }
+}

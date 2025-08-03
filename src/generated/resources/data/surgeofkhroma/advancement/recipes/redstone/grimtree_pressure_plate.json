@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_grimtree_planks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "surgeofkhroma:grimtree_planks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "surgeofkhroma:grimtree_pressure_plate"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_grimtree_planks"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "surgeofkhroma:grimtree_pressure_plate"
+    ]
+  }
+}

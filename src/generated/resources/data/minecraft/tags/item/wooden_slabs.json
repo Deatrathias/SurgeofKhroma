@@ -1,6 +1,9 @@
 {
   "values": [
     "surgeofkhroma:sparktree_slab",
-    "surgeofkhroma:bloomtree_slab"
+    "surgeofkhroma:bloomtree_slab",
+    "surgeofkhroma:flowtree_slab",
+    "surgeofkhroma:skytree_slab",
+    "surgeofkhroma:grimtree_slab"
   ]
 }

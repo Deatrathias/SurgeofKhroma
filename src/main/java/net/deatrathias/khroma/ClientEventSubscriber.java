@@ -83,6 +83,12 @@ public class ClientEventSubscriber {
 		event.registerLayerDefinition(ClientOnlyReference.SPARKTREE_CHEST_BOAT, BoatModel::createChestBoatModel);
 		event.registerLayerDefinition(ClientOnlyReference.BLOOMTREE_BOAT, BoatModel::createBoatModel);
 		event.registerLayerDefinition(ClientOnlyReference.BLOOMTREE_CHEST_BOAT, BoatModel::createChestBoatModel);
+		event.registerLayerDefinition(ClientOnlyReference.FLOWTREE_BOAT, BoatModel::createBoatModel);
+		event.registerLayerDefinition(ClientOnlyReference.FLOWTREE_CHEST_BOAT, BoatModel::createChestBoatModel);
+		event.registerLayerDefinition(ClientOnlyReference.SKYTREE_BOAT, BoatModel::createBoatModel);
+		event.registerLayerDefinition(ClientOnlyReference.SKYTREE_CHEST_BOAT, BoatModel::createChestBoatModel);
+		event.registerLayerDefinition(ClientOnlyReference.GRIMTREE_BOAT, BoatModel::createBoatModel);
+		event.registerLayerDefinition(ClientOnlyReference.GRIMTREE_CHEST_BOAT, BoatModel::createChestBoatModel);
 	}
 
 	@SubscribeEvent
@@ -92,6 +98,12 @@ public class ClientEventSubscriber {
 		event.registerEntityRenderer(BlockReference.SPARKTREE.getChestBoatEntity().get(), context -> new BoatRenderer(context, ClientOnlyReference.SPARKTREE_CHEST_BOAT));
 		event.registerEntityRenderer(BlockReference.BLOOMTREE.getBoatEntity().get(), context -> new BoatRenderer(context, ClientOnlyReference.BLOOMTREE_BOAT));
 		event.registerEntityRenderer(BlockReference.BLOOMTREE.getChestBoatEntity().get(), context -> new BoatRenderer(context, ClientOnlyReference.BLOOMTREE_CHEST_BOAT));
+		event.registerEntityRenderer(BlockReference.FLOWTREE.getBoatEntity().get(), context -> new BoatRenderer(context, ClientOnlyReference.FLOWTREE_BOAT));
+		event.registerEntityRenderer(BlockReference.FLOWTREE.getChestBoatEntity().get(), context -> new BoatRenderer(context, ClientOnlyReference.FLOWTREE_CHEST_BOAT));
+		event.registerEntityRenderer(BlockReference.SKYTREE.getBoatEntity().get(), context -> new BoatRenderer(context, ClientOnlyReference.SKYTREE_BOAT));
+		event.registerEntityRenderer(BlockReference.SKYTREE.getChestBoatEntity().get(), context -> new BoatRenderer(context, ClientOnlyReference.SKYTREE_CHEST_BOAT));
+		event.registerEntityRenderer(BlockReference.GRIMTREE.getBoatEntity().get(), context -> new BoatRenderer(context, ClientOnlyReference.GRIMTREE_BOAT));
+		event.registerEntityRenderer(BlockReference.GRIMTREE.getChestBoatEntity().get(), context -> new BoatRenderer(context, ClientOnlyReference.GRIMTREE_CHEST_BOAT));
 	}
 
 	@SubscribeEvent

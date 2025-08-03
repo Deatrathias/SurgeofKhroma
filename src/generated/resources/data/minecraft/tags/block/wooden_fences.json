@@ -1,6 +1,9 @@
 {
   "values": [
     "surgeofkhroma:sparktree_fence",
-    "surgeofkhroma:bloomtree_fence"
+    "surgeofkhroma:bloomtree_fence",
+    "surgeofkhroma:flowtree_fence",
+    "surgeofkhroma:skytree_fence",
+    "surgeofkhroma:grimtree_fence"
   ]
 }

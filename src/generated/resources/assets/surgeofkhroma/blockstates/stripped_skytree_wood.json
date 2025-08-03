@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "surgeofkhroma:block/stripped_skytree_wood",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "surgeofkhroma:block/stripped_skytree_wood"
+    },
+    "axis=z": {
+      "model": "surgeofkhroma:block/stripped_skytree_wood",
+      "x": 90
+    }
+  }
+}

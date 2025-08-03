@@ -1,6 +1,9 @@
 {
   "values": [
     "surgeofkhroma:sparktree_button",
-    "surgeofkhroma:bloomtree_button"
+    "surgeofkhroma:bloomtree_button",
+    "surgeofkhroma:flowtree_button",
+    "surgeofkhroma:skytree_button",
+    "surgeofkhroma:grimtree_button"
   ]
 }

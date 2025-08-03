@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "surgeofkhroma:block/skytree_planks",
+    "side": "surgeofkhroma:block/skytree_planks",
+    "top": "surgeofkhroma:block/skytree_planks"
+  }
+}

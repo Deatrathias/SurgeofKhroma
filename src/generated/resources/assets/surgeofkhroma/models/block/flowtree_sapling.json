@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "surgeofkhroma:block/flowtree_sapling"
+  }
+}

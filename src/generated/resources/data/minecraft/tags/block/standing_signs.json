@@ -1,6 +1,9 @@
 {
   "values": [
     "surgeofkhroma:sparktree_sign",
-    "surgeofkhroma:bloomtree_sign"
+    "surgeofkhroma:bloomtree_sign",
+    "surgeofkhroma:flowtree_sign",
+    "surgeofkhroma:skytree_sign",
+    "surgeofkhroma:grimtree_sign"
   ]
 }

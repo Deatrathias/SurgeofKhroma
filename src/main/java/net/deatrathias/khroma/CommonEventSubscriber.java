@@ -11,6 +11,7 @@ import net.deatrathias.khroma.registries.RecipeReference;
 import net.deatrathias.khroma.registries.RegistryReference;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
@@ -82,9 +83,13 @@ public final class CommonEventSubscriber {
 
 	@SubscribeEvent
 	private static void addBlockToBlockEntities(BlockEntityTypeAddBlocksEvent event) {
-		event.modify(BlockEntityType.SIGN, BlockReference.SPARKTREE.get(TreeBlock.SIGN), BlockReference.SPARKTREE.get(TreeBlock.WALL_SIGN),
-				BlockReference.BLOOMTREE.get(TreeBlock.SIGN), BlockReference.BLOOMTREE.get(TreeBlock.WALL_SIGN));
-		event.modify(BlockEntityType.HANGING_SIGN, BlockReference.SPARKTREE.get(TreeBlock.HANGING_SIGN), BlockReference.SPARKTREE.get(TreeBlock.WALL_HANGING_SIGN),
-				BlockReference.BLOOMTREE.get(TreeBlock.HANGING_SIGN), BlockReference.BLOOMTREE.get(TreeBlock.WALL_HANGING_SIGN));
+		event.modify(BlockEntityType.SIGN, BlockReference.IMBUED_TREES.stream().filter(tree -> tree.get(TreeBlock.SIGN) != null).mapMulti((tree, consumer) -> {
+			consumer.accept(tree.get(TreeBlock.SIGN));
+			consumer.accept(tree.get(TreeBlock.WALL_SIGN));
+		}).toArray(Block[]::new));
+		event.modify(BlockEntityType.HANGING_SIGN, BlockReference.IMBUED_TREES.stream().filter(tree -> tree.get(TreeBlock.HANGING_SIGN) != null).mapMulti((tree, consumer) -> {
+			consumer.accept(tree.get(TreeBlock.HANGING_SIGN));
+			consumer.accept(tree.get(TreeBlock.WALL_HANGING_SIGN));
+		}).toArray(Block[]::new));
 	}
 }

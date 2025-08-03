@@ -5,6 +5,12 @@
     },
     "#surgeofkhroma:imbued_tree_sapling": {
       "chance": 0.3
+    },
+    "surgeofkhroma:bloomtree_leaves": {
+      "chance": 1.0
+    },
+    "surgeofkhroma:bloomtree_sapling": {
+      "chance": 1.0
     }
   }
 }

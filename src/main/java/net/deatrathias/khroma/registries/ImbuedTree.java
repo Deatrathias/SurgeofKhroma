@@ -3,7 +3,9 @@ package net.deatrathias.khroma.registries;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import net.deatrathias.khroma.SurgeofKhroma;
@@ -11,6 +13,7 @@ import net.deatrathias.khroma.blocks.FixedTintParticleLeavesBlock;
 import net.deatrathias.khroma.blocks.ImbuedLogBlock;
 import net.minecraft.Util;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.resources.ResourceKey;
@@ -46,6 +49,7 @@ import net.minecraft.world.level.block.WallHangingSignBlock;
 import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.block.state.properties.WoodType;
@@ -84,6 +88,10 @@ public class ImbuedTree {
 
 	public Block get(TreeBlock block) {
 		return blocks.get(block).get();
+	}
+
+	public Holder<Block> getHolder(TreeBlock block) {
+		return blocks.get(block);
 	}
 
 	public void ifPresent(TreeBlock block, Consumer<Block> func) {
@@ -170,12 +178,28 @@ public class ImbuedTree {
 
 		private Item.Properties chestBoatItemProps;
 
+		private BiFunction<Holder<Block>, BlockBehaviour.Properties, Block> logFactory;
+
+		private Function<BlockBehaviour.Properties, Block> strippedLogFactory;
+
+		private BiFunction<TreeGrower, BlockBehaviour.Properties, Block> saplingFactory;
+
+		private Function<BlockBehaviour.Properties, Block> planksFactory;
+
+		private Function<BlockBehaviour.Properties, Block> slabFactory;
+
+		private BiFunction<BlockState, BlockBehaviour.Properties, Block> stairFactory;
+
+		private BiFunction<BlockSetType, BlockBehaviour.Properties, Block> doorFactory;
+
+		private BiFunction<BlockSetType, BlockBehaviour.Properties, Block> trapdoorFactory;
+
 		@FunctionalInterface
 		public static interface PropertyModifier {
 			BlockBehaviour.Properties modify(BlockBehaviour.Properties input);
 		}
 
-		private static final PropertyModifier identity = p -> p;
+		public static final PropertyModifier identity = p -> p;
 
 		public static Builder create(String name) {
 			return new Builder(name);
@@ -184,6 +208,14 @@ public class ImbuedTree {
 		private Builder(String buildName) {
 			this.buildName = buildName;
 			props = new HashMap<ImbuedTree.TreeBlock, BlockBehaviour.Properties>();
+			logFactory = ImbuedLogBlock::new;
+			strippedLogFactory = RotatedPillarBlock::new;
+			saplingFactory = SaplingBlock::new;
+			planksFactory = Block::new;
+			slabFactory = SlabBlock::new;
+			stairFactory = StairBlock::new;
+			doorFactory = DoorBlock::new;
+			trapdoorFactory = TrapDoorBlock::new;
 		}
 
 		public Builder log(PropertyModifier modifier, MapColor sideColor, MapColor topColor) {
@@ -379,6 +411,46 @@ public class ImbuedTree {
 			return chestBoat(new Item.Properties().stacksTo(1));
 		}
 
+		public Builder setLogFactory(BiFunction<Holder<Block>, BlockBehaviour.Properties, Block> logFactory) {
+			this.logFactory = logFactory;
+			return this;
+		}
+
+		public Builder setStrippedLogFactory(Function<BlockBehaviour.Properties, Block> strippedLogFactory) {
+			this.strippedLogFactory = strippedLogFactory;
+			return this;
+		}
+
+		public Builder setSaplingFactory(BiFunction<TreeGrower, BlockBehaviour.Properties, Block> saplingFactory) {
+			this.saplingFactory = saplingFactory;
+			return this;
+		}
+
+		public Builder setPlanksFactory(Function<BlockBehaviour.Properties, Block> planksFactory) {
+			this.planksFactory = planksFactory;
+			return this;
+		}
+
+		public Builder setSlabFactory(Function<BlockBehaviour.Properties, Block> slabFactory) {
+			this.slabFactory = slabFactory;
+			return this;
+		}
+
+		public Builder setStairFactory(BiFunction<BlockState, BlockBehaviour.Properties, Block> stairFactory) {
+			this.stairFactory = stairFactory;
+			return this;
+		}
+
+		public Builder setDoorFactory(BiFunction<BlockSetType, BlockBehaviour.Properties, Block> doorFactory) {
+			this.doorFactory = doorFactory;
+			return this;
+		}
+
+		public Builder setTrapdoorFactory(BiFunction<BlockSetType, BlockBehaviour.Properties, Block> trapdoorFactory) {
+			this.trapdoorFactory = trapdoorFactory;
+			return this;
+		}
+
 		@SuppressWarnings("deprecation")
 		public ImbuedTree build(BlockSetType blockSet, WoodType woodType) {
 			ImbuedTree result = new ImbuedTree(buildName);
@@ -391,29 +463,29 @@ public class ImbuedTree {
 
 				switch (key) {
 				case LOG:
-					block = BlockReference.registerBlock(buildName + "_log", properties -> new ImbuedLogBlock(properties, result.blocks.get(TreeBlock.STRIPPED_LOG)), prop);
+					block = BlockReference.registerBlock(buildName + "_log", properties -> logFactory.apply(result.blocks.get(TreeBlock.STRIPPED_LOG), properties), prop);
 					break;
 				case WOOD:
-					block = BlockReference.registerBlock(buildName + "_wood", properties -> new ImbuedLogBlock(properties, result.blocks.get(TreeBlock.STRIPPED_WOOD)), prop);
+					block = BlockReference.registerBlock(buildName + "_wood", properties -> logFactory.apply(result.blocks.get(TreeBlock.STRIPPED_WOOD), properties), prop);
 					break;
 				case STRIPPED_LOG:
-					block = BlockReference.registerBlock("stripped_" + buildName + "_log", RotatedPillarBlock::new, prop);
+					block = BlockReference.registerBlock("stripped_" + buildName + "_log", strippedLogFactory, prop);
 					break;
 				case STRIPPED_WOOD:
-					block = BlockReference.registerBlock("stripped_" + buildName + "_wood", RotatedPillarBlock::new, prop);
+					block = BlockReference.registerBlock("stripped_" + buildName + "_wood", strippedLogFactory, prop);
 					break;
 				case LEAVES:
 					block = BlockReference.registerBlock(buildName + "_leaves", properties -> new FixedTintParticleLeavesBlock(leafParticleChance, leafColor, properties), prop);
 					break;
 				case SAPLING:
-					block = BlockReference.registerBlock(buildName + "_sapling", properties -> new SaplingBlock(treeGrower, properties), prop);
+					block = BlockReference.registerBlock(buildName + "_sapling", properties -> saplingFactory.apply(treeGrower, properties), prop);
 					break;
 				case POTTED_SAPLING:
 					block = BlockReference.registerBlockNoItem("potted_" + buildName + "_sapling", properties -> new FlowerPotBlock(result.get(TreeBlock.SAPLING), properties),
 							prop);
 					break;
 				case PLANKS:
-					block = BlockReference.registerBlock(buildName + "_planks", Block::new, prop);
+					block = BlockReference.registerBlock(buildName + "_planks", planksFactory, prop);
 					break;
 				case BUTTON:
 					block = BlockReference.registerBlock(buildName + "_button", properties -> new ButtonBlock(blockSet, 30, properties), prop);
@@ -440,19 +512,19 @@ public class ImbuedTree {
 					block = BlockReference.registerBlockNoItem(buildName + "_wall_hanging_sign", properties -> new WallHangingSignBlock(woodType, properties), prop);
 					break;
 				case SLAB:
-					block = BlockReference.registerBlock(buildName + "_slab", SlabBlock::new, prop);
+					block = BlockReference.registerBlock(buildName + "_slab", slabFactory, prop);
 					break;
 				case STAIRS:
-					block = BlockReference.registerBlock(buildName + "_stairs", properties -> new StairBlock(result.get(TreeBlock.PLANKS).defaultBlockState(), properties), prop);
+					block = BlockReference.registerBlock(buildName + "_stairs", properties -> stairFactory.apply(result.get(TreeBlock.PLANKS).defaultBlockState(), properties), prop);
 					break;
 				case PRESSURE_PLATE:
 					block = BlockReference.registerBlock(buildName + "_pressure_plate", properties -> new PressurePlateBlock(blockSet, properties), prop);
 					break;
 				case DOOR:
-					block = BlockReference.registerBlock(buildName + "_door", properties -> new DoorBlock(blockSet, properties), prop);
+					block = BlockReference.registerBlock(buildName + "_door", properties -> doorFactory.apply(blockSet, properties), prop);
 					break;
 				case TRAPDOOR:
-					block = BlockReference.registerBlock(buildName + "_trapdoor", properties -> new TrapDoorBlock(blockSet, properties), prop);
+					block = BlockReference.registerBlock(buildName + "_trapdoor", properties -> trapdoorFactory.apply(blockSet, properties), prop);
 					break;
 				}
 

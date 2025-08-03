@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_skytree_planks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "surgeofkhroma:skytree_planks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "surgeofkhroma:skytree_sign"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_skytree_planks"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "surgeofkhroma:skytree_sign"
+    ]
+  }
+}

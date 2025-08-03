@@ -1,6 +1,9 @@
 {
   "values": [
     "surgeofkhroma:sparktree_sapling",
-    "surgeofkhroma:bloomtree_sapling"
+    "surgeofkhroma:bloomtree_sapling",
+    "surgeofkhroma:flowtree_sapling",
+    "surgeofkhroma:skytree_sapling",
+    "surgeofkhroma:grimtree_sapling"
   ]
 }

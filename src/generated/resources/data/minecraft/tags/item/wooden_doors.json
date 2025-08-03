@@ -1,6 +1,9 @@
 {
   "values": [
     "surgeofkhroma:sparktree_door",
-    "surgeofkhroma:bloomtree_door"
+    "surgeofkhroma:bloomtree_door",
+    "surgeofkhroma:flowtree_door",
+    "surgeofkhroma:skytree_door",
+    "surgeofkhroma:grimtree_door"
   ]
 }

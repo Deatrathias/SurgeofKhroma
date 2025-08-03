@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "surgeofkhroma:block/grimtree_slab"
+    },
+    "type=double": {
+      "model": "surgeofkhroma:block/grimtree_planks"
+    },
+    "type=top": {
+      "model": "surgeofkhroma:block/grimtree_slab_top"
+    }
+  }
+}

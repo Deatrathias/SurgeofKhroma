@@ -1,6 +1,9 @@
 {
   "values": [
     "surgeofkhroma:sparktree_leaves",
-    "surgeofkhroma:bloomtree_leaves"
+    "surgeofkhroma:bloomtree_leaves",
+    "surgeofkhroma:flowtree_leaves",
+    "surgeofkhroma:skytree_leaves",
+    "surgeofkhroma:grimtree_leaves"
   ]
 }

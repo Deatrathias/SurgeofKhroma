@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "surgeofkhroma:block/skytree_log",
+    "side": "surgeofkhroma:block/skytree_log"
+  }
+}

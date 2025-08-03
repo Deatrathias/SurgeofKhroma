@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "surgeofkhroma:block/skytree_slab"
+    },
+    "type=double": {
+      "model": "surgeofkhroma:block/skytree_planks"
+    },
+    "type=top": {
+      "model": "surgeofkhroma:block/skytree_slab_top"
+    }
+  }
+}

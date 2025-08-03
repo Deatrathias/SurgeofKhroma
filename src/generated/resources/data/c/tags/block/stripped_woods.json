@@ -1,6 +1,9 @@
 {
   "values": [
     "surgeofkhroma:stripped_sparktree_wood",
-    "surgeofkhroma:stripped_bloomtree_wood"
+    "surgeofkhroma:stripped_bloomtree_wood",
+    "surgeofkhroma:stripped_flowtree_wood",
+    "surgeofkhroma:stripped_skytree_wood",
+    "surgeofkhroma:stripped_grimtree_wood"
   ]
 }

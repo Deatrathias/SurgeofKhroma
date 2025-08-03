@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "surgeofkhroma:block/flowtree_slab"
+    },
+    "type=double": {
+      "model": "surgeofkhroma:block/flowtree_planks"
+    },
+    "type=top": {
+      "model": "surgeofkhroma:block/flowtree_slab_top"
+    }
+  }
+}

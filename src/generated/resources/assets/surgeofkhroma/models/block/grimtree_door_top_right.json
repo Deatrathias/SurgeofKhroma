@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_top_right",
+  "textures": {
+    "bottom": "surgeofkhroma:block/grimtree_door_bottom",
+    "top": "surgeofkhroma:block/grimtree_door_top"
+  }
+}

@@ -2,7 +2,11 @@ package net.deatrathias.khroma.blocks;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Block;
@@ -12,12 +16,26 @@ import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 
 public class ImbuedLogBlock extends RotatedPillarBlock {
+	public static final MapCodec<ImbuedLogBlock> CODEC = RecordCodecBuilder.mapCodec(
+			instance -> instance.group(
+					BuiltInRegistries.BLOCK.holderByNameCodec().fieldOf("strippedBlock").forGetter(ImbuedLogBlock::getStrippedBlock),
+					propertiesCodec())
+					.apply(instance, ImbuedLogBlock::new));
 
 	private Holder<Block> strippedBlock;
 
-	public ImbuedLogBlock(Properties properties, Holder<Block> strippedBlock) {
+	public ImbuedLogBlock(Holder<Block> strippedBlock, Properties properties) {
 		super(properties);
 		this.strippedBlock = strippedBlock;
+	}
+
+	public Holder<Block> getStrippedBlock() {
+		return strippedBlock;
+	}
+
+	@Override
+	public MapCodec<? extends RotatedPillarBlock> codec() {
+		return CODEC;
 	}
 
 	@Override
