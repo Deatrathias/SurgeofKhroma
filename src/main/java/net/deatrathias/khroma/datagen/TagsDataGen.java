@@ -76,6 +76,7 @@ public final class TagsDataGen {
 			var woodenDoor = tag(BlockTags.WOODEN_DOORS, ItemTags.WOODEN_DOORS);
 			var woodenTrapdoor = tag(BlockTags.WOODEN_TRAPDOORS, ItemTags.WOODEN_TRAPDOORS);
 			var woodenPressurePlate = tag(BlockTags.WOODEN_PRESSURE_PLATES, ItemTags.WOODEN_PRESSURE_PLATES);
+			var woodenPillar = tag(TagReference.BLOCK_WOODEN_PILLARS, TagReference.ITEM_WOODEN_PILLARS);
 
 			for (var tree : BlockReference.IMBUED_TREES) {
 				strippedLogs.add(tree.get(TreeBlock.STRIPPED_LOG));
@@ -96,11 +97,13 @@ public final class TagsDataGen {
 				tree.ifPresent(TreeBlock.DOOR, block -> woodenDoor.add(block));
 				tree.ifPresent(TreeBlock.TRAPDOOR, block -> woodenTrapdoor.add(block));
 				tree.ifPresent(TreeBlock.PRESSURE_PLATE, block -> woodenPressurePlate.add(block));
+				tree.ifPresent(TreeBlock.PILLAR, block -> woodenPillar.add(block));
 			}
 
 			tag(BlockTags.LOGS_THAT_BURN, ItemTags.LOGS_THAT_BURN).addTag(TagReference.BLOCK_IMBUED_TREE_LOGS);
 			tag(BlockTags.LEAVES, ItemTags.LEAVES).addTag(TagReference.BLOCK_IMBUED_TREE_LEAVES);
 			tag(BlockTags.SAPLINGS, ItemTags.SAPLINGS).addTag(TagReference.BLOCK_IMBUED_TREE_SAPLINGS);
+			tag(TagReference.BLOCK_PILLARS, TagReference.ITEM_PILLARS).addTag(TagReference.BLOCK_WOODEN_PILLARS);
 		}
 
 	}
@@ -124,6 +127,7 @@ public final class TagsDataGen {
 			tag(BlockTags.NEEDS_STONE_TOOL).addAll(DataGenDefinitions.needsStoneTool).addTag(TagReference.BLOCK_KHROMETAL_BLOCKS);
 			tag(BlockTags.MINEABLE_WITH_PICKAXE).addAll(DataGenDefinitions.needsStoneTool).addTags(TagReference.BLOCK_KHROMETAL_BLOCKS,
 					TagReference.BLOCK_KHROMA_DEVICES);
+			tag(BlockTags.MINEABLE_WITH_AXE).addTag(TagReference.BLOCK_WOODEN_PILLARS);
 			tag(BlockTags.SNAPS_GOAT_HORN).addTag(TagReference.BLOCK_IMBUED_TREE_LOGS);
 
 			var flowerPots = tag(BlockTags.FLOWER_POTS);
@@ -213,6 +217,7 @@ public final class TagsDataGen {
 			tag(ItemTags.AXES).addTag(TagReference.ITEM_KHROMETAL_AXES);
 			tag(ItemTags.SHOVELS).addTag(TagReference.ITEM_KHROMETAL_SHOVELS);
 			tag(ItemTags.SWORDS).addTag(TagReference.ITEM_KHROMETAL_SWORDS);
+			tag(ItemTags.BOOKSHELF_BOOKS).add(ItemReference.KHROMANCER_ARCHIVE.get());
 
 			var sign = tag(ItemTags.SIGNS);
 			var hangingSigns = tag(ItemTags.HANGING_SIGNS);

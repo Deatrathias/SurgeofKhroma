@@ -86,7 +86,7 @@ public class DataGenDefinitions {
 
 		dropsOreBlocks = deferredList(BlockReference.CHROMIUM_ORE, BlockReference.DEEPSLATE_CHROMIUM_ORE);
 
-		simpleItems = deferredList(ItemReference.RAW_CHROMIUM, ItemReference.CHROMIUM_INGOT, ItemReference.CHROMIUM_NUGGET,
+		simpleItems = deferredList(ItemReference.KHROMANCER_ARCHIVE, ItemReference.RAW_CHROMIUM, ItemReference.CHROMIUM_INGOT, ItemReference.CHROMIUM_NUGGET,
 				ItemReference.KHROMETAL_INGOT_RED, ItemReference.KHROMETAL_INGOT_GREEN, ItemReference.KHROMETAL_INGOT_BLUE, ItemReference.KHROMETAL_INGOT_WHITE,
 				ItemReference.KHROMETAL_INGOT_BLACK, ItemReference.CHROMATIC_NUCLEUS, ItemReference.CHROMATIC_GLASSES);
 

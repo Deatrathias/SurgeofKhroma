@@ -7,6 +7,7 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 
 import net.deatrathias.khroma.SurgeofKhroma;
+import net.deatrathias.khroma.blocks.PillarBlock;
 import net.deatrathias.khroma.blocks.logistics.KhromaLineBlock;
 import net.deatrathias.khroma.items.SpannerItem;
 import net.deatrathias.khroma.items.renderer.SpannerColorTint;
@@ -22,7 +23,9 @@ import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
+import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
@@ -34,6 +37,8 @@ import net.minecraft.client.renderer.item.BlockModelWrapper;
 import net.minecraft.client.renderer.item.CompositeModel;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class ModelDataGen extends ModelProvider {
@@ -50,6 +55,11 @@ public class ModelDataGen extends ModelProvider {
 			BlockModelGenerators.X_ROT_270,
 			Direction.DOWN,
 			BlockModelGenerators.X_ROT_90);
+
+	public static final ModelTemplate PILLAR_MIDDLE = ModelTemplates.create(SurgeofKhroma.MODID + ":pillar_middle", "_middle", TextureSlot.TEXTURE);
+	public static final ModelTemplate PILLAR_TOP = ModelTemplates.create(SurgeofKhroma.MODID + ":pillar_top", "_top", TextureSlot.TEXTURE);
+	public static final ModelTemplate PILLAR_BOTTOM = ModelTemplates.create(SurgeofKhroma.MODID + ":pillar_bottom", "_bottom", TextureSlot.TEXTURE);
+	public static final ModelTemplate PILLAR_TOP_BOTTOM = ModelTemplates.create(SurgeofKhroma.MODID + ":pillar_top_bottom", "_top_bottom", TextureSlot.TEXTURE);
 
 	public ModelDataGen(PackOutput output) {
 		super(output, SurgeofKhroma.MODID);
@@ -72,6 +82,7 @@ public class ModelDataGen extends ModelProvider {
 				itemModels.generateFlatItem(tree.getBoatItem().get(), ModelTemplates.FLAT_ITEM);
 			if (tree.getChestBoatItem() != null)
 				itemModels.generateFlatItem(tree.getChestBoatItem().get(), ModelTemplates.FLAT_ITEM);
+			tree.ifPresent(TreeBlock.PILLAR, block -> createPillar(block, TextureMapping.defaultTexture(tree.get(TreeBlock.PLANKS)), blockModels));
 		}
 
 		for (var element : DataGenDefinitions.simpleBlocks) {
@@ -228,6 +239,23 @@ public class ModelDataGen extends ModelProvider {
 		}
 
 		blockModels.blockStateOutput.accept(multipart);
+	}
+
+	private void createPillar(Block block, TextureMapping mapping, BlockModelGenerators blockModels) {
+		ResourceLocation modelTopBottom = PILLAR_TOP_BOTTOM.create(block, mapping, blockModels.modelOutput);
+		MultiVariant pillarMiddle = BlockModelGenerators.plainVariant(PILLAR_MIDDLE.create(block, mapping, blockModels.modelOutput));
+		MultiVariant pillarTop = BlockModelGenerators.plainVariant(PILLAR_TOP.create(block, mapping, blockModels.modelOutput));
+		MultiVariant pillarBottom = BlockModelGenerators.plainVariant(PILLAR_BOTTOM.create(block, mapping, blockModels.modelOutput));
+		MultiVariant pillarTopBottom = BlockModelGenerators.plainVariant(modelTopBottom);
+
+		blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
+				.with(PropertyDispatch.initial(PillarBlock.TOP, PillarBlock.BOTTOM)
+						.select(false, false, pillarMiddle)
+						.select(true, false, pillarTop)
+						.select(false, true, pillarBottom)
+						.select(true, true, pillarTopBottom)));
+		blockModels.registerSimpleItemModel(block, modelTopBottom);
+
 	}
 
 	private MultiVariant plain(String path) {

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": "surgeofkhroma:flowtree_planks",
+    "X": "surgeofkhroma:flowtree_slab"
+  },
+  "pattern": [
+    "X",
+    "#",
+    "X"
+  ],
+  "result": {
+    "count": 2,
+    "id": "surgeofkhroma:flowtree_pillar"
+  }
+}

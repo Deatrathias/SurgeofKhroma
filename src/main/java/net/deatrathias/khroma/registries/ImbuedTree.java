@@ -9,8 +9,9 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import net.deatrathias.khroma.SurgeofKhroma;
-import net.deatrathias.khroma.blocks.FixedTintParticleLeavesBlock;
-import net.deatrathias.khroma.blocks.ImbuedLogBlock;
+import net.deatrathias.khroma.blocks.PillarBlock;
+import net.deatrathias.khroma.blocks.imbuedtrees.FixedTintParticleLeavesBlock;
+import net.deatrathias.khroma.blocks.imbuedtrees.ImbuedLogBlock;
 import net.minecraft.Util;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -194,6 +195,8 @@ public class ImbuedTree {
 
 		private BiFunction<BlockSetType, BlockBehaviour.Properties, Block> trapdoorFactory;
 
+		private Function<BlockBehaviour.Properties, Block> pillarFactory;
+
 		@FunctionalInterface
 		public static interface PropertyModifier {
 			BlockBehaviour.Properties modify(BlockBehaviour.Properties input);
@@ -216,6 +219,7 @@ public class ImbuedTree {
 			stairFactory = StairBlock::new;
 			doorFactory = DoorBlock::new;
 			trapdoorFactory = TrapDoorBlock::new;
+			pillarFactory = PillarBlock::new;
 		}
 
 		public Builder log(PropertyModifier modifier, MapColor sideColor, MapColor topColor) {
@@ -393,6 +397,16 @@ public class ImbuedTree {
 			return trapdoor(identity);
 		}
 
+		public Builder pillar(PropertyModifier modifier) {
+			props.put(TreeBlock.PILLAR, modifier.modify(plankProperties(plankColor)));
+			return this;
+		}
+
+		public Builder pillar() {
+			pillar(identity);
+			return this;
+		}
+
 		public Builder boat(Item.Properties properties) {
 			boatItemProps = properties;
 			return this;
@@ -448,6 +462,11 @@ public class ImbuedTree {
 
 		public Builder setTrapdoorFactory(BiFunction<BlockSetType, BlockBehaviour.Properties, Block> trapdoorFactory) {
 			this.trapdoorFactory = trapdoorFactory;
+			return this;
+		}
+
+		public Builder setPillarFactory(Function<BlockBehaviour.Properties, Block> pillarFactory) {
+			this.pillarFactory = pillarFactory;
 			return this;
 		}
 
@@ -525,6 +544,9 @@ public class ImbuedTree {
 					break;
 				case TRAPDOOR:
 					block = BlockReference.registerBlock(buildName + "_trapdoor", properties -> trapdoorFactory.apply(blockSet, properties), prop);
+					break;
+				case PILLAR:
+					block = BlockReference.registerBlock(buildName + "_pillar", pillarFactory, prop);
 					break;
 				}
 
@@ -677,6 +699,7 @@ public class ImbuedTree {
 		STAIRS,
 		PRESSURE_PLATE,
 		DOOR,
-		TRAPDOOR
+		TRAPDOOR,
+		PILLAR
 	}
 }

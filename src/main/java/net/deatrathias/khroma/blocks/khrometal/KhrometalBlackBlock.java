@@ -4,10 +4,10 @@ import org.joml.Vector3f;
 
 import net.deatrathias.khroma.network.ServerboundWalkOnBlackKhrometalPacket;
 import net.deatrathias.khroma.registries.RegistryReference;
+import net.deatrathias.khroma.registries.SoundReference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -55,7 +55,7 @@ public class KhrometalBlackBlock extends KhrometalBlock {
 			if (blockVec.distanceToSqr(entityVec) < 0.64) {
 				Vector3f teleport = direction.step().mul(2 + getAmplification(level, pos));
 				if (living.isFree(teleport.x, teleport.y, teleport.z)) {
-					level.playSound(null, pos, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS);
+					level.playSound(null, pos, SoundReference.BLACK_KHROMETAL_TELEPORT.get(), SoundSource.BLOCKS);
 					living.teleportRelative(teleport.x, teleport.y, teleport.z);
 					living.addEffect(new MobEffectInstance(RegistryReference.EFFECT_TELEPORT_SICKNESS, 60));
 				}

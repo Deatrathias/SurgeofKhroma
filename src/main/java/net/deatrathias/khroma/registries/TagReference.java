@@ -21,6 +21,8 @@ public class TagReference {
 	public static final TagKey<Block> BLOCK_IMBUED_TREE_LOGS = blockTag("imbued_tree_logs");
 	public static final TagKey<Block> BLOCK_IMBUED_TREE_LEAVES = blockTag("imbued_tree_leaves");
 	public static final TagKey<Block> BLOCK_IMBUED_TREE_SAPLINGS = blockTag("imbued_tree_sapling");
+	public static final TagKey<Block> BLOCK_PILLARS = blockTag("pillars");
+	public static final TagKey<Block> BLOCK_WOODEN_PILLARS = blockTag("wooden_pillars");
 	public static final TagKey<Block> C_BLOCK_ORES_CHROMIUM = BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", "ores/chromium"));
 	public static final TagKey<Block> C_BLOCK_STORAGE_BLOCKS_CHROMIUM = BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/chromium"));
 	public static final TagKey<Block> C_BLOCK_STORAGE_BLOCKS_RAW_CHROMIUM = BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/raw_chromium"));
@@ -67,6 +69,8 @@ public class TagReference {
 	public static final TagKey<Item> ITEM_IMBUED_TREE_LOGS = itemTag("imbued_tree_logs");
 	public static final TagKey<Item> ITEM_IMBUED_TREE_LEAVES = itemTag("imbued_tree_leaves");
 	public static final TagKey<Item> ITEM_IMBUED_TREE_SAPLINGS = itemTag("imbued_tree_sapling");
+	public static final TagKey<Item> ITEM_PILLARS = itemTag("pillars");
+	public static final TagKey<Item> ITEM_WOODEN_PILLARS = itemTag("wooden_pillars");
 	public static final TagKey<Item> C_ITEM_ORES_CHROMIUM = itemTag(C_BLOCK_ORES_CHROMIUM);
 	public static final TagKey<Item> C_ITEM_STORAGE_BLOCKS_CHROMIUM = itemTag(C_BLOCK_STORAGE_BLOCKS_CHROMIUM);
 	public static final TagKey<Item> C_ITEM_STORAGE_BLOCKS_RAW_CHROMIUM = itemTag(C_BLOCK_STORAGE_BLOCKS_RAW_CHROMIUM);

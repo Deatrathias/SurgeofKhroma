@@ -204,6 +204,12 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 				.group(getItemName(ItemReference.KHROMETAL_SPANNER))
 				.unlockedBy("has_khrometal", has(TagReference.ITEM_KHROMETAL_INGOTS))
 				.save(spannerOutput);
+
+		shapeless(RecipeCategory.TOOLS, ItemReference.KHROMANCER_ARCHIVE)
+				.requires(TagReference.ITEM_BASE_INGOT)
+				.requires(ItemReference.CHROMATIC_NUCLEUS)
+				.unlockedBy("has_ingot", has(TagReference.ITEM_BASE_INGOT))
+				.save(output);
 	}
 
 	private void imbuedWoodRecipes() {
@@ -218,6 +224,15 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 				if (tree.getChestBoatItem() != null)
 					chestBoat(tree.getChestBoatItem(), tree.getBoatItem());
 			}
+
+			shaped(RecipeCategory.BUILDING_BLOCKS, tree.get(TreeBlock.PILLAR), 2)
+					.define('#', tree.get(TreeBlock.PLANKS))
+					.define('X', tree.get(TreeBlock.SLAB))
+					.pattern("X")
+					.pattern("#")
+					.pattern("X")
+					.unlockedBy("has_slab", has(tree.get(TreeBlock.SLAB)))
+					.save(output);
 		}
 	}
 

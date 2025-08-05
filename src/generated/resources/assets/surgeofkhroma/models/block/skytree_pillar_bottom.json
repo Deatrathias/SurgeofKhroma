@@ -1,0 +1,6 @@
+{
+  "parent": "surgeofkhroma:block/pillar_bottom",
+  "textures": {
+    "texture": "surgeofkhroma:block/skytree_planks"
+  }
+}

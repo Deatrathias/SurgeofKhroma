@@ -4,11 +4,13 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
+import net.deatrathias.khroma.compat.guideme.SoKGuide;
 import net.deatrathias.khroma.registries.BlockReference;
 import net.deatrathias.khroma.registries.EntityReference;
 import net.deatrathias.khroma.registries.ItemReference;
 import net.deatrathias.khroma.registries.RecipeReference;
 import net.deatrathias.khroma.registries.RegistryReference;
+import net.deatrathias.khroma.registries.SoundReference;
 import net.deatrathias.khroma.registries.UIReference;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -27,6 +29,7 @@ public class SurgeofKhroma {
 	public static final Logger LOGGER = LogUtils.getLogger();
 
 	public SurgeofKhroma(IEventBus modEventBus, ModContainer modContainer) {
+		SoKGuide.create();
 		RegistryReference.ATTRIBUTES.register(modEventBus);
 		BlockReference.BLOCKS.register(modEventBus);
 		ItemReference.ITEMS.register(modEventBus);
@@ -42,6 +45,7 @@ public class SurgeofKhroma {
 		RegistryReference.MOB_EFFECTS.register(modEventBus);
 		RegistryReference.DATA_COMPONENT_TYPES.register(modEventBus);
 		RegistryReference.PARTICLE_TYPES.register(modEventBus);
+		SoundReference.SOUND_EVENTS.register(modEventBus);
 
 		modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 	}

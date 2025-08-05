@@ -1,6 +1,7 @@
 package net.deatrathias.khroma.registries;
 
 import net.deatrathias.khroma.SurgeofKhroma;
+import net.deatrathias.khroma.items.GuideItem;
 import net.deatrathias.khroma.items.KhrometalBlackPickaxeItem;
 import net.deatrathias.khroma.items.KhrometalBlackSwordItem;
 import net.deatrathias.khroma.items.KhrometalGreenToolItem;
@@ -31,22 +32,14 @@ public final class ItemReference {
 
 	public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(SurgeofKhroma.MODID);
 
-	/**
-	 * 
-	 * TIERS
-	 * 
-	 */
 	public static final ToolMaterial RED_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_DIAMOND_TOOL, 250, 6, 5, 14, TagReference.ITEM_KHROMETAL_INGOT_RED);
 	public static final ToolMaterial GREEN_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 2000, 6, 2, 14, TagReference.ITEM_KHROMETAL_INGOT_GREEN);
 	public static final ToolMaterial BLUE_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 12, 2, 24, TagReference.ITEM_KHROMETAL_INGOT_BLUE);
 	public static final ToolMaterial WHITE_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 6, 2, 14, TagReference.ITEM_KHROMETAL_INGOT_WHITE);
 	public static final ToolMaterial BLACK_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 6, 2, 14, TagReference.ITEM_KHROMETAL_INGOT_BLACK);
 
-	/**
-	 * 
-	 * ITEMS
-	 * 
-	 */
+	public static final DeferredItem<Item> KHROMANCER_ARCHIVE = ITEMS.register("khromancer_archive", registryName -> new GuideItem(itemProps(registryName)));
+
 	public static final DeferredItem<Item> RAW_CHROMIUM = ITEMS.registerSimpleItem("raw_chromium");
 
 	public static final DeferredItem<Item> CHROMIUM_INGOT = ITEMS.registerSimpleItem("chromium_ingot");

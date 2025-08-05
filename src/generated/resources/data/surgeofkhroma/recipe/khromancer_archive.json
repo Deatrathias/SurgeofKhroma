@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "#surgeofkhroma:base_ingot",
+    "surgeofkhroma:chromatic_nucleus"
+  ],
+  "result": {
+    "count": 1,
+    "id": "surgeofkhroma:khromancer_archive"
+  }
+}

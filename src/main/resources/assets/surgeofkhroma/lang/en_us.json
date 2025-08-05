@@ -58,6 +58,7 @@
   "block.surgeofkhroma.sparktree_trapdoor": "Sparktree Trapdoor",
   "block.surgeofkhroma.sparktree_sign": "Sparktree Sign",
   "block.surgeofkhroma.sparktree_hanging_sign": "Sparktree Hanging Sign",
+  "block.surgeofkhroma.sparktree_pillar": "Sparktree Pillar",
   "block.surgeofkhroma.bloomtree_log": "Bloomtree Log",
   "block.surgeofkhroma.bloomtree_wood": "Bloomtree Wood",
   "block.surgeofkhroma.stripped_bloomtree_log": "Stripped Bloomtree Log",
@@ -75,6 +76,7 @@
   "block.surgeofkhroma.bloomtree_trapdoor": "Bloomtree Trapdoor",
   "block.surgeofkhroma.bloomtree_sign": "Bloomtree Sign",
   "block.surgeofkhroma.bloomtree_hanging_sign": "Bloomtree Hanging Sign",
+  "block.surgeofkhroma.bloomtree_pillar": "Bloomtree Pillar",
   "block.surgeofkhroma.flowtree_log": "Flowtree Log",
   "block.surgeofkhroma.flowtree_wood": "Flowtree Wood",
   "block.surgeofkhroma.stripped_flowtree_log": "Stripped Flowtree Log",
@@ -92,6 +94,7 @@
   "block.surgeofkhroma.flowtree_trapdoor": "Flowtree Trapdoor",
   "block.surgeofkhroma.flowtree_sign": "Flowtree Sign",
   "block.surgeofkhroma.flowtree_hanging_sign": "Flowtree Hanging Sign",
+  "block.surgeofkhroma.flowtree_pillar": "Flowtree Pillar",
   "block.surgeofkhroma.skytree_log": "Skytree Log",
   "block.surgeofkhroma.skytree_wood": "Skytree Wood",
   "block.surgeofkhroma.stripped_skytree_log": "Stripped Skytree Log",
@@ -109,6 +112,7 @@
   "block.surgeofkhroma.skytree_trapdoor": "Skytree Trapdoor",
   "block.surgeofkhroma.skytree_sign": "Skytree Sign",
   "block.surgeofkhroma.skytree_hanging_sign": "Skytree Hanging Sign",
+  "block.surgeofkhroma.skytree_pillar": "Skytree Pillar",
   "block.surgeofkhroma.grimtree_log": "Grimtree Log",
   "block.surgeofkhroma.grimtree_wood": "Grimtree Wood",
   "block.surgeofkhroma.stripped_grimtree_log": "Stripped Grimtree Log",
@@ -126,6 +130,7 @@
   "block.surgeofkhroma.grimtree_trapdoor": "Grimtree Trapdoor",
   "block.surgeofkhroma.grimtree_sign": "Grimtree Sign",
   "block.surgeofkhroma.grimtree_hanging_sign": "Grimtree Hanging Sign",
+  "block.surgeofkhroma.grimtree_pillar": "Grimtree Pillar",
   "block.surgeofkhroma.khroma_line": "Khroma Line",
   "block.surgeofkhroma.khroma_aperture": "Khroma Aperture",
   "block.surgeofkhroma.khroma_combiner": "Khroma Combiner",
@@ -135,6 +140,7 @@
   "block.surgeofkhroma.node_collector": "Node Collector",
   "block.surgeofkhroma.khroma_imbuer": "Khroma Imbuer",
   
+  "item.surgeofkhroma.khromancer_archive": "Khromancer's Archive",
   "item.surgeofkhroma.chromium_ingot": "Chromium Ingot",
   "item.surgeofkhroma.raw_chromium": "Raw Chromium",
   "item.surgeofkhroma.chromium_nugget": "Chromium Nugget",
@@ -235,6 +241,8 @@
 
   "enchantment.surgeofkhroma.featherclip": "Featherclip",
   "enchantment.surgeofkhroma.featherclip.desc": "Deals extra damage to birds and pulls targets to the ground.",
+  
+  "sound.surgeofkhroma.block.khrometal_block_black.teleport": "Black Khrometal Teleport",
   
   "advancements.surgeofkhroma.root.title": "Surge of Khroma",
   "advancements.surgeofkhroma.root.description": "Get red, green, blue, white or black dye",

@@ -1,0 +1,18 @@
+{
+	"parent": "minecraft:block/block",
+	"textures": {
+		"particle": "#texture"
+	},
+	"elements": [
+		{
+			"from": [3, 0, 3],
+			"to": [13, 16, 13],
+			"faces": {
+				"north": {"uv": [3, 0, 13, 16], "texture": "#texture"},
+				"east": {"uv": [3, 0, 13, 16], "texture": "#texture"},
+				"south": {"uv": [3, 0, 13, 16], "texture": "#texture"},
+				"west": {"uv": [3, 0, 13, 16], "texture": "#texture"}
+			}
+		}
+	]
+}

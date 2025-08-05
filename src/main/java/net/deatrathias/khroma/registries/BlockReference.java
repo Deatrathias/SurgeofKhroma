@@ -14,19 +14,21 @@ import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.blockentities.KhromaApertureBlockEntity;
 import net.deatrathias.khroma.blockentities.KhromaImbuerBlockEntity;
 import net.deatrathias.khroma.blockentities.KhromaProcessingCoreBlockEntity;
-import net.deatrathias.khroma.blocks.FlowtreeSaplingBlock;
-import net.deatrathias.khroma.blocks.GrimDoorBlock;
-import net.deatrathias.khroma.blocks.GrimImbuedLogBlock;
-import net.deatrathias.khroma.blocks.GrimRotatedPillarBlock;
-import net.deatrathias.khroma.blocks.GrimSimpleBlock;
-import net.deatrathias.khroma.blocks.GrimSlabBlock;
-import net.deatrathias.khroma.blocks.GrimStairBlock;
-import net.deatrathias.khroma.blocks.GrimTrapDoor;
-import net.deatrathias.khroma.blocks.SkyImbuedLogBlock;
-import net.deatrathias.khroma.blocks.SkyRotatedPillarBlock;
-import net.deatrathias.khroma.blocks.SkySimpleBlock;
-import net.deatrathias.khroma.blocks.SkySlabBlock;
-import net.deatrathias.khroma.blocks.SkyStairBlock;
+import net.deatrathias.khroma.blocks.imbuedtrees.FlowtreeSaplingBlock;
+import net.deatrathias.khroma.blocks.imbuedtrees.GrimDoorBlock;
+import net.deatrathias.khroma.blocks.imbuedtrees.GrimImbuedLogBlock;
+import net.deatrathias.khroma.blocks.imbuedtrees.GrimPillarBlock;
+import net.deatrathias.khroma.blocks.imbuedtrees.GrimRotatedPillarBlock;
+import net.deatrathias.khroma.blocks.imbuedtrees.GrimSimpleBlock;
+import net.deatrathias.khroma.blocks.imbuedtrees.GrimSlabBlock;
+import net.deatrathias.khroma.blocks.imbuedtrees.GrimStairBlock;
+import net.deatrathias.khroma.blocks.imbuedtrees.GrimTrapDoor;
+import net.deatrathias.khroma.blocks.imbuedtrees.SkyImbuedLogBlock;
+import net.deatrathias.khroma.blocks.imbuedtrees.SkyPillarBlock;
+import net.deatrathias.khroma.blocks.imbuedtrees.SkyRotatedPillarBlock;
+import net.deatrathias.khroma.blocks.imbuedtrees.SkySimpleBlock;
+import net.deatrathias.khroma.blocks.imbuedtrees.SkySlabBlock;
+import net.deatrathias.khroma.blocks.imbuedtrees.SkyStairBlock;
 import net.deatrathias.khroma.blocks.items.KromaLineBlockItem;
 import net.deatrathias.khroma.blocks.items.NodeCollectorBlockItem;
 import net.deatrathias.khroma.blocks.khrometal.KhrometalBlackBlock;
@@ -136,6 +138,7 @@ public final class BlockReference {
 			.hangingSign()
 			.boat()
 			.chestBoat()
+			.pillar()
 			.build(BlockSetReference.SPARKTREE, WoodReference.SPARKTREE);
 
 	public static final ImbuedTree BLOOMTREE = ImbuedTree.Builder.create("bloomtree")
@@ -159,6 +162,7 @@ public final class BlockReference {
 			.hangingSign()
 			.boat()
 			.chestBoat()
+			.pillar(p -> p.strength(3f, 6f))
 			.build(BlockSetReference.BLOOMTREE, WoodReference.BLOOMTREE);
 
 	public static final ImbuedTree FLOWTREE = ImbuedTree.Builder.create("flowtree")
@@ -183,6 +187,7 @@ public final class BlockReference {
 			.hangingSign()
 			.boat()
 			.chestBoat()
+			.pillar(p -> p.friction(0.98f))
 			.build(BlockSetReference.FLOWTREE, WoodReference.FLOWTREE);
 
 	public static final ImbuedTree SKYTREE = ImbuedTree.Builder.create("skytree")
@@ -211,6 +216,8 @@ public final class BlockReference {
 			.hangingSign()
 			.boat()
 			.chestBoat()
+			.pillar()
+			.setPillarFactory(SkyPillarBlock::new)
 			.build(BlockSetReference.SKYTREE, WoodReference.SKYTREE);
 
 	public static final ImbuedTree GRIMTREE = ImbuedTree.Builder.create("grimtree")
@@ -241,6 +248,8 @@ public final class BlockReference {
 			.hangingSign()
 			.boat()
 			.chestBoat()
+			.pillar()
+			.setPillarFactory(GrimPillarBlock::new)
 			.build(BlockSetReference.GRIMTREE, WoodReference.GRIMTREE);
 
 	public static final List<ImbuedTree> IMBUED_TREES = List.of(SPARKTREE, BLOOMTREE, FLOWTREE, SKYTREE, GRIMTREE);
@@ -350,6 +359,7 @@ public final class BlockReference {
 				setFlammable(tree.get(TreeBlock.FENCE_GATE), 5, 20);
 				setFlammable(tree.get(TreeBlock.SLAB), 5, 20);
 				setFlammable(tree.get(TreeBlock.STAIRS), 5, 20);
+				tree.ifPresent(TreeBlock.PILLAR, block -> setFlammable(block, 5, 20));
 			}
 		}
 	}
