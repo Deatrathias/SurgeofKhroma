@@ -119,7 +119,7 @@ public class RegistrySetDataGen {
 				.ignoreVines()
 				.decorators(List.of(new LeaveVineDecorator(0.9f),
 						new AlterGroundDecorator(BlockStateProvider.simple(Blocks.GRASS_BLOCK)),
-						new PlaceFlowersDecorator(20, 5, 1)))
+						new PlaceFlowersDecorator(128, 5, 1)))
 				.build();
 		bootstrap.register(TreeGrowerReference.FEATURE_BLOOMTREE, new ConfiguredFeature<>(Feature.TREE, treeConfiguration));
 

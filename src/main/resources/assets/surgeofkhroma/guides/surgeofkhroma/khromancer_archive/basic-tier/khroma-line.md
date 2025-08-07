@@ -1,7 +1,7 @@
 ---
 navigation:
   title: Khroma Line
-  parent: logistics/logistics-index.md
+  parent: basic-tier/logistics-index.md
   position: 0
 ---
 # Khroma Line

@@ -5,6 +5,5 @@ navigation:
   position: 0
 ---
 
-# So what is it exactly?
+# What is Khroma
 
-Here's what it is...
