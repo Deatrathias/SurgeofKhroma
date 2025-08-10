@@ -8,6 +8,7 @@ import net.deatrathias.khroma.compat.guideme.SoKGuide;
 import net.deatrathias.khroma.registries.BlockReference;
 import net.deatrathias.khroma.registries.EntityReference;
 import net.deatrathias.khroma.registries.ItemReference;
+import net.deatrathias.khroma.registries.ProcessRegistry;
 import net.deatrathias.khroma.registries.RecipeReference;
 import net.deatrathias.khroma.registries.RegistryReference;
 import net.deatrathias.khroma.registries.SoundReference;
@@ -46,6 +47,7 @@ public class SurgeofKhroma {
 		RegistryReference.DATA_COMPONENT_TYPES.register(modEventBus);
 		RegistryReference.PARTICLE_TYPES.register(modEventBus);
 		SoundReference.SOUND_EVENTS.register(modEventBus);
+		ProcessRegistry.PROCESS_TYPES.register(modEventBus);
 
 		modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 	}

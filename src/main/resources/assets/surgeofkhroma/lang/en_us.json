@@ -182,6 +182,11 @@
   "item.surgeofkhroma.skytree_chest_boat": "Skytree Boat with Chest",
   "item.surgeofkhroma.grimtree_boat": "Grimtree Boat",
   "item.surgeofkhroma.grimtree_chest_boat": "Grimtree Boat with Chest",
+  "item.surgeofkhroma.warp_canister": "Warp Canister",
+  "item.surgeofkhroma.warp_canister.connected": "Connected to %s",
+  "item.surgeofkhroma.warp_canister.unbound": "Unbound",
+  "item.surgeofkhroma.warp_canister.fail": "Connnected container not found. Disconnecting.",
+
   
   "entity.surgeofkhroma.khroma_node": "Khroma Node",
   "entity.surgeofkhroma.sparktree_boat": "Sparktree Boat",
@@ -242,7 +247,9 @@
   "enchantment.surgeofkhroma.featherclip": "Featherclip",
   "enchantment.surgeofkhroma.featherclip.desc": "Deals extra damage to birds and pulls targets to the ground.",
   
-  "sound.surgeofkhroma.block.khrometal_block_black.teleport": "Black Khrometal Teleport",
+  "subtitles.surgeofkhroma.block.khrometal_block_black.teleport": "Black Khrometal teleports",
+  "subtitles.surgeofkhroma.item.warp_canister.connect": "Warp Canister connects",
+  "subtitles.surgeofkhroma.item.warp_canister.send": "Warp Canister sends",
   
   "advancements.surgeofkhroma.root.title": "Surge of Khroma",
   "advancements.surgeofkhroma.root.description": "Get red, green, blue, white or black dye",

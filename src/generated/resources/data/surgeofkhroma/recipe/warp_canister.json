@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": "#surgeofkhroma:ingots/khrometal/black",
+    "X": "minecraft:ender_pearl"
+  },
+  "pattern": [
+    "# #",
+    "#X#",
+    " # "
+  ],
+  "result": {
+    "count": 1,
+    "id": "surgeofkhroma:warp_canister"
+  }
+}

@@ -8,6 +8,7 @@ import com.mojang.serialization.MapCodec;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.effects.PullDownMobEffect;
 import net.deatrathias.khroma.items.SpannerItem;
+import net.deatrathias.khroma.items.WarpCanisterItem;
 import net.deatrathias.khroma.khroma.KhromaBiomeData;
 import net.deatrathias.khroma.particles.KhromaParticleOption;
 import net.deatrathias.khroma.worldgen.BloomtreeTrunkPlacer;
@@ -69,6 +70,10 @@ public class RegistryReference {
 	 */
 	public static final Supplier<DataComponentType<SpannerItem.SpannerColors>> DATA_COMPONENT_SPANNER_COLORS = DATA_COMPONENT_TYPES.registerComponentType("spanner_colors",
 			builder -> builder.persistent(SpannerItem.SpannerColors.CODEC).networkSynchronized(SpannerItem.SpannerColors.STREAM_CODEC));
+
+	public static final Supplier<DataComponentType<WarpCanisterItem.ContainerLinkLocation>> DATA_COMPONENT_CONTAINER_LINK_LOCATION = DATA_COMPONENT_TYPES.registerComponentType(
+			"container_link_location",
+			builder -> builder.persistent(WarpCanisterItem.ContainerLinkLocation.CODEC).networkSynchronized(WarpCanisterItem.ContainerLinkLocation.STREAM_CODEC).cacheEncoding());
 
 	/**
 	 * 

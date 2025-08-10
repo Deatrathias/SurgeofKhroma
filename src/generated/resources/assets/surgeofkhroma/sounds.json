@@ -3,6 +3,18 @@
     "sounds": [
       "surgeofkhroma:block/khrometal_block_black/teleport"
     ],
-    "subtitle": "sound.surgeofkhroma.block.khrometal_block_black.teleport"
+    "subtitle": "subtitles.surgeofkhroma.block.khrometal_block_black.teleport"
+  },
+  "warp_canister_connect": {
+    "sounds": [
+      "surgeofkhroma:item/warp_canister/connect"
+    ],
+    "subtitle": "subtitles.surgeofkhroma.item.warp_canister.connect"
+  },
+  "warp_canister_send": {
+    "sounds": [
+      "surgeofkhroma:item/warp_canister/send"
+    ],
+    "subtitle": "subtitles.surgeofkhroma.item.warp_canister.send"
   }
 }

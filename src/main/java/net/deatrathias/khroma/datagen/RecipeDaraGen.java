@@ -27,8 +27,10 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.Tags;
 
@@ -210,6 +212,19 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 				.requires(ItemReference.CHROMATIC_NUCLEUS)
 				.unlockedBy("has_ingot", has(TagReference.ITEM_BASE_INGOT))
 				.save(output);
+
+		shaped(RecipeCategory.TOOLS, ItemReference.WARP_CANISTER)
+				.define('#', TagReference.ITEM_KHROMETAL_INGOT_BLACK)
+				.define('X', Items.ENDER_PEARL)
+				.pattern("# #")
+				.pattern("#X#")
+				.pattern(" # ")
+				.unlockedBy("has_black_khrometal", has(TagReference.ITEM_KHROMETAL_INGOT_BLACK))
+				.save(output);
+
+		output.accept(SurgeofKhroma.resourceKey(Registries.RECIPE, ItemReference.WARP_CANISTER.getId().getPath() + "_reset"),
+				new ShapelessRecipe("", CraftingBookCategory.EQUIPMENT, new ItemStack(ItemReference.WARP_CANISTER.asItem(), 1), List.of(Ingredient.of(ItemReference.WARP_CANISTER))), null);
+
 	}
 
 	private void imbuedWoodRecipes() {

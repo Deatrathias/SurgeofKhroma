@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "surgeofkhroma:warp_canister"
+  ],
+  "result": {
+    "count": 1,
+    "id": "surgeofkhroma:warp_canister"
+  }
+}

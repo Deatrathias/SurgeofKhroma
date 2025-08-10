@@ -16,6 +16,7 @@ import net.deatrathias.khroma.khroma.KhromaProperty;
 import net.deatrathias.khroma.registries.BlockReference;
 import net.deatrathias.khroma.registries.ImbuedTree.TreeBlock;
 import net.deatrathias.khroma.registries.ItemReference;
+import net.deatrathias.khroma.registries.RegistryReference;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.BlockModelGenerators.PlantType;
 import net.minecraft.client.data.models.ItemModelGenerators;
@@ -35,6 +36,8 @@ import net.minecraft.client.renderer.block.model.multipart.CombinedCondition;
 import net.minecraft.client.renderer.block.model.multipart.CombinedCondition.Operation;
 import net.minecraft.client.renderer.item.BlockModelWrapper;
 import net.minecraft.client.renderer.item.CompositeModel;
+import net.minecraft.client.renderer.item.ConditionalItemModel;
+import net.minecraft.client.renderer.item.properties.conditional.HasComponent;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -109,20 +112,28 @@ public class ModelDataGen extends ModelProvider {
 		registerKhromaLine(blockModels, itemModels);
 		registerDissipator(blockModels, itemModels);
 
-		var spannerBase = ModelTemplates.FLAT_HANDHELD_ITEM.create(SurgeofKhroma.resource("item/khroma_spanner_base"),
-				new TextureMapping().put(TextureSlot.LAYER0, SurgeofKhroma.resource("item/spanner_base")), itemModels.modelOutput);
-		var spannerMiddle = ModelTemplates.FLAT_HANDHELD_ITEM.create(SurgeofKhroma.resource("item/khroma_spanner_middle"),
-				new TextureMapping().put(TextureSlot.LAYER0, SurgeofKhroma.resource("item/spanner_middle")), itemModels.modelOutput);
-		var spannerTop = ModelTemplates.FLAT_HANDHELD_ITEM.create(SurgeofKhroma.resource("item/khroma_spanner_top"),
-				new TextureMapping().put(TextureSlot.LAYER0, SurgeofKhroma.resource("item/spanner_top")), itemModels.modelOutput);
-		var spannerBottom = ModelTemplates.FLAT_HANDHELD_ITEM.create(SurgeofKhroma.resource("item/khroma_spanner_bottom"),
-				new TextureMapping().put(TextureSlot.LAYER0, SurgeofKhroma.resource("item/spanner_bottom")), itemModels.modelOutput);
+		var spannerBase = ModelTemplates.FLAT_HANDHELD_ITEM.create(SurgeofKhroma.resource("item/khroma_spanner_base"), TextureMapping.layer0(SurgeofKhroma.resource("item/spanner_base")),
+				itemModels.modelOutput);
+		var spannerMiddle = ModelTemplates.FLAT_HANDHELD_ITEM.create(SurgeofKhroma.resource("item/khroma_spanner_middle"), TextureMapping.layer0(SurgeofKhroma.resource("item/spanner_middle")),
+				itemModels.modelOutput);
+		var spannerTop = ModelTemplates.FLAT_HANDHELD_ITEM.create(SurgeofKhroma.resource("item/khroma_spanner_top"), TextureMapping.layer0(SurgeofKhroma.resource("item/spanner_top")),
+				itemModels.modelOutput);
+		var spannerBottom = ModelTemplates.FLAT_HANDHELD_ITEM.create(SurgeofKhroma.resource("item/khroma_spanner_bottom"), TextureMapping.layer0(SurgeofKhroma.resource("item/spanner_bottom")),
+				itemModels.modelOutput);
 
 		itemModels.itemModelOutput.accept(ItemReference.KHROMETAL_SPANNER.get(), new CompositeModel.Unbaked(List.of(
 				new BlockModelWrapper.Unbaked(spannerBase, List.of(new SpannerColorTint(SpannerItem.SpannerColorLocation.BASE))),
 				new BlockModelWrapper.Unbaked(spannerMiddle, List.of(new SpannerColorTint(SpannerItem.SpannerColorLocation.MIDDLE))),
 				new BlockModelWrapper.Unbaked(spannerTop, List.of(new SpannerColorTint(SpannerItem.SpannerColorLocation.TOP))),
 				new BlockModelWrapper.Unbaked(spannerBottom, List.of(new SpannerColorTint(SpannerItem.SpannerColorLocation.BOTTOM))))));
+
+		var warpCanister = ModelTemplates.FLAT_ITEM.create(SurgeofKhroma.resource("item/warp_canister"), TextureMapping.layer0(ItemReference.WARP_CANISTER.get()), itemModels.modelOutput);
+		var warpCanisterActive = ModelTemplates.FLAT_ITEM.create(SurgeofKhroma.resource("item/warp_canister_active"), TextureMapping.layer0(SurgeofKhroma.resource("item/warp_canister_active")),
+				itemModels.modelOutput);
+
+		itemModels.itemModelOutput.accept(ItemReference.WARP_CANISTER.get(),
+				new ConditionalItemModel.Unbaked(new HasComponent(RegistryReference.DATA_COMPONENT_CONTAINER_LINK_LOCATION.get(), false), new BlockModelWrapper.Unbaked(warpCanisterActive, List.of()),
+						new BlockModelWrapper.Unbaked(warpCanister, List.of())));
 	}
 
 	private void registerKhromaLine(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {

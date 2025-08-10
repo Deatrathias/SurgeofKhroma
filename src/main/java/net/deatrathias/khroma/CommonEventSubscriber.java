@@ -7,6 +7,7 @@ import net.deatrathias.khroma.network.ServerboundSetApertureLimitPacket;
 import net.deatrathias.khroma.network.ServerboundWalkOnBlackKhrometalPacket;
 import net.deatrathias.khroma.registries.BlockReference;
 import net.deatrathias.khroma.registries.ImbuedTree.TreeBlock;
+import net.deatrathias.khroma.registries.ProcessRegistry;
 import net.deatrathias.khroma.registries.RecipeReference;
 import net.deatrathias.khroma.registries.RegistryReference;
 import net.minecraft.world.entity.EntityType;
@@ -27,6 +28,7 @@ import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.MainThreadPayloadHandler;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import net.neoforged.neoforge.registries.NewRegistryEvent;
 import top.theillusivec4.curios.api.CuriosResources;
 
 @EventBusSubscriber(modid = SurgeofKhroma.MODID)
@@ -40,6 +42,11 @@ public final class CommonEventSubscriber {
 	@SubscribeEvent
 	private static void loadComplete(FMLLoadCompleteEvent event) {
 		event.enqueueWork(BlockReference::configureExtra);
+	}
+
+	@SubscribeEvent
+	private static void registerRegistries(NewRegistryEvent event) {
+		event.register(ProcessRegistry.PROCESS_TYPE_REGISTRY);
 	}
 
 	@SubscribeEvent

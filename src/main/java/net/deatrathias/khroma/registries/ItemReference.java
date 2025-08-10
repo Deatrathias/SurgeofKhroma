@@ -7,6 +7,7 @@ import net.deatrathias.khroma.items.KhrometalBlackSwordItem;
 import net.deatrathias.khroma.items.KhrometalGreenToolItem;
 import net.deatrathias.khroma.items.KhrometalWhitePickaxeItem;
 import net.deatrathias.khroma.items.SpannerItem;
+import net.deatrathias.khroma.items.WarpCanisterItem;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
@@ -78,6 +79,8 @@ public final class ItemReference {
 	public static final DeferredItem<Item> KHROMETAL_BLACK_PICKAXE = ITEMS.registerItem("khrometal_black_pickaxe",
 			props -> new KhrometalBlackPickaxeItem(addAttributeModifer(props.pickaxe(BLACK_KHROMETAL_TIER, 1, -2f), RegistryReference.ATTRIBUTE_TELEPORT_DROPS,
 					new AttributeModifier(SurgeofKhroma.resource("black_khrometal_bonus"), 1, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)));
+
+	public static final DeferredItem<Item> WARP_CANISTER = ITEMS.register("warp_canister", registryName -> new WarpCanisterItem(itemProps(registryName).stacksTo(1)));
 
 	public static Item.Properties itemProps(ResourceLocation registryName) {
 		return new Properties().setId(ResourceKey.create(Registries.ITEM, registryName));

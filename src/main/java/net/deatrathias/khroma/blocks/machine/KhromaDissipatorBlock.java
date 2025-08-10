@@ -102,7 +102,7 @@ public class KhromaDissipatorBlock extends BaseKhromaUserBlock implements IKhrom
 			float rate = 0;
 			if (network != null)
 				rate = Math.round(network.getKhromaRatio() * 100f) / 100f;
-			player.displayClientMessage(Component.translatable("block.surgeofkhroma.khroma_dissipator.message", Float.toString(rate)), true);
+			player.displayClientMessage(Component.translatable(descriptionId + ".message", Float.toString(rate)), true);
 			return InteractionResult.SUCCESS_SERVER;
 		}
 	}
