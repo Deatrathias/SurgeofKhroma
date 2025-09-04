@@ -1,8 +1,8 @@
 package net.deatrathias.khroma.compat.waila;
 
 import net.deatrathias.khroma.SurgeofKhroma;
+import net.deatrathias.khroma.client.rendering.entities.KhromaNodeEntityRenderer;
 import net.deatrathias.khroma.entities.KhromaNodeEntity;
-import net.deatrathias.khroma.entities.renderer.KhromaNodeEntityRenderer;
 import net.deatrathias.khroma.registries.EntityReference;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;

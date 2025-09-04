@@ -36,6 +36,8 @@ public abstract class BaseKhromaUserBlockEntity extends BlockEntity {
 	}
 
 	public void dirtyNetwork(Direction direction) {
+		if (level.isClientSide)
+			return;
 		if (getBlockState().getBlock() instanceof BaseKhromaUserBlock user) {
 			IKhromaUsingBlock.ConnectionType connection = user.khromaConnection(getBlockState(), direction);
 			KhromaNetwork linkedNetwork = networkPerSide.get(direction);

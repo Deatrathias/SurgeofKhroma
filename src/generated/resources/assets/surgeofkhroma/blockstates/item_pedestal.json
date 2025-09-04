@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "surgeofkhroma:block/item_pedestal",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "surgeofkhroma:block/item_pedestal"
+    },
+    "facing=north_east": {
+      "model": "surgeofkhroma:block/item_pedestal_diagonal"
+    },
+    "facing=north_west": {
+      "model": "surgeofkhroma:block/item_pedestal_diagonal",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "surgeofkhroma:block/item_pedestal",
+      "y": 180
+    },
+    "facing=south_east": {
+      "model": "surgeofkhroma:block/item_pedestal_diagonal",
+      "y": 90
+    },
+    "facing=south_west": {
+      "model": "surgeofkhroma:block/item_pedestal_diagonal",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "surgeofkhroma:block/item_pedestal",
+      "y": 270
+    }
+  }
+}

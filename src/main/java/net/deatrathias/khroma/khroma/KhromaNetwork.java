@@ -71,7 +71,7 @@ public class KhromaNetwork {
 		providers = new HashMap<BlockDirection, IKhromaProvider>();
 		consumers = new HashMap<BlockDirection, IKhromaConsumer>();
 		relays = new HashMap<BlockDirection, IKhromaConsumer>();
-		khroma = Khroma.KHROMA_EMPTY;
+		khroma = Khroma.EMPTY;
 		this.level = level;
 	}
 
@@ -276,9 +276,9 @@ public class KhromaNetwork {
 	public static Khroma getKhromaAtPos(Level level, BlockPos pos) {
 		var networks = networksPerLevel.get(level);
 		if (networks == null)
-			return Khroma.KHROMA_EMPTY;
+			return Khroma.EMPTY;
 
-		Khroma result = Khroma.KHROMA_EMPTY;
+		Khroma result = Khroma.EMPTY;
 		boolean found = false;
 		for (var network : networks) {
 			if (network.lines.contains(pos)) {

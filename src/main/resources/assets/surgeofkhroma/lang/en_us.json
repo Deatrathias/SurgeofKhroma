@@ -139,6 +139,7 @@
   "block.surgeofkhroma.khroma_dissipator.message": "Dissipating %s Kh/t",
   "block.surgeofkhroma.node_collector": "Node Collector",
   "block.surgeofkhroma.khroma_imbuer": "Khroma Imbuer",
+  "block.surgeofkhroma.item_pedestal": "Item Pedestal",
   
   "item.surgeofkhroma.khromancer_archive": "Khromancer's Archive",
   "item.surgeofkhroma.chromium_ingot": "Chromium Ingot",
@@ -199,6 +200,7 @@
   "entity.surgeofkhroma.skytree_chest_boat": "Skytree Boat with Chest",
   "entity.surgeofkhroma.grimtree_boat": "Grimtree Boat",
   "entity.surgeofkhroma.grimtree_chest_boat": "Grimtree Boat with Chest",
+  "entity.surgeofkhroma.strix": "Strix",
   
   "tag.block.surgeofkhroma.khroma_devices": "Khroma Devices",
   "tag.block.surgeofkhroma.khrometal_blocks": "Khrometal Blocks",

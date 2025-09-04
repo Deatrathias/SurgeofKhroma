@@ -9,6 +9,7 @@ import net.deatrathias.khroma.khroma.KhromaConsumerImpl;
 import net.deatrathias.khroma.khroma.KhromaDeviceTier;
 import net.deatrathias.khroma.khroma.KhromaNetwork;
 import net.deatrathias.khroma.khroma.KhromaThroughput;
+import net.deatrathias.khroma.khroma.VariableConsumer;
 import net.deatrathias.khroma.util.BlockDirection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,50 +20,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class BaseKhromaConsumerBlockEntity extends BlockEntity {
-
-	protected class VariableConsumer implements IKhromaConsumer {
-
-		private float previousRequest = 0;
-
-		private float request;
-
-		private KhromaNetwork network;
-
-		public void setNetwork(KhromaNetwork network) {
-			this.network = network;
-		}
-
-		@Override
-		public float request() {
-			float result = request;
-			previousRequest = result;
-			request = 0;
-			return result;
-		}
-
-		public KhromaThroughput requestKhroma(float requestIntensity) {
-			request = requestIntensity;
-			if (network != null)
-				return network.getKhromaThroughput().multiply(previousRequest);
-			previousRequest = 0;
-			return KhromaThroughput.empty;
-		}
-
-		public KhromaThroughput requestKhroma() {
-			return requestKhroma(1f);
-		}
-
-		@Override
-		public boolean canConsume() {
-			return true;
-		}
-
-		@Override
-		public boolean isRelay() {
-			return false;
-		}
-
-	}
 
 	protected VariableConsumer consumer = new VariableConsumer();
 
@@ -87,7 +44,7 @@ public abstract class BaseKhromaConsumerBlockEntity extends BlockEntity {
 		if (network != null)
 			return network.getKhroma();
 
-		return Khroma.KHROMA_EMPTY;
+		return Khroma.EMPTY;
 	}
 
 	public float getSoftLimit() {

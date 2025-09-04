@@ -2,16 +2,16 @@ package net.deatrathias.khroma.blocks.machine;
 
 import com.mojang.serialization.MapCodec;
 
-import net.deatrathias.khroma.Config;
 import net.deatrathias.khroma.SurgeofKhroma;
-import net.deatrathias.khroma.blocks.BaseKhromaUserBlock;
+import net.deatrathias.khroma.blockentities.NodeCollectorBlockEntity;
+import net.deatrathias.khroma.blocks.BaseKhromaUserEntityBlock;
 import net.deatrathias.khroma.entities.KhromaNodeEntity;
 import net.deatrathias.khroma.khroma.IKhromaProvider;
 import net.deatrathias.khroma.khroma.IKhromaProvidingBlock;
 import net.deatrathias.khroma.khroma.KhromaBiomeData;
 import net.deatrathias.khroma.khroma.KhromaNetwork;
 import net.deatrathias.khroma.khroma.KhromaProviderImpl;
-import net.deatrathias.khroma.khroma.KhromaThroughput;
+import net.deatrathias.khroma.registries.BlockReference;
 import net.deatrathias.khroma.registries.RegistryReference;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,7 +20,9 @@ import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.entity.EntityTypeTest;
@@ -29,7 +31,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class NodeCollectorBlock extends BaseKhromaUserBlock implements IKhromaProvidingBlock {
+public class NodeCollectorBlock extends BaseKhromaUserEntityBlock implements IKhromaProvidingBlock {
 
 	public static final MapCodec<NodeCollectorBlock> CODEC = simpleCodec(NodeCollectorBlock::new);
 
@@ -47,7 +49,6 @@ public class NodeCollectorBlock extends BaseKhromaUserBlock implements IKhromaPr
 		super.onPlace(state, level, pos, oldState, movedByPiston);
 		if (!level.isClientSide)
 			level.getEntities(EntityTypeTest.forClass(KhromaNodeEntity.class), new AABB(pos), EntitySelector.NO_SPECTATORS).forEach((entity) -> ((KhromaNodeEntity) entity).setForceVisible(true));
-
 	}
 
 	@Override
@@ -60,13 +61,8 @@ public class NodeCollectorBlock extends BaseKhromaUserBlock implements IKhromaPr
 	@Override
 	protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
 		ChunkAccess chunk = level.getChunk(pos);
-		KhromaBiomeData data = chunk.getData(RegistryReference.KHROMA_BIOME_DATA);
+		KhromaBiomeData data = chunk.getData(RegistryReference.ATTACHMENT_KHROMA_BIOME_DATA);
 		return data != null && data.isGenerated() && data.getNode().isPresent() && pos.equals(data.getNode().get().getPosition());
-	}
-
-	@Override
-	protected RenderShape getRenderShape(BlockState state) {
-		return RenderShape.MODEL;
 	}
 
 	@Override
@@ -97,15 +93,20 @@ public class NodeCollectorBlock extends BaseKhromaUserBlock implements IKhromaPr
 	@Override
 	public IKhromaProvider getProvider(Level level, BlockPos pos, BlockState state, Direction face, KhromaNetwork network) {
 		if (face == Direction.DOWN) {
-			ChunkAccess chunk = level.getChunk(pos);
-			KhromaBiomeData data = chunk.getData(RegistryReference.KHROMA_BIOME_DATA);
-			if (data.getNode().isEmpty()) {
-				SurgeofKhroma.LOGGER.error("No node in chunk " + chunk.getPos().toString() + " for collector at " + pos.toString());
-				return KhromaProviderImpl.disabled;
-			}
-			var node = data.getNode().get();
-			return new KhromaProviderImpl(true, new KhromaThroughput(node.getKhroma(), Config.KHROMA_RATE_PER_LEVEL.get().get(node.getLevel() - 1).floatValue()), false);
+			NodeCollectorBlockEntity be = level.getBlockEntity(pos, BlockReference.BE_NODE_COLLECTOR.get()).orElseThrow();
+			return be.getProvider();
 		}
 		return KhromaProviderImpl.disabled;
+	}
+
+	@Override
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		SurgeofKhroma.LOGGER.debug("created new");
+		return new NodeCollectorBlockEntity(pos, state);
+	}
+
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+		return createTickerHelper(blockEntityType, BlockReference.BE_NODE_COLLECTOR.get(), level.isClientSide ? NodeCollectorBlockEntity::clientTick : NodeCollectorBlockEntity::serverTick);
 	}
 }

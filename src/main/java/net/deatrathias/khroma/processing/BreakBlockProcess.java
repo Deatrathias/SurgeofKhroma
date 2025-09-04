@@ -86,7 +86,7 @@ public class BreakBlockProcess extends BlockProcess {
 
 	@Override
 	protected Khroma requiredKhroma() {
-		return Khroma.KHROMA_RED;
+		return Khroma.RED;
 	}
 
 	@Override

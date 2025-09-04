@@ -1,15 +1,24 @@
 package net.deatrathias.khroma;
 
+import com.mojang.brigadier.Command;
+
+import net.deatrathias.khroma.blockentities.ItemPedestalBlockEntity;
 import net.deatrathias.khroma.blocks.khrometal.KhrometalBlackBlock;
 import net.deatrathias.khroma.compat.curios.CuriosRegister;
+import net.deatrathias.khroma.entities.Strix;
 import net.deatrathias.khroma.gui.KhromaApertureMenu;
+import net.deatrathias.khroma.khroma.KhromaBiomeData;
 import net.deatrathias.khroma.network.ServerboundSetApertureLimitPacket;
 import net.deatrathias.khroma.network.ServerboundWalkOnBlackKhrometalPacket;
 import net.deatrathias.khroma.registries.BlockReference;
+import net.deatrathias.khroma.registries.EntityReference;
 import net.deatrathias.khroma.registries.ImbuedTree.TreeBlock;
 import net.deatrathias.khroma.registries.ProcessRegistry;
 import net.deatrathias.khroma.registries.RecipeReference;
 import net.deatrathias.khroma.registries.RegistryReference;
+import net.minecraft.commands.Commands;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
@@ -23,6 +32,8 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -52,8 +63,14 @@ public final class CommonEventSubscriber {
 	@SubscribeEvent
 	private static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BlockReference.BE_KHROMA_IMBUER.get(), SidedInvWrapper::new);
+		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BlockReference.BE_ITEM_PEDESTAL.get(), ItemPedestalBlockEntity.ItemHandler::new);
 		if (ModList.get().isLoaded(CuriosResources.MOD_ID))
 			CuriosRegister.registerCurioCapabilities(event);
+	}
+
+	@SubscribeEvent
+	private static void createAttributes(EntityAttributeCreationEvent event) {
+		event.put(EntityReference.STRIX.get(), Strix.createAttributes().build());
 	}
 
 	@SubscribeEvent
@@ -90,13 +107,24 @@ public final class CommonEventSubscriber {
 
 	@SubscribeEvent
 	private static void addBlockToBlockEntities(BlockEntityTypeAddBlocksEvent event) {
-		event.modify(BlockEntityType.SIGN, BlockReference.IMBUED_TREES.stream().filter(tree -> tree.get(TreeBlock.SIGN) != null).mapMulti((tree, consumer) -> {
+		event.modify(BlockEntityType.SIGN, BlockReference.IMBUED_TREES.stream().mapMulti((tree, consumer) -> {
 			consumer.accept(tree.get(TreeBlock.SIGN));
 			consumer.accept(tree.get(TreeBlock.WALL_SIGN));
 		}).toArray(Block[]::new));
-		event.modify(BlockEntityType.HANGING_SIGN, BlockReference.IMBUED_TREES.stream().filter(tree -> tree.get(TreeBlock.HANGING_SIGN) != null).mapMulti((tree, consumer) -> {
+		event.modify(BlockEntityType.HANGING_SIGN, BlockReference.IMBUED_TREES.stream().mapMulti((tree, consumer) -> {
 			consumer.accept(tree.get(TreeBlock.HANGING_SIGN));
 			consumer.accept(tree.get(TreeBlock.WALL_HANGING_SIGN));
 		}).toArray(Block[]::new));
+	}
+
+	@SubscribeEvent
+	private static void registerCommands(RegisterCommandsEvent event) {
+		event.getDispatcher().register(Commands.literal("regenkhromanode").requires(stack -> stack.hasPermission(2)).executes(stack -> {
+			var source = stack.getSource();
+			var chunk = source.getLevel().getChunkAt(BlockPos.containing(source.getPosition()));
+			KhromaBiomeData.performChunkGeneration(source.getLevel(), chunk, true);
+			source.sendSuccess(() -> Component.literal("Recreated node at " + chunk.getPos().toString()), true);
+			return Command.SINGLE_SUCCESS;
+		}));
 	}
 }

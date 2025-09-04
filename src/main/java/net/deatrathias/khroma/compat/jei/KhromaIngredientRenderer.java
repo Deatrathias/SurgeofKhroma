@@ -3,7 +3,7 @@ package net.deatrathias.khroma.compat.jei;
 import java.util.List;
 
 import mezz.jei.api.ingredients.IIngredientRenderer;
-import net.deatrathias.khroma.gui.KhromaGauge;
+import net.deatrathias.khroma.client.gui.elements.KhromaGauge;
 import net.deatrathias.khroma.khroma.Khroma;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;

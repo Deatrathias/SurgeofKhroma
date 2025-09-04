@@ -134,17 +134,17 @@ public class KhromaCombinerBlock extends BaseKhromaRelayBlock {
 			KhromaNetwork networkFromConsumer0 = KhromaNetwork.findNetwork(level, new BlockDirection(blockPos, facing.getClockWise()));
 			KhromaNetwork networkFromConsumer1 = KhromaNetwork.findNetwork(level, new BlockDirection(blockPos, facing.getCounterClockWise()));
 
-			Khroma khroma0 = networkFromConsumer0 == null ? Khroma.KHROMA_EMPTY : networkFromConsumer0.getKhroma();
-			Khroma khroma1 = networkFromConsumer1 == null ? Khroma.KHROMA_EMPTY : networkFromConsumer1.getKhroma();
+			Khroma khroma0 = networkFromConsumer0 == null ? Khroma.EMPTY : networkFromConsumer0.getKhroma();
+			Khroma khroma1 = networkFromConsumer1 == null ? Khroma.EMPTY : networkFromConsumer1.getKhroma();
 
-			if (khroma0 == Khroma.KHROMA_EMPTY) {
+			if (khroma0 == Khroma.EMPTY) {
 				if (index == 0) {
 					request = 0;
 					return 0;
 				} else {
 					return networkFromProvider.getRequest();
 				}
-			} else if (khroma1 == Khroma.KHROMA_EMPTY) {
+			} else if (khroma1 == Khroma.EMPTY) {
 				if (index == 1) {
 					request = 0;
 					return 0;

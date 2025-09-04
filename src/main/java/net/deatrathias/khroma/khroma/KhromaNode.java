@@ -1,11 +1,18 @@
 package net.deatrathias.khroma.khroma;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.common.util.ValueIOSerializable;
 
 public class KhromaNode implements ValueIOSerializable {
+	public static StreamCodec<ByteBuf, KhromaNode> STREAM_CODEC = StreamCodec.composite(BlockPos.STREAM_CODEC, KhromaNode::getPosition, Khroma.STREAM_CODEC, KhromaNode::getKhroma,
+			ByteBufCodecs.VAR_INT,
+			KhromaNode::getLevel, KhromaNode::new);
+
 	private BlockPos position;
 
 	private Khroma khroma;

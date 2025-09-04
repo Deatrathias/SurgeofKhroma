@@ -1,15 +1,23 @@
 package net.deatrathias.khroma.khroma;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+
+import org.jetbrains.annotations.Nullable;
 
 import net.deatrathias.khroma.Config;
 import net.deatrathias.khroma.SurgeofKhroma;
+import net.deatrathias.khroma.entities.KhromaNodeEntity;
+import net.deatrathias.khroma.registries.RegistryReference;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
@@ -17,6 +25,9 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.attachment.AttachmentSyncHandler;
+import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import net.neoforged.neoforge.common.util.ValueIOSerializable;
 
 public class KhromaBiomeData implements ValueIOSerializable {
@@ -56,8 +67,45 @@ public class KhromaBiomeData implements ValueIOSerializable {
 		node = input.child("node").map(value -> new KhromaNode(value));
 	}
 
+	public static class SyncHandler implements AttachmentSyncHandler<KhromaBiomeData> {
+
+		@Override
+		public void write(RegistryFriendlyByteBuf buf, KhromaBiomeData attachment, boolean initialSync) {
+			buf.writeBoolean(attachment.generated);
+			buf.writeOptional(attachment.node, KhromaNode.STREAM_CODEC);
+		}
+
+		@Override
+		public @Nullable KhromaBiomeData read(IAttachmentHolder holder, RegistryFriendlyByteBuf buf, @Nullable KhromaBiomeData previousValue) {
+			KhromaBiomeData data = new KhromaBiomeData();
+			data.generated = buf.readBoolean();
+			data.node = buf.readOptional(KhromaNode.STREAM_CODEC);
+
+			return data;
+		}
+	}
+
 	private long getSeed(long a, long b, long c) {
 		return (((((1586624L ^ a) * 1000347L) ^ b) * 203687L) ^ c) * 463257L + 98561L;
+	}
+
+	public static void performChunkGeneration(LevelAccessor level, ChunkAccess chunk, boolean forceGenerate) {
+		var data = chunk.getData(RegistryReference.ATTACHMENT_KHROMA_BIOME_DATA);
+		if (forceGenerate || !data.isGenerated()) {
+			ChunkPos chunkPos = chunk.getPos();
+			List<KhromaNodeEntity> existingNodeEntities = level.getEntitiesOfClass(KhromaNodeEntity.class,
+					new AABB(chunkPos.getMinBlockX(), chunk.getMinY(), chunkPos.getMinBlockZ(), chunkPos.getMaxBlockX(), chunk.getMaxY(), chunkPos.getMaxBlockZ()));
+			existingNodeEntities.forEach(entity -> entity.remove(RemovalReason.KILLED));
+
+			data.generateNode(level, chunk);
+			if (data.isGenerated()) {
+				chunk.setData(RegistryReference.ATTACHMENT_KHROMA_BIOME_DATA, data);
+				if (data.getNode().isPresent()) {
+					KhromaNode node = data.getNode().get();
+					level.addFreshEntity(KhromaNodeEntity.create((Level) level, node.getPosition(), node.getKhroma(), node.getLevel()));
+				}
+			}
+		}
 	}
 
 	public void generateNode(LevelAccessor level, ChunkAccess chunk) {
@@ -80,12 +128,12 @@ public class KhromaBiomeData implements ValueIOSerializable {
 		BlockPos nodePos = new BlockPos(chunkPos.getMiddleBlockX(), height + 4, chunkPos.getMiddleBlockZ());
 		var biome = chunk.getNoiseBiome(nodePos.getX() / 4, nodePos.getY() / 4, nodePos.getZ() / 4);
 		if (!biome.is(BiomeTags.IS_OVERWORLD)) {
-			generated = true;
+			generated = false;
 			node = Optional.empty();
 			return;
 		}
 		Khroma color = determineColor(biome, nodePos, random);
-		if (color != Khroma.KHROMA_EMPTY)
+		if (color != Khroma.EMPTY)
 			node = Optional.of(new KhromaNode(nodePos, color, 1));
 		SurgeofKhroma.LOGGER.debug("seed " + seed + " chunk x " + chunkPos.x + " z " + chunkPos.z);
 		generated = true;
@@ -133,7 +181,7 @@ public class KhromaBiomeData implements ValueIOSerializable {
 		SurgeofKhroma.LOGGER.debug(colorValues[0] + " " + colorValues[1] + " " + colorValues[2] + " " + colorValues[3] + " " + colorValues[4]);
 		int color1 = findRandomValue(colorValues, random);
 		if (color1 == -1)
-			return Khroma.KHROMA_EMPTY;
+			return Khroma.EMPTY;
 
 		int color2 = findRandomValue(colorValues, random);
 
@@ -164,4 +212,5 @@ public class KhromaBiomeData implements ValueIOSerializable {
 
 		return -1;
 	}
+
 }

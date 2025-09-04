@@ -10,7 +10,7 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
 import net.deatrathias.khroma.SurgeofKhroma;
-import net.deatrathias.khroma.gui.KhromaImbuerScreen;
+import net.deatrathias.khroma.client.gui.screens.KhromaImbuerScreen;
 import net.deatrathias.khroma.khroma.Khroma;
 import net.deatrathias.khroma.registries.BlockReference;
 import net.deatrathias.khroma.registries.RecipeReference;

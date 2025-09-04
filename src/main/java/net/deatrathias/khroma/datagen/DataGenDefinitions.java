@@ -82,13 +82,13 @@ public class DataGenDefinitions {
 		horDirectionBlocks = deferredList(BlockReference.KHROMA_PROVIDER, BlockReference.KHROMA_MACHINE,
 				BlockReference.KHROMA_COMBINER, BlockReference.KHROMA_SEPARATOR, BlockReference.KHROMA_IMBUER);
 
-		fullDirectionBlocks = deferredList(BlockReference.KHROMA_APERTURE);
+		fullDirectionBlocks = deferredList(BlockReference.KHROMA_APERTURE, BlockReference.BREAK_BLOCK_PROCESS_CONTROLLER);
 
 		dropsOreBlocks = deferredList(BlockReference.CHROMIUM_ORE, BlockReference.DEEPSLATE_CHROMIUM_ORE);
 
 		simpleItems = deferredList(ItemReference.KHROMANCER_ARCHIVE, ItemReference.RAW_CHROMIUM, ItemReference.CHROMIUM_INGOT, ItemReference.CHROMIUM_NUGGET,
 				ItemReference.KHROMETAL_INGOT_RED, ItemReference.KHROMETAL_INGOT_GREEN, ItemReference.KHROMETAL_INGOT_BLUE, ItemReference.KHROMETAL_INGOT_WHITE,
-				ItemReference.KHROMETAL_INGOT_BLACK, ItemReference.CHROMATIC_NUCLEUS, ItemReference.CHROMATIC_GLASSES);
+				ItemReference.KHROMETAL_INGOT_BLACK, ItemReference.CHROMATIC_NUCLEUS, ItemReference.CHROMATIC_GLASSES, ItemReference.STRIX_SPAWN_EGG);
 
 		handheldItems = deferredList(ItemReference.KHROMETAL_RED_SWORD, ItemReference.KHROMETAL_RED_PICKAXE,
 				ItemReference.KHROMETAL_GREEN_SWORD, ItemReference.KHROMETAL_GREEN_PICKAXE, ItemReference.KHROMETAL_BLUE_SWORD, ItemReference.KHROMETAL_BLUE_PICKAXE,
@@ -96,7 +96,7 @@ public class DataGenDefinitions {
 
 		khromaDevices = deferredCombinedList(List.of(BlockReference.KHROMA_LINE, BlockReference.NODE_COLLECTOR, BlockReference.KHROMA_PROVIDER,
 				BlockReference.KHROMA_MACHINE, BlockReference.KHROMA_APERTURE, BlockReference.KHROMA_COMBINER, BlockReference.KHROMA_SEPARATOR,
-				BlockReference.KHROMA_DISSIPATOR, BlockReference.KHROMA_IMBUER), sortedTierList(BlockReference.KHROMA_PROCESSING_CORE_TIERED));
+				BlockReference.KHROMA_DISSIPATOR, BlockReference.KHROMA_IMBUER, BlockReference.ITEM_PEDESTAL), sortedTierList(BlockReference.KHROMA_PROCESSING_CORE_TIERED));
 
 		needsStoneTool = deferredList(BlockReference.CHROMIUM_ORE, BlockReference.DEEPSLATE_CHROMIUM_ORE,
 				BlockReference.CHROMIUM_BLOCK, BlockReference.RAW_CHROMIUM_BLOCK);

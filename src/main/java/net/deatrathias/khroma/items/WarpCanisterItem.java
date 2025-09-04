@@ -18,6 +18,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -30,7 +31,6 @@ import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.component.TooltipProvider;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -137,7 +137,7 @@ public class WarpCanisterItem extends Item {
 				BlockState state = context.getLevel().getBlockState(context.getClickedPos());
 				Component name;
 				BlockEntity be = context.getLevel().getBlockEntity(context.getClickedPos());
-				if (be != null && be instanceof BaseContainerBlockEntity container)
+				if (be != null && be instanceof Nameable container)
 					name = container.getDisplayName();
 				else
 					name = state.getBlock().getName();

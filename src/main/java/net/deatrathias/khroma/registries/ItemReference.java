@@ -1,5 +1,9 @@
 package net.deatrathias.khroma.registries;
 
+import io.wispforest.accessories.api.components.AccessoriesDataComponents;
+import io.wispforest.accessories.api.components.AccessoryItemAttributeModifiers;
+import io.wispforest.accessories.api.core.AccessoryItem;
+import io.wispforest.accessories.api.data.AccessoriesBaseData;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.items.GuideItem;
 import net.deatrathias.khroma.items.KhrometalBlackPickaxeItem;
@@ -14,7 +18,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -22,10 +25,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.world.item.equipment.EquipmentAssets;
-import net.minecraft.world.item.equipment.Equippable;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -52,11 +54,9 @@ public final class ItemReference {
 	public static final DeferredItem<Item> KHROMETAL_INGOT_BLACK = ITEMS.registerSimpleItem("khrometal_ingot_black");
 	public static final DeferredItem<Item> CHROMATIC_NUCLEUS = ITEMS.registerSimpleItem("chromatic_nucleus");
 
-	public static final DeferredItem<Item> CHROMATIC_GLASSES = ITEMS.registerSimpleItem("chromatic_glasses", new Item.Properties().stacksTo(1)
-			.component(DataComponents.EQUIPPABLE, Equippable.builder(EquipmentSlot.HEAD).setAsset(SurgeofKhroma.resourceKey(EquipmentAssets.ROOT_ID, "chromatic_glasses")).build()).attributes(
-					ItemAttributeModifiers.builder()
-							.add(RegistryReference.ATTRIBUTE_CAN_SEE_NODES, new AttributeModifier(SurgeofKhroma.resource("chromatic_glasses"), 1, Operation.ADD_VALUE), EquipmentSlotGroup.HEAD)
-							.build()));
+	public static final DeferredItem<Item> CHROMATIC_GLASSES = ITEMS.register("chromatic_glasses", registryName -> new AccessoryItem(
+			itemProps(registryName).stacksTo(1).component(AccessoriesDataComponents.ATTRIBUTES, AccessoryItemAttributeModifiers.builder()
+					.addForSlot(RegistryReference.ATTRIBUTE_CAN_SEE_NODES, new AttributeModifier(registryName, 1, Operation.ADD_VALUE), AccessoriesBaseData.FACE_SLOT, false).build())));
 
 	public static final DeferredItem<Item> KHROMETAL_SPANNER = ITEMS.registerItem("khrometal_spanner",
 			props -> new SpannerItem(
@@ -81,6 +81,8 @@ public final class ItemReference {
 					new AttributeModifier(SurgeofKhroma.resource("black_khrometal_bonus"), 1, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)));
 
 	public static final DeferredItem<Item> WARP_CANISTER = ITEMS.register("warp_canister", registryName -> new WarpCanisterItem(itemProps(registryName).stacksTo(1)));
+
+	public static final DeferredItem<Item> STRIX_SPAWN_EGG = ITEMS.registerItem("strix_spawn_egg", props -> new SpawnEggItem(EntityReference.STRIX.get(), props));
 
 	public static Item.Properties itemProps(ResourceLocation registryName) {
 		return new Properties().setId(ResourceKey.create(Registries.ITEM, registryName));

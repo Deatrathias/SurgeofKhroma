@@ -11,19 +11,19 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import net.deatrathias.khroma.SurgeofKhroma;
+import net.deatrathias.khroma.blockentities.ItemPedestalBlockEntity;
 import net.deatrathias.khroma.blockentities.KhromaApertureBlockEntity;
 import net.deatrathias.khroma.blockentities.KhromaImbuerBlockEntity;
 import net.deatrathias.khroma.blockentities.KhromaProcessingCoreBlockEntity;
+import net.deatrathias.khroma.blockentities.NodeCollectorBlockEntity;
 import net.deatrathias.khroma.blocks.imbuedtrees.FlowtreeSaplingBlock;
 import net.deatrathias.khroma.blocks.imbuedtrees.GrimDoorBlock;
-import net.deatrathias.khroma.blocks.imbuedtrees.GrimImbuedLogBlock;
 import net.deatrathias.khroma.blocks.imbuedtrees.GrimPillarBlock;
 import net.deatrathias.khroma.blocks.imbuedtrees.GrimRotatedPillarBlock;
 import net.deatrathias.khroma.blocks.imbuedtrees.GrimSimpleBlock;
 import net.deatrathias.khroma.blocks.imbuedtrees.GrimSlabBlock;
 import net.deatrathias.khroma.blocks.imbuedtrees.GrimStairBlock;
 import net.deatrathias.khroma.blocks.imbuedtrees.GrimTrapDoor;
-import net.deatrathias.khroma.blocks.imbuedtrees.SkyImbuedLogBlock;
 import net.deatrathias.khroma.blocks.imbuedtrees.SkyPillarBlock;
 import net.deatrathias.khroma.blocks.imbuedtrees.SkyRotatedPillarBlock;
 import net.deatrathias.khroma.blocks.imbuedtrees.SkySimpleBlock;
@@ -40,12 +40,14 @@ import net.deatrathias.khroma.blocks.logistics.KhromaApertureBlock;
 import net.deatrathias.khroma.blocks.logistics.KhromaCombinerBlock;
 import net.deatrathias.khroma.blocks.logistics.KhromaLineBlock;
 import net.deatrathias.khroma.blocks.logistics.KhromaSeparatorBlock;
+import net.deatrathias.khroma.blocks.machine.ItemPedestalBlock;
 import net.deatrathias.khroma.blocks.machine.KhromaDissipatorBlock;
 import net.deatrathias.khroma.blocks.machine.KhromaImbuerBlock;
 import net.deatrathias.khroma.blocks.machine.KhromaMachineBlock;
 import net.deatrathias.khroma.blocks.machine.KhromaProviderBlock;
 import net.deatrathias.khroma.blocks.machine.NodeCollectorBlock;
 import net.deatrathias.khroma.blocks.machine.modular.KhromaProcessingCoreBlock;
+import net.deatrathias.khroma.blocks.machine.modular.ProcessControllerBlock;
 import net.deatrathias.khroma.khroma.KhromaDeviceTier;
 import net.deatrathias.khroma.registries.ImbuedTree.TreeBlock;
 import net.minecraft.core.BlockPos;
@@ -193,7 +195,7 @@ public final class BlockReference {
 	public static final ImbuedTree SKYTREE = ImbuedTree.Builder.create("skytree")
 			.log(MapColor.TERRACOTTA_WHITE, MapColor.QUARTZ)
 			.wood(MapColor.TERRACOTTA_WHITE)
-			.setLogFactory(SkyImbuedLogBlock::new)
+			.setLogFactory(SkyRotatedPillarBlock::new)
 			.strippedLog(MapColor.QUARTZ, MapColor.QUARTZ)
 			.strippedWood(MapColor.QUARTZ)
 			.setStrippedLogFactory(SkyRotatedPillarBlock::new)
@@ -223,7 +225,7 @@ public final class BlockReference {
 	public static final ImbuedTree GRIMTREE = ImbuedTree.Builder.create("grimtree")
 			.log(MapColor.COLOR_GRAY, MapColor.COLOR_BLACK)
 			.wood(MapColor.COLOR_GRAY)
-			.setLogFactory(GrimImbuedLogBlock::new)
+			.setLogFactory(GrimRotatedPillarBlock::new)
 			.strippedLog(MapColor.COLOR_BLACK, MapColor.COLOR_BLACK)
 			.strippedWood(MapColor.COLOR_BLACK)
 			.setStrippedLogFactory(GrimRotatedPillarBlock::new)
@@ -275,6 +277,14 @@ public final class BlockReference {
 	public static final Map<KhromaDeviceTier, DeferredBlock<Block>> KHROMA_PROCESSING_CORE_TIERED = registerTieredDevice("khroma_processing_core", KhromaProcessingCoreBlock::new,
 			KhromaDeviceTier.BASIC);
 
+	public static final DeferredBlock<Block> BREAK_BLOCK_PROCESS_CONTROLLER = registerBlock("break_block_process_controller",
+			properties -> new ProcessControllerBlock(ProcessRegistry.BREAK_BLOCK, properties), khromaDeviceProps());
+
+	public static final DeferredBlock<Block> ITEM_PEDESTAL = registerBlock("item_pedestal", ItemPedestalBlock::new, khromaDeviceProps());
+
+	public static final Supplier<BlockEntityType<NodeCollectorBlockEntity>> BE_NODE_COLLECTOR = BLOCK_ENTITY_TYPES.register("bode_collector",
+			() -> (new BlockEntityType<>(NodeCollectorBlockEntity::new, NODE_COLLECTOR.get())));
+
 	public static final Supplier<BlockEntityType<KhromaApertureBlockEntity>> BE_KHROMA_APERTURE = BLOCK_ENTITY_TYPES.register("khroma_aperture",
 			() -> (new BlockEntityType<>(KhromaApertureBlockEntity::new, KHROMA_APERTURE.get())));
 
@@ -283,6 +293,9 @@ public final class BlockReference {
 
 	public static final Supplier<BlockEntityType<KhromaProcessingCoreBlockEntity>> BE_KHROMA_PROCESSING_CORE = BLOCK_ENTITY_TYPES.register("khroma_processing_core",
 			() -> (new BlockEntityType<>(KhromaProcessingCoreBlockEntity::new, getAllTieredBlocks(KHROMA_PROCESSING_CORE_TIERED))));
+
+	public static final Supplier<BlockEntityType<ItemPedestalBlockEntity>> BE_ITEM_PEDESTAL = BLOCK_ENTITY_TYPES.register("item_pedestal",
+			() -> (new BlockEntityType<>(ItemPedestalBlockEntity::new, ITEM_PEDESTAL.get())));
 
 	private static BlockBehaviour.Properties blockProps() {
 		return BlockBehaviour.Properties.of();
@@ -359,7 +372,7 @@ public final class BlockReference {
 				setFlammable(tree.get(TreeBlock.FENCE_GATE), 5, 20);
 				setFlammable(tree.get(TreeBlock.SLAB), 5, 20);
 				setFlammable(tree.get(TreeBlock.STAIRS), 5, 20);
-				tree.ifPresent(TreeBlock.PILLAR, block -> setFlammable(block, 5, 20));
+				setFlammable(tree.get(TreeBlock.PILLAR), 5, 20);
 			}
 		}
 	}

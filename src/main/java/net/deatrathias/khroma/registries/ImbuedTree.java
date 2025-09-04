@@ -11,7 +11,6 @@ import java.util.function.Supplier;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.blocks.PillarBlock;
 import net.deatrathias.khroma.blocks.imbuedtrees.FixedTintParticleLeavesBlock;
-import net.deatrathias.khroma.blocks.imbuedtrees.ImbuedLogBlock;
 import net.minecraft.Util;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -179,7 +178,7 @@ public class ImbuedTree {
 
 		private Item.Properties chestBoatItemProps;
 
-		private BiFunction<Holder<Block>, BlockBehaviour.Properties, Block> logFactory;
+		private Function<BlockBehaviour.Properties, Block> logFactory;
 
 		private Function<BlockBehaviour.Properties, Block> strippedLogFactory;
 
@@ -211,7 +210,7 @@ public class ImbuedTree {
 		private Builder(String buildName) {
 			this.buildName = buildName;
 			props = new HashMap<ImbuedTree.TreeBlock, BlockBehaviour.Properties>();
-			logFactory = ImbuedLogBlock::new;
+			logFactory = RotatedPillarBlock::new;
 			strippedLogFactory = RotatedPillarBlock::new;
 			saplingFactory = SaplingBlock::new;
 			planksFactory = Block::new;
@@ -425,7 +424,7 @@ public class ImbuedTree {
 			return chestBoat(new Item.Properties().stacksTo(1));
 		}
 
-		public Builder setLogFactory(BiFunction<Holder<Block>, BlockBehaviour.Properties, Block> logFactory) {
+		public Builder setLogFactory(Function<BlockBehaviour.Properties, Block> logFactory) {
 			this.logFactory = logFactory;
 			return this;
 		}
@@ -482,10 +481,10 @@ public class ImbuedTree {
 
 				switch (key) {
 				case LOG:
-					block = BlockReference.registerBlock(buildName + "_log", properties -> logFactory.apply(result.blocks.get(TreeBlock.STRIPPED_LOG), properties), prop);
+					block = BlockReference.registerBlock(buildName + "_log", logFactory, prop);
 					break;
 				case WOOD:
-					block = BlockReference.registerBlock(buildName + "_wood", properties -> logFactory.apply(result.blocks.get(TreeBlock.STRIPPED_WOOD), properties), prop);
+					block = BlockReference.registerBlock(buildName + "_wood", logFactory, prop);
 					break;
 				case STRIPPED_LOG:
 					block = BlockReference.registerBlock("stripped_" + buildName + "_log", strippedLogFactory, prop);

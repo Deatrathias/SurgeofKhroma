@@ -31,7 +31,7 @@ public final class KhromaThroughput {
 		return rate;
 	}
 
-	public static KhromaThroughput empty = new KhromaThroughput(Khroma.KHROMA_EMPTY, 0);
+	public static KhromaThroughput empty = new KhromaThroughput(Khroma.EMPTY, 0);
 
 	@Override
 	public int hashCode() {
@@ -51,7 +51,7 @@ public final class KhromaThroughput {
 	}
 
 	public static KhromaThroughput merge(KhromaThroughput t1, KhromaThroughput t2) {
-		Khroma empty = Khroma.KHROMA_EMPTY;
+		Khroma empty = Khroma.EMPTY;
 		Khroma khroma = t1.khroma;
 		if (t1.khroma == empty)
 			khroma = t2.khroma;
@@ -117,7 +117,7 @@ public final class KhromaThroughput {
 	}
 
 	public static KhromaThroughput[] separate(KhromaThroughput t) {
-		if (t.khroma == Khroma.KHROMA_EMPTY)
+		if (t.khroma == Khroma.EMPTY)
 			return new KhromaThroughput[] { KhromaThroughput.empty, KhromaThroughput.empty };
 
 		int colors = t.khroma.countColors();

@@ -117,7 +117,7 @@ public class KhromaImbuerBlockEntity extends BaseKhromaConsumerBlockEntity imple
 		lastThroughput = new KhromaThroughput(khroma, 0);
 		effectiveRate = 0;
 
-		if (currentRecipe.isEmpty() && khroma != Khroma.KHROMA_EMPTY && !items.get(SLOT_INPUT).isEmpty()) {
+		if (currentRecipe.isEmpty() && khroma != Khroma.EMPTY && !items.get(SLOT_INPUT).isEmpty()) {
 			currentRecipe = quickCheck.getRecipeFor(new ItemKhromaRecipeInput(items.get(SLOT_INPUT), khroma), (ServerLevel) level);
 		}
 		if (currentRecipe.isPresent()) {

@@ -1,9 +1,11 @@
 package net.deatrathias.khroma;
 
-import net.deatrathias.khroma.entities.KhromaNodeEntity;
+import net.deatrathias.khroma.khroma.KhromaBiomeData;
 import net.deatrathias.khroma.khroma.KhromaNetwork;
-import net.deatrathias.khroma.khroma.KhromaNode;
+import net.deatrathias.khroma.registries.BlockReference;
+import net.deatrathias.khroma.registries.ImbuedTree.TreeBlock;
 import net.deatrathias.khroma.registries.RegistryReference;
+import net.deatrathias.khroma.registries.TagReference;
 import net.minecraft.core.Holder;
 import net.minecraft.network.protocol.game.ClientboundSoundEntityPacket;
 import net.minecraft.server.level.ServerLevel;
@@ -11,11 +13,15 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import net.neoforged.neoforge.event.level.BlockDropsEvent;
+import net.neoforged.neoforge.event.level.BlockEvent.BlockToolModificationEvent;
 import net.neoforged.neoforge.event.level.ChunkEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
@@ -51,15 +57,7 @@ public class GameServerEventSubscriber {
 		if (event.getLevel().isClientSide())
 			return;
 
-		var data = event.getChunk().getData(RegistryReference.KHROMA_BIOME_DATA);
-		if (!data.isGenerated()) {
-			data.generateNode(event.getLevel(), event.getChunk());
-			event.getChunk().setData(RegistryReference.KHROMA_BIOME_DATA, data);
-			if (data.getNode().isPresent()) {
-				KhromaNode node = data.getNode().get();
-				event.getLevel().addFreshEntity(KhromaNodeEntity.create((Level) event.getLevel(), node.getPosition(), node.getKhroma(), node.getLevel()));
-			}
-		}
+		KhromaBiomeData.performChunkGeneration(event.getLevel(), event.getChunk(), false);
 	}
 
 	@SubscribeEvent
@@ -101,6 +99,23 @@ public class GameServerEventSubscriber {
 						iter.remove();
 					else
 						drop.setDefaultPickUpDelay();
+				}
+			}
+		}
+	}
+
+	@SubscribeEvent
+	private static void blockToolModification(BlockToolModificationEvent event) {
+		if (event.getItemAbility() == ItemAbilities.AXE_STRIP && event.getState().is(TagReference.BLOCK_IMBUED_TREE_LOGS) && !event.getState().is(Tags.Blocks.STRIPPED_LOGS)
+				&& !event.getState().is(Tags.Blocks.STRIPPED_WOODS)) {
+			BlockState state = event.getState();
+			for (var tree : BlockReference.IMBUED_TREES) {
+				if (state.is(tree.get(TreeBlock.LOG))) {
+					event.setFinalState(tree.get(TreeBlock.STRIPPED_LOG).defaultBlockState().setValue(BlockStateProperties.AXIS, state.getValue(BlockStateProperties.AXIS)));
+					return;
+				} else if (state.is(tree.get(TreeBlock.WOOD))) {
+					event.setFinalState(tree.get(TreeBlock.STRIPPED_WOOD).defaultBlockState().setValue(BlockStateProperties.AXIS, state.getValue(BlockStateProperties.AXIS)));
+					return;
 				}
 			}
 		}

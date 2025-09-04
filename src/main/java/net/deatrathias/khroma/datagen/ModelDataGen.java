@@ -9,14 +9,16 @@ import com.google.common.collect.ImmutableMap;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.blocks.PillarBlock;
 import net.deatrathias.khroma.blocks.logistics.KhromaLineBlock;
+import net.deatrathias.khroma.blocks.machine.ItemPedestalBlock;
+import net.deatrathias.khroma.client.rendering.items.SpannerColorTint;
 import net.deatrathias.khroma.items.SpannerItem;
-import net.deatrathias.khroma.items.renderer.SpannerColorTint;
 import net.deatrathias.khroma.khroma.Khroma;
 import net.deatrathias.khroma.khroma.KhromaProperty;
 import net.deatrathias.khroma.registries.BlockReference;
 import net.deatrathias.khroma.registries.ImbuedTree.TreeBlock;
 import net.deatrathias.khroma.registries.ItemReference;
 import net.deatrathias.khroma.registries.RegistryReference;
+import net.deatrathias.khroma.util.EightDirection;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.BlockModelGenerators.PlantType;
 import net.minecraft.client.data.models.ItemModelGenerators;
@@ -111,6 +113,7 @@ public class ModelDataGen extends ModelProvider {
 
 		registerKhromaLine(blockModels, itemModels);
 		registerDissipator(blockModels, itemModels);
+		registerItemPedestal(blockModels, itemModels);
 
 		var spannerBase = ModelTemplates.FLAT_HANDHELD_ITEM.create(SurgeofKhroma.resource("item/khroma_spanner_base"), TextureMapping.layer0(SurgeofKhroma.resource("item/spanner_base")),
 				itemModels.modelOutput);
@@ -137,15 +140,15 @@ public class ModelDataGen extends ModelProvider {
 	}
 
 	private void registerKhromaLine(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
-		var notEmptyCondition = BlockModelGenerators.condition().negatedTerm(KhromaLineBlock.KHROMA, Khroma.KHROMA_EMPTY).build();
-		var notSpectrumCondition = BlockModelGenerators.condition().negatedTerm(KhromaLineBlock.KHROMA, Khroma.KHROMA_SPECTRUM).build();
-		var notLightSpectrumCondition = BlockModelGenerators.condition().negatedTerm(KhromaLineBlock.KHROMA, Khroma.KHROMA_LIGHT_SPECTRUM).build();
-		var notDarkSpectrumCondition = BlockModelGenerators.condition().negatedTerm(KhromaLineBlock.KHROMA, Khroma.KHROMA_DARK_SPECTRUM).build();
-		var notKhromegaCondition = BlockModelGenerators.condition().negatedTerm(KhromaLineBlock.KHROMA, Khroma.KHROMA_KHROMEGA).build();
-		var spectrumCondition = BlockModelGenerators.condition().term(KhromaLineBlock.KHROMA, Khroma.KHROMA_SPECTRUM).build();
-		var lightSpectrumCondition = BlockModelGenerators.condition().term(KhromaLineBlock.KHROMA, Khroma.KHROMA_LIGHT_SPECTRUM).build();
-		var darkSpectrumCondition = BlockModelGenerators.condition().term(KhromaLineBlock.KHROMA, Khroma.KHROMA_DARK_SPECTRUM).build();
-		var khromegaCondition = BlockModelGenerators.condition().term(KhromaLineBlock.KHROMA, Khroma.KHROMA_KHROMEGA).build();
+		var notEmptyCondition = BlockModelGenerators.condition().negatedTerm(KhromaLineBlock.KHROMA, Khroma.EMPTY).build();
+		var notSpectrumCondition = BlockModelGenerators.condition().negatedTerm(KhromaLineBlock.KHROMA, Khroma.SPECTRUM).build();
+		var notLightSpectrumCondition = BlockModelGenerators.condition().negatedTerm(KhromaLineBlock.KHROMA, Khroma.LIGHT_SPECTRUM).build();
+		var notDarkSpectrumCondition = BlockModelGenerators.condition().negatedTerm(KhromaLineBlock.KHROMA, Khroma.DARK_SPECTRUM).build();
+		var notKhromegaCondition = BlockModelGenerators.condition().negatedTerm(KhromaLineBlock.KHROMA, Khroma.KHROMEGA).build();
+		var spectrumCondition = BlockModelGenerators.condition().term(KhromaLineBlock.KHROMA, Khroma.SPECTRUM).build();
+		var lightSpectrumCondition = BlockModelGenerators.condition().term(KhromaLineBlock.KHROMA, Khroma.LIGHT_SPECTRUM).build();
+		var darkSpectrumCondition = BlockModelGenerators.condition().term(KhromaLineBlock.KHROMA, Khroma.DARK_SPECTRUM).build();
+		var khromegaCondition = BlockModelGenerators.condition().term(KhromaLineBlock.KHROMA, Khroma.KHROMEGA).build();
 
 		var multipart = MultiPartGenerator.multiPart(BlockReference.KHROMA_LINE.get())
 				.with(BlockModelGenerators.plainVariant(SurgeofKhroma.resource("block/khroma_line_center")))
@@ -203,15 +206,15 @@ public class ModelDataGen extends ModelProvider {
 	}
 
 	private void registerDissipator(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
-		var notEmptyCondition = BlockModelGenerators.condition().negatedTerm(KhromaProperty.KHROMA, Khroma.KHROMA_EMPTY).build();
-		var notSpectrumCondition = BlockModelGenerators.condition().negatedTerm(KhromaProperty.KHROMA, Khroma.KHROMA_SPECTRUM).build();
-		var notLightSpectrumCondition = BlockModelGenerators.condition().negatedTerm(KhromaProperty.KHROMA, Khroma.KHROMA_LIGHT_SPECTRUM).build();
-		var notDarkSpectrumCondition = BlockModelGenerators.condition().negatedTerm(KhromaProperty.KHROMA, Khroma.KHROMA_DARK_SPECTRUM).build();
-		var notKhromegaCondition = BlockModelGenerators.condition().negatedTerm(KhromaProperty.KHROMA, Khroma.KHROMA_KHROMEGA).build();
-		var spectrumCondition = BlockModelGenerators.condition().term(KhromaProperty.KHROMA, Khroma.KHROMA_SPECTRUM).build();
-		var lightSpectrumCondition = BlockModelGenerators.condition().term(KhromaProperty.KHROMA, Khroma.KHROMA_LIGHT_SPECTRUM).build();
-		var darkSpectrumCondition = BlockModelGenerators.condition().term(KhromaProperty.KHROMA, Khroma.KHROMA_DARK_SPECTRUM).build();
-		var khromegaCondition = BlockModelGenerators.condition().term(KhromaProperty.KHROMA, Khroma.KHROMA_KHROMEGA).build();
+		var notEmptyCondition = BlockModelGenerators.condition().negatedTerm(KhromaProperty.KHROMA, Khroma.EMPTY).build();
+		var notSpectrumCondition = BlockModelGenerators.condition().negatedTerm(KhromaProperty.KHROMA, Khroma.SPECTRUM).build();
+		var notLightSpectrumCondition = BlockModelGenerators.condition().negatedTerm(KhromaProperty.KHROMA, Khroma.LIGHT_SPECTRUM).build();
+		var notDarkSpectrumCondition = BlockModelGenerators.condition().negatedTerm(KhromaProperty.KHROMA, Khroma.DARK_SPECTRUM).build();
+		var notKhromegaCondition = BlockModelGenerators.condition().negatedTerm(KhromaProperty.KHROMA, Khroma.KHROMEGA).build();
+		var spectrumCondition = BlockModelGenerators.condition().term(KhromaProperty.KHROMA, Khroma.SPECTRUM).build();
+		var lightSpectrumCondition = BlockModelGenerators.condition().term(KhromaProperty.KHROMA, Khroma.LIGHT_SPECTRUM).build();
+		var darkSpectrumCondition = BlockModelGenerators.condition().term(KhromaProperty.KHROMA, Khroma.DARK_SPECTRUM).build();
+		var khromegaCondition = BlockModelGenerators.condition().term(KhromaProperty.KHROMA, Khroma.KHROMEGA).build();
 
 		var variants = BlockModelGenerators.plainVariant(SurgeofKhroma.resource("block/khroma_dissipator"));
 
@@ -250,6 +253,24 @@ public class ModelDataGen extends ModelProvider {
 		}
 
 		blockModels.blockStateOutput.accept(multipart);
+	}
+
+	private void registerItemPedestal(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
+		Block block = BlockReference.ITEM_PEDESTAL.get();
+		var regular = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(block));
+		var diagonal = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(block).withSuffix("_diagonal"));
+
+		blockModels.blockStateOutput
+				.accept(MultiVariantGenerator.dispatch(block)
+						.with(PropertyDispatch.initial(ItemPedestalBlock.FACING)
+								.select(EightDirection.NORTH, regular)
+								.select(EightDirection.EAST, regular.with(BlockModelGenerators.Y_ROT_90))
+								.select(EightDirection.SOUTH, regular.with(BlockModelGenerators.Y_ROT_180))
+								.select(EightDirection.WEST, regular.with(BlockModelGenerators.Y_ROT_270))
+								.select(EightDirection.NORTH_EAST, diagonal)
+								.select(EightDirection.SOUTH_EAST, diagonal.with(BlockModelGenerators.Y_ROT_90))
+								.select(EightDirection.SOUTH_WEST, diagonal.with(BlockModelGenerators.Y_ROT_180))
+								.select(EightDirection.NORTH_WEST, diagonal.with(BlockModelGenerators.Y_ROT_270))));
 	}
 
 	private void createPillar(Block block, TextureMapping mapping, BlockModelGenerators blockModels) {

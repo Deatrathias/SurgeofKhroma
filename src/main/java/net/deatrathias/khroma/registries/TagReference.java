@@ -23,6 +23,12 @@ public class TagReference {
 	public static final TagKey<Block> BLOCK_IMBUED_TREE_SAPLINGS = blockTag("imbued_tree_sapling");
 	public static final TagKey<Block> BLOCK_PILLARS = blockTag("pillars");
 	public static final TagKey<Block> BLOCK_WOODEN_PILLARS = blockTag("wooden_pillars");
+	public static final TagKey<Block> BLOCK_COLLECTOR_STRUCTURE_COMPONENTS = blockTag("collector_structure_components");
+	public static final TagKey<Block> BLOCK_COLLECTOR_STRUCTURE_COMPONENTS_RED = blockTag("collector_structure_components/red");
+	public static final TagKey<Block> BLOCK_COLLECTOR_STRUCTURE_COMPONENTS_GREEN = blockTag("collector_structure_components/green");
+	public static final TagKey<Block> BLOCK_COLLECTOR_STRUCTURE_COMPONENTS_BLUE = blockTag("collector_structure_components/blue");
+	public static final TagKey<Block> BLOCK_COLLECTOR_STRUCTURE_COMPONENTS_WHITE = blockTag("collector_structure_components/white");
+	public static final TagKey<Block> BLOCK_COLLECTOR_STRUCTURE_COMPONENTS_BLACK = blockTag("collector_structure_components/black");
 	public static final TagKey<Block> C_BLOCK_ORES_CHROMIUM = BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", "ores/chromium"));
 	public static final TagKey<Block> C_BLOCK_STORAGE_BLOCKS_CHROMIUM = BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/chromium"));
 	public static final TagKey<Block> C_BLOCK_STORAGE_BLOCKS_RAW_CHROMIUM = BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/raw_chromium"));

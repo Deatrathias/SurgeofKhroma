@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": "#surgeofkhroma:ingots/khrometal",
+    "X": "minecraft:stone_slab"
+  },
+  "pattern": [
+    "# ",
+    "#X",
+    "##"
+  ],
+  "result": {
+    "count": 1,
+    "id": "surgeofkhroma:item_pedestal"
+  }
+}

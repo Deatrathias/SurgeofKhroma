@@ -15,11 +15,11 @@ import net.minecraft.util.StringRepresentable;
 public final class Khroma implements Comparable<Khroma>, Serializable, StringRepresentable {
 	private static final long serialVersionUID = 1L;
 
-	public static final int FLAG_KHROMA_RED = 1;
-	public static final int FLAG_KHROMA_GREEN = 2;
-	public static final int FLAG_KHROMA_BLUE = 4;
-	public static final int FLAG_KHROMA_WHITE = 8;
-	public static final int FLAG_KHROMA_BLACK = 16;
+	public static final int FLAG_KHROMA_RED = 0b00001;
+	public static final int FLAG_KHROMA_GREEN = 0b00010;
+	public static final int FLAG_KHROMA_BLUE = 0b00100;
+	public static final int FLAG_KHROMA_WHITE = 0b01000;
+	public static final int FLAG_KHROMA_BLACK = 0b10000;
 
 	public static final String[] KhromaNames = new String[] { "red", "green", "blue", "white", "black" };
 
@@ -68,17 +68,17 @@ public final class Khroma implements Comparable<Khroma>, Serializable, StringRep
 			khromaInstances[i] = new Khroma(i);
 	}
 
-	public static final Khroma KHROMA_EMPTY = khromaInstances[0];
-	public static final Khroma KHROMA_RED = khromaInstances[FLAG_KHROMA_RED];
-	public static final Khroma KHROMA_GREEN = khromaInstances[FLAG_KHROMA_GREEN];
-	public static final Khroma KHROMA_BLUE = khromaInstances[FLAG_KHROMA_BLUE];
-	public static final Khroma KHROMA_WHITE = khromaInstances[FLAG_KHROMA_WHITE];
-	public static final Khroma KHROMA_BLACK = khromaInstances[FLAG_KHROMA_BLACK];
+	public static final Khroma EMPTY = khromaInstances[0];
+	public static final Khroma RED = khromaInstances[FLAG_KHROMA_RED];
+	public static final Khroma GREEN = khromaInstances[FLAG_KHROMA_GREEN];
+	public static final Khroma BLUE = khromaInstances[FLAG_KHROMA_BLUE];
+	public static final Khroma WHITE = khromaInstances[FLAG_KHROMA_WHITE];
+	public static final Khroma BLACK = khromaInstances[FLAG_KHROMA_BLACK];
 
-	public static final Khroma KHROMA_SPECTRUM = khromaInstances[FLAG_KHROMA_RED | FLAG_KHROMA_GREEN | FLAG_KHROMA_BLUE];
-	public static final Khroma KHROMA_LIGHT_SPECTRUM = khromaInstances[FLAG_KHROMA_RED | FLAG_KHROMA_GREEN | FLAG_KHROMA_BLUE | FLAG_KHROMA_WHITE];
-	public static final Khroma KHROMA_DARK_SPECTRUM = khromaInstances[FLAG_KHROMA_RED | FLAG_KHROMA_GREEN | FLAG_KHROMA_BLUE | FLAG_KHROMA_BLACK];
-	public static final Khroma KHROMA_KHROMEGA = khromaInstances[FLAG_KHROMA_RED | FLAG_KHROMA_GREEN | FLAG_KHROMA_BLUE | FLAG_KHROMA_WHITE | FLAG_KHROMA_BLACK];
+	public static final Khroma SPECTRUM = khromaInstances[FLAG_KHROMA_RED | FLAG_KHROMA_GREEN | FLAG_KHROMA_BLUE];
+	public static final Khroma LIGHT_SPECTRUM = khromaInstances[FLAG_KHROMA_RED | FLAG_KHROMA_GREEN | FLAG_KHROMA_BLUE | FLAG_KHROMA_WHITE];
+	public static final Khroma DARK_SPECTRUM = khromaInstances[FLAG_KHROMA_RED | FLAG_KHROMA_GREEN | FLAG_KHROMA_BLUE | FLAG_KHROMA_BLACK];
+	public static final Khroma KHROMEGA = khromaInstances[FLAG_KHROMA_RED | FLAG_KHROMA_GREEN | FLAG_KHROMA_BLUE | FLAG_KHROMA_WHITE | FLAG_KHROMA_BLACK];
 
 	public static final Codec<Khroma> CODEC = ExtraCodecs.orCompressed(Codec.stringResolver(StringRepresentable::getSerializedName, Khroma::fromName),
 			ExtraCodecs.idResolverCodec(Khroma::asInt, intValue -> intValue >= 0 && intValue < 32 ? khromaInstances[intValue] : null, -1));
@@ -208,13 +208,13 @@ public final class Khroma implements Comparable<Khroma>, Serializable, StringRep
 			i++;
 		}
 
-		return new Khroma[] { KHROMA_EMPTY, KHROMA_EMPTY };
+		return new Khroma[] { EMPTY, EMPTY };
 	}
 
 	public Khroma[] separate() {
 		int count = countColors();
 		if (count <= 1)
-			return new Khroma[] { this, KHROMA_EMPTY };
+			return new Khroma[] { this, EMPTY };
 
 		count = Math.ceilDiv(count, 2);
 

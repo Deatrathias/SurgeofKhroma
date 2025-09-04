@@ -318,6 +318,14 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 				.pattern("###")
 				.unlockedBy("has_nucleus", has(ItemReference.CHROMATIC_NUCLEUS))
 				.save(output);
+		shaped(RecipeCategory.MISC, BlockReference.ITEM_PEDESTAL)
+				.define('#', TagReference.ITEM_KHROMETAL_INGOTS)
+				.define('X', Items.STONE_SLAB)
+				.pattern("# ")
+				.pattern("#X")
+				.pattern("##")
+				.unlockedBy("has_khrometal", has(TagReference.ITEM_KHROMETAL_INGOTS))
+				.save(output);
 
 	}
 

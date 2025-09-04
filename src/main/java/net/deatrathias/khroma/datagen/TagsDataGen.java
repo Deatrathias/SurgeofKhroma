@@ -3,9 +3,11 @@ package net.deatrathias.khroma.datagen;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
+import io.wispforest.accessories.api.data.AccessoriesTags;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.khroma.Khroma;
 import net.deatrathias.khroma.registries.BlockReference;
+import net.deatrathias.khroma.registries.EntityReference;
 import net.deatrathias.khroma.registries.ImbuedTree.TreeBlock;
 import net.deatrathias.khroma.registries.ItemReference;
 import net.deatrathias.khroma.registries.RegistryReference;
@@ -124,6 +126,13 @@ public final class TagsDataGen {
 				}
 			}).run();
 
+			tag(TagReference.BLOCK_COLLECTOR_STRUCTURE_COMPONENTS).addTag(TagReference.BLOCK_WOODEN_PILLARS).addTag(TagReference.BLOCK_KHROMETAL_BLOCKS);
+			tag(TagReference.BLOCK_COLLECTOR_STRUCTURE_COMPONENTS_RED).add(BlockReference.SPARKTREE.get(TreeBlock.PILLAR)).add(BlockReference.KHROMETAL_BLOCK_RED.get());
+			tag(TagReference.BLOCK_COLLECTOR_STRUCTURE_COMPONENTS_GREEN).add(BlockReference.BLOOMTREE.get(TreeBlock.PILLAR)).add(BlockReference.KHROMETAL_BLOCK_GREEN.get());
+			tag(TagReference.BLOCK_COLLECTOR_STRUCTURE_COMPONENTS_BLUE).add(BlockReference.FLOWTREE.get(TreeBlock.PILLAR)).add(BlockReference.KHROMETAL_BLOCK_BLUE.get());
+			tag(TagReference.BLOCK_COLLECTOR_STRUCTURE_COMPONENTS_WHITE).add(BlockReference.SKYTREE.get(TreeBlock.PILLAR)).add(BlockReference.KHROMETAL_BLOCK_WHITE.get());
+			tag(TagReference.BLOCK_COLLECTOR_STRUCTURE_COMPONENTS_BLACK).add(BlockReference.GRIMTREE.get(TreeBlock.PILLAR)).add(BlockReference.KHROMETAL_BLOCK_BLACK.get());
+
 			tag(BlockTags.NEEDS_STONE_TOOL).addAll(DataGenDefinitions.needsStoneTool).addTag(TagReference.BLOCK_KHROMETAL_BLOCKS);
 			tag(BlockTags.MINEABLE_WITH_PICKAXE).addAll(DataGenDefinitions.needsStoneTool).addTags(TagReference.BLOCK_KHROMETAL_BLOCKS,
 					TagReference.BLOCK_KHROMA_DEVICES);
@@ -168,6 +177,7 @@ public final class TagsDataGen {
 			minecraftTags();
 			if (ModList.get().isLoaded(CuriosResources.MOD_ID))
 				curiosTags();
+			tag(AccessoriesTags.FACE_TAG).add(ItemReference.CHROMATIC_GLASSES.get());
 
 			tag(TagReference.ITEM_CONVERTS_TO_DYE_RED_SINGULAR).add(Items.RED_TULIP, Items.BEETROOT, Items.POPPY);
 			tag(TagReference.ITEM_CONVERTS_TO_DYE_RED_DOUBLE).add(Items.ROSE_BUSH);
@@ -330,7 +340,7 @@ public final class TagsDataGen {
 
 		@Override
 		protected void addTags(Provider provider) {
-			tag(TagReference.C_ENTITY_BIRDS).add(EntityType.CHICKEN, EntityType.PARROT);
+			tag(TagReference.C_ENTITY_BIRDS).add(EntityType.CHICKEN, EntityType.PARROT, EntityReference.STRIX.get());
 			tag(TagReference.ENTITY_SENSITIVE_TO_FEATHERCLIP).addTag(TagReference.C_ENTITY_BIRDS);
 			var boat = tag(EntityTypeTags.BOAT);
 			var c_boat = tag(Tags.EntityTypes.BOATS);

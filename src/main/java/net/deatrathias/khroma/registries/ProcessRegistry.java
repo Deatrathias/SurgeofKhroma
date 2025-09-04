@@ -1,6 +1,9 @@
 package net.deatrathias.khroma.registries;
 
+import java.util.function.Supplier;
+
 import net.deatrathias.khroma.SurgeofKhroma;
+import net.deatrathias.khroma.processing.BreakBlockProcess;
 import net.deatrathias.khroma.processing.ProcessType;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -12,4 +15,6 @@ public class ProcessRegistry {
 	public static final Registry<ProcessType<?>> PROCESS_TYPE_REGISTRY = new RegistryBuilder<>(PROCESS_TYPE_KEY).create();
 
 	public static final DeferredRegister<ProcessType<?>> PROCESS_TYPES = DeferredRegister.create(PROCESS_TYPE_REGISTRY, SurgeofKhroma.MODID);
+
+	public static final Supplier<ProcessType<?>> BREAK_BLOCK = PROCESS_TYPES.register("break_block", registryName -> new ProcessType<>(BreakBlockProcess::new));
 }

@@ -1,6 +1,6 @@
 package net.deatrathias.khroma.compat.curios;
 
-import net.deatrathias.khroma.items.renderer.ChromaticGlassesRenderer;
+import net.deatrathias.khroma.client.rendering.items.ChromaticGlassesRenderer;
 import net.deatrathias.khroma.registries.ItemReference;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;

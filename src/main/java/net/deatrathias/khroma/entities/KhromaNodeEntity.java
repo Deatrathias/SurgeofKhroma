@@ -1,10 +1,13 @@
 package net.deatrathias.khroma.entities;
 
-import net.deatrathias.khroma.entities.renderer.KhromaNodeEntityRenderer;
+import net.deatrathias.khroma.SurgeofKhroma;
+import net.deatrathias.khroma.client.particles.KhromaParticleOption;
+import net.deatrathias.khroma.client.rendering.entities.KhromaNodeEntityRenderer;
 import net.deatrathias.khroma.khroma.Khroma;
-import net.deatrathias.khroma.particles.KhromaParticleOption;
+import net.deatrathias.khroma.khroma.KhromaBiomeData;
 import net.deatrathias.khroma.registries.BlockReference;
 import net.deatrathias.khroma.registries.EntityReference;
+import net.deatrathias.khroma.registries.RegistryReference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,7 +33,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class KhromaNodeEntity extends Entity {
 
-	public static final EntityDataAccessor<Integer> KHROMA = SynchedEntityData.defineId(KhromaNodeEntity.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Khroma> KHROMA = SynchedEntityData.defineId(KhromaNodeEntity.class, RegistryReference.SERIALIZER_KHROMA.get());
 	public static final EntityDataAccessor<Integer> LEVEL = SynchedEntityData.defineId(KhromaNodeEntity.class, EntityDataSerializers.INT);
 	public static final EntityDataAccessor<Boolean> FORCE_VISIBLE = SynchedEntityData.defineId(KhromaNodeEntity.class, EntityDataSerializers.BOOLEAN);
 
@@ -43,7 +46,7 @@ public class KhromaNodeEntity extends Entity {
 		KhromaNodeEntity result = new KhromaNodeEntity(EntityReference.KHROMA_NODE.get(), level);
 		SynchedEntityData data = result.getEntityData();
 		result.setPos(blockPos.getBottomCenter());
-		data.set(KHROMA, nodeKhroma.asInt());
+		data.set(KHROMA, nodeKhroma);
 		data.set(LEVEL, nodeLevel);
 		data.set(FORCE_VISIBLE, false);
 		return result;
@@ -51,7 +54,7 @@ public class KhromaNodeEntity extends Entity {
 
 	@Override
 	protected void defineSynchedData(Builder builder) {
-		builder.define(KHROMA, 0);
+		builder.define(KHROMA, Khroma.EMPTY);
 		builder.define(LEVEL, 1);
 		builder.define(FORCE_VISIBLE, false);
 	}
@@ -59,7 +62,13 @@ public class KhromaNodeEntity extends Entity {
 	@Override
 	protected void readAdditionalSaveData(ValueInput input) {
 		SynchedEntityData data = getEntityData();
-		data.set(KHROMA, input.getIntOr("khroma", 0));
+		data.set(KHROMA, input.read("khroma", Khroma.CODEC).orElseGet(() -> {
+			level().getChunkAt(getOnPos()).setData(RegistryReference.ATTACHMENT_KHROMA_BIOME_DATA, new KhromaBiomeData());
+			remove(RemovalReason.DISCARDED);
+			SurgeofKhroma.LOGGER.warn("Incorrect khroma node at " + getOnPos() + ". Deleting.");
+			return Khroma.EMPTY;
+		}));
+
 		data.set(LEVEL, input.getIntOr("level", 1));
 		data.set(FORCE_VISIBLE, input.getBooleanOr("force_visible", false));
 	}
@@ -67,7 +76,7 @@ public class KhromaNodeEntity extends Entity {
 	@Override
 	protected void addAdditionalSaveData(ValueOutput output) {
 		SynchedEntityData data = getEntityData();
-		output.putInt("khroma", data.get(KHROMA));
+		output.store("khroma", Khroma.CODEC, data.get(KHROMA));
 		output.putInt("level", data.get(LEVEL));
 		output.putBoolean("force_visible", data.get(FORCE_VISIBLE));
 	}
@@ -142,7 +151,7 @@ public class KhromaNodeEntity extends Entity {
 	}
 
 	public Khroma getKhroma() {
-		return Khroma.fromInt(getEntityData().get(KHROMA));
+		return getEntityData().get(KHROMA);
 	}
 
 	public int getNodeLevel() {

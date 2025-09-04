@@ -6,11 +6,13 @@ import java.util.function.Supplier;
 import com.mojang.serialization.MapCodec;
 
 import net.deatrathias.khroma.SurgeofKhroma;
+import net.deatrathias.khroma.client.particles.KhromaParticleOption;
 import net.deatrathias.khroma.effects.PullDownMobEffect;
+import net.deatrathias.khroma.entities.Strix.StrixPose;
 import net.deatrathias.khroma.items.SpannerItem;
 import net.deatrathias.khroma.items.WarpCanisterItem;
+import net.deatrathias.khroma.khroma.Khroma;
 import net.deatrathias.khroma.khroma.KhromaBiomeData;
-import net.deatrathias.khroma.particles.KhromaParticleOption;
 import net.deatrathias.khroma.worldgen.BloomtreeTrunkPlacer;
 import net.deatrathias.khroma.worldgen.PlaceFlowersDecorator;
 import net.minecraft.core.Holder;
@@ -24,6 +26,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.damagesource.DamageType;
@@ -46,6 +49,7 @@ public class RegistryReference {
 
 	public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, SurgeofKhroma.MODID);
 	public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(BuiltInRegistries.ATTRIBUTE, SurgeofKhroma.MODID);
+	public static final DeferredRegister<EntityDataSerializer<?>> ENTITY_DATA_SERIALIZERS = DeferredRegister.create(NeoForgeRegistries.ENTITY_DATA_SERIALIZERS, SurgeofKhroma.MODID);
 	public static final DeferredRegister<TrunkPlacerType<?>> TRUNK_PLACER_TYPES = DeferredRegister.create(BuiltInRegistries.TRUNK_PLACER_TYPE, SurgeofKhroma.MODID);
 	public static final DeferredRegister<TreeDecoratorType<?>> TREE_DECORATOR_TYPES = DeferredRegister.create(BuiltInRegistries.TREE_DECORATOR_TYPE, SurgeofKhroma.MODID);
 	public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, SurgeofKhroma.MODID);
@@ -77,11 +81,22 @@ public class RegistryReference {
 
 	/**
 	 * 
+	 * ENTITY DATA SERIALIZERS
+	 * 
+	 */
+	public static final Supplier<EntityDataSerializer<Khroma>> SERIALIZER_KHROMA = ENTITY_DATA_SERIALIZERS.register("khroma",
+			registryName -> EntityDataSerializer.forValueType(Khroma.STREAM_CODEC));
+
+	public static final Supplier<EntityDataSerializer<StrixPose>> SERIALIZER_STRIX_POSE = ENTITY_DATA_SERIALIZERS.register("strix_pose",
+			registryName -> EntityDataSerializer.forValueType(StrixPose.STREAM_CODEC));
+
+	/**
+	 * 
 	 * ATTACHMENTS
 	 * 
 	 */
-	public static final Supplier<AttachmentType<KhromaBiomeData>> KHROMA_BIOME_DATA = ATTACHMENT_TYPES.register("khroma_biome_data",
-			() -> AttachmentType.serializable(() -> new KhromaBiomeData()).build());
+	public static final Supplier<AttachmentType<KhromaBiomeData>> ATTACHMENT_KHROMA_BIOME_DATA = ATTACHMENT_TYPES.register("khroma_biome_data",
+			() -> AttachmentType.serializable(() -> new KhromaBiomeData()).sync(new KhromaBiomeData.SyncHandler()).build());
 
 	/**
 	 * 

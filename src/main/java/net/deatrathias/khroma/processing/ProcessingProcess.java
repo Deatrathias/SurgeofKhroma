@@ -1,6 +1,6 @@
 package net.deatrathias.khroma.processing;
 
-public abstract class ProcessingProcess<T, R> extends Process {
+public abstract class ProcessingProcess<T, R> extends BaseProcess {
 
 	public ProcessingProcess(ProcessType<?> type) {
 		super(type);

@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
-import net.deatrathias.khroma.compat.guideme.SoKGuide;
 import net.deatrathias.khroma.registries.BlockReference;
 import net.deatrathias.khroma.registries.EntityReference;
 import net.deatrathias.khroma.registries.ItemReference;
@@ -30,13 +29,13 @@ public class SurgeofKhroma {
 	public static final Logger LOGGER = LogUtils.getLogger();
 
 	public SurgeofKhroma(IEventBus modEventBus, ModContainer modContainer) {
-		SoKGuide.create();
 		RegistryReference.ATTRIBUTES.register(modEventBus);
 		BlockReference.BLOCKS.register(modEventBus);
 		ItemReference.ITEMS.register(modEventBus);
 		BlockReference.BLOCK_ENTITY_TYPES.register(modEventBus);
 		EntityReference.ENTITY_TYPES.register(modEventBus);
 		UIReference.MENUS.register(modEventBus);
+		RegistryReference.ENTITY_DATA_SERIALIZERS.register(modEventBus);
 		RegistryReference.TRUNK_PLACER_TYPES.register(modEventBus);
 		RegistryReference.TREE_DECORATOR_TYPES.register(modEventBus);
 		RegistryReference.ATTACHMENT_TYPES.register(modEventBus);

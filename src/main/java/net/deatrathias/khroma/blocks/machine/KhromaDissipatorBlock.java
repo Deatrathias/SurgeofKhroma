@@ -8,13 +8,13 @@ import org.joml.Vector3f;
 import com.mojang.serialization.MapCodec;
 
 import net.deatrathias.khroma.blocks.BaseKhromaUserBlock;
+import net.deatrathias.khroma.client.particles.KhromaParticleOption;
 import net.deatrathias.khroma.khroma.IKhromaConsumer;
 import net.deatrathias.khroma.khroma.IKhromaConsumingBlock;
 import net.deatrathias.khroma.khroma.Khroma;
 import net.deatrathias.khroma.khroma.KhromaConsumerImpl;
 import net.deatrathias.khroma.khroma.KhromaNetwork;
 import net.deatrathias.khroma.khroma.KhromaProperty;
-import net.deatrathias.khroma.particles.KhromaParticleOption;
 import net.deatrathias.khroma.util.BlockDirection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -56,7 +56,7 @@ public class KhromaDissipatorBlock extends BaseKhromaUserBlock implements IKhrom
 	public KhromaDissipatorBlock(Properties properties) {
 		super(properties);
 		shapes = makeShapes();
-		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(KHROMA, Khroma.KHROMA_EMPTY));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(KHROMA, Khroma.EMPTY));
 	}
 
 	private Function<BlockState, VoxelShape> makeShapes() {
@@ -110,7 +110,7 @@ public class KhromaDissipatorBlock extends BaseKhromaUserBlock implements IKhrom
 	@Override
 	protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		Khroma khroma = Optional.ofNullable(KhromaNetwork.findNetwork(level, new BlockDirection(pos, state.getValue(FACING).getOpposite()))).map(network -> network.getKhroma())
-				.orElse(Khroma.KHROMA_EMPTY);
+				.orElse(Khroma.EMPTY);
 		if (khroma != state.getValue(KHROMA))
 			level.setBlock(pos, state.setValue(KHROMA, khroma), UPDATE_CLIENTS | UPDATE_KNOWN_SHAPE);
 	}
@@ -119,7 +119,7 @@ public class KhromaDissipatorBlock extends BaseKhromaUserBlock implements IKhrom
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
 		Khroma khroma = state.getValue(KHROMA);
 		Direction facing = state.getValue(FACING);
-		if (khroma != Khroma.KHROMA_EMPTY) {
+		if (khroma != Khroma.EMPTY) {
 			Vector3f spawn = new Vector3f(randomBetween(-0.375f, 0.375f, random), randomBetween(-0.25f, 0.3125f, random), 0);
 			spawn = facing.getRotation().transform(spawn);
 			level.addParticle(new KhromaParticleOption(khroma), pos.getX() + spawn.x + 0.5, pos.getY() + spawn.y + 0.5, pos.getZ() + spawn.z + 0.5, 0, randomBetween(0.05f, 0.1f, random), 0);
