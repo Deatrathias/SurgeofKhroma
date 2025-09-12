@@ -38,6 +38,10 @@ repositories {
 	maven {
 		url = "https://maven.wispforest.io/releases"
 	}
+	maven {
+		name = 'GeckoLib'
+		url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+	}
 
     mavenLocal()
 	mavenCentral()
@@ -158,15 +162,13 @@ dependencies {
 	
 	implementation "maven.modrinth:jade:${project.jade_version}"
 	implementation("io.wispforest:accessories-neoforge:${project.accessories_version}")
+	implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
 
 	compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
 	//runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 	
 	compileOnly("mezz.jei:jei-${jei_minecraft_version}-neoforge-api:${jei_version}")
 	runtimeOnly("mezz.jei:jei-${jei_minecraft_version}-neoforge:${jei_version}")
-	
-	//compileOnly "org.appliedenergistics:guideme:${guideme_version}:api"
-    //runtimeOnly "org.appliedenergistics:guideme:${guideme_version}"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

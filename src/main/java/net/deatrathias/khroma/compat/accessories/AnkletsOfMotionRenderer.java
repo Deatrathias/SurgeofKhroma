@@ -17,13 +17,13 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-public class ChromaticGlassesRenderer implements AccessoryRenderer {
+public class AnkletsOfMotionRenderer implements AccessoryRenderer {
 
 	private HumanoidArmorModel<HumanoidRenderState> baseModel;
 
-	private static final ResourceLocation TEXTURE = SurgeofKhroma.resource("textures/entity/equipment/humanoid/chromatic_glasses.png");
+	private static final ResourceLocation TEXTURE = SurgeofKhroma.resource("textures/entity/equipment/humanoid/anklets_of_motion.png");
 
-	public ChromaticGlassesRenderer() {
+	public AnkletsOfMotionRenderer() {
 		baseModel = new HumanoidArmorModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLayers.PLAYER_INNER_ARMOR));
 	}
 
@@ -35,7 +35,7 @@ public class ChromaticGlassesRenderer implements AccessoryRenderer {
 		VertexConsumer buffer = multiBufferSource.getBuffer(model.renderType(TEXTURE));
 
 		baseModel.setupAnim((HumanoidRenderState) renderState);
-		baseModel.head.render(matrices, buffer, light, OverlayTexture.NO_OVERLAY);
+		baseModel.leftLeg.render(matrices, buffer, light, OverlayTexture.NO_OVERLAY);
+		baseModel.rightLeg.render(matrices, buffer, light, OverlayTexture.NO_OVERLAY);
 	}
-
 }

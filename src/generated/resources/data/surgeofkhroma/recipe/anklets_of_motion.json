@@ -2,16 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": "#surgeofkhroma:ingots/khrometal/black",
-    "X": "#c:ender_pearls"
+    "#": "#c:ingots/gold",
+    "X": "#surgeofkhroma:ingots/khrometal/blue"
   },
   "pattern": [
+    " X ",
     "# #",
-    "#X#",
-    " # "
+    " X "
   ],
   "result": {
     "count": 1,
-    "id": "surgeofkhroma:warp_canister"
+    "id": "surgeofkhroma:anklets_of_motion"
   }
 }

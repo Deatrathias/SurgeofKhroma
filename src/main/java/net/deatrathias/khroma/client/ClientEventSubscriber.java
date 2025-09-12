@@ -1,7 +1,6 @@
 package net.deatrathias.khroma.client;
 
 import io.wispforest.accessories.Accessories;
-import io.wispforest.accessories.api.client.AccessoriesRendererRegistry;
 import mezz.jei.api.constants.ModIds;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.blocks.logistics.KhromaLineBlock;
@@ -12,14 +11,13 @@ import net.deatrathias.khroma.client.particles.KhromaParticle.KhromaParticleProv
 import net.deatrathias.khroma.client.rendering.entities.KhromaNodeEntityRenderer;
 import net.deatrathias.khroma.client.rendering.entities.StrixRenderer;
 import net.deatrathias.khroma.client.rendering.items.SpannerColorTint;
-import net.deatrathias.khroma.compat.accessories.ChromaticGlassesRenderer;
+import net.deatrathias.khroma.compat.accessories.AccessoriesRegister;
 import net.deatrathias.khroma.compat.curios.CuriosRegister;
 import net.deatrathias.khroma.compat.jei.JeiKhromaPlugin;
 import net.deatrathias.khroma.khroma.Khroma;
 import net.deatrathias.khroma.registries.BlockReference;
 import net.deatrathias.khroma.registries.EntityReference;
 import net.deatrathias.khroma.registries.ImbuedTree.TreeBlock;
-import net.deatrathias.khroma.registries.ItemReference;
 import net.deatrathias.khroma.registries.RegistryReference;
 import net.deatrathias.khroma.registries.UIReference;
 import net.minecraft.client.model.BoatModel;
@@ -51,10 +49,12 @@ import top.theillusivec4.curios.api.CuriosResources;
 public class ClientEventSubscriber {
 	@SubscribeEvent
 	private static void onClientSetup(FMLClientSetupEvent event) {
-		if (ModList.get().isLoaded(CuriosResources.MOD_ID))
-			CuriosRegister.registerCurioRenderer();
+
 		if (ModList.get().isLoaded(Accessories.MODID))
-			AccessoriesRendererRegistry.bindItemToRenderer(ItemReference.CHROMATIC_GLASSES.get(), ItemReference.CHROMATIC_GLASSES.getKey().location(), () -> new ChromaticGlassesRenderer());
+			AccessoriesRegister.registerAccessoriesRenderer();
+		else if (ModList.get().isLoaded(CuriosResources.MOD_ID))
+			CuriosRegister.registerCurioRenderer();
+
 		configureRenderLayers();
 	}
 

@@ -3,6 +3,7 @@ package net.deatrathias.khroma.datagen;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
+import io.wispforest.accessories.Accessories;
 import io.wispforest.accessories.api.data.AccessoriesTags;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.khroma.Khroma;
@@ -177,7 +178,8 @@ public final class TagsDataGen {
 			minecraftTags();
 			if (ModList.get().isLoaded(CuriosResources.MOD_ID))
 				curiosTags();
-			tag(AccessoriesTags.FACE_TAG).add(ItemReference.CHROMATIC_GLASSES.get());
+			if (ModList.get().isLoaded(Accessories.MODID))
+				accessoriesTags();
 
 			tag(TagReference.ITEM_CONVERTS_TO_DYE_RED_SINGULAR).add(Items.RED_TULIP, Items.BEETROOT, Items.POPPY);
 			tag(TagReference.ITEM_CONVERTS_TO_DYE_RED_DOUBLE).add(Items.ROSE_BUSH);
@@ -245,6 +247,12 @@ public final class TagsDataGen {
 
 		private void curiosTags() {
 			tag(ItemTags.create(CuriosResources.resource("eyes"))).add(ItemReference.CHROMATIC_GLASSES.get());
+		}
+
+		private void accessoriesTags() {
+			tag(AccessoriesTags.FACE_TAG).add(ItemReference.CHROMATIC_GLASSES.get());
+			tag(AccessoriesTags.SHOES_TAG).add(ItemReference.FEATHERED_BOOTS.get());
+			tag(AccessoriesTags.ANKLET_TAG).add(ItemReference.ANKLETS_OF_MOTION.get());
 		}
 
 		private void tagsPerKhroma(TagAppender<Item, Item> swords, TagAppender<Item, Item> pickaxes, TagAppender<Item, Item> axes, TagAppender<Item, Item> shovel,

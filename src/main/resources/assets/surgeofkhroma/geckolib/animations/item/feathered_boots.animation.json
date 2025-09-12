@@ -1,0 +1,52 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"Stand": {
+			"loop": true,
+			"bones": {
+				"bootWingLeft": {
+					"rotation": {
+						"vector": [0, 0, 0]
+					}
+				},
+				"bootWingRight": {
+					"rotation": {
+						"vector": [0, 0, 0]
+					}
+				}
+			}
+		},
+		"Flap": {
+			"loop": true,
+			"animation_length": 0.3,
+			"bones": {
+				"bootWingLeft": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.15": {
+							"vector": [0, 60, 0]
+						},
+						"0.3": {
+							"vector": [0, 0, 0]
+						}
+					}
+				},
+				"bootWingRight": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.15": {
+							"vector": [0, -60, 0]
+						},
+						"0.3": {
+							"vector": [0, 0, 0]
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -88,7 +88,8 @@ public class DataGenDefinitions {
 
 		simpleItems = deferredList(ItemReference.KHROMANCER_ARCHIVE, ItemReference.RAW_CHROMIUM, ItemReference.CHROMIUM_INGOT, ItemReference.CHROMIUM_NUGGET,
 				ItemReference.KHROMETAL_INGOT_RED, ItemReference.KHROMETAL_INGOT_GREEN, ItemReference.KHROMETAL_INGOT_BLUE, ItemReference.KHROMETAL_INGOT_WHITE,
-				ItemReference.KHROMETAL_INGOT_BLACK, ItemReference.CHROMATIC_NUCLEUS, ItemReference.CHROMATIC_GLASSES, ItemReference.STRIX_SPAWN_EGG);
+				ItemReference.KHROMETAL_INGOT_BLACK, ItemReference.CHROMATIC_NUCLEUS, ItemReference.CHROMATIC_GLASSES, ItemReference.FEATHERED_BOOTS, ItemReference.ANKLETS_OF_MOTION,
+				ItemReference.STRIX_SPAWN_EGG);
 
 		handheldItems = deferredList(ItemReference.KHROMETAL_RED_SWORD, ItemReference.KHROMETAL_RED_PICKAXE,
 				ItemReference.KHROMETAL_GREEN_SWORD, ItemReference.KHROMETAL_GREEN_PICKAXE, ItemReference.KHROMETAL_BLUE_SWORD, ItemReference.KHROMETAL_BLUE_PICKAXE,

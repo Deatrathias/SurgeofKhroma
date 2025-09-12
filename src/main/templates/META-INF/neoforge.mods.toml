@@ -49,9 +49,23 @@ issueTrackerURL="https://github.com/Deatrathias/SurgeofKhroma"
     side="BOTH"
 	
 [[dependencies.${mod_id}]]
+    modId="geckolib"
+    type="required"
+    versionRange="[${geckolib_version},)"
+    ordering="AFTER"
+    side="BOTH"
+	
+[[dependencies.${mod_id}]]
+    modId="accessories"
+    type="optional"
+    versionRange="[${accessories_version},)"
+    ordering="AFTER"
+    side="BOTH"
+	
+[[dependencies.${mod_id}]]
     modId="curios"
     type="optional"
     versionRange="[${curios_version},)"
-    ordering="NONE"
+    ordering="AFTER"
     side="BOTH"
 

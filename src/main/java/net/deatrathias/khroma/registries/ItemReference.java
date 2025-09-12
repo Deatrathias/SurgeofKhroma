@@ -1,10 +1,15 @@
 package net.deatrathias.khroma.registries;
 
-import io.wispforest.accessories.api.components.AccessoriesDataComponents;
-import io.wispforest.accessories.api.components.AccessoryItemAttributeModifiers;
-import io.wispforest.accessories.api.core.AccessoryItem;
+import java.util.List;
+
+import com.mojang.datafixers.util.Pair;
+
+import io.wispforest.accessories.Accessories;
 import io.wispforest.accessories.api.data.AccessoriesBaseData;
 import net.deatrathias.khroma.SurgeofKhroma;
+import net.deatrathias.khroma.compat.accessories.AccessoriesRegister;
+import net.deatrathias.khroma.compat.curios.CuriosRegister;
+import net.deatrathias.khroma.items.FeatheredBootsItem;
 import net.deatrathias.khroma.items.GuideItem;
 import net.deatrathias.khroma.items.KhrometalBlackPickaxeItem;
 import net.deatrathias.khroma.items.KhrometalBlackSwordItem;
@@ -18,6 +23,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -28,8 +34,13 @@ import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.equipment.EquipmentAssets;
+import net.minecraft.world.item.equipment.Equippable;
+import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import top.theillusivec4.curios.api.CuriosResources;
 
 public final class ItemReference {
 
@@ -54,9 +65,8 @@ public final class ItemReference {
 	public static final DeferredItem<Item> KHROMETAL_INGOT_BLACK = ITEMS.registerSimpleItem("khrometal_ingot_black");
 	public static final DeferredItem<Item> CHROMATIC_NUCLEUS = ITEMS.registerSimpleItem("chromatic_nucleus");
 
-	public static final DeferredItem<Item> CHROMATIC_GLASSES = ITEMS.register("chromatic_glasses", registryName -> new AccessoryItem(
-			itemProps(registryName).stacksTo(1).component(AccessoriesDataComponents.ATTRIBUTES, AccessoryItemAttributeModifiers.builder()
-					.addForSlot(RegistryReference.ATTRIBUTE_CAN_SEE_NODES, new AttributeModifier(registryName, 1, Operation.ADD_VALUE), AccessoriesBaseData.FACE_SLOT, false).build())));
+	public static final DeferredItem<Item> CHROMATIC_GLASSES = ITEMS.register("chromatic_glasses", registryName -> new Item(accessoryAttributes(registryName,
+			List.of(Pair.of(RegistryReference.ATTRIBUTE_CAN_SEE_NODES, new AttributeModifier(registryName, 1, Operation.ADD_VALUE))), "eyes", AccessoriesBaseData.FACE_SLOT, EquipmentSlot.HEAD)));
 
 	public static final DeferredItem<Item> KHROMETAL_SPANNER = ITEMS.registerItem("khrometal_spanner",
 			props -> new SpannerItem(
@@ -82,6 +92,19 @@ public final class ItemReference {
 
 	public static final DeferredItem<Item> WARP_CANISTER = ITEMS.register("warp_canister", registryName -> new WarpCanisterItem(itemProps(registryName).stacksTo(1)));
 
+	public static final DeferredItem<Item> FEATHERED_BOOTS = ITEMS.register("feathered_boots",
+			registryName -> new FeatheredBootsItem(accessoryAttributes(registryName, List.of(
+					Pair.of(Attributes.JUMP_STRENGTH, new AttributeModifier(registryName, 0.2, Operation.ADD_VALUE)),
+					Pair.of(Attributes.SAFE_FALL_DISTANCE, new AttributeModifier(registryName, 3, Operation.ADD_VALUE)),
+					Pair.of(Attributes.STEP_HEIGHT, new AttributeModifier(registryName, 1, Operation.ADD_VALUE))),
+					"feet", AccessoriesBaseData.SHOES_SLOT, EquipmentSlot.FEET)));
+
+	public static final DeferredItem<Item> ANKLETS_OF_MOTION = ITEMS.register("anklets_of_motion",
+			registryName -> new Item(accessoryAttributes(registryName, List.of(
+					Pair.of(Attributes.MOVEMENT_SPEED, new AttributeModifier(registryName, 0.04, Operation.ADD_VALUE)),
+					Pair.of(NeoForgeMod.SWIM_SPEED, new AttributeModifier(registryName, 1, Operation.ADD_VALUE))),
+					"legs", AccessoriesBaseData.ANKLET_SLOT, EquipmentSlot.LEGS)));
+
 	public static final DeferredItem<Item> STRIX_SPAWN_EGG = ITEMS.registerItem("strix_spawn_egg", props -> new SpawnEggItem(EntityReference.STRIX.get(), props));
 
 	public static Item.Properties itemProps(ResourceLocation registryName) {
@@ -93,4 +116,22 @@ public final class ItemReference {
 		return props.attributes(attributes.withModifierAdded(attribute, modifier, slot));
 	}
 
+	public static Item.Properties accessoryAttributes(ResourceLocation registryName, List<Pair<Holder<Attribute>, AttributeModifier>> modifiers, String curioSlot,
+			String accessorySlot,
+			EquipmentSlot equipmentSlot) {
+		var properties = itemProps(registryName).stacksTo(1);
+		if (ModList.get().isLoaded(Accessories.MODID)) {
+			return AccessoriesRegister.addModifiers(properties, modifiers, accessorySlot);
+		} else if (ModList.get().isLoaded(CuriosResources.MOD_ID)) {
+			return CuriosRegister.addModifiers(properties, modifiers, curioSlot);
+		} else {
+			var builder = ItemAttributeModifiers.builder();
+			for (var modifier : modifiers)
+				builder.add(modifier.getFirst(), modifier.getSecond(), EquipmentSlotGroup.ARMOR);
+
+			return properties.component(DataComponents.EQUIPPABLE, Equippable.builder(equipmentSlot).setAsset(ResourceKey.create(EquipmentAssets.ROOT_ID, registryName)).build())
+					.attributes(builder.build());
+
+		}
+	}
 }

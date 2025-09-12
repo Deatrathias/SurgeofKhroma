@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
+import software.bernie.geckolib.constant.dataticket.DataTicket;
 
 public class ClientOnlyReference {
 	public static final RenderPipeline PIPELINE_KHROMA_NODE = RenderPipeline.builder(RenderPipelines.ENTITY_SNIPPET)
@@ -51,4 +52,6 @@ public class ClientOnlyReference {
 	public static final ModelLayerLocation GRIMTREE_CHEST_BOAT = new ModelLayerLocation(SurgeofKhroma.resource("chest_boat/" + BlockReference.GRIMTREE.getName()), "main");
 
 	public static final ModelLayerLocation STRIX = new ModelLayerLocation(SurgeofKhroma.resource("strix"), "main");
+
+	public static final DataTicket<Boolean> IS_ON_GROUND = DataTicket.create("is_on_ground", Boolean.class);
 }

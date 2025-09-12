@@ -11,6 +11,8 @@ import net.deatrathias.khroma.items.SpannerItem;
 import net.deatrathias.khroma.registries.BlockReference;
 import net.deatrathias.khroma.util.EightDirection;
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -108,6 +110,7 @@ public class ItemPedestalBlock extends BaseEntityBlock {
 			return InteractionResult.TRY_WITH_EMPTY_HAND;
 		else {
 			player.setItemInHand(hand, result);
+			level.playSound(player, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS);
 			return InteractionResult.SUCCESS;
 		}
 	}
@@ -123,6 +126,7 @@ public class ItemPedestalBlock extends BaseEntityBlock {
 				be.createItemEntityForPlayerPickup(result, player);
 			}
 
+			level.playSound(player, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS);
 			return InteractionResult.SUCCESS;
 		}
 	}

@@ -215,7 +215,7 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 
 		shaped(RecipeCategory.TOOLS, ItemReference.WARP_CANISTER)
 				.define('#', TagReference.ITEM_KHROMETAL_INGOT_BLACK)
-				.define('X', Items.ENDER_PEARL)
+				.define('X', Tags.Items.ENDER_PEARLS)
 				.pattern("# #")
 				.pattern("#X#")
 				.pattern(" # ")
@@ -225,6 +225,25 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 		output.accept(SurgeofKhroma.resourceKey(Registries.RECIPE, ItemReference.WARP_CANISTER.getId().getPath() + "_reset"),
 				new ShapelessRecipe("", CraftingBookCategory.EQUIPMENT, new ItemStack(ItemReference.WARP_CANISTER.asItem(), 1), List.of(Ingredient.of(ItemReference.WARP_CANISTER))), null);
 
+		shaped(RecipeCategory.TOOLS, ItemReference.FEATHERED_BOOTS)
+				.define('#', Tags.Items.FEATHERS)
+				.define('X', TagReference.ITEM_KHROMETAL_INGOT_WHITE)
+				.define('L', Tags.Items.LEATHERS)
+				.define('~', Tags.Items.STRINGS)
+				.pattern("# #")
+				.pattern("X~X")
+				.pattern("LLL")
+				.unlockedBy("has_white_khrometal", has(TagReference.ITEM_KHROMETAL_INGOT_WHITE))
+				.save(output);
+
+		shaped(RecipeCategory.TOOLS, ItemReference.ANKLETS_OF_MOTION)
+				.define('#', Tags.Items.INGOTS_GOLD)
+				.define('X', TagReference.ITEM_KHROMETAL_INGOT_BLUE)
+				.pattern(" X ")
+				.pattern("# #")
+				.pattern(" X ")
+				.unlockedBy("has_blue_khrometal", has(TagReference.ITEM_KHROMETAL_INGOT_BLUE))
+				.save(output);
 	}
 
 	private void imbuedWoodRecipes() {

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": "#c:feathers",
+    "L": "#c:leathers",
+    "X": "#surgeofkhroma:ingots/khrometal/white",
+    "~": "#c:strings"
+  },
+  "pattern": [
+    "# #",
+    "X~X",
+    "LLL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "surgeofkhroma:feathered_boots"
+  }
+}

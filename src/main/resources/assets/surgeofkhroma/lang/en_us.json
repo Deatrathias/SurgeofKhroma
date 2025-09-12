@@ -187,7 +187,8 @@
   "item.surgeofkhroma.warp_canister.connected": "Connected to %s",
   "item.surgeofkhroma.warp_canister.unbound": "Unbound",
   "item.surgeofkhroma.warp_canister.fail": "Connnected container not found. Disconnecting.",
-
+  "item.surgeofkhroma.feathered_boots": "Feathered Boots",
+  "item.surgeofkhroma.anklets_of_motion": "Anklets of Motion",
   
   "entity.surgeofkhroma.khroma_node": "Khroma Node",
   "entity.surgeofkhroma.sparktree_boat": "Sparktree Boat",
