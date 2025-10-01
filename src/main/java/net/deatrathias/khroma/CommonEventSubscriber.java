@@ -64,6 +64,7 @@ public final class CommonEventSubscriber {
 	private static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BlockReference.BE_KHROMA_IMBUER.get(), SidedInvWrapper::new);
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BlockReference.BE_ITEM_PEDESTAL.get(), ItemPedestalBlockEntity.ItemHandler::new);
+		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BlockReference.BE_ITEM_OUTPUT_MODULE.get(), (be, direction) -> be);
 		if (ModList.get().isLoaded(CuriosResources.MOD_ID))
 			CuriosRegister.registerCurioCapabilities(event);
 	}

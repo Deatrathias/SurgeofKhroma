@@ -74,7 +74,6 @@ public class CraftingSpannerRecipe extends ShapedRecipe {
 			return CODEC;
 		}
 
-		@SuppressWarnings("deprecation")
 		@Override
 		public StreamCodec<RegistryFriendlyByteBuf, CraftingSpannerRecipe> streamCodec() {
 			return STREAM_CODEC;

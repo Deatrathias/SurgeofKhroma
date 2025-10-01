@@ -11,8 +11,10 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import net.deatrathias.khroma.SurgeofKhroma;
+import net.deatrathias.khroma.blockentities.ItemOutputModuleBlockEntity;
 import net.deatrathias.khroma.blockentities.ItemPedestalBlockEntity;
 import net.deatrathias.khroma.blockentities.KhromaApertureBlockEntity;
+import net.deatrathias.khroma.blockentities.KhromaFabricatorBlockEntity;
 import net.deatrathias.khroma.blockentities.KhromaImbuerBlockEntity;
 import net.deatrathias.khroma.blockentities.KhromaProcessingCoreBlockEntity;
 import net.deatrathias.khroma.blockentities.NodeCollectorBlockEntity;
@@ -42,10 +44,12 @@ import net.deatrathias.khroma.blocks.logistics.KhromaLineBlock;
 import net.deatrathias.khroma.blocks.logistics.KhromaSeparatorBlock;
 import net.deatrathias.khroma.blocks.machine.ItemPedestalBlock;
 import net.deatrathias.khroma.blocks.machine.KhromaDissipatorBlock;
+import net.deatrathias.khroma.blocks.machine.KhromaFabricatorBlock;
 import net.deatrathias.khroma.blocks.machine.KhromaImbuerBlock;
 import net.deatrathias.khroma.blocks.machine.KhromaMachineBlock;
 import net.deatrathias.khroma.blocks.machine.KhromaProviderBlock;
 import net.deatrathias.khroma.blocks.machine.NodeCollectorBlock;
+import net.deatrathias.khroma.blocks.machine.modular.ItemOutputModuleBlock;
 import net.deatrathias.khroma.blocks.machine.modular.KhromaProcessingCoreBlock;
 import net.deatrathias.khroma.blocks.machine.modular.ProcessControllerBlock;
 import net.deatrathias.khroma.khroma.KhromaDeviceTier;
@@ -277,25 +281,35 @@ public final class BlockReference {
 	public static final Map<KhromaDeviceTier, DeferredBlock<Block>> KHROMA_PROCESSING_CORE_TIERED = registerTieredDevice("khroma_processing_core", KhromaProcessingCoreBlock::new,
 			KhromaDeviceTier.BASIC);
 
+	public static final DeferredBlock<Block> ITEM_OUTPUT_MODULE = registerBlock("item_output_module", ItemOutputModuleBlock::new, khromaDeviceProps());
+
+	public static final Map<KhromaDeviceTier, DeferredBlock<Block>> KHROMA_FABRICATOR = registerTieredDevice("khroma_fabricator", KhromaFabricatorBlock::new, KhromaDeviceTier.EXPERT);
+
 	public static final DeferredBlock<Block> BREAK_BLOCK_PROCESS_CONTROLLER = registerBlock("break_block_process_controller",
 			properties -> new ProcessControllerBlock(ProcessRegistry.BREAK_BLOCK, properties), khromaDeviceProps());
 
 	public static final DeferredBlock<Block> ITEM_PEDESTAL = registerBlock("item_pedestal", ItemPedestalBlock::new, khromaDeviceProps());
 
 	public static final Supplier<BlockEntityType<NodeCollectorBlockEntity>> BE_NODE_COLLECTOR = BLOCK_ENTITY_TYPES.register("bode_collector",
-			() -> (new BlockEntityType<>(NodeCollectorBlockEntity::new, NODE_COLLECTOR.get())));
+			() -> new BlockEntityType<>(NodeCollectorBlockEntity::new, NODE_COLLECTOR.get()));
 
 	public static final Supplier<BlockEntityType<KhromaApertureBlockEntity>> BE_KHROMA_APERTURE = BLOCK_ENTITY_TYPES.register("khroma_aperture",
-			() -> (new BlockEntityType<>(KhromaApertureBlockEntity::new, KHROMA_APERTURE.get())));
+			() -> new BlockEntityType<>(KhromaApertureBlockEntity::new, KHROMA_APERTURE.get()));
 
 	public static final Supplier<BlockEntityType<KhromaImbuerBlockEntity>> BE_KHROMA_IMBUER = BLOCK_ENTITY_TYPES.register("khroma_imbuer",
-			() -> (new BlockEntityType<>(KhromaImbuerBlockEntity::new, KHROMA_IMBUER.get())));
+			() -> new BlockEntityType<>(KhromaImbuerBlockEntity::new, KHROMA_IMBUER.get()));
 
 	public static final Supplier<BlockEntityType<KhromaProcessingCoreBlockEntity>> BE_KHROMA_PROCESSING_CORE = BLOCK_ENTITY_TYPES.register("khroma_processing_core",
-			() -> (new BlockEntityType<>(KhromaProcessingCoreBlockEntity::new, getAllTieredBlocks(KHROMA_PROCESSING_CORE_TIERED))));
+			() -> new BlockEntityType<>(KhromaProcessingCoreBlockEntity::new, getAllTieredBlocks(KHROMA_PROCESSING_CORE_TIERED)));
+
+	public static final Supplier<BlockEntityType<ItemOutputModuleBlockEntity>> BE_ITEM_OUTPUT_MODULE = BLOCK_ENTITY_TYPES.register("item_output_module",
+			() -> new BlockEntityType<>(ItemOutputModuleBlockEntity::new, ITEM_OUTPUT_MODULE.get()));
 
 	public static final Supplier<BlockEntityType<ItemPedestalBlockEntity>> BE_ITEM_PEDESTAL = BLOCK_ENTITY_TYPES.register("item_pedestal",
-			() -> (new BlockEntityType<>(ItemPedestalBlockEntity::new, ITEM_PEDESTAL.get())));
+			() -> new BlockEntityType<>(ItemPedestalBlockEntity::new, ITEM_PEDESTAL.get()));
+
+	public static final Supplier<BlockEntityType<KhromaFabricatorBlockEntity>> BE_KHROMA_FABRICATOR = BLOCK_ENTITY_TYPES.register("khroma_fabricator",
+			() -> new BlockEntityType<>(KhromaFabricatorBlockEntity::new, getAllTieredBlocks(KHROMA_FABRICATOR)));
 
 	private static BlockBehaviour.Properties blockProps() {
 		return BlockBehaviour.Properties.of();

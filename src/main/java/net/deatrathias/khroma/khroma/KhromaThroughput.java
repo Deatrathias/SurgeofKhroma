@@ -2,8 +2,6 @@ package net.deatrathias.khroma.khroma;
 
 import java.util.Objects;
 
-import net.deatrathias.khroma.recipes.KhromaImbuementRecipe;
-
 public final class KhromaThroughput {
 	public static class KhromaThrouputWrapper {
 		public KhromaThroughput throughput;
@@ -102,8 +100,8 @@ public final class KhromaThroughput {
 		return (rate * ((float) Math.pow(COMBINED_KHROMA_PENALTY, (colors - consumedColors))) * consumedColors / colors);
 	}
 
-	public float recipeProgress(KhromaImbuementRecipe recipe, float softLimit) {
-		float adjustedRate = effectiveConsumed(recipe.getKhroma());
+	public float recipeProgress(Khroma khroma, float softLimit) {
+		float adjustedRate = effectiveConsumed(khroma);
 		if (softLimit == -1 || adjustedRate <= softLimit)
 			return adjustedRate;
 

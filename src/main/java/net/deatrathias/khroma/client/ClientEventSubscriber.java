@@ -8,6 +8,7 @@ import net.deatrathias.khroma.client.gui.screens.KhromaApertureScreen;
 import net.deatrathias.khroma.client.gui.screens.KhromaImbuerScreen;
 import net.deatrathias.khroma.client.models.StrixModel;
 import net.deatrathias.khroma.client.particles.KhromaParticle.KhromaParticleProvider;
+import net.deatrathias.khroma.client.rendering.blockentities.ItemOutputModuleBlockEntityRenderer;
 import net.deatrathias.khroma.client.rendering.entities.KhromaNodeEntityRenderer;
 import net.deatrathias.khroma.client.rendering.entities.StrixRenderer;
 import net.deatrathias.khroma.client.rendering.items.SpannerColorTint;
@@ -117,6 +118,7 @@ public class ClientEventSubscriber {
 		event.registerEntityRenderer(BlockReference.GRIMTREE.getChestBoatEntity().get(), context -> new BoatRenderer(context, ClientOnlyReference.GRIMTREE_CHEST_BOAT));
 		event.registerEntityRenderer(EntityReference.STRIX.get(), StrixRenderer::new);
 		event.registerEntityRenderer(EntityReference.PLACED_ITEM.get(), ItemEntityRenderer::new);
+		event.registerBlockEntityRenderer(BlockReference.BE_ITEM_OUTPUT_MODULE.get(), ItemOutputModuleBlockEntityRenderer::new);
 	}
 
 	@SubscribeEvent

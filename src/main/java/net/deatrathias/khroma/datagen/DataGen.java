@@ -80,8 +80,8 @@ public class DataGen {
 		@Override
 		protected void gather(Provider provider) {
 			builder(NeoForgeDataMaps.COMPOSTABLES)
-					.add(TagReference.ITEM_IMBUED_TREE_LEAVES, new Compostable(0.3f), false)
-					.add(TagReference.ITEM_IMBUED_TREE_SAPLINGS, new Compostable(0.3f), false)
+					.add(TagReference.Items.IMBUED_TREE_LEAVES, new Compostable(0.3f), false)
+					.add(TagReference.Items.IMBUED_TREE_SAPLINGS, new Compostable(0.3f), false)
 					.add(BlockReference.BLOOMTREE.getHolder(TreeBlock.SAPLING).unwrapKey().get().location(), new Compostable(1f), false)
 					.add(BlockReference.BLOOMTREE.getHolder(TreeBlock.LEAVES).unwrapKey().get().location(), new Compostable(1f), false);
 		}

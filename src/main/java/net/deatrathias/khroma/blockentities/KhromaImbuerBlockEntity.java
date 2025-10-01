@@ -107,11 +107,11 @@ public class KhromaImbuerBlockEntity extends BaseKhromaConsumerBlockEntity imple
 	}
 
 	public static void serverTick(Level level, BlockPos pos, BlockState state, KhromaImbuerBlockEntity blockEntity) {
-		blockEntity.tick();
+		blockEntity.serverTick();
 	}
 
 	@Override
-	protected void tick() {
+	protected void serverTick() {
 		Direction side = getBlockState().getValue(KhromaImbuerBlock.FACING).getOpposite();
 		Khroma khroma = getKhromaOnSide(side);
 		lastThroughput = new KhromaThroughput(khroma, 0);
@@ -129,7 +129,7 @@ public class KhromaImbuerBlockEntity extends BaseKhromaConsumerBlockEntity imple
 				currentRecipe = Optional.empty();
 			} else {
 				KhromaThroughput throughput = requestOnSide(side);
-				effectiveRate = throughput.recipeProgress(recipe.value(), getSoftLimit());
+				effectiveRate = throughput.recipeProgress(recipe.value().getKhroma(), getSoftLimit());
 				progress += effectiveRate / recipe.value().getKhromaCost();
 				if (progress >= 1f) {
 					process(recipe, khroma);

@@ -35,11 +35,11 @@ import net.minecraft.world.phys.Vec3;
 public class NodeCollectorBlockEntity extends BaseKhromaUserBlockEntity {
 
 	public static final Map<TagKey<Block>, Khroma> structureBlockTags = Map.of(
-			TagReference.BLOCK_COLLECTOR_STRUCTURE_COMPONENTS_RED, Khroma.RED,
-			TagReference.BLOCK_COLLECTOR_STRUCTURE_COMPONENTS_GREEN, Khroma.GREEN,
-			TagReference.BLOCK_COLLECTOR_STRUCTURE_COMPONENTS_BLUE, Khroma.BLUE,
-			TagReference.BLOCK_COLLECTOR_STRUCTURE_COMPONENTS_WHITE, Khroma.WHITE,
-			TagReference.BLOCK_COLLECTOR_STRUCTURE_COMPONENTS_BLACK, Khroma.BLACK);
+			TagReference.Blocks.COLLECTOR_STRUCTURE_COMPONENTS_RED, Khroma.RED,
+			TagReference.Blocks.COLLECTOR_STRUCTURE_COMPONENTS_GREEN, Khroma.GREEN,
+			TagReference.Blocks.COLLECTOR_STRUCTURE_COMPONENTS_BLUE, Khroma.BLUE,
+			TagReference.Blocks.COLLECTOR_STRUCTURE_COMPONENTS_WHITE, Khroma.WHITE,
+			TagReference.Blocks.COLLECTOR_STRUCTURE_COMPONENTS_BLACK, Khroma.BLACK);
 
 	private int pillars;
 
@@ -93,8 +93,15 @@ public class NodeCollectorBlockEntity extends BaseKhromaUserBlockEntity {
 	@Override
 	public void setLevel(Level level) {
 		super.setLevel(level);
+
+	}
+
+	@Override
+	public void onLoad() {
+		super.onLoad();
 		if (!level.isClientSide) {
-			provider = new CollectorProvider();
+			if (provider == null)
+				provider = new CollectorProvider();
 			KhromaNode node = getNode();
 			khroma = node.getKhroma();
 			provider.setKhroma(khroma);
@@ -184,7 +191,7 @@ public class NodeCollectorBlockEntity extends BaseKhromaUserBlockEntity {
 	public static TagKey<Block> checkPillar(Level level, BlockPos from) {
 		MutableBlockPos iterPos = from.mutable();
 		BlockState state = level.getBlockState(iterPos);
-		if (!state.is(TagReference.BLOCK_WOODEN_PILLARS))
+		if (!state.is(TagReference.Blocks.WOODEN_PILLARS))
 			return null;
 		var colorTag = state.getTags().filter(structureBlockTags.keySet()::contains).findFirst().orElse(null);
 		if (colorTag == null)
@@ -192,14 +199,14 @@ public class NodeCollectorBlockEntity extends BaseKhromaUserBlockEntity {
 
 		iterPos.move(Direction.UP);
 		state = level.getBlockState(iterPos);
-		if (!state.is(TagReference.BLOCK_WOODEN_PILLARS))
+		if (!state.is(TagReference.Blocks.WOODEN_PILLARS))
 			return null;
 		if (!state.is(colorTag))
 			return null;
 
 		iterPos.move(Direction.UP);
 		state = level.getBlockState(iterPos);
-		if (!state.is(TagReference.BLOCK_KHROMETAL_BLOCKS))
+		if (!state.is(TagReference.Blocks.KHROMETAL_BLOCKS))
 			return null;
 		if (!state.is(colorTag))
 			return null;

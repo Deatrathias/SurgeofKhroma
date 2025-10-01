@@ -39,6 +39,7 @@ public class SurgeofKhroma {
 		RegistryReference.TRUNK_PLACER_TYPES.register(modEventBus);
 		RegistryReference.TREE_DECORATOR_TYPES.register(modEventBus);
 		RegistryReference.ATTACHMENT_TYPES.register(modEventBus);
+		RecipeReference.RECIPE_BOOK_CATEGORIES.register(modEventBus);
 		RecipeReference.RECIPE_TYPES.register(modEventBus);
 		RecipeReference.RECIPE_SERIALIZERS.register(modEventBus);
 		RegistryReference.CREATIVE_MODE_TABS.register(modEventBus);

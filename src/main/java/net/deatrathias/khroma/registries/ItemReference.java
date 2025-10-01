@@ -46,11 +46,11 @@ public final class ItemReference {
 
 	public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(SurgeofKhroma.MODID);
 
-	public static final ToolMaterial RED_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_DIAMOND_TOOL, 250, 6, 5, 14, TagReference.ITEM_KHROMETAL_INGOT_RED);
-	public static final ToolMaterial GREEN_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 2000, 6, 2, 14, TagReference.ITEM_KHROMETAL_INGOT_GREEN);
-	public static final ToolMaterial BLUE_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 12, 2, 24, TagReference.ITEM_KHROMETAL_INGOT_BLUE);
-	public static final ToolMaterial WHITE_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 6, 2, 14, TagReference.ITEM_KHROMETAL_INGOT_WHITE);
-	public static final ToolMaterial BLACK_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 6, 2, 14, TagReference.ITEM_KHROMETAL_INGOT_BLACK);
+	public static final ToolMaterial RED_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_DIAMOND_TOOL, 250, 6, 5, 14, TagReference.Items.KHROMETAL_INGOT_RED);
+	public static final ToolMaterial GREEN_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 2000, 6, 2, 14, TagReference.Items.KHROMETAL_INGOT_GREEN);
+	public static final ToolMaterial BLUE_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 12, 2, 24, TagReference.Items.KHROMETAL_INGOT_BLUE);
+	public static final ToolMaterial WHITE_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 6, 2, 14, TagReference.Items.KHROMETAL_INGOT_WHITE);
+	public static final ToolMaterial BLACK_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 6, 2, 14, TagReference.Items.KHROMETAL_INGOT_BLACK);
 
 	public static final DeferredItem<Item> KHROMANCER_ARCHIVE = ITEMS.register("khromancer_archive", registryName -> new GuideItem(itemProps(registryName)));
 

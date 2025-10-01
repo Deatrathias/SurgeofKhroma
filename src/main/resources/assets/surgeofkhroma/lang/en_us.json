@@ -139,6 +139,7 @@
   "block.surgeofkhroma.khroma_dissipator.message": "Dissipating %s Kh/t",
   "block.surgeofkhroma.node_collector": "Node Collector",
   "block.surgeofkhroma.khroma_imbuer": "Khroma Imbuer",
+  "block.surgeofkhroma.item_output_module": "Item Output Module",
   "block.surgeofkhroma.item_pedestal": "Item Pedestal",
   
   "item.surgeofkhroma.khromancer_archive": "Khromancer's Archive",

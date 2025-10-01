@@ -200,7 +200,7 @@ public class RegistrySetDataGen {
 						.withEffect(EnchantmentEffectComponents.DAMAGE,
 								new AddValue(LevelBasedValue.perLevel(2.5f)),
 								LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS,
-										EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypeLookup, TagReference.ENTITY_SENSITIVE_TO_FEATHERCLIP))))
+										EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entityTypeLookup, TagReference.Entities.SENSITIVE_TO_FEATHERCLIP))))
 						.withEffect(EnchantmentEffectComponents.POST_ATTACK, EnchantmentTarget.ATTACKER, EnchantmentTarget.VICTIM,
 								new ApplyMobEffect(HolderSet.direct(RegistryReference.EFFECT_PULL_DOWN),
 										LevelBasedValue.perLevel(2),

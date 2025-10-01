@@ -9,10 +9,14 @@
     "surgeofkhroma:khroma_separator",
     "surgeofkhroma:khroma_dissipator",
     "surgeofkhroma:khroma_imbuer",
+    "surgeofkhroma:item_output_module",
     "surgeofkhroma:item_pedestal",
     "surgeofkhroma:basic_khroma_processing_core",
     "surgeofkhroma:expert_khroma_processing_core",
     "surgeofkhroma:master_khroma_processing_core",
-    "surgeofkhroma:legendary_khroma_processing_core"
+    "surgeofkhroma:legendary_khroma_processing_core",
+    "surgeofkhroma:expert_khroma_fabricator",
+    "surgeofkhroma:master_khroma_fabricator",
+    "surgeofkhroma:legendary_khroma_fabricator"
   ]
 }

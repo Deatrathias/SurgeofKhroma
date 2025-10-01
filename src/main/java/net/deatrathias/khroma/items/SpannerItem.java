@@ -85,7 +85,7 @@ public class SpannerItem extends Item implements IItemExtension {
 
 	public static Item.Properties spanner(Item.Properties properties) {
 		var lookup = BuiltInRegistries.acquireBootstrapRegistrationLookup(BuiltInRegistries.BLOCK);
-		return properties.component(DataComponents.TOOL, new Tool(List.of(Tool.Rule.minesAndDrops(lookup.getOrThrow(TagReference.BLOCK_KHROMA_DEVICES), 10f)), 1, 1, true));
+		return properties.component(DataComponents.TOOL, new Tool(List.of(Tool.Rule.minesAndDrops(lookup.getOrThrow(TagReference.Blocks.KHROMA_DEVICES), 10f)), 1, 1, true));
 	}
 
 	public SpannerItem(Properties properties) {

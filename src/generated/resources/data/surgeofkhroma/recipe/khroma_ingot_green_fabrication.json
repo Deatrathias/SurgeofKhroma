@@ -1,0 +1,20 @@
+{
+  "type": "surgeofkhroma:khroma_fabrication",
+  "khroma": "green",
+  "khromaCost": 10000.0,
+  "pattern": {
+    "key": {
+      "#": "#surgeofkhroma:base_ingot",
+      "$": "#surgeofkhroma:reactants/common/green"
+    },
+    "pattern": [
+      " $ ",
+      "#X#",
+      " $ "
+    ]
+  },
+  "resumt": {
+    "count": 8,
+    "id": "surgeofkhroma:khrometal_ingot_green"
+  }
+}

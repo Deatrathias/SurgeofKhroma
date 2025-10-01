@@ -1,0 +1,20 @@
+{
+  "type": "surgeofkhroma:khroma_fabrication",
+  "khroma": "black",
+  "khromaCost": 10000.0,
+  "pattern": {
+    "key": {
+      "#": "#surgeofkhroma:base_ingot",
+      "$": "#surgeofkhroma:reactants/common/black"
+    },
+    "pattern": [
+      " $ ",
+      "#X#",
+      " $ "
+    ]
+  },
+  "resumt": {
+    "count": 8,
+    "id": "surgeofkhroma:khrometal_ingot_black"
+  }
+}

@@ -1,6 +1,7 @@
 package net.deatrathias.khroma.util;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.SegmentedAnglePrecision;
 import net.minecraft.util.StringRepresentable;
@@ -66,6 +67,21 @@ public enum EightDirection implements StringRepresentable {
 		if (secondDirection != null)
 			return result.relative(secondDirection.getOpposite());
 		return result;
+	}
+
+	public static EightDirection findDirection(int x, int z) {
+		MutableBlockPos mutPos = new MutableBlockPos();
+		for (EightDirection dir : EightDirection.values()) {
+			mutPos.set(0, 0, 0);
+			mutPos.move(dir.firstDirection);
+			if (dir.secondDirection != null)
+				mutPos.move(dir.secondDirection);
+
+			if (mutPos.getX() == x && mutPos.getZ() == z)
+				return dir;
+		}
+
+		return null;
 	}
 
 	public float convertToDegrees() {

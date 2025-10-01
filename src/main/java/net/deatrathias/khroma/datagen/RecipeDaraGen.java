@@ -56,6 +56,15 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 		}
 		khromaItemsRecipes();
 		khromaDevicesRecipes();
+
+		khromaFabrication(Khroma.RED, 10000, ItemReference.KHROMETAL_INGOT_RED, 8)
+				.define('#', TagReference.Items.BASE_INGOT)
+				.define('$', Tags.Items.DYES_RED)
+				.pattern(" $ ")
+				.pattern("#X#")
+				.pattern(" $ ")
+				.unlockedBy("has_ingot", has(TagReference.Items.BASE_INGOT))
+				.save(output, ResourceKey.create(Registries.RECIPE, ItemReference.KHROMETAL_INGOT_RED.getId().withSuffix("_fabrication")));
 	}
 
 	private void chromiumRecipes() {
@@ -84,7 +93,7 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 		var khrometalIngot = itemRegistry.getOrThrow(ResourceKey.create(Registries.ITEM, khrometalIngotLocation)).value();
 
 		output.accept(ResourceKey.create(Registries.RECIPE, khrometalIngotLocation),
-				new KhromaImbuementRecipe(Ingredient.of(itemRegistry.getOrThrow(TagReference.ITEM_BASE_INGOT)), khroma, new ItemStack(khrometalIngot), 5000), null);
+				new KhromaImbuementRecipe(Ingredient.of(itemRegistry.getOrThrow(TagReference.Items.BASE_INGOT)), khroma, new ItemStack(khrometalIngot), 5000), null);
 
 		var khrometalBlock = itemRegistry.getOrThrow(SurgeofKhroma.resourceKey(Registries.ITEM, "khrometal_block_" + khromaName)).value();
 
@@ -128,6 +137,15 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 
 		output.accept(SurgeofKhroma.resourceKey(Registries.RECIPE, BuiltInRegistries.ITEM.getKey(sapling).getPath()),
 				new KhromaImbuementRecipe(Ingredient.of(itemRegistry.getOrThrow(ItemTags.SAPLINGS)), khroma, new ItemStack(sapling, 1), 5000), null);
+
+		khromaFabrication(khroma, 10000, khrometalIngot, 8)
+				.define('#', TagReference.Items.BASE_INGOT)
+				.define('$', ItemTags.create(SurgeofKhroma.resource("reactants/common/" + khromaName)))
+				.pattern(" $ ")
+				.pattern("#X#")
+				.pattern(" $ ")
+				.unlockedBy("has_ingot", has(TagReference.Items.BASE_INGOT))
+				.save(output, ResourceKey.create(Registries.RECIPE, SurgeofKhroma.resource("khroma_ingot_" + khromaName + "_fabrication")));
 	}
 
 	private void generateTools(TagKey<Item> material, ItemLike sword, ItemLike pickaxe, ItemLike axe, ItemLike shovel) {
@@ -176,10 +194,10 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 				.define('u', Tags.Items.DYES_BLUE)
 				.define('w', Tags.Items.DYES_WHITE)
 				.define('b', Tags.Items.DYES_BLACK)
-				.define('#', TagReference.ITEM_BASE_NUGGET)
+				.define('#', TagReference.Items.BASE_NUGGET)
 				.pattern("w#b")
 				.pattern("rgu")
-				.unlockedBy("has_nugget", has(TagReference.ITEM_BASE_NUGGET))
+				.unlockedBy("has_nugget", has(TagReference.Items.BASE_NUGGET))
 				.save(output);
 
 		shaped(RecipeCategory.MISC, ItemReference.CHROMATIC_GLASSES)
@@ -199,27 +217,27 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 
 		RecipeOutputWrapper<ShapedRecipe, CraftingSpannerRecipe> spannerOutput = new RecipeOutputWrapper<ShapedRecipe, CraftingSpannerRecipe>(output, CraftingSpannerRecipe::new);
 		shaped(RecipeCategory.TOOLS, ItemReference.KHROMETAL_SPANNER)
-				.define('#', TagReference.ITEM_KHROMETAL_INGOTS)
+				.define('#', TagReference.Items.KHROMETAL_INGOTS)
 				.pattern("# #")
 				.pattern(" # ")
 				.pattern(" # ")
 				.group(getItemName(ItemReference.KHROMETAL_SPANNER))
-				.unlockedBy("has_khrometal", has(TagReference.ITEM_KHROMETAL_INGOTS))
+				.unlockedBy("has_khrometal", has(TagReference.Items.KHROMETAL_INGOTS))
 				.save(spannerOutput);
 
 		shapeless(RecipeCategory.TOOLS, ItemReference.KHROMANCER_ARCHIVE)
-				.requires(TagReference.ITEM_BASE_INGOT)
+				.requires(TagReference.Items.BASE_INGOT)
 				.requires(ItemReference.CHROMATIC_NUCLEUS)
-				.unlockedBy("has_ingot", has(TagReference.ITEM_BASE_INGOT))
+				.unlockedBy("has_ingot", has(TagReference.Items.BASE_INGOT))
 				.save(output);
 
 		shaped(RecipeCategory.TOOLS, ItemReference.WARP_CANISTER)
-				.define('#', TagReference.ITEM_KHROMETAL_INGOT_BLACK)
+				.define('#', TagReference.Items.KHROMETAL_INGOT_BLACK)
 				.define('X', Tags.Items.ENDER_PEARLS)
 				.pattern("# #")
 				.pattern("#X#")
 				.pattern(" # ")
-				.unlockedBy("has_black_khrometal", has(TagReference.ITEM_KHROMETAL_INGOT_BLACK))
+				.unlockedBy("has_black_khrometal", has(TagReference.Items.KHROMETAL_INGOT_BLACK))
 				.save(output);
 
 		output.accept(SurgeofKhroma.resourceKey(Registries.RECIPE, ItemReference.WARP_CANISTER.getId().getPath() + "_reset"),
@@ -227,22 +245,22 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 
 		shaped(RecipeCategory.TOOLS, ItemReference.FEATHERED_BOOTS)
 				.define('#', Tags.Items.FEATHERS)
-				.define('X', TagReference.ITEM_KHROMETAL_INGOT_WHITE)
+				.define('X', TagReference.Items.KHROMETAL_INGOT_WHITE)
 				.define('L', Tags.Items.LEATHERS)
 				.define('~', Tags.Items.STRINGS)
 				.pattern("# #")
 				.pattern("X~X")
 				.pattern("LLL")
-				.unlockedBy("has_white_khrometal", has(TagReference.ITEM_KHROMETAL_INGOT_WHITE))
+				.unlockedBy("has_white_khrometal", has(TagReference.Items.KHROMETAL_INGOT_WHITE))
 				.save(output);
 
 		shaped(RecipeCategory.TOOLS, ItemReference.ANKLETS_OF_MOTION)
 				.define('#', Tags.Items.INGOTS_GOLD)
-				.define('X', TagReference.ITEM_KHROMETAL_INGOT_BLUE)
+				.define('X', TagReference.Items.KHROMETAL_INGOT_BLUE)
 				.pattern(" X ")
 				.pattern("# #")
 				.pattern(" X ")
-				.unlockedBy("has_blue_khrometal", has(TagReference.ITEM_KHROMETAL_INGOT_BLUE))
+				.unlockedBy("has_blue_khrometal", has(TagReference.Items.KHROMETAL_INGOT_BLUE))
 				.save(output);
 	}
 
@@ -274,7 +292,7 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 		shaped(RecipeCategory.MISC, BlockReference.KHROMA_LINE, 8)
 				.define('c', ItemReference.CHROMATIC_NUCLEUS)
 				.define('g', Tags.Items.GLASS_PANES)
-				.define('#', TagReference.ITEM_BASE_INGOT)
+				.define('#', TagReference.Items.BASE_INGOT)
 				.pattern(" g ")
 				.pattern("#c#")
 				.pattern(" g ")
@@ -283,12 +301,12 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 				.save(output);
 		shaped(RecipeCategory.MISC, BlockReference.KHROMA_LINE, 8)
 				.define('g', Tags.Items.GLASS_PANES)
-				.define('#', TagReference.ITEM_KHROMETAL_INGOTS)
+				.define('#', TagReference.Items.KHROMETAL_INGOTS)
 				.pattern(" g ")
 				.pattern("# #")
 				.pattern(" g ")
 				.group(getItemName(BlockReference.KHROMA_LINE))
-				.unlockedBy("has_khrometal", has(TagReference.ITEM_KHROMETAL_INGOTS))
+				.unlockedBy("has_khrometal", has(TagReference.Items.KHROMETAL_INGOTS))
 				.save(output, getModdedRecipeName(BlockReference.KHROMA_LINE) + "_from_khrometal");
 
 		shaped(RecipeCategory.MISC, BlockReference.KHROMA_APERTURE)
@@ -322,7 +340,7 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 				.save(output);
 		shaped(RecipeCategory.MISC, BlockReference.NODE_COLLECTOR)
 				.define('c', ItemReference.CHROMATIC_NUCLEUS)
-				.define('#', TagReference.ITEM_BASE_INGOT)
+				.define('#', TagReference.Items.BASE_INGOT)
 				.pattern("###")
 				.pattern("#c#")
 				.pattern("###")
@@ -331,21 +349,33 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 		shaped(RecipeCategory.MISC, BlockReference.KHROMA_IMBUER)
 				.define('c', ItemReference.CHROMATIC_NUCLEUS)
 				.define('X', BlockReference.KHROMA_LINE)
-				.define('#', TagReference.ITEM_BASE_INGOT)
+				.define('#', TagReference.Items.BASE_INGOT)
 				.pattern("###")
 				.pattern("XcX")
 				.pattern("###")
 				.unlockedBy("has_nucleus", has(ItemReference.CHROMATIC_NUCLEUS))
 				.save(output);
 		shaped(RecipeCategory.MISC, BlockReference.ITEM_PEDESTAL)
-				.define('#', TagReference.ITEM_KHROMETAL_INGOTS)
+				.define('#', TagReference.Items.KHROMETAL_INGOTS)
 				.define('X', Items.STONE_SLAB)
 				.pattern("# ")
 				.pattern("#X")
 				.pattern("##")
-				.unlockedBy("has_khrometal", has(TagReference.ITEM_KHROMETAL_INGOTS))
+				.unlockedBy("has_khrometal", has(TagReference.Items.KHROMETAL_INGOTS))
 				.save(output);
 
+	}
+
+	protected KhromaFabricationRecipeBuilder khromaFabrication(Khroma khroma, float khromaCost, ItemLike item, int count) {
+		return new KhromaFabricationRecipeBuilder(items, khroma, khromaCost, item.asItem(), count);
+	}
+
+	protected KhromaFabricationRecipeBuilder khromaFabrication(Khroma khroma, float khromaCost, ItemLike item) {
+		return new KhromaFabricationRecipeBuilder(items, khroma, khromaCost, item.asItem());
+	}
+
+	protected KhromaFabricationRecipeBuilder khromaFabrication(Khroma khroma, float khromaCost, ItemStack itemStack) {
+		return new KhromaFabricationRecipeBuilder(items, khroma, khromaCost, itemStack.getItem(), itemStack.getCount());
 	}
 
 	public static class Runner extends RecipeProvider.Runner {

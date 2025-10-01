@@ -54,9 +54,9 @@ public abstract class BaseKhromaConsumerBlockEntity extends BlockEntity {
 		return KhromaDeviceTier.BASIC.getSoftLimit();
 	}
 
-	protected abstract void tick();
+	protected abstract void serverTick();
 
 	public static void serverTick(Level level, BlockPos pos, BlockState state, BaseKhromaConsumerBlockEntity blockEntity) {
-		blockEntity.tick();
+		blockEntity.serverTick();
 	}
 }

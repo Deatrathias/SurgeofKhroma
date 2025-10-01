@@ -77,7 +77,8 @@ public class DataGenDefinitions {
 				BlockReference.RAW_CHROMIUM_BLOCK, BlockReference.KHROMETAL_BLOCK_RED, BlockReference.KHROMETAL_BLOCK_GREEN, BlockReference.KHROMETAL_BLOCK_BLUE,
 				BlockReference.KHROMETAL_BLOCK_WHITE, BlockReference.KHROMETAL_BLOCK_BLACK);
 
-		simpleBlocks = deferredCombinedList(List.of(BlockReference.NODE_COLLECTOR), sortedTierList(BlockReference.KHROMA_PROCESSING_CORE_TIERED));
+		simpleBlocks = deferredCombinedList(List.of(BlockReference.NODE_COLLECTOR, BlockReference.ITEM_OUTPUT_MODULE), sortedTierList(BlockReference.KHROMA_PROCESSING_CORE_TIERED),
+				sortedTierList(BlockReference.KHROMA_FABRICATOR));
 
 		horDirectionBlocks = deferredList(BlockReference.KHROMA_PROVIDER, BlockReference.KHROMA_MACHINE,
 				BlockReference.KHROMA_COMBINER, BlockReference.KHROMA_SEPARATOR, BlockReference.KHROMA_IMBUER);
@@ -97,7 +98,9 @@ public class DataGenDefinitions {
 
 		khromaDevices = deferredCombinedList(List.of(BlockReference.KHROMA_LINE, BlockReference.NODE_COLLECTOR, BlockReference.KHROMA_PROVIDER,
 				BlockReference.KHROMA_MACHINE, BlockReference.KHROMA_APERTURE, BlockReference.KHROMA_COMBINER, BlockReference.KHROMA_SEPARATOR,
-				BlockReference.KHROMA_DISSIPATOR, BlockReference.KHROMA_IMBUER, BlockReference.ITEM_PEDESTAL), sortedTierList(BlockReference.KHROMA_PROCESSING_CORE_TIERED));
+				BlockReference.KHROMA_DISSIPATOR, BlockReference.KHROMA_IMBUER, BlockReference.ITEM_OUTPUT_MODULE, BlockReference.ITEM_PEDESTAL),
+				sortedTierList(BlockReference.KHROMA_PROCESSING_CORE_TIERED),
+				sortedTierList(BlockReference.KHROMA_FABRICATOR));
 
 		needsStoneTool = deferredList(BlockReference.CHROMIUM_ORE, BlockReference.DEEPSLATE_CHROMIUM_ORE,
 				BlockReference.CHROMIUM_BLOCK, BlockReference.RAW_CHROMIUM_BLOCK);

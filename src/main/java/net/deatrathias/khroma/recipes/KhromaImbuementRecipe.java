@@ -121,13 +121,22 @@ public class KhromaImbuementRecipe implements Recipe<ItemKhromaRecipeInput> {
 				new SlotDisplay.ItemSlotDisplay(BlockReference.KHROMA_IMBUER.asItem())));
 	}
 
-	public static class KhromaImbuementSerializer implements RecipeSerializer<KhromaImbuementRecipe> {
+	public static class Serializer implements RecipeSerializer<KhromaImbuementRecipe> {
 		public static final MapCodec<KhromaImbuementRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
 				.group(Ingredient.CODEC.fieldOf("ingredient").forGetter(KhromaImbuementRecipe::getIngredient), Khroma.CODEC.fieldOf("khroma").forGetter(KhromaImbuementRecipe::getKhroma),
 						ItemStack.CODEC.fieldOf("result").forGetter(KhromaImbuementRecipe::getResult), Codec.FLOAT.fieldOf("khromacost").forGetter(KhromaImbuementRecipe::getKhromaCost))
 				.apply(instance, KhromaImbuementRecipe::new));
 
-		private final StreamCodec<RegistryFriendlyByteBuf, KhromaImbuementRecipe> STREAM_CODEC = StreamCodec.of(this::toNetwork, this::fromNetwork);
+		private final StreamCodec<RegistryFriendlyByteBuf, KhromaImbuementRecipe> STREAM_CODEC = StreamCodec.composite(
+				Ingredient.CONTENTS_STREAM_CODEC,
+				KhromaImbuementRecipe::getIngredient,
+				Khroma.STREAM_CODEC,
+				KhromaImbuementRecipe::getKhroma,
+				ItemStack.STREAM_CODEC,
+				KhromaImbuementRecipe::getResult,
+				ByteBufCodecs.FLOAT,
+				KhromaImbuementRecipe::getKhromaCost,
+				KhromaImbuementRecipe::new);
 
 		@Override
 		public MapCodec<KhromaImbuementRecipe> codec() {
@@ -138,21 +147,6 @@ public class KhromaImbuementRecipe implements Recipe<ItemKhromaRecipeInput> {
 		@Override
 		public StreamCodec<RegistryFriendlyByteBuf, KhromaImbuementRecipe> streamCodec() {
 			return STREAM_CODEC;
-		}
-
-		private KhromaImbuementRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
-			Ingredient ingredient = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-			Khroma khroma = Khroma.fromInt(buffer.readInt());
-			ItemStack result = ItemStack.STREAM_CODEC.decode(buffer);
-			float khromaCost = buffer.readFloat();
-			return new KhromaImbuementRecipe(ingredient, khroma, result, khromaCost);
-		}
-
-		private void toNetwork(RegistryFriendlyByteBuf buffer, KhromaImbuementRecipe recipe) {
-			Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.ingredient);
-			buffer.writeInt(recipe.khroma.asInt());
-			ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
-			buffer.writeFloat(recipe.khromaCost);
 		}
 	}
 

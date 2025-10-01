@@ -106,7 +106,7 @@ public class GameServerEventSubscriber {
 
 	@SubscribeEvent
 	private static void blockToolModification(BlockToolModificationEvent event) {
-		if (event.getItemAbility() == ItemAbilities.AXE_STRIP && event.getState().is(TagReference.BLOCK_IMBUED_TREE_LOGS) && !event.getState().is(Tags.Blocks.STRIPPED_LOGS)
+		if (event.getItemAbility() == ItemAbilities.AXE_STRIP && event.getState().is(TagReference.Blocks.IMBUED_TREE_LOGS) && !event.getState().is(Tags.Blocks.STRIPPED_LOGS)
 				&& !event.getState().is(Tags.Blocks.STRIPPED_WOODS)) {
 			BlockState state = event.getState();
 			for (var tree : BlockReference.IMBUED_TREES) {

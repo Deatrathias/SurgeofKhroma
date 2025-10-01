@@ -45,30 +45,30 @@ public final class TagsDataGen {
 		@SuppressWarnings("unchecked")
 		@Override
 		protected void run() {
-			tag(TagReference.BLOCK_KHROMETAL_BLOCKS, TagReference.ITEM_KHROMETAL_BLOCKS).add(
+			tag(TagReference.Blocks.KHROMETAL_BLOCKS, TagReference.Items.KHROMETAL_BLOCKS).add(
 					BlockReference.KHROMETAL_BLOCK_RED.get(),
 					BlockReference.KHROMETAL_BLOCK_GREEN.get(),
 					BlockReference.KHROMETAL_BLOCK_BLUE.get(),
 					BlockReference.KHROMETAL_BLOCK_WHITE.get(),
 					BlockReference.KHROMETAL_BLOCK_BLACK.get());
 
-			tag(TagReference.BLOCK_KHROMA_DEVICES, TagReference.ITEM_KHROMA_DEVICES).addAll(DataGenDefinitions.khromaDevices);
-			tag(Tags.Blocks.ORES, Tags.Items.ORES).addTag(TagReference.C_BLOCK_ORES_CHROMIUM);
-			tag(TagReference.C_BLOCK_ORES_CHROMIUM, TagReference.C_ITEM_ORES_CHROMIUM).add(BlockReference.CHROMIUM_ORE.get(), BlockReference.DEEPSLATE_CHROMIUM_ORE.get());
-			tag(Tags.Blocks.ORE_RATES_SINGULAR, Tags.Items.ORE_RATES_SINGULAR).addTag(TagReference.C_BLOCK_ORES_CHROMIUM);
+			tag(TagReference.Blocks.KHROMA_DEVICES, TagReference.Items.KHROMA_DEVICES).addAll(DataGenDefinitions.khromaDevices);
+			tag(Tags.Blocks.ORES, Tags.Items.ORES).addTag(TagReference.Blocks.C_ORES_CHROMIUM);
+			tag(TagReference.Blocks.C_ORES_CHROMIUM, TagReference.Items.C_ORES_CHROMIUM).add(BlockReference.CHROMIUM_ORE.get(), BlockReference.DEEPSLATE_CHROMIUM_ORE.get());
+			tag(Tags.Blocks.ORE_RATES_SINGULAR, Tags.Items.ORE_RATES_SINGULAR).addTag(TagReference.Blocks.C_ORES_CHROMIUM);
 			tag(Tags.Blocks.ORES_IN_GROUND_STONE, Tags.Items.ORES_IN_GROUND_STONE).add(BlockReference.CHROMIUM_ORE.get());
 			tag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE, Tags.Items.ORES_IN_GROUND_DEEPSLATE).add(BlockReference.DEEPSLATE_CHROMIUM_ORE.get());
 
-			tag(TagReference.C_BLOCK_STORAGE_BLOCKS_CHROMIUM, TagReference.C_ITEM_STORAGE_BLOCKS_CHROMIUM).add(BlockReference.CHROMIUM_BLOCK.get());
-			tag(TagReference.C_BLOCK_STORAGE_BLOCKS_RAW_CHROMIUM, TagReference.C_ITEM_STORAGE_BLOCKS_RAW_CHROMIUM).add(BlockReference.RAW_CHROMIUM_BLOCK.get());
-			tag(Tags.Blocks.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS).addTags(TagReference.C_BLOCK_STORAGE_BLOCKS_CHROMIUM, TagReference.C_BLOCK_STORAGE_BLOCKS_RAW_CHROMIUM,
-					TagReference.BLOCK_KHROMETAL_BLOCKS);
+			tag(TagReference.Blocks.C_STORAGE_BLOCKS_CHROMIUM, TagReference.Items.C_STORAGE_BLOCKS_CHROMIUM).add(BlockReference.CHROMIUM_BLOCK.get());
+			tag(TagReference.Blocks.C_STORAGE_BLOCKS_RAW_CHROMIUM, TagReference.Items.C_STORAGE_BLOCKS_RAW_CHROMIUM).add(BlockReference.RAW_CHROMIUM_BLOCK.get());
+			tag(Tags.Blocks.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS).addTags(TagReference.Blocks.C_STORAGE_BLOCKS_CHROMIUM, TagReference.Blocks.C_STORAGE_BLOCKS_RAW_CHROMIUM,
+					TagReference.Blocks.KHROMETAL_BLOCKS);
 
 			var strippedLogs = tag(Tags.Blocks.STRIPPED_LOGS, Tags.Items.STRIPPED_LOGS);
 			var strippedWoods = tag(Tags.Blocks.STRIPPED_WOODS, Tags.Items.STRIPPED_LOGS);
-			var imbuedLeaves = tag(TagReference.BLOCK_IMBUED_TREE_LEAVES, TagReference.ITEM_IMBUED_TREE_LEAVES);
-			var imbuedSaplings = tag(TagReference.BLOCK_IMBUED_TREE_SAPLINGS, TagReference.ITEM_IMBUED_TREE_SAPLINGS);
-			var imbuedLogs = tag(TagReference.BLOCK_IMBUED_TREE_LOGS, TagReference.ITEM_IMBUED_TREE_LOGS);
+			var imbuedLeaves = tag(TagReference.Blocks.IMBUED_TREE_LEAVES, TagReference.Items.IMBUED_TREE_LEAVES);
+			var imbuedSaplings = tag(TagReference.Blocks.IMBUED_TREE_SAPLINGS, TagReference.Items.IMBUED_TREE_SAPLINGS);
+			var imbuedLogs = tag(TagReference.Blocks.IMBUED_TREE_LOGS, TagReference.Items.IMBUED_TREE_LOGS);
 			var planks = tag(BlockTags.PLANKS, ItemTags.PLANKS);
 			var woodenButtons = tag(BlockTags.WOODEN_BUTTONS, ItemTags.WOODEN_BUTTONS);
 			var woodenFences = tag(BlockTags.WOODEN_FENCES, ItemTags.WOODEN_FENCES);
@@ -79,7 +79,7 @@ public final class TagsDataGen {
 			var woodenDoor = tag(BlockTags.WOODEN_DOORS, ItemTags.WOODEN_DOORS);
 			var woodenTrapdoor = tag(BlockTags.WOODEN_TRAPDOORS, ItemTags.WOODEN_TRAPDOORS);
 			var woodenPressurePlate = tag(BlockTags.WOODEN_PRESSURE_PLATES, ItemTags.WOODEN_PRESSURE_PLATES);
-			var woodenPillar = tag(TagReference.BLOCK_WOODEN_PILLARS, TagReference.ITEM_WOODEN_PILLARS);
+			var woodenPillar = tag(TagReference.Blocks.WOODEN_PILLARS, TagReference.Items.WOODEN_PILLARS);
 
 			for (var tree : BlockReference.IMBUED_TREES) {
 				strippedLogs.add(tree.get(TreeBlock.STRIPPED_LOG));
@@ -103,10 +103,10 @@ public final class TagsDataGen {
 				tree.ifPresent(TreeBlock.PILLAR, block -> woodenPillar.add(block));
 			}
 
-			tag(BlockTags.LOGS_THAT_BURN, ItemTags.LOGS_THAT_BURN).addTag(TagReference.BLOCK_IMBUED_TREE_LOGS);
-			tag(BlockTags.LEAVES, ItemTags.LEAVES).addTag(TagReference.BLOCK_IMBUED_TREE_LEAVES);
-			tag(BlockTags.SAPLINGS, ItemTags.SAPLINGS).addTag(TagReference.BLOCK_IMBUED_TREE_SAPLINGS);
-			tag(TagReference.BLOCK_PILLARS, TagReference.ITEM_PILLARS).addTag(TagReference.BLOCK_WOODEN_PILLARS);
+			tag(BlockTags.LOGS_THAT_BURN, ItemTags.LOGS_THAT_BURN).addTag(TagReference.Blocks.IMBUED_TREE_LOGS);
+			tag(BlockTags.LEAVES, ItemTags.LEAVES).addTag(TagReference.Blocks.IMBUED_TREE_LEAVES);
+			tag(BlockTags.SAPLINGS, ItemTags.SAPLINGS).addTag(TagReference.Blocks.IMBUED_TREE_SAPLINGS);
+			tag(TagReference.Blocks.PILLARS, TagReference.Items.PILLARS).addTag(TagReference.Blocks.WOODEN_PILLARS);
 		}
 
 	}
@@ -127,18 +127,18 @@ public final class TagsDataGen {
 				}
 			}).run();
 
-			tag(TagReference.BLOCK_COLLECTOR_STRUCTURE_COMPONENTS).addTag(TagReference.BLOCK_WOODEN_PILLARS).addTag(TagReference.BLOCK_KHROMETAL_BLOCKS);
-			tag(TagReference.BLOCK_COLLECTOR_STRUCTURE_COMPONENTS_RED).add(BlockReference.SPARKTREE.get(TreeBlock.PILLAR)).add(BlockReference.KHROMETAL_BLOCK_RED.get());
-			tag(TagReference.BLOCK_COLLECTOR_STRUCTURE_COMPONENTS_GREEN).add(BlockReference.BLOOMTREE.get(TreeBlock.PILLAR)).add(BlockReference.KHROMETAL_BLOCK_GREEN.get());
-			tag(TagReference.BLOCK_COLLECTOR_STRUCTURE_COMPONENTS_BLUE).add(BlockReference.FLOWTREE.get(TreeBlock.PILLAR)).add(BlockReference.KHROMETAL_BLOCK_BLUE.get());
-			tag(TagReference.BLOCK_COLLECTOR_STRUCTURE_COMPONENTS_WHITE).add(BlockReference.SKYTREE.get(TreeBlock.PILLAR)).add(BlockReference.KHROMETAL_BLOCK_WHITE.get());
-			tag(TagReference.BLOCK_COLLECTOR_STRUCTURE_COMPONENTS_BLACK).add(BlockReference.GRIMTREE.get(TreeBlock.PILLAR)).add(BlockReference.KHROMETAL_BLOCK_BLACK.get());
+			tag(TagReference.Blocks.COLLECTOR_STRUCTURE_COMPONENTS).addTag(TagReference.Blocks.WOODEN_PILLARS).addTag(TagReference.Blocks.KHROMETAL_BLOCKS);
+			tag(TagReference.Blocks.COLLECTOR_STRUCTURE_COMPONENTS_RED).add(BlockReference.SPARKTREE.get(TreeBlock.PILLAR)).add(BlockReference.KHROMETAL_BLOCK_RED.get());
+			tag(TagReference.Blocks.COLLECTOR_STRUCTURE_COMPONENTS_GREEN).add(BlockReference.BLOOMTREE.get(TreeBlock.PILLAR)).add(BlockReference.KHROMETAL_BLOCK_GREEN.get());
+			tag(TagReference.Blocks.COLLECTOR_STRUCTURE_COMPONENTS_BLUE).add(BlockReference.FLOWTREE.get(TreeBlock.PILLAR)).add(BlockReference.KHROMETAL_BLOCK_BLUE.get());
+			tag(TagReference.Blocks.COLLECTOR_STRUCTURE_COMPONENTS_WHITE).add(BlockReference.SKYTREE.get(TreeBlock.PILLAR)).add(BlockReference.KHROMETAL_BLOCK_WHITE.get());
+			tag(TagReference.Blocks.COLLECTOR_STRUCTURE_COMPONENTS_BLACK).add(BlockReference.GRIMTREE.get(TreeBlock.PILLAR)).add(BlockReference.KHROMETAL_BLOCK_BLACK.get());
 
-			tag(BlockTags.NEEDS_STONE_TOOL).addAll(DataGenDefinitions.needsStoneTool).addTag(TagReference.BLOCK_KHROMETAL_BLOCKS);
-			tag(BlockTags.MINEABLE_WITH_PICKAXE).addAll(DataGenDefinitions.needsStoneTool).addTags(TagReference.BLOCK_KHROMETAL_BLOCKS,
-					TagReference.BLOCK_KHROMA_DEVICES);
-			tag(BlockTags.MINEABLE_WITH_AXE).addTag(TagReference.BLOCK_WOODEN_PILLARS);
-			tag(BlockTags.SNAPS_GOAT_HORN).addTag(TagReference.BLOCK_IMBUED_TREE_LOGS);
+			tag(BlockTags.NEEDS_STONE_TOOL).addAll(DataGenDefinitions.needsStoneTool).addTag(TagReference.Blocks.KHROMETAL_BLOCKS);
+			tag(BlockTags.MINEABLE_WITH_PICKAXE).addAll(DataGenDefinitions.needsStoneTool).addTags(TagReference.Blocks.KHROMETAL_BLOCKS,
+					TagReference.Blocks.KHROMA_DEVICES);
+			tag(BlockTags.MINEABLE_WITH_AXE).addTag(TagReference.Blocks.WOODEN_PILLARS);
+			tag(BlockTags.SNAPS_GOAT_HORN).addTag(TagReference.Blocks.IMBUED_TREE_LOGS);
 
 			var flowerPots = tag(BlockTags.FLOWER_POTS);
 			var standingSigns = tag(BlockTags.STANDING_SIGNS);
@@ -171,8 +171,8 @@ public final class TagsDataGen {
 				}
 			}).run();
 
-			tag(TagReference.ITEM_BASE_INGOT).add(ItemReference.CHROMIUM_INGOT.get());
-			tag(TagReference.ITEM_BASE_NUGGET).add(ItemReference.CHROMIUM_NUGGET.get());
+			tag(TagReference.Items.BASE_INGOT).add(ItemReference.CHROMIUM_INGOT.get());
+			tag(TagReference.Items.BASE_NUGGET).add(ItemReference.CHROMIUM_NUGGET.get());
 
 			commonTags();
 			minecraftTags();
@@ -181,30 +181,16 @@ public final class TagsDataGen {
 			if (ModList.get().isLoaded(Accessories.MODID))
 				accessoriesTags();
 
-			tag(TagReference.ITEM_CONVERTS_TO_DYE_RED_SINGULAR).add(Items.RED_TULIP, Items.BEETROOT, Items.POPPY);
-			tag(TagReference.ITEM_CONVERTS_TO_DYE_RED_DOUBLE).add(Items.ROSE_BUSH);
-			tag(TagReference.ITEM_CONVERTS_TO_DYE_RED_HALF);
-			tag(TagReference.ITEM_CONVERTS_TO_DYE_GREEN_SINGULAR).add(Items.CACTUS);
-			tag(TagReference.ITEM_CONVERTS_TO_DYE_GREEN_DOUBLE);
-			tag(TagReference.ITEM_CONVERTS_TO_DYE_GREEN_HALF).add(Items.KELP);
-			tag(TagReference.ITEM_CONVERTS_TO_DYE_BLUE_SINGULAR).add(Items.CORNFLOWER, Items.LAPIS_LAZULI);
-			tag(TagReference.ITEM_CONVERTS_TO_DYE_BLUE_DOUBLE);
-			tag(TagReference.ITEM_CONVERTS_TO_DYE_BLUE_HALF);
-			tag(TagReference.ITEM_CONVERTS_TO_DYE_WHITE_SINGULAR).add(Items.BONE_MEAL, Items.LILY_OF_THE_VALLEY);
-			tag(TagReference.ITEM_CONVERTS_TO_DYE_WHITE_DOUBLE);
-			tag(TagReference.ITEM_CONVERTS_TO_DYE_WHITE_HALF);
-			tag(TagReference.ITEM_CONVERTS_TO_DYE_BLACK_SINGULAR).add(Items.INK_SAC, Items.WITHER_ROSE);
-			tag(TagReference.ITEM_CONVERTS_TO_DYE_BLACK_DOUBLE);
-			tag(TagReference.ITEM_CONVERTS_TO_DYE_BLACK_HALF);
+			uniqueKhromaTags();
 
-			var swords = tag(TagReference.ITEM_KHROMETAL_SWORDS);
-			var pickaxes = tag(TagReference.ITEM_KHROMETAL_PICKAXES);
-			var axes = tag(TagReference.ITEM_KHROMETAL_AXES);
-			var shovels = tag(TagReference.ITEM_KHROMETAL_SHOVELS);
-			var khrometalIngots = tag(TagReference.ITEM_KHROMETAL_INGOTS);
+			var swords = tag(TagReference.Items.KHROMETAL_SWORDS);
+			var pickaxes = tag(TagReference.Items.KHROMETAL_PICKAXES);
+			var axes = tag(TagReference.Items.KHROMETAL_AXES);
+			var shovels = tag(TagReference.Items.KHROMETAL_SHOVELS);
+			var khrometalIngots = tag(TagReference.Items.KHROMETAL_INGOTS);
 
-			tag(TagReference.ITEM_KHROMETAL_TOOLS).addTags(TagReference.ITEM_KHROMETAL_SWORDS, TagReference.ITEM_KHROMETAL_PICKAXES, TagReference.ITEM_KHROMETAL_AXES,
-					TagReference.ITEM_KHROMETAL_SHOVELS);
+			tag(TagReference.Items.KHROMETAL_TOOLS).addTags(TagReference.Items.KHROMETAL_SWORDS, TagReference.Items.KHROMETAL_PICKAXES, TagReference.Items.KHROMETAL_AXES,
+					TagReference.Items.KHROMETAL_SHOVELS);
 
 			for (String khromaName : Khroma.KhromaNames)
 				tagsPerKhroma(swords, pickaxes, axes, shovels, khrometalIngots, khromaName);
@@ -212,23 +198,23 @@ public final class TagsDataGen {
 
 		@SuppressWarnings("unchecked")
 		private void commonTags() {
-			tag(TagReference.C_ITEM_INGOTS_CHROMIUM).add(ItemReference.CHROMIUM_INGOT.get());
-			tag(Tags.Items.INGOTS).addTags(TagReference.C_ITEM_INGOTS_CHROMIUM, TagReference.ITEM_KHROMETAL_INGOTS);
-			tag(TagReference.C_ITEM_NUGGETS_CHROMIUM).add(ItemReference.CHROMIUM_NUGGET.get());
-			tag(Tags.Items.NUGGETS).addTag(TagReference.C_ITEM_NUGGETS_CHROMIUM);
-			tag(TagReference.C_ITEM_RAW_MATERIALS_CHROMIUM).add(ItemReference.RAW_CHROMIUM.get());
-			tag(Tags.Items.RAW_MATERIALS).addTag(TagReference.C_ITEM_RAW_MATERIALS_CHROMIUM);
-			tag(Tags.Items.MELEE_WEAPON_TOOLS).addTags(TagReference.ITEM_KHROMETAL_SWORDS, TagReference.ITEM_KHROMETAL_AXES);
-			tag(Tags.Items.MINING_TOOL_TOOLS).addTag(TagReference.ITEM_KHROMETAL_PICKAXES);
+			tag(TagReference.Items.C_INGOTS_CHROMIUM).add(ItemReference.CHROMIUM_INGOT.get());
+			tag(Tags.Items.INGOTS).addTags(TagReference.Items.C_INGOTS_CHROMIUM, TagReference.Items.KHROMETAL_INGOTS);
+			tag(TagReference.Items.C_NUGGETS_CHROMIUM).add(ItemReference.CHROMIUM_NUGGET.get());
+			tag(Tags.Items.NUGGETS).addTag(TagReference.Items.C_NUGGETS_CHROMIUM);
+			tag(TagReference.Items.C_RAW_MATERIALS_CHROMIUM).add(ItemReference.RAW_CHROMIUM.get());
+			tag(Tags.Items.RAW_MATERIALS).addTag(TagReference.Items.C_RAW_MATERIALS_CHROMIUM);
+			tag(Tags.Items.MELEE_WEAPON_TOOLS).addTags(TagReference.Items.KHROMETAL_SWORDS, TagReference.Items.KHROMETAL_AXES);
+			tag(Tags.Items.MINING_TOOL_TOOLS).addTag(TagReference.Items.KHROMETAL_PICKAXES);
 			tag(Tags.Items.TOOLS_WRENCH).add(ItemReference.KHROMETAL_SPANNER.get());
 		}
 
 		private void minecraftTags() {
-			tag(ItemTags.PICKAXES).addTag(TagReference.ITEM_KHROMETAL_PICKAXES);
-			tag(ItemTags.CLUSTER_MAX_HARVESTABLES).addTag(TagReference.ITEM_KHROMETAL_PICKAXES);
-			tag(ItemTags.AXES).addTag(TagReference.ITEM_KHROMETAL_AXES);
-			tag(ItemTags.SHOVELS).addTag(TagReference.ITEM_KHROMETAL_SHOVELS);
-			tag(ItemTags.SWORDS).addTag(TagReference.ITEM_KHROMETAL_SWORDS);
+			tag(ItemTags.PICKAXES).addTag(TagReference.Items.KHROMETAL_PICKAXES);
+			tag(ItemTags.CLUSTER_MAX_HARVESTABLES).addTag(TagReference.Items.KHROMETAL_PICKAXES);
+			tag(ItemTags.AXES).addTag(TagReference.Items.KHROMETAL_AXES);
+			tag(ItemTags.SHOVELS).addTag(TagReference.Items.KHROMETAL_SHOVELS);
+			tag(ItemTags.SWORDS).addTag(TagReference.Items.KHROMETAL_SWORDS);
 			tag(ItemTags.BOOKSHELF_BOOKS).add(ItemReference.KHROMANCER_ARCHIVE.get());
 
 			var sign = tag(ItemTags.SIGNS);
@@ -267,6 +253,35 @@ public final class TagsDataGen {
 			var ingotTag = ItemTags.create(SurgeofKhroma.resource("ingots/khrometal/" + khromaName));
 			tag(ingotTag).add(itemRegistry.getValueOrThrow(ingot));
 			khrometalIngots.addTag(ingotTag);
+		}
+
+		private void uniqueKhromaTags() {
+			tag(TagReference.Items.CONVERTS_TO_DYE_RED_SINGULAR).add(Items.RED_TULIP, Items.BEETROOT, Items.POPPY);
+			tag(TagReference.Items.CONVERTS_TO_DYE_RED_DOUBLE).add(Items.ROSE_BUSH);
+			tag(TagReference.Items.CONVERTS_TO_DYE_RED_HALF);
+			tag(TagReference.Items.CONVERTS_TO_DYE_GREEN_SINGULAR).add(Items.CACTUS);
+			tag(TagReference.Items.CONVERTS_TO_DYE_GREEN_DOUBLE);
+			tag(TagReference.Items.CONVERTS_TO_DYE_GREEN_HALF).add(Items.KELP);
+			tag(TagReference.Items.CONVERTS_TO_DYE_BLUE_SINGULAR).add(Items.CORNFLOWER, Items.LAPIS_LAZULI);
+			tag(TagReference.Items.CONVERTS_TO_DYE_BLUE_DOUBLE);
+			tag(TagReference.Items.CONVERTS_TO_DYE_BLUE_HALF);
+			tag(TagReference.Items.CONVERTS_TO_DYE_WHITE_SINGULAR).add(Items.BONE_MEAL, Items.LILY_OF_THE_VALLEY);
+			tag(TagReference.Items.CONVERTS_TO_DYE_WHITE_DOUBLE);
+			tag(TagReference.Items.CONVERTS_TO_DYE_WHITE_HALF);
+			tag(TagReference.Items.CONVERTS_TO_DYE_BLACK_SINGULAR).add(Items.INK_SAC, Items.WITHER_ROSE);
+			tag(TagReference.Items.CONVERTS_TO_DYE_BLACK_DOUBLE);
+			tag(TagReference.Items.CONVERTS_TO_DYE_BLACK_HALF);
+
+			tag(TagReference.Items.REACTANTS_COMMON_RED).addTag(Tags.Items.DUSTS_REDSTONE);
+			tag(TagReference.Items.REACTANTS_COMMON_GREEN).addTag(Tags.Items.CROPS_CACTUS);
+			tag(TagReference.Items.REACTANTS_COMMON_BLUE).addTag(ItemTags.FISHES);
+			tag(TagReference.Items.REACTANTS_COMMON_WHITE).addTag(Tags.Items.FEATHERS);
+			tag(TagReference.Items.REACTANTS_COMMON_BLACK).add(Items.SPIDER_EYE);
+			tag(TagReference.Items.REACTANTS_UNCOMMON_RED).addTag(Tags.Items.RODS_BLAZE);
+			tag(TagReference.Items.REACTANTS_UNCOMMON_GREEN).add(Items.OPEN_EYEBLOSSOM);
+			tag(TagReference.Items.REACTANTS_UNCOMMON_BLUE).addTag(Tags.Items.GEMS_PRISMARINE);
+			tag(TagReference.Items.REACTANTS_UNCOMMON_WHITE).addTag(Tags.Items.RODS_BREEZE);
+			tag(TagReference.Items.REACTANTS_UNCOMMON_BLACK).addTag(Tags.Items.ENDER_PEARLS);
 		}
 
 		static class BlockToItemConverter implements TagAppender<Block, Block> {
@@ -348,8 +363,8 @@ public final class TagsDataGen {
 
 		@Override
 		protected void addTags(Provider provider) {
-			tag(TagReference.C_ENTITY_BIRDS).add(EntityType.CHICKEN, EntityType.PARROT, EntityReference.STRIX.get());
-			tag(TagReference.ENTITY_SENSITIVE_TO_FEATHERCLIP).addTag(TagReference.C_ENTITY_BIRDS);
+			tag(TagReference.Entities.C_BIRDS).add(EntityType.CHICKEN, EntityType.PARROT, EntityReference.STRIX.get());
+			tag(TagReference.Entities.SENSITIVE_TO_FEATHERCLIP).addTag(TagReference.Entities.C_BIRDS);
 			var boat = tag(EntityTypeTags.BOAT);
 			var c_boat = tag(Tags.EntityTypes.BOATS);
 			for (var tree : BlockReference.IMBUED_TREES) {
