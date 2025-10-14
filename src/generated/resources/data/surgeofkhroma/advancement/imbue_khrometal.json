@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "surgeofkhroma:khrometal_ingot_black"
+            "items": "surgeofkhroma:black_khrometal_ingot"
           }
         ]
       },
@@ -15,7 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": "surgeofkhroma:khrometal_ingot_blue"
+            "items": "surgeofkhroma:blue_khrometal_ingot"
           }
         ]
       },
@@ -25,7 +25,7 @@
       "conditions": {
         "items": [
           {
-            "items": "surgeofkhroma:khrometal_ingot_green"
+            "items": "surgeofkhroma:green_khrometal_ingot"
           }
         ]
       },
@@ -35,7 +35,7 @@
       "conditions": {
         "items": [
           {
-            "items": "surgeofkhroma:khrometal_ingot_red"
+            "items": "surgeofkhroma:red_khrometal_ingot"
           }
         ]
       },
@@ -45,7 +45,7 @@
       "conditions": {
         "items": [
           {
-            "items": "surgeofkhroma:khrometal_ingot_white"
+            "items": "surgeofkhroma:white_khrometal_ingot"
           }
         ]
       },

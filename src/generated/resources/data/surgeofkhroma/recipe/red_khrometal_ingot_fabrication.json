@@ -1,0 +1,20 @@
+{
+  "type": "surgeofkhroma:khroma_fabrication",
+  "khroma": "red",
+  "khromaCost": 10000.0,
+  "pattern": {
+    "key": {
+      "#": "#surgeofkhroma:base_ingot",
+      "$": "#c:dyes/red"
+    },
+    "pattern": [
+      " $ ",
+      "#X#",
+      " $ "
+    ]
+  },
+  "resumt": {
+    "count": 8,
+    "id": "surgeofkhroma:red_khrometal_ingot"
+  }
+}

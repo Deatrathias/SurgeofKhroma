@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "blue_khrometal_ingot",
+  "ingredients": [
+    "surgeofkhroma:khrometal_block_blue"
+  ],
+  "result": {
+    "count": 9,
+    "id": "surgeofkhroma:blue_khrometal_ingot"
+  }
+}

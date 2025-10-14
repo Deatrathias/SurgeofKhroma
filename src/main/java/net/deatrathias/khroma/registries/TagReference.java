@@ -18,17 +18,17 @@ public class TagReference {
 	public static class Blocks {
 		public static final TagKey<Block> KHROMETAL_BLOCKS = blockTag("khrometal_blocks");
 		public static final TagKey<Block> KHROMA_DEVICES = blockTag("khroma_devices");
+		public static final TagKey<Block> KHROMA_ASPECTED_RED = blockTag("khroma_aspected/red");
+		public static final TagKey<Block> KHROMA_ASPECTED_GREEN = blockTag("khroma_aspected/green");
+		public static final TagKey<Block> KHROMA_ASPECTED_BLUE = blockTag("khroma_aspected/blue");
+		public static final TagKey<Block> KHROMA_ASPECTED_WHITE = blockTag("khroma_aspected/white");
+		public static final TagKey<Block> KHROMA_ASPECTED_BLACK = blockTag("khroma_aspected/black");
 		public static final TagKey<Block> IMBUED_TREE_LOGS = blockTag("imbued_tree_logs");
 		public static final TagKey<Block> IMBUED_TREE_LEAVES = blockTag("imbued_tree_leaves");
 		public static final TagKey<Block> IMBUED_TREE_SAPLINGS = blockTag("imbued_tree_sapling");
 		public static final TagKey<Block> PILLARS = blockTag("pillars");
 		public static final TagKey<Block> WOODEN_PILLARS = blockTag("wooden_pillars");
 		public static final TagKey<Block> COLLECTOR_STRUCTURE_COMPONENTS = blockTag("collector_structure_components");
-		public static final TagKey<Block> COLLECTOR_STRUCTURE_COMPONENTS_RED = blockTag("collector_structure_components/red");
-		public static final TagKey<Block> COLLECTOR_STRUCTURE_COMPONENTS_GREEN = blockTag("collector_structure_components/green");
-		public static final TagKey<Block> COLLECTOR_STRUCTURE_COMPONENTS_BLUE = blockTag("collector_structure_components/blue");
-		public static final TagKey<Block> COLLECTOR_STRUCTURE_COMPONENTS_WHITE = blockTag("collector_structure_components/white");
-		public static final TagKey<Block> COLLECTOR_STRUCTURE_COMPONENTS_BLACK = blockTag("collector_structure_components/black");
 
 		public static final TagKey<Block> C_ORES_CHROMIUM = BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", "ores/chromium"));
 		public static final TagKey<Block> C_STORAGE_BLOCKS_CHROMIUM = BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", "storage_blocks/chromium"));
@@ -39,6 +39,11 @@ public class TagReference {
 	 * Item tags
 	 */
 	public static class Items {
+		public static final TagKey<Item> KHROMA_ASPECTED_RED = itemTag("khroma_aspected/red");
+		public static final TagKey<Item> KHROMA_ASPECTED_GREEN = itemTag("khroma_aspected/green");
+		public static final TagKey<Item> KHROMA_ASPECTED_BLUE = itemTag("khroma_aspected/blue");
+		public static final TagKey<Item> KHROMA_ASPECTED_WHITE = itemTag("khroma_aspected/white");
+		public static final TagKey<Item> KHROMA_ASPECTED_BLACK = itemTag("khroma_aspected/black");
 		public static final TagKey<Item> KHROMETAL_INGOT_RED = itemTag("ingots/khrometal/red");
 		public static final TagKey<Item> KHROMETAL_INGOT_GREEN = itemTag("ingots/khrometal/green");
 		public static final TagKey<Item> KHROMETAL_INGOT_BLUE = itemTag("ingots/khrometal/blue");

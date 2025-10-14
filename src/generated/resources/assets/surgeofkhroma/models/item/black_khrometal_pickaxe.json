@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "surgeofkhroma:item/black_khrometal_pickaxe"
+  }
+}

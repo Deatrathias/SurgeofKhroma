@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_khrometal_ingot_black": {
+    "has_black_khrometal_ingot": {
       "conditions": {
         "items": [
           {
-            "items": "surgeofkhroma:khrometal_ingot_black"
+            "items": "surgeofkhroma:black_khrometal_ingot"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_khrometal_ingot_black"
+      "has_black_khrometal_ingot"
     ]
   ],
   "rewards": {

@@ -270,7 +270,7 @@ public final class Khroma implements Comparable<Khroma>, Serializable, StringRep
 	}
 
 	public String getLocalizedName() {
-		return "surgeofkhroma.khroma." + getName();
+		return "khroma.surgeofkhroma." + getName();
 	}
 
 	@Override

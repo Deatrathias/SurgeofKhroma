@@ -58,11 +58,11 @@ public final class ItemReference {
 
 	public static final DeferredItem<Item> CHROMIUM_INGOT = ITEMS.registerSimpleItem("chromium_ingot");
 	public static final DeferredItem<Item> CHROMIUM_NUGGET = ITEMS.registerSimpleItem("chromium_nugget");
-	public static final DeferredItem<Item> KHROMETAL_INGOT_RED = ITEMS.registerSimpleItem("khrometal_ingot_red");
-	public static final DeferredItem<Item> KHROMETAL_INGOT_GREEN = ITEMS.registerSimpleItem("khrometal_ingot_green");
-	public static final DeferredItem<Item> KHROMETAL_INGOT_BLUE = ITEMS.registerSimpleItem("khrometal_ingot_blue");
-	public static final DeferredItem<Item> KHROMETAL_INGOT_WHITE = ITEMS.registerSimpleItem("khrometal_ingot_white");
-	public static final DeferredItem<Item> KHROMETAL_INGOT_BLACK = ITEMS.registerSimpleItem("khrometal_ingot_black");
+	public static final DeferredItem<Item> KHROMETAL_INGOT_RED = ITEMS.registerSimpleItem("red_khrometal_ingot");
+	public static final DeferredItem<Item> KHROMETAL_INGOT_GREEN = ITEMS.registerSimpleItem("green_khrometal_ingot");
+	public static final DeferredItem<Item> KHROMETAL_INGOT_BLUE = ITEMS.registerSimpleItem("blue_khrometal_ingot");
+	public static final DeferredItem<Item> KHROMETAL_INGOT_WHITE = ITEMS.registerSimpleItem("white_khrometal_ingot");
+	public static final DeferredItem<Item> KHROMETAL_INGOT_BLACK = ITEMS.registerSimpleItem("black_khrometal_ingot");
 	public static final DeferredItem<Item> CHROMATIC_NUCLEUS = ITEMS.registerSimpleItem("chromatic_nucleus");
 
 	public static final DeferredItem<Item> CHROMATIC_GLASSES = ITEMS.register("chromatic_glasses", registryName -> new Item(accessoryAttributes(registryName,
@@ -71,22 +71,22 @@ public final class ItemReference {
 	public static final DeferredItem<Item> KHROMETAL_SPANNER = ITEMS.registerItem("khrometal_spanner",
 			props -> new SpannerItem(
 					SpannerItem.spanner(props).stacksTo(1).component(RegistryReference.DATA_COMPONENT_SPANNER_COLORS, new SpannerItem.SpannerColors(0xFF808080, 0xFF808080, 0xFF808080, 0xFF808080))));
-	public static final DeferredItem<Item> KHROMETAL_RED_SWORD = ITEMS.registerItem("khrometal_red_sword", props -> new Item(props.sword(RED_KHROMETAL_TIER, 3, -2.4f)));
-	public static final DeferredItem<Item> KHROMETAL_RED_PICKAXE = ITEMS.registerItem("khrometal_red_pickaxe", props -> new Item(props.pickaxe(RED_KHROMETAL_TIER, 1, -2)));
-	public static final DeferredItem<Item> KHROMETAL_GREEN_SWORD = ITEMS.registerItem("khrometal_green_sword", props -> new KhrometalGreenToolItem(props.sword(GREEN_KHROMETAL_TIER, 3, -2.4f)));
-	public static final DeferredItem<Item> KHROMETAL_GREEN_PICKAXE = ITEMS.registerItem("khrometal_green_pickaxe",
+	public static final DeferredItem<Item> KHROMETAL_RED_SWORD = ITEMS.registerItem("red_khrometal_sword", props -> new Item(props.sword(RED_KHROMETAL_TIER, 3, -2.4f)));
+	public static final DeferredItem<Item> KHROMETAL_RED_PICKAXE = ITEMS.registerItem("red_khrometal_pickaxe", props -> new Item(props.pickaxe(RED_KHROMETAL_TIER, 1, -2)));
+	public static final DeferredItem<Item> KHROMETAL_GREEN_SWORD = ITEMS.registerItem("green_khrometal_sword", props -> new KhrometalGreenToolItem(props.sword(GREEN_KHROMETAL_TIER, 3, -2.4f)));
+	public static final DeferredItem<Item> KHROMETAL_GREEN_PICKAXE = ITEMS.registerItem("green_khrometal_pickaxe",
 			props -> new KhrometalGreenToolItem(props.pickaxe(GREEN_KHROMETAL_TIER, 1, -2f)));
-	public static final DeferredItem<Item> KHROMETAL_BLUE_SWORD = ITEMS.registerItem("khrometal_blue_sword", props -> new Item(props.sword(BLUE_KHROMETAL_TIER, 3, -0.4f)));
-	public static final DeferredItem<Item> KHROMETAL_BLUE_PICKAXE = ITEMS.registerItem("khrometal_blue_pickaxe", props -> new Item(props.pickaxe(BLUE_KHROMETAL_TIER, 1, 0)));
-	public static final DeferredItem<Item> KHROMETAL_WHITE_SWORD = ITEMS.registerItem("khrometal_white_sword", props -> new Item(addAttributeModifer(props.sword(WHITE_KHROMETAL_TIER, 3, -2.4f),
+	public static final DeferredItem<Item> KHROMETAL_BLUE_SWORD = ITEMS.registerItem("blue_khrometal_sword", props -> new Item(props.sword(BLUE_KHROMETAL_TIER, 3, -0.4f)));
+	public static final DeferredItem<Item> KHROMETAL_BLUE_PICKAXE = ITEMS.registerItem("blue_khrometal_pickaxe", props -> new Item(props.pickaxe(BLUE_KHROMETAL_TIER, 1, 0)));
+	public static final DeferredItem<Item> KHROMETAL_WHITE_SWORD = ITEMS.registerItem("white_khrometal_sword", props -> new Item(addAttributeModifer(props.sword(WHITE_KHROMETAL_TIER, 3, -2.4f),
 			Attributes.ATTACK_KNOCKBACK, new AttributeModifier(SurgeofKhroma.resource("white_khrometal_bonus"), 4, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)));
-	public static final DeferredItem<Item> KHROMETAL_WHITE_PICKAXE = ITEMS.registerItem("khrometal_white_pickaxe",
+	public static final DeferredItem<Item> KHROMETAL_WHITE_PICKAXE = ITEMS.registerItem("white_khrometal_pickaxe",
 			props -> new KhrometalWhitePickaxeItem(addAttributeModifer(props.pickaxe(WHITE_KHROMETAL_TIER, 1, -2f), Attributes.ATTACK_KNOCKBACK,
 					new AttributeModifier(SurgeofKhroma.resource("white_khrometal_bonus"), 4, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)));
-	public static final DeferredItem<Item> KHROMETAL_BLACK_SWORD = ITEMS.registerItem("khrometal_black_sword",
+	public static final DeferredItem<Item> KHROMETAL_BLACK_SWORD = ITEMS.registerItem("black_khrometal_sword",
 			props -> new KhrometalBlackSwordItem(addAttributeModifer(props.sword(BLACK_KHROMETAL_TIER, 3, -2.4f), RegistryReference.ATTRIBUTE_TELEPORT_DROPS,
 					new AttributeModifier(SurgeofKhroma.resource("black_khrometal_bonus"), 1, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)));
-	public static final DeferredItem<Item> KHROMETAL_BLACK_PICKAXE = ITEMS.registerItem("khrometal_black_pickaxe",
+	public static final DeferredItem<Item> KHROMETAL_BLACK_PICKAXE = ITEMS.registerItem("black_khrometal_pickaxe",
 			props -> new KhrometalBlackPickaxeItem(addAttributeModifer(props.pickaxe(BLACK_KHROMETAL_TIER, 1, -2f), RegistryReference.ATTRIBUTE_TELEPORT_DROPS,
 					new AttributeModifier(SurgeofKhroma.resource("black_khrometal_bonus"), 1, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)));
 

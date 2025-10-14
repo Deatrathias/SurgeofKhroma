@@ -56,6 +56,7 @@ public class DataGen {
 		event.createProvider(RecipeDaraGen.Runner::new);
 		event.createProvider(DataMapDataGen::new);
 		event.createProvider(SoundDataGen::new);
+		event.createProvider(LanguageENDataGen::new);
 		if (ModList.get().isLoaded(CuriosResources.MOD_ID))
 			event.createProvider(CuriosDataGen::new);
 	}

@@ -89,7 +89,7 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 	 */
 	private void recipesPerKhroma(RegistryLookup<Item> itemRegistry, String khromaName) {
 		Khroma khroma = Khroma.fromName(khromaName);
-		var khrometalIngotLocation = SurgeofKhroma.resource("khrometal_ingot_" + khromaName);
+		var khrometalIngotLocation = SurgeofKhroma.resource(khromaName + "_khrometal_ingot");
 		var khrometalIngot = itemRegistry.getOrThrow(ResourceKey.create(Registries.ITEM, khrometalIngotLocation)).value();
 
 		output.accept(ResourceKey.create(Registries.RECIPE, khrometalIngotLocation),
@@ -115,10 +115,10 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 						1250),
 				null);
 
-		var sword = itemRegistry.get(SurgeofKhroma.resourceKey(Registries.ITEM, "khrometal_" + khromaName + "_sword")).map(ref -> ref.value()).orElse(null);
-		var pickaxe = itemRegistry.get(SurgeofKhroma.resourceKey(Registries.ITEM, "khrometal_" + khromaName + "_pickaxe")).map(ref -> ref.value()).orElse(null);
-		var axe = itemRegistry.get(SurgeofKhroma.resourceKey(Registries.ITEM, "khrometal_" + khromaName + "_axe")).map(ref -> ref.value()).orElse(null);
-		var shovel = itemRegistry.get(SurgeofKhroma.resourceKey(Registries.ITEM, "khrometal_" + khromaName + "_shovel")).map(ref -> ref.value()).orElse(null);
+		var sword = itemRegistry.get(SurgeofKhroma.resourceKey(Registries.ITEM, khromaName + "_khrometal_sword")).map(ref -> ref.value()).orElse(null);
+		var pickaxe = itemRegistry.get(SurgeofKhroma.resourceKey(Registries.ITEM, khromaName + "_khrometal_pickaxe")).map(ref -> ref.value()).orElse(null);
+		var axe = itemRegistry.get(SurgeofKhroma.resourceKey(Registries.ITEM, khromaName + "_khrometal_axe")).map(ref -> ref.value()).orElse(null);
+		var shovel = itemRegistry.get(SurgeofKhroma.resourceKey(Registries.ITEM, khromaName + "_khrometal_shovel")).map(ref -> ref.value()).orElse(null);
 
 		generateTools(ItemTags.create(SurgeofKhroma.resource("ingots/khrometal/" + khromaName)), sword, pickaxe, axe, shovel);
 

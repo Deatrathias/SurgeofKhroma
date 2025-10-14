@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": "surgeofkhroma:khrometal_ingot_green"
+    "#": "surgeofkhroma:green_khrometal_ingot"
   },
   "pattern": [
     "###",

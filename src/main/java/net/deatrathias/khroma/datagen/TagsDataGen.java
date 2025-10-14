@@ -244,11 +244,11 @@ public final class TagsDataGen {
 		private void tagsPerKhroma(TagAppender<Item, Item> swords, TagAppender<Item, Item> pickaxes, TagAppender<Item, Item> axes, TagAppender<Item, Item> shovel,
 				TagAppender<Item, Item> khrometalIngots, String khromaName) {
 			var itemRegistry = BuiltInRegistries.ITEM;
-			itemRegistry.getOptional(SurgeofKhroma.resource("khrometal_" + khromaName + "_sword")).ifPresent(item -> swords.add(item));
-			itemRegistry.getOptional(SurgeofKhroma.resource("khrometal_" + khromaName + "_pickaxe")).ifPresent(item -> pickaxes.add(item));
-			itemRegistry.getOptional(SurgeofKhroma.resource("khrometal_" + khromaName + "_axe")).ifPresent(item -> axes.add(item));
-			itemRegistry.getOptional(SurgeofKhroma.resource("khrometal_" + khromaName + "_shovel")).ifPresent(item -> shovel.add(item));
-			var ingot = ResourceKey.create(Registries.ITEM, SurgeofKhroma.resource("khrometal_ingot_" + khromaName));
+			itemRegistry.getOptional(SurgeofKhroma.resource(khromaName + "_khrometal_sword")).ifPresent(item -> swords.add(item));
+			itemRegistry.getOptional(SurgeofKhroma.resource(khromaName + "_khrometal_pickaxe")).ifPresent(item -> pickaxes.add(item));
+			itemRegistry.getOptional(SurgeofKhroma.resource(khromaName + "_khrometal_axe")).ifPresent(item -> axes.add(item));
+			itemRegistry.getOptional(SurgeofKhroma.resource(khromaName + "_khrometal_shovel")).ifPresent(item -> shovel.add(item));
+			var ingot = ResourceKey.create(Registries.ITEM, SurgeofKhroma.resource(khromaName + "_khrometal_ingot"));
 
 			var ingotTag = ItemTags.create(SurgeofKhroma.resource("ingots/khrometal/" + khromaName));
 			tag(ingotTag).add(itemRegistry.getValueOrThrow(ingot));

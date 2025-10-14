@@ -35,11 +35,11 @@ import net.minecraft.world.phys.Vec3;
 public class NodeCollectorBlockEntity extends BaseKhromaUserBlockEntity {
 
 	public static final Map<TagKey<Block>, Khroma> structureBlockTags = Map.of(
-			TagReference.Blocks.COLLECTOR_STRUCTURE_COMPONENTS_RED, Khroma.RED,
-			TagReference.Blocks.COLLECTOR_STRUCTURE_COMPONENTS_GREEN, Khroma.GREEN,
-			TagReference.Blocks.COLLECTOR_STRUCTURE_COMPONENTS_BLUE, Khroma.BLUE,
-			TagReference.Blocks.COLLECTOR_STRUCTURE_COMPONENTS_WHITE, Khroma.WHITE,
-			TagReference.Blocks.COLLECTOR_STRUCTURE_COMPONENTS_BLACK, Khroma.BLACK);
+			TagReference.Blocks.KHROMA_ASPECTED_RED, Khroma.RED,
+			TagReference.Blocks.KHROMA_ASPECTED_GREEN, Khroma.GREEN,
+			TagReference.Blocks.KHROMA_ASPECTED_BLUE, Khroma.BLUE,
+			TagReference.Blocks.KHROMA_ASPECTED_WHITE, Khroma.WHITE,
+			TagReference.Blocks.KHROMA_ASPECTED_BLACK, Khroma.BLACK);
 
 	private int pillars;
 

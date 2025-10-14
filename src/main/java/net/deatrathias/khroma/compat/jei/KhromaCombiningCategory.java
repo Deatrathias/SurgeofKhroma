@@ -20,7 +20,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class KhromaCombiningCategory implements IRecipeCategory<KhromaCombiningRecipe> {
 
-	private static final String TITLE = "recipe." + SurgeofKhroma.MODID + ".khroma_combining";
+	private static final String TITLE = "recipe_type." + SurgeofKhroma.MODID + ".khroma_combining";
 
 	private IRecipeType<KhromaCombiningRecipe> recipeType;
 

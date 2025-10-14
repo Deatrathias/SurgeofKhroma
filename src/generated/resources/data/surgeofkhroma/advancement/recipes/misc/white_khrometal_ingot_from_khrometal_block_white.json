@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_khrometal_block_white": {
+      "conditions": {
+        "items": [
+          {
+            "items": "surgeofkhroma:khrometal_block_white"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "surgeofkhroma:white_khrometal_ingot_from_khrometal_block_white"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_khrometal_block_white"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "surgeofkhroma:white_khrometal_ingot_from_khrometal_block_white"
+    ]
+  }
+}

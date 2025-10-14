@@ -19,7 +19,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 public class KhromaSeparatingCategory implements IRecipeCategory<KhromaSeparatingRecipe> {
-	private static final String TITLE = "recipe." + SurgeofKhroma.MODID + ".khroma_separating";
+	private static final String TITLE = "recipe_type." + SurgeofKhroma.MODID + ".khroma_separating";
 
 	private IRecipeType<KhromaSeparatingRecipe> recipeType;
 

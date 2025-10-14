@@ -1,0 +1,10 @@
+{
+  "type": "surgeofkhroma:khroma_imbuement",
+  "ingredient": "#surgeofkhroma:base_ingot",
+  "khroma": "green",
+  "khromacost": 5000.0,
+  "result": {
+    "count": 1,
+    "id": "surgeofkhroma:green_khrometal_ingot"
+  }
+}

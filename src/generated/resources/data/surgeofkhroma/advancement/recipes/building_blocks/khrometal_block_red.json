@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_khrometal_ingot_red": {
+    "has_red_khrometal_ingot": {
       "conditions": {
         "items": [
           {
-            "items": "surgeofkhroma:khrometal_ingot_red"
+            "items": "surgeofkhroma:red_khrometal_ingot"
           }
         ]
       },
@@ -21,7 +21,7 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_khrometal_ingot_red"
+      "has_red_khrometal_ingot"
     ]
   ],
   "rewards": {

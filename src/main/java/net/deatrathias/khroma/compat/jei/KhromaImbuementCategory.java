@@ -23,7 +23,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 
 public class KhromaImbuementCategory implements IRecipeCategory<RecipeHolder<KhromaImbuementRecipe>> {
 
-	private static final String TITLE = "recipe." + SurgeofKhroma.MODID + ".khroma_imbuement";
+	private static final String TITLE = "recipe_type." + SurgeofKhroma.MODID + ".khroma_imbuement";
 
 	private IJeiHelpers helpers;
 
