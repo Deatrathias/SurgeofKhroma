@@ -107,6 +107,12 @@ public final class TagsDataGen {
 			tag(BlockTags.LEAVES, ItemTags.LEAVES).addTag(TagReference.Blocks.IMBUED_TREE_LEAVES);
 			tag(BlockTags.SAPLINGS, ItemTags.SAPLINGS).addTag(TagReference.Blocks.IMBUED_TREE_SAPLINGS);
 			tag(TagReference.Blocks.PILLARS, TagReference.Items.PILLARS).addTag(TagReference.Blocks.WOODEN_PILLARS);
+			
+			tag(TagReference.Blocks.KHROMA_ASPECTED_RED, TagReference.Items.KHROMA_ASPECTED_RED).add(BlockReference.SPARKTREE.get(TreeBlock.PILLAR)).add(BlockReference.KHROMETAL_BLOCK_RED.get());
+			tag(TagReference.Blocks.KHROMA_ASPECTED_GREEN, TagReference.Items.KHROMA_ASPECTED_GREEN).add(BlockReference.BLOOMTREE.get(TreeBlock.PILLAR)).add(BlockReference.KHROMETAL_BLOCK_GREEN.get());
+			tag(TagReference.Blocks.KHROMA_ASPECTED_BLUE, TagReference.Items.KHROMA_ASPECTED_BLUE).add(BlockReference.FLOWTREE.get(TreeBlock.PILLAR)).add(BlockReference.KHROMETAL_BLOCK_BLUE.get());
+			tag(TagReference.Blocks.KHROMA_ASPECTED_WHITE, TagReference.Items.KHROMA_ASPECTED_WHITE).add(BlockReference.SKYTREE.get(TreeBlock.PILLAR)).add(BlockReference.KHROMETAL_BLOCK_WHITE.get());
+			tag(TagReference.Blocks.KHROMA_ASPECTED_BLACK, TagReference.Items.KHROMA_ASPECTED_BLACK).add(BlockReference.GRIMTREE.get(TreeBlock.PILLAR)).add(BlockReference.KHROMETAL_BLOCK_BLACK.get());
 		}
 
 	}
@@ -128,11 +134,6 @@ public final class TagsDataGen {
 			}).run();
 
 			tag(TagReference.Blocks.COLLECTOR_STRUCTURE_COMPONENTS).addTag(TagReference.Blocks.WOODEN_PILLARS).addTag(TagReference.Blocks.KHROMETAL_BLOCKS);
-			tag(TagReference.Blocks.COLLECTOR_STRUCTURE_COMPONENTS_RED).add(BlockReference.SPARKTREE.get(TreeBlock.PILLAR)).add(BlockReference.KHROMETAL_BLOCK_RED.get());
-			tag(TagReference.Blocks.COLLECTOR_STRUCTURE_COMPONENTS_GREEN).add(BlockReference.BLOOMTREE.get(TreeBlock.PILLAR)).add(BlockReference.KHROMETAL_BLOCK_GREEN.get());
-			tag(TagReference.Blocks.COLLECTOR_STRUCTURE_COMPONENTS_BLUE).add(BlockReference.FLOWTREE.get(TreeBlock.PILLAR)).add(BlockReference.KHROMETAL_BLOCK_BLUE.get());
-			tag(TagReference.Blocks.COLLECTOR_STRUCTURE_COMPONENTS_WHITE).add(BlockReference.SKYTREE.get(TreeBlock.PILLAR)).add(BlockReference.KHROMETAL_BLOCK_WHITE.get());
-			tag(TagReference.Blocks.COLLECTOR_STRUCTURE_COMPONENTS_BLACK).add(BlockReference.GRIMTREE.get(TreeBlock.PILLAR)).add(BlockReference.KHROMETAL_BLOCK_BLACK.get());
 
 			tag(BlockTags.NEEDS_STONE_TOOL).addAll(DataGenDefinitions.needsStoneTool).addTag(TagReference.Blocks.KHROMETAL_BLOCKS);
 			tag(BlockTags.MINEABLE_WITH_PICKAXE).addAll(DataGenDefinitions.needsStoneTool).addTags(TagReference.Blocks.KHROMETAL_BLOCKS,
@@ -248,10 +249,13 @@ public final class TagsDataGen {
 			itemRegistry.getOptional(SurgeofKhroma.resource(khromaName + "_khrometal_pickaxe")).ifPresent(item -> pickaxes.add(item));
 			itemRegistry.getOptional(SurgeofKhroma.resource(khromaName + "_khrometal_axe")).ifPresent(item -> axes.add(item));
 			itemRegistry.getOptional(SurgeofKhroma.resource(khromaName + "_khrometal_shovel")).ifPresent(item -> shovel.add(item));
-			var ingot = ResourceKey.create(Registries.ITEM, SurgeofKhroma.resource(khromaName + "_khrometal_ingot"));
-
+			var ingot = itemRegistry.getValueOrThrow(ResourceKey.create(Registries.ITEM, SurgeofKhroma.resource(khromaName + "_khrometal_ingot")));
+			
+			var aspectTag = tag(ItemTags.create(SurgeofKhroma.resource("khroma_aspected/" + khromaName)));
 			var ingotTag = ItemTags.create(SurgeofKhroma.resource("ingots/khrometal/" + khromaName));
-			tag(ingotTag).add(itemRegistry.getValueOrThrow(ingot));
+			tag(ingotTag).add(ingot);
+			aspectTag.add(ingot);
+			
 			khrometalIngots.addTag(ingotTag);
 		}
 

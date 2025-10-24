@@ -52,6 +52,7 @@ import net.deatrathias.khroma.blocks.machine.NodeCollectorBlock;
 import net.deatrathias.khroma.blocks.machine.modular.ItemOutputModuleBlock;
 import net.deatrathias.khroma.blocks.machine.modular.KhromaProcessingCoreBlock;
 import net.deatrathias.khroma.blocks.machine.modular.ProcessControllerBlock;
+import net.deatrathias.khroma.khroma.Khroma;
 import net.deatrathias.khroma.khroma.KhromaDeviceTier;
 import net.deatrathias.khroma.registries.ImbuedTree.TreeBlock;
 import net.minecraft.core.BlockPos;
@@ -259,6 +260,12 @@ public final class BlockReference {
 			.build(BlockSetReference.GRIMTREE, WoodReference.GRIMTREE);
 
 	public static final List<ImbuedTree> IMBUED_TREES = List.of(SPARKTREE, BLOOMTREE, FLOWTREE, SKYTREE, GRIMTREE);
+	public static final Map<Khroma, ImbuedTree> IMBUED_TREE_MAP = Map.of(
+			Khroma.RED, SPARKTREE,
+			Khroma.GREEN, BLOOMTREE,
+			Khroma.BLUE, FLOWTREE,
+			Khroma.WHITE, SKYTREE,
+			Khroma.BLACK, GRIMTREE);
 
 	public static final DeferredBlock<Block> KHROMA_LINE = registerBlock("khroma_line", KhromaLineBlock::new,
 			blockProps().mapColor(MapColor.METAL).strength(0.1F, 1.0F).sound(SoundType.METAL).pushReaction(PushReaction.DESTROY), KromaLineBlockItem::new, new Item.Properties());
@@ -390,4 +397,5 @@ public final class BlockReference {
 			}
 		}
 	}
+
 }

@@ -122,18 +122,7 @@ public class RecipeDaraGen extends ModdedRecipeProvider {
 
 		generateTools(ItemTags.create(SurgeofKhroma.resource("ingots/khrometal/" + khromaName)), sword, pickaxe, axe, shovel);
 
-		Item sapling = null;
-
-		if (khromaName.equals("red"))
-			sapling = BlockReference.SPARKTREE.get(TreeBlock.SAPLING).asItem();
-		else if (khromaName.equals("green"))
-			sapling = BlockReference.BLOOMTREE.get(TreeBlock.SAPLING).asItem();
-		else if (khromaName.equals("blue"))
-			sapling = BlockReference.FLOWTREE.get(TreeBlock.SAPLING).asItem();
-		else if (khromaName.equals("white"))
-			sapling = BlockReference.SKYTREE.get(TreeBlock.SAPLING).asItem();
-		else if (khromaName.equals("black"))
-			sapling = BlockReference.GRIMTREE.get(TreeBlock.SAPLING).asItem();
+		Item sapling = BlockReference.IMBUED_TREE_MAP.get(khroma).get(TreeBlock.SAPLING).asItem();
 
 		output.accept(SurgeofKhroma.resourceKey(Registries.RECIPE, BuiltInRegistries.ITEM.getKey(sapling).getPath()),
 				new KhromaImbuementRecipe(Ingredient.of(itemRegistry.getOrThrow(ItemTags.SAPLINGS)), khroma, new ItemStack(sapling, 1), 5000), null);
