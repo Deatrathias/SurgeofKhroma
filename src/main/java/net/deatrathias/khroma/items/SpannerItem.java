@@ -122,7 +122,7 @@ public class SpannerItem extends Item implements IItemExtension {
 
 		if (optional.isPresent()) {
 			Player player = context.getPlayer();
-			if (!level.isClientSide) {
+			if (!level.isClientSide()) {
 				level.setBlock(pos, optional.get(), 11);
 				level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, optional.get()));
 			}

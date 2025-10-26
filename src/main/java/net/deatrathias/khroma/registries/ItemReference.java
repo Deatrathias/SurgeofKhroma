@@ -105,7 +105,7 @@ public final class ItemReference {
 					Pair.of(NeoForgeMod.SWIM_SPEED, new AttributeModifier(registryName, 1, Operation.ADD_VALUE))),
 					"legs", AccessoriesBaseData.ANKLET_SLOT, EquipmentSlot.LEGS)));
 
-	public static final DeferredItem<Item> STRIX_SPAWN_EGG = ITEMS.registerItem("strix_spawn_egg", props -> new SpawnEggItem(EntityReference.STRIX.get(), props));
+	public static final DeferredItem<Item> STRIX_SPAWN_EGG = ITEMS.registerItem("strix_spawn_egg", SpawnEggItem::new, props -> props.spawnEgg(EntityReference.STRIX.get()));
 
 	public static Item.Properties itemProps(ResourceLocation registryName) {
 		return new Properties().setId(ResourceKey.create(Registries.ITEM, registryName));

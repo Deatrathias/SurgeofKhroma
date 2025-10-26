@@ -2,19 +2,25 @@ package net.deatrathias.khroma.blockentities;
 
 import net.deatrathias.khroma.registries.BlockReference;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Containers;
+import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.ItemStackResourceHandler;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
-public class ItemOutputModuleBlockEntity extends BlockEntity implements IItemHandler {
+public class ItemOutputModuleBlockEntity extends BlockEntity implements ItemOwner {
 
 	private ItemStack item = ItemStack.EMPTY;
 
@@ -43,20 +49,34 @@ public class ItemOutputModuleBlockEntity extends BlockEntity implements IItemHan
 	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
 		return this.saveCustomOnly(registries);
 	}
+	
+	public static class ItemHandler extends ItemStackResourceHandler {
+		public final ItemOutputModuleBlockEntity blockEntity;
+		
+		public ItemHandler(ItemOutputModuleBlockEntity blockEntity, Direction direction) {
+			this.blockEntity = blockEntity;
+		}
 
-	@Override
-	public int getSlots() {
-		return 1;
-	}
+		@Override
+		protected ItemStack getStack() {
+			return blockEntity.item;
+		}
 
-	@Override
-	public ItemStack getStackInSlot(int slot) {
-		return slot == 0 ? item : ItemStack.EMPTY;
-	}
-
-	@Override
-	public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-		return stack;
+		@Override
+		protected void setStack(ItemStack stack) {
+			blockEntity.item = stack;
+			blockEntity.contentUpdated();
+		}
+		
+		@Override
+		public boolean isValid(int index, ItemResource resource) {
+			return false;
+		}
+		
+		 @Override
+		public int insert(int index, ItemResource resource, int amount, TransactionContext transaction) {
+			return 0;
+		}
 	}
 
 	public ItemStack modularInsertItem(ItemStack stack, boolean simulate) {
@@ -77,27 +97,10 @@ public class ItemOutputModuleBlockEntity extends BlockEntity implements IItemHan
 			}
 			return stack.copyWithCount(remaining);
 		}
-
 	}
-
-	@Override
-	public ItemStack extractItem(int slot, int amount, boolean simulate) {
-		ItemStack result;
-		if (amount >= item.getCount()) {
-			result = item.copy();
-			if (!simulate && !item.isEmpty()) {
-				item = ItemStack.EMPTY;
-				contentUpdated();
-			}
-		} else {
-			result = item.copyWithCount(amount);
-			if (!simulate) {
-				item.shrink(amount);
-				contentUpdated();
-			}
-		}
-
-		return result;
+	
+	public ItemStack getItem() {
+		return item;
 	}
 
 	private void contentUpdated() {
@@ -114,12 +117,17 @@ public class ItemOutputModuleBlockEntity extends BlockEntity implements IItemHan
 	}
 
 	@Override
-	public int getSlotLimit(int slot) {
-		return 99;
+	public Level level() {
+		return level;
 	}
 
 	@Override
-	public boolean isItemValid(int slot, ItemStack stack) {
-		return slot == 0;
+	public Vec3 position() {
+		return worldPosition.getCenter();
+	}
+
+	@Override
+	public float getVisualRotationYInDegrees() {
+		return 0;
 	}
 }

@@ -2,6 +2,7 @@ package net.deatrathias.khroma;
 
 import com.mojang.brigadier.Command;
 
+import net.deatrathias.khroma.blockentities.ItemOutputModuleBlockEntity;
 import net.deatrathias.khroma.blockentities.ItemPedestalBlockEntity;
 import net.deatrathias.khroma.blocks.khrometal.KhrometalBlackBlock;
 import net.deatrathias.khroma.compat.curios.CuriosRegister;
@@ -35,11 +36,11 @@ import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
-import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.MainThreadPayloadHandler;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
+import net.neoforged.neoforge.transfer.item.WorldlyContainerWrapper;
 import top.theillusivec4.curios.api.CuriosResources;
 
 @EventBusSubscriber(modid = SurgeofKhroma.MODID)
@@ -62,9 +63,9 @@ public final class CommonEventSubscriber {
 
 	@SubscribeEvent
 	private static void registerCapabilities(RegisterCapabilitiesEvent event) {
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BlockReference.BE_KHROMA_IMBUER.get(), SidedInvWrapper::new);
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BlockReference.BE_ITEM_PEDESTAL.get(), ItemPedestalBlockEntity.ItemHandler::new);
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BlockReference.BE_ITEM_OUTPUT_MODULE.get(), (be, direction) -> be);
+		event.registerBlockEntity(Capabilities.Item.BLOCK, BlockReference.BE_KHROMA_IMBUER.get(), WorldlyContainerWrapper::new);
+		event.registerBlockEntity(Capabilities.Item.BLOCK, BlockReference.BE_ITEM_PEDESTAL.get(), ItemPedestalBlockEntity.ItemHandler::new);
+		event.registerBlockEntity(Capabilities.Item.BLOCK, BlockReference.BE_ITEM_OUTPUT_MODULE.get(), ItemOutputModuleBlockEntity.ItemHandler::new);
 		if (ModList.get().isLoaded(CuriosResources.MOD_ID))
 			CuriosRegister.registerCurioCapabilities(event);
 	}

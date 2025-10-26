@@ -7,34 +7,25 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import net.deatrathias.khroma.SurgeofKhroma;
+import net.deatrathias.khroma.client.KhromaMaterials;
 import net.deatrathias.khroma.khroma.Khroma;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.GuiSpriteManager;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.layouts.LayoutElement;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 
 public class KhromaGauge implements Renderable, LayoutElement {
-
-	private static final ResourceLocation TEXTURE_KHROMA = SurgeofKhroma.resource("khroma/khroma");
-	private static final ResourceLocation TEXTURE_KHROMA_SPECTRUM = SurgeofKhroma.resource("khroma/khroma_spectrum");
-	private static final ResourceLocation TEXTURE_KHROMA_LIGHT_SPECTRUM = SurgeofKhroma.resource("khroma/khroma_spectrum_white");
-	private static final ResourceLocation TEXTURE_KHROMA_DARK_SPECTRUM = SurgeofKhroma.resource("khroma/khroma_spectrum_black");
-	private static final ResourceLocation TEXTURE_KHROMA_KHROMEGA = SurgeofKhroma.resource("khroma/khroma_khromega");
 
 	private int x, y;
 
 	private Khroma khroma;
 
 	private TextureAtlasSprite currentTexture;
-
-	private GuiSpriteManager sprites;
 
 	private Font font;
 
@@ -47,7 +38,6 @@ public class KhromaGauge implements Renderable, LayoutElement {
 	private List<Component> tooltipComponents;
 
 	public void init(Minecraft minecraft) {
-		sprites = minecraft.getGuiSprites();
 		font = minecraft.font;
 	}
 
@@ -90,20 +80,7 @@ public class KhromaGauge implements Renderable, LayoutElement {
 	public void setKhroma(Khroma khroma) {
 		this.khroma = khroma;
 
-		setTexture(getTexturePerKhroma(khroma));
-	}
-
-	public static ResourceLocation getTexturePerKhroma(Khroma khroma) {
-		if (khroma == Khroma.SPECTRUM)
-			return TEXTURE_KHROMA_SPECTRUM;
-		else if (khroma == Khroma.LIGHT_SPECTRUM)
-			return TEXTURE_KHROMA_LIGHT_SPECTRUM;
-		else if (khroma == Khroma.DARK_SPECTRUM)
-			return TEXTURE_KHROMA_DARK_SPECTRUM;
-		else if (khroma == Khroma.KHROMEGA)
-			return TEXTURE_KHROMA_KHROMEGA;
-		else
-			return TEXTURE_KHROMA;
+		setTexture();
 	}
 
 	public void setRates(float consumed, float softLimit, float effective) {
@@ -112,8 +89,8 @@ public class KhromaGauge implements Renderable, LayoutElement {
 		this.effective = effective;
 	}
 
-	private void setTexture(ResourceLocation spriteLocation) {
-		currentTexture = sprites.getSprite(spriteLocation);
+	private void setTexture() {
+		currentTexture = Minecraft.getInstance().getAtlasManager().get(KhromaMaterials.getMaterial(khroma));
 	}
 
 	@Override

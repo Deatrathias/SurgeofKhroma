@@ -31,9 +31,9 @@ public class KhrometalBlackBlock extends KhrometalBlock {
 		// other entities and we send a message instead from the client
 		if (entity.isSteppingCarefully() || (entity instanceof LivingEntity living && living.hasEffect(RegistryReference.EFFECT_TELEPORT_SICKNESS)))
 			return;
-		if (!level.isClientSide && !(entity instanceof Player))
+		if (!level.isClientSide() && !(entity instanceof Player))
 			doTeleport(level, pos, entity, getDirectionFromMovement(entity.getDeltaMovement()));
-		else if (level.isClientSide && entity instanceof Player player) {
+		else if (level.isClientSide() && entity instanceof Player player) {
 			handleClientStep(player);
 		}
 	}
@@ -55,7 +55,7 @@ public class KhrometalBlackBlock extends KhrometalBlock {
 			if (blockVec.distanceToSqr(entityVec) < 0.64) {
 				Vector3f teleport = direction.step().mul(2 + getAmplification(level, pos));
 				if (living.isFree(teleport.x, teleport.y, teleport.z)) {
-					level.playSound(null, pos, SoundReference.BLACK_KHROMETAL_TELEPORT.get(), SoundSource.BLOCKS);
+					level.playSound(null, pos, SoundReference.BLACK_KHROMETAL_TELEPORT.value(), SoundSource.BLOCKS);
 					living.teleportRelative(teleport.x, teleport.y, teleport.z);
 					living.addEffect(new MobEffectInstance(RegistryReference.EFFECT_TELEPORT_SICKNESS, 60));
 				}

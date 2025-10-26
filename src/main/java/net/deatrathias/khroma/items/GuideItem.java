@@ -48,11 +48,6 @@ public class GuideItem extends ModonomiconItem implements GeoItem{
 	}
 	
 	@Override
-	public void verifyComponentsAfterLoad(ItemStack stack) {
-		
-	}
-	
-	@Override
 	public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
 		consumer.accept(new GeoRenderProvider() {
 			private KhromancerArchiveRenderer renderer;
@@ -107,7 +102,7 @@ public class GuideItem extends ModonomiconItem implements GeoItem{
 	
 	@Override
 	public @NotNull InteractionResult use(Level pLevel, Player pPlayer, @NotNull InteractionHand pUsedHand) {
-		if (!pLevel.isClientSide)
+		if (!pLevel.isClientSide())
 			GeoItem.getOrAssignId(pPlayer.getItemInHand(pUsedHand), (ServerLevel) pLevel);
 		super.use(pLevel, pPlayer, pUsedHand);
 		

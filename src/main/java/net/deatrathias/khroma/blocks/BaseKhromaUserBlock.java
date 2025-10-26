@@ -58,7 +58,7 @@ public abstract class BaseKhromaUserBlock extends Block implements IKhromaUsingB
 
 	@Override
 	protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
-		if (!level.isClientSide)
+		if (!level.isClientSide())
 			dirtyNetwork(level, pos);
 	}
 
@@ -83,7 +83,7 @@ public abstract class BaseKhromaUserBlock extends Block implements IKhromaUsingB
 	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess scheduledTickAccess, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState,
 			RandomSource random) {
 		Level actualLevel = (Level) level;
-		if (!actualLevel.isClientSide)
+		if (!actualLevel.isClientSide())
 			dirtyNetwork(actualLevel, pos, direction);
 
 		return state;

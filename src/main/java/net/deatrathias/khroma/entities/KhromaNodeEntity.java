@@ -21,7 +21,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -108,7 +107,7 @@ public class KhromaNodeEntity extends Entity {
 
 	@Override
 	public InteractionResult interact(Player player, InteractionHand hand) {
-		ItemStack stack = player.getItemBySlot(LivingEntity.getSlotForHand(hand));
+		ItemStack stack = player.getItemInHand(hand);
 		if (stack != null && stack.is(BlockReference.NODE_COLLECTOR.asItem())) {
 			return stack.useOn(new UseOnContext(player, hand, new BlockHitResult(getEyePosition(), Direction.DOWN, new BlockPos(getOnPos()), false)));
 		}
@@ -132,7 +131,7 @@ public class KhromaNodeEntity extends Entity {
 	@Override
 	public void tick() {
 		super.tick();
-		if (level().isClientSide) {
+		if (level().isClientSide()) {
 			generateParticles();
 		}
 	}

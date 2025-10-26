@@ -5,6 +5,7 @@ import net.deatrathias.khroma.gui.KhromaApertureMenu;
 import net.deatrathias.khroma.network.ServerboundSetApertureLimitPacket;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -22,9 +23,9 @@ public class KhromaApertureScreen extends AbstractContainerScreen<KhromaAperture
 		}
 
 		@Override
-		public void onRelease(double mouseX, double mouseY) {
+		public void onRelease(MouseButtonEvent event) {
 			minecraft.getConnection().send(new ServerboundSetApertureLimitPacket((float) this.value));
-			super.onRelease(mouseX, mouseY);
+			super.onRelease(event);
 		}
 	}
 
@@ -57,11 +58,11 @@ public class KhromaApertureScreen extends AbstractContainerScreen<KhromaAperture
 	}
 
 	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-		boolean result = this.getFocused() != null && this.isDragging() && button == 0 ? this.getFocused().mouseDragged(mouseX, mouseY, button, dragX, dragY) : false;
+	public boolean mouseDragged(MouseButtonEvent event, double mouseX, double mouseY) {
+		boolean result = this.getFocused() != null && this.isDragging() && event.button() == 0 ? this.getFocused().mouseDragged(event, mouseX, mouseY) : false;
 		if (result)
 			return true;
-		return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+		return super.mouseDragged(event, mouseX, mouseY);
 	}
 
 	@Override

@@ -95,7 +95,7 @@ public class KhromaDissipatorBlock extends BaseKhromaUserBlock implements IKhrom
 		if (player.hasItemInSlot(EquipmentSlot.MAINHAND))
 			return InteractionResult.PASS;
 
-		if (level.isClientSide)
+		if (level.isClientSide())
 			return InteractionResult.SUCCESS_SERVER;
 		else {
 			var network = KhromaNetwork.findNetwork(level, new BlockDirection(pos, state.getValue(FACING).getOpposite()));

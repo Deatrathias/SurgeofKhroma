@@ -20,13 +20,15 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public class KhromaFabricatorBlockEntity extends BaseKhromaConsumerBlockEntity {
 
 	private final RecipeManager.CachedCheck<KhromaFabricationInput, KhromaFabricationRecipe> quickCheck;
 
-	private List<BlockCapabilityCache<IItemHandler, Direction>> pedestalCache;
+	private List<BlockCapabilityCache<ResourceHandler<ItemResource>, Direction>> pedestalCache;
 
 	private Optional<RecipeHolder<KhromaFabricationRecipe>> currentRecipe;
 
@@ -41,10 +43,10 @@ public class KhromaFabricatorBlockEntity extends BaseKhromaConsumerBlockEntity {
 	public void onLoad() {
 		super.onLoad();
 		if (level instanceof ServerLevel serverLevel) {
-			pedestalCache = new ArrayList<BlockCapabilityCache<IItemHandler, Direction>>(9);
+			pedestalCache = new ArrayList<BlockCapabilityCache<ResourceHandler<ItemResource>, Direction>>(9);
 			for (int x = -1; x <= 1; x++) {
 				for (int z = -1; z <= 1; z++) {
-					pedestalCache.add(BlockCapabilityCache.create(Capabilities.ItemHandler.BLOCK, serverLevel, worldPosition.offset(x, -1, z), Direction.UP));
+					pedestalCache.add(BlockCapabilityCache.create(Capabilities.Item.BLOCK, serverLevel, worldPosition.offset(x, -1, z), Direction.UP));
 				}
 			}
 		}
@@ -69,7 +71,7 @@ public class KhromaFabricatorBlockEntity extends BaseKhromaConsumerBlockEntity {
 	@Override
 	protected void serverTick() {
 		ItemOutputModuleBlockEntity outputModule = null;
-		List<IItemHandler> pedestalHandlers = new ArrayList<IItemHandler>(8);
+		List<ResourceHandler<ItemResource>> pedestalHandlers = new ArrayList<ResourceHandler<ItemResource>>(8);
 
 		for (int x = -1; x <= 1; x++) {
 			for (int z = -1; z <= 1; z++) {
@@ -93,7 +95,7 @@ public class KhromaFabricatorBlockEntity extends BaseKhromaConsumerBlockEntity {
 			if (handler == null)
 				items.add(ItemStack.EMPTY);
 			else
-				items.add(handler.extractItem(0, 1, true));
+				items.add(handler.getResource(0).toStack());
 		}
 
 		KhromaThroughput throughput = requestOnSide(Direction.UP);
@@ -115,9 +117,13 @@ public class KhromaFabricatorBlockEntity extends BaseKhromaConsumerBlockEntity {
 				progress += throughput.recipeProgress(recipe.getKhroma(), getSoftLimit()) / recipe.getKhromaCost();
 				setChanged();
 				if (progress >= 1) {
-					for (var handler : pedestalHandlers) {
-						if (handler != null)
-							handler.extractItem(0, 1, false);
+					try (Transaction tx = Transaction.openRoot()) {
+						for (var handler : pedestalHandlers) {
+							if (handler != null)
+								handler.extract(handler.getResource(0), 1, tx);
+						}
+						
+						tx.commit();
 					}
 
 					outputModule.modularInsertItem(recipe.assemble(input, level.registryAccess()), false);

@@ -55,6 +55,6 @@ public class KhromaProcessingCoreBlock extends BaseEntityBlock implements IKhrom
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-		return level.isClientSide ? null : createTickerHelper(blockEntityType, BlockReference.BE_KHROMA_PROCESSING_CORE.get(), KhromaProcessingCoreBlockEntity::serverTick);
+		return level.isClientSide() ? null : createTickerHelper(blockEntityType, BlockReference.BE_KHROMA_PROCESSING_CORE.get(), KhromaProcessingCoreBlockEntity::serverTick);
 	}
 }

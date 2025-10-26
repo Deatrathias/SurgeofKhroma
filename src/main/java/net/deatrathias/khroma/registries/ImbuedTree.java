@@ -614,7 +614,7 @@ public class ImbuedTree {
 	private static BlockBehaviour.Properties saplingProperties() {
 		return BlockBehaviour.Properties.of()
 				.mapColor(MapColor.PLANT)
-				.noCollission()
+				.noCollision()
 				.randomTicks()
 				.instabreak()
 				.sound(SoundType.GRASS)
@@ -634,7 +634,7 @@ public class ImbuedTree {
 	}
 
 	private static BlockBehaviour.Properties buttonProperties() {
-		return BlockBehaviour.Properties.of().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY);
+		return BlockBehaviour.Properties.of().noCollision().strength(0.5F).pushReaction(PushReaction.DESTROY);
 	}
 
 	private static BlockBehaviour.Properties signProperties(MapColor color) {
@@ -642,7 +642,7 @@ public class ImbuedTree {
 				.mapColor(color)
 				.forceSolidOn()
 				.instrument(NoteBlockInstrument.BASS)
-				.noCollission()
+				.noCollision()
 				.strength(1.0F)
 				.ignitedByLava();
 	}
@@ -652,7 +652,7 @@ public class ImbuedTree {
 				.mapColor(color)
 				.forceSolidOn()
 				.instrument(NoteBlockInstrument.BASS)
-				.noCollission()
+				.noCollision()
 				.strength(0.5F)
 				.ignitedByLava()
 				.pushReaction(PushReaction.DESTROY);

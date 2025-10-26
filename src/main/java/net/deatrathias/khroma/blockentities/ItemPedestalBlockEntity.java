@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.transfer.item.ItemStackResourceHandler;
 
 public class ItemPedestalBlockEntity extends BlockEntity {
 
@@ -84,7 +84,7 @@ public class ItemPedestalBlockEntity extends BlockEntity {
 
 		ItemStack stack = itemEntity.getItem();
 		if (stack.getCount() <= count) {
-			if (!simulate && !level.isClientSide) {
+			if (!simulate && !level.isClientSide()) {
 				itemEntity.discard();
 				placedItemEntity = null;
 				setChanged();
@@ -106,7 +106,7 @@ public class ItemPedestalBlockEntity extends BlockEntity {
 	}
 
 	private void createItemEntity(ItemStack stack) {
-		if (level.isClientSide)
+		if (level.isClientSide())
 			return;
 
 		if (stack == null || stack.isEmpty())
@@ -122,7 +122,7 @@ public class ItemPedestalBlockEntity extends BlockEntity {
 		PlacedItemEntity existing = getItemEntity();
 		if (existing != null)
 			existing.discard();
-		placedItemEntity = new EntityReference<>(itemEntity);
+		placedItemEntity = EntityReference.of(itemEntity);
 		setChanged();
 		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
 	}
@@ -161,6 +161,16 @@ public class ItemPedestalBlockEntity extends BlockEntity {
 
 		return itemEntity.getItem();
 	}
+	
+	private void setPlacedItemStack(ItemStack stack) {
+		ItemEntity itemEntity = getItemEntity();
+		if (itemEntity == null) {
+			createItemEntity(stack);
+			return;
+		}
+		
+		itemEntity.setItem(stack);
+	}
 
 	public void onStateChanged() {
 		ItemEntity itemEntity = getItemEntity();
@@ -170,8 +180,8 @@ public class ItemPedestalBlockEntity extends BlockEntity {
 		}
 	}
 
-	public static class ItemHandler implements IItemHandler {
-
+	public static class ItemHandler extends ItemStackResourceHandler {
+		
 		private final ItemPedestalBlockEntity blockEntity;
 
 		public ItemHandler(final ItemPedestalBlockEntity blockEntity, @Nullable Direction side) {
@@ -179,37 +189,13 @@ public class ItemPedestalBlockEntity extends BlockEntity {
 		}
 
 		@Override
-		public int getSlots() {
-			return 1;
-		}
-
-		@Override
-		public ItemStack getStackInSlot(int slot) {
+		protected ItemStack getStack() {
 			return blockEntity.getPlacedItemStack();
 		}
 
 		@Override
-		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-			if (slot != 0)
-				return stack;
-			return blockEntity.placeItem(stack, simulate);
-		}
-
-		@Override
-		public ItemStack extractItem(int slot, int amount, boolean simulate) {
-			if (slot != 0)
-				return ItemStack.EMPTY;
-			return blockEntity.takeItem(amount, simulate);
-		}
-
-		@Override
-		public int getSlotLimit(int slot) {
-			return 99;
-		}
-
-		@Override
-		public boolean isItemValid(int slot, ItemStack stack) {
-			return slot == 0;
+		protected void setStack(ItemStack stack) {
+			blockEntity.setPlacedItemStack(stack);
 		}
 
 	}

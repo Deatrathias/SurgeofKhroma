@@ -1,41 +1,32 @@
 package net.deatrathias.khroma.compat.accessories;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 
+import io.wispforest.accessories.api.client.AccessoryRenderState;
 import io.wispforest.accessories.api.client.renderers.AccessoryRenderer;
-import io.wispforest.accessories.api.slot.SlotPath;
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.HumanoidArmorModel;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 
 public class AnkletsOfMotionRenderer implements AccessoryRenderer {
 
-	private HumanoidArmorModel<HumanoidRenderState> baseModel;
+	private ModelPart baseModel;
 
 	private static final ResourceLocation TEXTURE = SurgeofKhroma.resource("textures/entity/equipment/humanoid/anklets_of_motion.png");
 
 	public AnkletsOfMotionRenderer() {
-		baseModel = new HumanoidArmorModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLayers.PLAYER_INNER_ARMOR));
+		baseModel = Minecraft.getInstance().getEntityModels().bakeLayer(ModelLayers.PLAYER_ARMOR.legs());
 	}
 
 	@Override
-	public <S extends LivingEntityRenderState> void render(ItemStack stack, SlotPath path, PoseStack matrices, EntityModel<S> model, S renderState, MultiBufferSource multiBufferSource, int light,
-			float partialTicks) {
-		if (!(renderState instanceof HumanoidRenderState))
-			return;
-		VertexConsumer buffer = multiBufferSource.getBuffer(model.renderType(TEXTURE));
-
-		baseModel.setupAnim((HumanoidRenderState) renderState);
-		baseModel.leftLeg.render(matrices, buffer, light, OverlayTexture.NO_OVERLAY);
-		baseModel.rightLeg.render(matrices, buffer, light, OverlayTexture.NO_OVERLAY);
+	public <S extends LivingEntityRenderState> void render(AccessoryRenderState accessoryState, S entityState,
+			EntityModel<S> model, PoseStack matrices, SubmitNodeCollector collector) {
+		collector.submitModelPart(baseModel, matrices, model.renderType(TEXTURE), entityState.lightCoords, OverlayTexture.NO_OVERLAY, null);
 	}
 }

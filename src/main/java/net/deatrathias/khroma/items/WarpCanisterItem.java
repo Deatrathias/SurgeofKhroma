@@ -34,7 +34,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public class WarpCanisterItem extends Item {
 
@@ -82,12 +84,12 @@ public class WarpCanisterItem extends Item {
 
 		Level level;
 		if (player instanceof ServerPlayer) {
-			level = player.getServer().getLevel(component.globalPos.dimension());
+			level = player.level().getServer().getLevel(component.globalPos.dimension());
 
 			if (level == null)
 				return false;
 
-			IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, component.globalPos.pos(), component.face);
+			ResourceHandler<ItemResource> handler = level.getCapability(Capabilities.Item.BLOCK, component.globalPos.pos(), component.face);
 			if (handler == null) {
 				player.displayClientMessage(Component.translatable(descriptionId + ".fail").withStyle(ChatFormatting.RED), false);
 				stack.remove(RegistryReference.DATA_COMPONENT_CONTAINER_LINK_LOCATION);
@@ -97,10 +99,12 @@ public class WarpCanisterItem extends Item {
 			ItemStack remaining = action == ClickAction.PRIMARY ? other : other.copyWithCount(1);
 			int count = remaining.getCount();
 			int leftCount = action == ClickAction.PRIMARY ? 0 : other.getCount() - 1;
-			for (int i = 0; i < handler.getSlots(); i++) {
-				remaining = handler.insertItem(i, remaining, false);
-				if (remaining.isEmpty())
-					break;
+			try (Transaction tx = Transaction.openRoot()) {
+				ItemResource resource = ItemResource.of(remaining);
+				int inserted = handler.insert(resource, leftCount, tx);
+				
+				remaining = resource.toStack(remaining.getCount() - inserted);
+				tx.commit();
 			}
 
 			if (remaining.getCount() == count)
@@ -114,7 +118,7 @@ public class WarpCanisterItem extends Item {
 			else
 				slot.set(remaining);
 			broadcastChangesOnContainerMenu(player);
-			player.playNotifySound(SoundReference.WARP_CANISTER_SEND.get(), SoundSource.PLAYERS, 0.8F, 0.8F + player.level().getRandom().nextFloat() * 0.4F);
+			player.playNotifySound(SoundReference.WARP_CANISTER_SEND.value(), SoundSource.PLAYERS, 0.8F, 0.8F + player.level().getRandom().nextFloat() * 0.4F);
 		}
 
 		return true;
@@ -130,10 +134,10 @@ public class WarpCanisterItem extends Item {
 		if (!context.isSecondaryUseActive())
 			return InteractionResult.PASS;
 
-		IItemHandler handler = context.getLevel().getCapability(Capabilities.ItemHandler.BLOCK, context.getClickedPos(), context.getClickedFace());
+		ResourceHandler<ItemResource> handler = context.getLevel().getCapability(Capabilities.Item.BLOCK, context.getClickedPos(), context.getClickedFace());
 
-		if (handler != null && handler.getSlots() > 0) {
-			if (!context.getLevel().isClientSide) {
+		if (handler != null && handler.size() > 0) {
+			if (!context.getLevel().isClientSide()) {
 				BlockState state = context.getLevel().getBlockState(context.getClickedPos());
 				Component name;
 				BlockEntity be = context.getLevel().getBlockEntity(context.getClickedPos());
@@ -147,7 +151,7 @@ public class WarpCanisterItem extends Item {
 
 				context.getPlayer().displayClientMessage(Component.translatable(descriptionId + ".connected", name, context.getClickedFace().getName()), true);
 			}
-			context.getPlayer().playSound(SoundReference.WARP_CANISTER_CONNECT.get(), 0.8F, 1F);
+			context.getPlayer().playSound(SoundReference.WARP_CANISTER_CONNECT.value(), 0.8F, 1F);
 
 			return InteractionResult.SUCCESS;
 		}

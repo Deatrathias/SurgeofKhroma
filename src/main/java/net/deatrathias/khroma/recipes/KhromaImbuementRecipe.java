@@ -143,7 +143,6 @@ public class KhromaImbuementRecipe implements Recipe<ItemKhromaRecipeInput> {
 			return CODEC;
 		}
 
-		@SuppressWarnings("deprecation")
 		@Override
 		public StreamCodec<RegistryFriendlyByteBuf, KhromaImbuementRecipe> streamCodec() {
 			return STREAM_CODEC;

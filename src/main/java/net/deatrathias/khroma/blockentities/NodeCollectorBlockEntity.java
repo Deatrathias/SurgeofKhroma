@@ -99,7 +99,7 @@ public class NodeCollectorBlockEntity extends BaseKhromaUserBlockEntity {
 	@Override
 	public void onLoad() {
 		super.onLoad();
-		if (!level.isClientSide) {
+		if (!level.isClientSide()) {
 			if (provider == null)
 				provider = new CollectorProvider();
 			KhromaNode node = getNode();

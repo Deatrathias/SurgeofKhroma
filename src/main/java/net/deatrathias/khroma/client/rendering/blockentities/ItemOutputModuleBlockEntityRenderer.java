@@ -2,52 +2,59 @@ package net.deatrathias.khroma.client.rendering.blockentities;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import it.unimi.dsi.fastutil.HashCommon;
 import net.deatrathias.khroma.blockentities.ItemOutputModuleBlockEntity;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.deatrathias.khroma.client.rendering.blockentities.states.ItemOutputModuleBlockEntityRenderState;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.entity.ItemEntityRenderer;
 import net.minecraft.client.renderer.entity.state.ItemClusterRenderState;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer.CrumblingOverlay;
+import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
-public class ItemOutputModuleBlockEntityRenderer implements BlockEntityRenderer<ItemOutputModuleBlockEntity> {
-	private ItemRenderer itemRenderer;
-	private EntityRenderDispatcher entityRenderDispatcher;
+public class ItemOutputModuleBlockEntityRenderer implements BlockEntityRenderer<ItemOutputModuleBlockEntity, ItemOutputModuleBlockEntityRenderState> {
+	private final ItemModelResolver itemModelResolver;
 	private RandomSource random = RandomSource.create();
 
 	public ItemOutputModuleBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
-		itemRenderer = context.getItemRenderer();
-		entityRenderDispatcher = context.getEntityRenderer();
+		this.itemModelResolver = context.itemModelResolver();
+	}
+	
+	@Override
+	public ItemOutputModuleBlockEntityRenderState createRenderState() {
+		return new ItemOutputModuleBlockEntityRenderState();
+	}
+	
+	@Override
+	public void extractRenderState(ItemOutputModuleBlockEntity blockEntity,
+			ItemOutputModuleBlockEntityRenderState renderState, float partialTick, Vec3 cameraPosition,
+			CrumblingOverlay breakProgress) {
+		BlockEntityRenderer.super.extractRenderState(blockEntity, renderState, partialTick, cameraPosition, breakProgress);
+		renderState.content = new ItemClusterRenderState();
+		ItemStack stack = blockEntity.getItem();
+		itemModelResolver.updateForTopItem(renderState.content.item, stack, ItemDisplayContext.GROUND, blockEntity.getLevel(), blockEntity, HashCommon.long2int(blockEntity.getBlockPos().asLong()));
+		renderState.content.count = ItemClusterRenderState.getRenderedAmount(stack.getCount());
+		renderState.content.seed = ItemClusterRenderState.getSeedForItemStack(stack);
 	}
 
 	@Override
-	public void render(ItemOutputModuleBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, Vec3 cameraPos) {
-		ItemStack item = blockEntity.getStackInSlot(0);
-		if (item != null && !item.isEmpty()) {
+	public void submit(ItemOutputModuleBlockEntityRenderState renderState, PoseStack poseStack,
+			SubmitNodeCollector nodeCollector, CameraRenderState cameraRenderState) {
+		ItemClusterRenderState item = renderState.content;
+		if (item != null && !item.item.isEmpty()) {
 
-			int seed = ItemClusterRenderState.getSeedForItemStack(item);
-			int count = ItemClusterRenderState.getRenderedAmount(item.getCount());
 			poseStack.pushPose();
 			poseStack.translate(0.5, 0.5, 0.5);
 			poseStack.scale(0.5f, 0.5f, 0.5f);
 
-			poseStack.mulPose(entityRenderDispatcher.cameraOrientation());
-			itemRenderer.renderStatic(item, ItemDisplayContext.FIXED, packedLight, packedOverlay, poseStack, bufferSource, blockEntity.getLevel(), seed);
-
-			random.setSeed(seed);
-			for (int i = 1; i < count; i++) {
-				poseStack.pushPose();
-				float x = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
-				float y = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
-				float z = (random.nextFloat() * 2.0F - 1.0F) * 0.15F;
-				poseStack.translate(x, y, z);
-				itemRenderer.renderStatic(item, ItemDisplayContext.FIXED, packedLight, packedOverlay, poseStack, bufferSource, blockEntity.getLevel(), seed);
-				poseStack.popPose();
-			}
+			poseStack.mulPose(cameraRenderState.orientation);
+			ItemEntityRenderer.submitMultipleFromCount(poseStack, nodeCollector, renderState.lightCoords, item, random);
 
 			poseStack.popPose();
 		}

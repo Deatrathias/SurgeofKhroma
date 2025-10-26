@@ -47,7 +47,7 @@ public class GameServerEventSubscriber {
 
 	@SubscribeEvent
 	private static void levelTickPost(LevelTickEvent.Post event) {
-		if (event.getLevel().isClientSide)
+		if (event.getLevel().isClientSide())
 			return;
 		KhromaNetwork.updateNetworksForLevel(event.getLevel());
 	}

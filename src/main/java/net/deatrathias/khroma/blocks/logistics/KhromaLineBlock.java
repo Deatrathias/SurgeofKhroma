@@ -145,14 +145,14 @@ public class KhromaLineBlock extends PipeBlock implements SimpleWaterloggedBlock
 
 	@Override
 	protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
-		if (!level.isClientSide && hasDirectionsChanged(state, oldState)) {
+		if (!level.isClientSide() && hasDirectionsChanged(state, oldState)) {
 			dirtyNetwork(state, level, pos, oldState);
 		}
 	}
 
 	@Override
 	protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
-		if (!level.isClientSide) {
+		if (!level.isClientSide()) {
 			dirtyNetwork(Blocks.AIR.defaultBlockState(), level, pos, state);
 		}
 	}

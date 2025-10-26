@@ -52,7 +52,7 @@ public class KhromaFabricatorBlock extends BaseKhromaUserEntityBlock implements 
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-		return level.isClientSide ? null : createTickerHelper(blockEntityType, BlockReference.BE_KHROMA_FABRICATOR.get(), KhromaFabricatorBlockEntity::serverTick);
+		return level.isClientSide() ? null : createTickerHelper(blockEntityType, BlockReference.BE_KHROMA_FABRICATOR.get(), KhromaFabricatorBlockEntity::serverTick);
 	}
 
 	@Override

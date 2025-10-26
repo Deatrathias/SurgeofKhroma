@@ -3,7 +3,6 @@ package net.deatrathias.khroma.blocks.machine.modular;
 import com.mojang.serialization.MapCodec;
 
 import net.deatrathias.khroma.blockentities.ItemOutputModuleBlockEntity;
-import net.deatrathias.khroma.registries.BlockReference;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -20,6 +19,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public class ItemOutputModuleBlock extends BaseEntityBlock {
 
@@ -52,15 +53,20 @@ public class ItemOutputModuleBlock extends BaseEntityBlock {
 
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-		var optional = level.getBlockEntity(pos, BlockReference.BE_ITEM_OUTPUT_MODULE.get());
-		if (optional.isEmpty())
+		var handler = level.getCapability(Capabilities.Item.BLOCK, pos, hitResult.getDirection());
+		if (handler == null)
 			return InteractionResult.PASS;
-
-		ItemOutputModuleBlockEntity be = optional.get();
-		ItemStack item = be.extractItem(0, be.getSlotLimit(0), false);
-
+		
+		ItemStack item = ItemStack.EMPTY;
+		try (Transaction tx = Transaction.openRoot()) {
+			var resource = handler.getResource(0);
+			int transfered = handler.extract(resource, resource.getMaxStackSize(), tx);
+			item = resource.toStack(transfered);
+			tx.commit();
+		}
+		
 		if (!item.isEmpty()) {
-			if (!level.isClientSide) {
+			if (!level.isClientSide()) {
 				Vec3 center = pos.getCenter();
 				ItemEntity entity = new ItemEntity(level, center.x, center.y, center.z, item);
 				entity.setNoPickUpDelay();

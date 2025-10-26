@@ -122,7 +122,7 @@ public class ItemPedestalBlock extends BaseEntityBlock {
 		if (result.isEmpty())
 			return InteractionResult.PASS;
 		else {
-			if (!level.isClientSide) {
+			if (!level.isClientSide()) {
 				be.createItemEntityForPlayerPickup(result, player);
 			}
 

@@ -6,9 +6,6 @@ import org.jetbrains.annotations.Nullable;
 
 import net.deatrathias.khroma.client.ClientOnlyReference;
 import net.deatrathias.khroma.compat.accessories.FeatheredBootsRenderer;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
-import net.minecraft.client.resources.model.EquipmentClientInfo.LayerType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -48,8 +45,8 @@ public class FeatheredBootsItem extends Item implements GeoItem {
 			private FeatheredBootsRenderer<?> renderer;
 
 			@Override
-			public <S extends HumanoidRenderState> @Nullable GeoArmorRenderer<?, ?> getGeoArmorRenderer(@Nullable S renderState, ItemStack itemStack, EquipmentSlot equipmentSlot, LayerType type,
-					@Nullable HumanoidModel<S> original) {
+			public @Nullable GeoArmorRenderer<?, ?> getGeoArmorRenderer(ItemStack itemStack,
+					EquipmentSlot equipmentSlot) {
 				if (renderer == null)
 					renderer = new FeatheredBootsRenderer<>();
 

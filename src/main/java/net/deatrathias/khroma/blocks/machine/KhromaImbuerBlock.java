@@ -63,12 +63,12 @@ public class KhromaImbuerBlock extends BaseKhromaUserEntityBlock implements IKhr
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-		return level.isClientSide ? null : createTickerHelper(blockEntityType, BlockReference.BE_KHROMA_IMBUER.get(), KhromaImbuerBlockEntity::serverTick);
+		return level.isClientSide() ? null : createTickerHelper(blockEntityType, BlockReference.BE_KHROMA_IMBUER.get(), KhromaImbuerBlockEntity::serverTick);
 	}
 
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-		if (!level.isClientSide) {
+		if (!level.isClientSide()) {
 			player.openMenu(state.getMenuProvider(level, pos));
 			return InteractionResult.CONSUME;
 		}
@@ -94,7 +94,7 @@ public class KhromaImbuerBlock extends BaseKhromaUserEntityBlock implements IKhr
 	}
 
 	@Override
-	protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+	protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, Direction direction) {
 		return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(level.getBlockEntity(pos));
 	}
 

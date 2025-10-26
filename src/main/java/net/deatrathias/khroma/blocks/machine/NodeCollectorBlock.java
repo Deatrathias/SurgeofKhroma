@@ -47,14 +47,14 @@ public class NodeCollectorBlock extends BaseKhromaUserEntityBlock implements IKh
 	@Override
 	protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
 		super.onPlace(state, level, pos, oldState, movedByPiston);
-		if (!level.isClientSide)
+		if (!level.isClientSide())
 			level.getEntities(EntityTypeTest.forClass(KhromaNodeEntity.class), new AABB(pos), EntitySelector.NO_SPECTATORS).forEach((entity) -> ((KhromaNodeEntity) entity).setForceVisible(true));
 	}
 
 	@Override
 	protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
 		super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
-		if (!level.isClientSide)
+		if (!level.isClientSide())
 			level.getEntities(EntityTypeTest.forClass(KhromaNodeEntity.class), new AABB(pos), EntitySelector.NO_SPECTATORS).forEach((entity) -> ((KhromaNodeEntity) entity).setForceVisible(false));
 	}
 
@@ -107,6 +107,6 @@ public class NodeCollectorBlock extends BaseKhromaUserEntityBlock implements IKh
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-		return createTickerHelper(blockEntityType, BlockReference.BE_NODE_COLLECTOR.get(), level.isClientSide ? NodeCollectorBlockEntity::clientTick : NodeCollectorBlockEntity::serverTick);
+		return createTickerHelper(blockEntityType, BlockReference.BE_NODE_COLLECTOR.get(), level.isClientSide() ? NodeCollectorBlockEntity::clientTick : NodeCollectorBlockEntity::serverTick);
 	}
 }
