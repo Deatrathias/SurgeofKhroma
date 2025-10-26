@@ -52,7 +52,7 @@ public final class ItemReference {
 	public static final ToolMaterial WHITE_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 6, 2, 14, TagReference.Items.KHROMETAL_INGOT_WHITE);
 	public static final ToolMaterial BLACK_KHROMETAL_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 6, 2, 14, TagReference.Items.KHROMETAL_INGOT_BLACK);
 
-	public static final DeferredItem<Item> KHROMANCER_ARCHIVE = ITEMS.register("khromancer_archive", registryName -> new GuideItem(itemProps(registryName)));
+	public static final DeferredItem<Item> KHROMANCER_ARCHIVE = ITEMS.register("khromancer_archive", registryName -> new GuideItem(itemProps(registryName).stacksTo(1)));
 
 	public static final DeferredItem<Item> RAW_CHROMIUM = ITEMS.registerSimpleItem("raw_chromium");
 

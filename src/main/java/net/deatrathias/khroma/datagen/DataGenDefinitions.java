@@ -42,6 +42,8 @@ public class DataGenDefinitions {
 	public static List<Item> simpleItems;
 
 	public static List<Item> handheldItems;
+	
+	public static List<Item> ignoredItems;
 
 	public static List<Block> khromaDevices;
 
@@ -87,7 +89,7 @@ public class DataGenDefinitions {
 
 		dropsOreBlocks = deferredList(BlockReference.CHROMIUM_ORE, BlockReference.DEEPSLATE_CHROMIUM_ORE);
 
-		simpleItems = deferredList(ItemReference.KHROMANCER_ARCHIVE, ItemReference.RAW_CHROMIUM, ItemReference.CHROMIUM_INGOT, ItemReference.CHROMIUM_NUGGET,
+		simpleItems = deferredList(ItemReference.RAW_CHROMIUM, ItemReference.CHROMIUM_INGOT, ItemReference.CHROMIUM_NUGGET,
 				ItemReference.KHROMETAL_INGOT_RED, ItemReference.KHROMETAL_INGOT_GREEN, ItemReference.KHROMETAL_INGOT_BLUE, ItemReference.KHROMETAL_INGOT_WHITE,
 				ItemReference.KHROMETAL_INGOT_BLACK, ItemReference.CHROMATIC_NUCLEUS, ItemReference.CHROMATIC_GLASSES, ItemReference.FEATHERED_BOOTS, ItemReference.ANKLETS_OF_MOTION,
 				ItemReference.STRIX_SPAWN_EGG);
@@ -96,6 +98,8 @@ public class DataGenDefinitions {
 				ItemReference.KHROMETAL_GREEN_SWORD, ItemReference.KHROMETAL_GREEN_PICKAXE, ItemReference.KHROMETAL_BLUE_SWORD, ItemReference.KHROMETAL_BLUE_PICKAXE,
 				ItemReference.KHROMETAL_WHITE_SWORD, ItemReference.KHROMETAL_WHITE_PICKAXE, ItemReference.KHROMETAL_BLACK_SWORD, ItemReference.KHROMETAL_BLACK_PICKAXE);
 
+		ignoredItems = deferredList(ItemReference.KHROMANCER_ARCHIVE);
+		
 		khromaDevices = deferredCombinedList(List.of(BlockReference.KHROMA_LINE, BlockReference.NODE_COLLECTOR, BlockReference.KHROMA_PROVIDER,
 				BlockReference.KHROMA_MACHINE, BlockReference.KHROMA_APERTURE, BlockReference.KHROMA_COMBINER, BlockReference.KHROMA_SEPARATOR,
 				BlockReference.KHROMA_DISSIPATOR, BlockReference.KHROMA_IMBUER, BlockReference.ITEM_OUTPUT_MODULE, BlockReference.ITEM_PEDESTAL),

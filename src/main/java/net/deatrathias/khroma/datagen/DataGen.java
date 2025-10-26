@@ -4,6 +4,11 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
+import com.klikli_dev.modonomicon.api.ModonomiconAPI;
+import com.klikli_dev.modonomicon.api.datagen.LanguageProviderCache;
+import com.klikli_dev.modonomicon.api.datagen.ModonomiconLanguageProvider;
+import com.klikli_dev.modonomicon.api.datagen.NeoBookProvider;
+
 import net.deatrathias.khroma.SurgeofKhroma;
 import net.deatrathias.khroma.registries.BlockReference;
 import net.deatrathias.khroma.registries.ImbuedTree.TreeBlock;
@@ -32,7 +37,13 @@ public class DataGen {
 	public static void gatherDataClient(GatherDataEvent.Client event) {
 		DataGenDefinitions.init();
 		event.createProvider(ModelDataGen::new);
-		event.createProvider(output -> equipmentProvider(output));
+		event.createProvider(DataGen::equipmentProvider);
+		ModonomiconLanguageProvider cache = new LanguageProviderCache("en_us");
+		if (ModList.get().isLoaded(ModonomiconAPI.ID)) {
+			event.addProvider(NeoBookProvider.of(event, new KhromancerArchiveDataGen(cache)));
+			
+		}
+		event.createProvider(output -> new LanguageENDataGen(output, cache.data()));
 		generateServerData(event);
 	}
 
@@ -56,10 +67,9 @@ public class DataGen {
 		event.createProvider(RecipeDaraGen.Runner::new);
 		event.createProvider(DataMapDataGen::new);
 		event.createProvider(SoundDataGen::new);
-		event.createProvider(LanguageENDataGen::new);
 		if (ModList.get().isLoaded(CuriosResources.MOD_ID))
 			event.createProvider(CuriosDataGen::new);
-	}
+		}
 
 	private static DataProvider equipmentProvider(PackOutput output) {
 		return new EquipmentAssetProvider(output) {

@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "surgeofkhroma:item/khromancer_archive",
+    "model": {
+      "type": "geckolib:geckolib"
+    }
+  }
+}

@@ -23,6 +23,8 @@ public class LanguageENDataGen extends LanguageProvider {
 	private final static Field dataField;
 
 	private final static List<String> connectors = List.of("the", "a", "an", "of", "to", "with", "in", "for", "at", "by");
+	
+	private Map<String, String> additional;
 
 	static {
 		try {
@@ -33,11 +35,11 @@ public class LanguageENDataGen extends LanguageProvider {
 		}
 	}
 
-	public LanguageENDataGen(PackOutput output) {
+	public LanguageENDataGen(PackOutput output, Map<String, String> additional) {
 		super(output, SurgeofKhroma.MODID, "en_us");
+		this.additional = additional;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void addTranslations() {
 		khromaNames();
@@ -102,6 +104,9 @@ public class LanguageENDataGen extends LanguageProvider {
 			if (!hasKey(effect.get().getDescriptionId()))
 				addEffect(effect, formatKey(effect.getKey().location().getPath()));
 		});
+		
+		if (additional != null)
+			additional.forEach(this::add);
 	}
 
 	private void khromaNames() {
@@ -175,7 +180,6 @@ public class LanguageENDataGen extends LanguageProvider {
 	}
 
 	private void tagNames() {
-		addFormatted(TagReference.Blocks.KHROMETAL_BLOCKS);
 		addFormatted(TagReference.Blocks.KHROMETAL_BLOCKS);
 		addFormatted(TagReference.Blocks.IMBUED_TREE_LOGS);
 		addFormatted(TagReference.Blocks.IMBUED_TREE_LEAVES);

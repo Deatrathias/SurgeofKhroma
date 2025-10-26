@@ -3,6 +3,7 @@ package net.deatrathias.khroma.datagen;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -41,8 +42,10 @@ import net.minecraft.client.renderer.item.CompositeModel;
 import net.minecraft.client.renderer.item.ConditionalItemModel;
 import net.minecraft.client.renderer.item.properties.conditional.HasComponent;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
@@ -68,6 +71,11 @@ public class ModelDataGen extends ModelProvider {
 
 	public ModelDataGen(PackOutput output) {
 		super(output, SurgeofKhroma.MODID);
+	}
+
+	@Override
+	protected Stream<? extends Holder<Item>> getKnownItems() {
+		 return super.getKnownItems().filter(item -> !DataGenDefinitions.ignoredItems.contains(item.value()));
 	}
 
 	@Override

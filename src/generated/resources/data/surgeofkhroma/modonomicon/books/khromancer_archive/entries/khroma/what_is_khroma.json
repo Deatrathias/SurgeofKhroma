@@ -1,0 +1,28 @@
+{
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "khroma",
+  "description": "book.surgeofkhroma.khromancer_archive.khroma.what_is_khroma.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "surgeofkhroma:chromatic_nucleus"
+  },
+  "name": "book.surgeofkhroma.khromancer_archive.khroma.what_is_khroma.name",
+  "pages": [
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "condition": {
+        "type": "modonomicon:none"
+      },
+      "show_title_separator": true,
+      "text": "book.surgeofkhroma.khromancer_archive.khroma.what_is_khroma.explanation.text",
+      "title": "book.surgeofkhroma.khromancer_archive.khroma.what_is_khroma.explanation.title",
+      "use_markdown_in_title": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "sort_number": 0,
+  "x": 0,
+  "y": 0
+}
